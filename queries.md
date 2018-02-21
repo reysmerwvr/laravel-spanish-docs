@@ -5,8 +5,8 @@
     - [Particionando los Resultados](#chunking-results)
     - [Agrupamientos](#aggregates)
 - [Selects](#selects)
-- [Expresiones nativas](#raw-expressions)
-- [Juntas](#joins)
+- [Expresiones sin procesar](#raw-expressions)
+- [Joins](#joins)
 - [Uniones](#unions)
 - [Cláusulas Where](#where-clauses)
     - [Parameter Grouping](#parameter-grouping)
@@ -24,7 +24,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-El constructor de consultas de Base de datos de Laravel, proporciona una interface fluida, conveniente para la creación y ejecución de consultas de bases de datos. Puede ser usada para ejecutar las principales operaciones de bases de datos en tu aplicación y funcionar en todos los sistemas de bases de datos soportados.
+El constructor de consultas de Base de datos de Laravel, proporciona una interface fluida, conveniente para la creación y ejecución de consultas de bases de datos. Puede ser usada para ejecutar las principales operaciones de bases de datos en tu aplicación y funciona en todos los sistemas de bases de datos soportados.
 
 El query builder de Laravel usa enlazamiento de parámetros PDO para proteger tu aplicación contra ataques de inyección de SQL. No hay necesidad de limpiar cadenas que están siendo pasadas como enlaces.
 
@@ -33,7 +33,7 @@ El query builder de Laravel usa enlazamiento de parámetros PDO para proteger tu
 
 #### Obteniendo Todas las Filas de una Tabla
 
-Puedes usar el método `table` de la clase facade `DB` para empezar una consulta. El método `table` devuelve una instancia del constructor de consultas fluent para la tabla dada, permitiendo que tu encadenes más restricciones dentro de la consulta y recibas finalmente los resultados usando el método `get`:
+Puedes usar el método `table` de la clase facade `DB` para empezar una consulta. El método `table` devuelve una instancia para construir consultas fáciles de entender para la tabla dada, permitiendo que tu encadenes más restricciones dentro de la consulta y recibas finalmente los resultados usando el método `get`:
 
     <?php
 
@@ -45,7 +45,7 @@ Puedes usar el método `table` de la clase facade `DB` para empezar una consulta
     class UserController extends Controller
     {
         /**
-         * Mostrar una lista de todos los usuarios de la aplicación.
+         * Show a list of all of the application's users.
          *
          * @return Response
          */
@@ -57,7 +57,7 @@ Puedes usar el método `table` de la clase facade `DB` para empezar una consulta
         }
     }
 
-El método `get` devuelve una colección `Illuminate\Support\Collection` que contiene los resultados donde cada resultado es una instancia del objeto `StdClass` de PHP. Puedes accesar el valor de cada columna al accesar la columna como una propiedad del objeto:
+El método `get` devuelve una colección de la clase `Illuminate\Support\Collection` que contiene los resultados donde cada resultado es una instancia del objeto `StdClass` de PHP. Puedes acceder al valor de cada columna accediendo a la columna como una propiedad del objeto:
 
     foreach ($users as $user) {
         echo $user->name;
@@ -65,7 +65,7 @@ El método `get` devuelve una colección `Illuminate\Support\Collection` que con
 
 #### Obteniendo una sola fila / Columna de una Tabla
 
-Si sólamente necesitas recuperar una sola fila de la tabla de base de datos, puedes usar el método `first`. Este método devolverá un solo objeto `StdClass`:
+Si solamente necesitas recuperar una sola fila de la tabla de base de datos, puedes usar el método `first`. Este método devolverá un solo objeto `StdClass`:
 
     $user = DB::table('users')->where('name', 'John')->first();
 
@@ -136,7 +136,7 @@ Ciertamente, no siempre desearás seleccionar todas las columnas de una tabla de
 
     $users = DB::table('users')->select('name', 'email as user_email')->get();
 
-El método distinct permite que tu forces a la consulta que devuelva sólamente resultados que sean distintos.
+El método distinct te permite forzar la consulta para que devuelva solamente resultados que sean distintos.
 
     $users = DB::table('users')->distinct()->get();
 
@@ -147,9 +147,9 @@ Si ya tienes una instancia del constructor de consultas y deseas añadir una col
     $users = $query->addSelect('age')->get();
 
 <a name="raw-expressions"></a>
-## Expressiones Nativas
+## Expressiones Sin Procesar
 
-Algunas veces puede que necesites usar una expresión nativa en una consulta. Para crear una expresión nativa, puedes usar el método `DB::raw`:
+Algunas veces puede que necesites usar una expresión sin procesar en una consulta. Para crear una expresión sin procesar, puedes usar el método `DB::raw`:
 
     $users = DB::table('users')
                          ->select(DB::raw('count(*) as user_count, status'))
@@ -157,16 +157,16 @@ Algunas veces puede que necesites usar una expresión nativa en una consulta. Pa
                          ->groupBy('status')
                          ->get();
 
-> {note} Las instrucciones nativas serán inyectadas dentro de la consulta como cadenas, así que deberías ser extremadamente cuidadoso para no crear vulnerabilidades de inyección SQL.
+> {note} Las instrucciones sin procesar serán inyectadas dentro de la consulta como cadenas, así que deberías ser extremadamente cuidadoso para no crear vulnerabilidades de inyección SQL.
 
 <a name="raw-methods"></a>
-### Métodos Nativos
+### Métodos que usan Expresiones Sin Procesar
 
-En lugar de usar `DB::raw`, también puedes usar los métodos siguientes para insertar una expresión nativa dentro de vaias partes de tu consulta. 
+En lugar de usar `DB::raw`, también puedes usar los métodos siguientes para insertar una expresión sin procesar dentro de varias partes de tu consulta. 
 
 #### `selectRaw`
 
-El método `selectRaw`  puede ser usado in lugar de `select(DB::raw(...))`. Este método acepta un arreglo opcional de enlaces como su segundo argumento:
+El método `selectRaw` puede ser usado en lugar de `select(DB::raw(...))`. Este método acepta un arreglo opcional de enlaces como su segundo argumento:
 
     $orders = DB::table('orders')
                     ->selectRaw('price * ? as price_with_tax', [1.0825])
@@ -174,7 +174,7 @@ El método `selectRaw`  puede ser usado in lugar de `select(DB::raw(...))`. Este
 
 #### `whereRaw / orWhereRaw`
 
-Los métodos `whereRaw` y `orWhereRaw` pueden ser usados para inyectar una cláusula `where` nativa dentro de tu consulta.  Estos métodos aceptan un arreglo opcional de enlaces como su segundo argumento:
+Los métodos `whereRaw` y `orWhereRaw` pueden ser usados para inyectar una cláusula `where` sin procesar dentro de tu consulta.  Estos métodos aceptan un arreglo opcional de enlaces como su segundo argumento:
 
     $orders = DB::table('orders')
                     ->whereRaw('price > IF(state = "TX", ?, 100)', [200])
@@ -182,7 +182,7 @@ Los métodos `whereRaw` y `orWhereRaw` pueden ser usados para inyectar una cláu
 
 #### `havingRaw / orHavingRaw`
 
-Los métodos `havingRaw` and `orHavingRaw` pueden ser usados para establecer una cadena nativa como el valor de la cláusula `having`:
+Los métodos `havingRaw` and `orHavingRaw` pueden ser usados para establecer una cadena sin procesar como el valor de la cláusula `having`:
 
     $orders = DB::table('orders')
                     ->select('department', DB::raw('SUM(price) as total_sales'))
@@ -192,18 +192,18 @@ Los métodos `havingRaw` and `orHavingRaw` pueden ser usados para establecer una
 
 #### `orderByRaw`
 
-El método `orderByRaw` puede ser usado para establecer una cadena nativa como el valor de la cláusula `order by`:
+El método `orderByRaw` puede ser usado para establecer una cadena sin procesar como el valor de la cláusula `order by`:
 
     $orders = DB::table('orders')
                     ->orderByRaw('updated_at - created_at DESC')
                     ->get();
 
 <a name="joins"></a>
-## Juntas
+## Joins
 
 #### Cláusula Inner Join
 
-El constructor de consultas también puede ser usado para escribir instrucciones de junta. Para ejecutar un "inner join" básico, puedes usar el método `join` en una instancia de constructor de consultas. El primer argumento pasado al método `join` es el nombre de la tabla que tu necesitas para juntar, mientras que los argumentos restantes especifican las restricciones de columna para la junta. Ciertamente, como puedes ver, puedes juntar a múltiples tablas en una sola consulta:
+El constructor de consultas también puede ser usado para escribir instrucciones joins. Para ejecutar un "inner join" básico, puedes usar el método `join` en una instancia del constructor de consultas. El primer argumento pasado al método `join` es el nombre de la tabla que necesitas juntar, mientras que los argumentos restantes especifican las restricciones de columna para el join. Ciertamente, como puedes ver, puedes hacer un join de múltiples tablas en una sola consulta:
 
     $users = DB::table('users')
                 ->join('contacts', 'users.id', '=', 'contacts.user_id')
@@ -221,15 +221,15 @@ Si prefieres ejecutar un "left join" en vez de un "inner join", usa el método `
 
 #### Cláusula Cross Join
 
-Para ejecutar una "junta de forma cruzada" use el método `crossJoin`con el nombre de la tabla que tú deseas juntar de forma cruzada. Las juntas cruzadas generan un producto cartesiano entre la primera tabla y la tabla juntada: 
+Para ejecutar un cláusula "cross join" use el método `crossJoin`con el nombre de la tabla a la que deseas hacerle un cross join. Los cross join generan un producto cartesiano entre la primera tabla y la tabla juntada: 
 
     $users = DB::table('sizes')
                 ->crossJoin('colours')
                 ->get();
 
-#### Cláusulas de Junta Avanzadas
+#### Cláusulas de Join Avanzadas
 
-También puedes especificar cláusulas de junta más avanzadas. Para empezar, pasa una función `Closure` como el segundo argumento dentro del método `join`. La `Closure` recibirá un objeto `JoinClause` el cual permitirá que tu especifiques restricciones en la cláusula `join`:
+También puedes especificar cláusulas join más avanzadas. Para empezar, pasa una función `Closure` como el segundo argumento dentro del método `join`. La `Closure` recibirá un objeto `JoinClause` el cual permitirá que tu especifiques restricciones en la cláusula `join`:
 
     DB::table('users')
             ->join('contacts', function ($join) {
@@ -237,7 +237,7 @@ También puedes especificar cláusulas de junta más avanzadas. Para empezar, pa
             })
             ->get();
 
-Si prefieres usar una cláusula estilo "where" en tus juntas, puedes usar los métodos `where` y `orWhere` en una junta. En lugar de comparar dos columnas, estos métodos compararán la columna contra un valor:
+Si prefieres usar una cláusula estilo "where" en tus joins, puedes usar los métodos `where` y `orWhere` en un join. En lugar de comparar dos columnas, estos métodos compararán la columna contra un valor:
 
     DB::table('users')
             ->join('contacts', function ($join) {
@@ -419,14 +419,14 @@ Algunas veces puedes necesitar crear cláusulas where más avanzadas como cláus
                 })
                 ->get();
 
-Como puedes ver, al pasar una `Closure` dentro del método `orWhere` instruye al constructor de consultas para empezar un grupo de restricción. La `Closure` recibirá una instancia de constructor de consultas la cual puedes usar para establecer las restricciones que deberían estar contenidas dentro del grupo encerrado por llaves. El ejemplo de arriba producirá la siguiente instrucción SQL:
+Como puedes ver, al pasar una `Closure` dentro del método `orWhere` instruye al constructor de consultas para empezar un grupo de restricción. La `Closure` recibirá una instancia del constructor de consultas la cual puedes usar para establecer las restricciones que deberían estar contenidas dentro del grupo encerrado por llaves. El ejemplo de arriba producirá la siguiente instrucción SQL:
 
     select * from users where name = 'John' or (votes > 100 and title <> 'Admin')
 
 <a name="where-exists-clauses"></a>
 ### Cláusulas Where Exists
 
-El método `whereExists` permite que escribas cláusulas de SQL `whereExists`. El método `whereExists` acepta un argumento de tipo `Closure`, el cual recibirá una instancia de constructor de consultas permitiendo que definas la consulta que debería ser puesta dentro de la cláusula "exists":
+El método `whereExists` permite que escribas cláusulas de SQL `whereExists`. El método `whereExists` acepta un argumento de tipo `Closure`, el cual recibirá una instancia del constructor de consultas permitiendo que definas la consulta que debería ser puesta dentro de la cláusula "exists":
 
     DB::table('users')
                 ->whereExists(function ($query) {
@@ -580,7 +580,7 @@ Ciertamente, además de insertar registros dentro de la base de datos, el constr
 <a name="updating-json-columns"></a>
 ### Actualizando Columnas JSON
 
-Cuando estamos actualizando una columna JSON, deberías usar la sintaxis `->` para accesar la clave apropiada en el objeto JSON. Esta operación es soportada solamente en bases de datos que soportan columnas JSON:
+Cuando estamos actualizando una columna JSON, deberías usar la sintaxis `->` para acceder a la clave apropiada en el objeto JSON. Esta operación es soportada solamente en bases de datos que soportan columnas JSON:
 
     DB::table('users')
                 ->where('id', 1)
