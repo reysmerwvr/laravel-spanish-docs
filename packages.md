@@ -1,7 +1,7 @@
 # Desarrollo de Paquetes
 
 - [Introducción](#introduction)
-    - [Una nota sobre Fachadas](#a-note-on-facades)
+    - [Una nota sobre Facades](#a-note-on-facades)
 - [Descubrimiento de Paquetes](#package-discovery)
 - [Proveedor de Servicios](#service-providers)
 - [Recursos](#resources)
@@ -24,14 +24,14 @@ Por supuesto, hay diferentes tipos de paquetes. Algunos paquetes son independien
 Por otro lado, otros paquetes están específicamente destinados para su uso con Laravel. Estos paquetes pueden tener rutas, controladores, vistas y configuraciones específicamente diseñadas para mejorar una aplicación Laravel. Esta guía cubre principalmente el desarrollo de aquellos paquetes que son específicos de Laravel.
 
 <a name="a-note-on-facades"></a>
-### Una nota sobre Fachadas
+### Una nota sobre Facades
 
-Al escribir una aplicación Laravel, generalmente no importa si usas contratos o fachadas ya que ambos brindan niveles esencialmente iguales de capacidad de pruebas. Sin embargo, al escribir paquetes, tu paquete normalmente no tendrá acceso a todos los asistentes de prueba de Laravel. Si deseas escribir pruebas para el paquete como si existiera dentro de una típica aplicación Laravel puedes usar el paquete [Orchestral Testbench](https://github.com/orchestral/testbench).
+Al escribir una aplicación Laravel, generalmente no importa si usas contratos o facades ya que ambos brindan niveles esencialmente iguales de capacidad de pruebas. Sin embargo, al escribir paquetes, tu paquete normalmente no tendrá acceso a todos los asistentes de prueba de Laravel. Si deseas escribir pruebas para el paquete como si existiera dentro de una típica aplicación Laravel puedes usar el paquete [Orchestral Testbench](https://github.com/orchestral/testbench).
 
 <a name="package-discovery"></a>
 ## Descubrimiento de Paquetes
 
-En el archivo de configuración `config/app.php` de una aplicación Laravel, la opción `providers` define una lista de proveedores de servicios que Laravel debe cargar. Cuando alguien instala tu paquete normalmente querrá que su proveedor de servicio sea incluido en esta lista. En lugar de requerir que los usuarios agreguen manualmente su proveedor de servicios a la lista, puede definir el proveedor en la sección `extra` del archivo `composer.json` de tu paquete. Además de los proveedores de servicios, también puedes enumerar las [fachadas](/docs/{{version}}/fachadas) que desees registrar:
+En el archivo de configuración `config/app.php` de una aplicación Laravel, la opción `providers` define una lista de proveedores de servicios que Laravel debe cargar. Cuando alguien instala tu paquete normalmente querrá que su proveedor de servicio sea incluido en esta lista. En lugar de requerir que los usuarios agreguen manualmente su proveedor de servicios a la lista, puede definir el proveedor en la sección `extra` del archivo `composer.json` de tu paquete. Además de los proveedores de servicios, también puedes enumerar los [facades](/docs/{{version}}/facades) que desees registrar:
 
     "extra": {
         "laravel": {
@@ -44,7 +44,7 @@ En el archivo de configuración `config/app.php` de una aplicación Laravel, la 
         }
     },
 
-Una vez que tu paquete se haya configurado para su descubrimiento, Laravel registrará automáticamente sus proveedores de servicios y fachadas cuando esté instalado, creando una experiencia de instalación conveniente para los usuarios de tu paquete.
+Una vez que tu paquete se haya configurado para su descubrimiento, Laravel registrará automáticamente sus proveedores de servicios y facades cuando esté instalado, creando una experiencia de instalación conveniente para los usuarios de tu paquete.
 
 ### Optar por el descubrimiento del paquete
 
