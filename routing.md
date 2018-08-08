@@ -1,6 +1,6 @@
-# El Enrutamiento Básico
+# Enrutamiento Básico
 
-- [El Enrutamiento Básico](#basic-routing)
+- [Enrutamiento Básico](#basic-routing)
     - [Redireccionar Rutas](#redirect-routes)
     - [Las Rutas de Vistas](#view-routes)
 - [Los Parámetros de Rutas](#route-parameters)
@@ -11,12 +11,12 @@
 - [Los Grupos de Ruta](#route-groups)
     - [Los Middleware](#route-group-middleware)
     - [Los Espacios de Nombres](#route-group-namespaces)
-    - [El Enrutamiento de Sub-Dominio](#route-group-sub-domain-routing)
+    - [Enrutamiento de subdominios](#route-group-sub-domain-routing)
     - [Los Prefijos de Ruta](#route-group-prefixes)
     - [Los Prefijos por Nombre de Ruta](#route-group-name-prefixes)
-- [El Modelo de Enlazamiento de Ruta](#route-model-binding)
-    - [El Enlazamiento Implícito](#implicit-binding)
-    - [El Enlazamiento Explícito](#explicit-binding)
+- [Modelo de Enlaces de Rutas](#route-model-binding)
+    - [Enlaces Implícitos](#implicit-binding)
+    - [Enlaces Explícitos](#explicit-binding)
 - [La Suplantación de Método del Formulario](#form-method-spoofing)
 - [Accesando la Ruta Actual](#accessing-the-current-route)
 
@@ -50,7 +50,7 @@ El enrutador permite que registres rutas que responden a cualquier verbo HTTP:
     Route::delete($uri, $callback);
     Route::options($uri, $callback);
 
-Algunas veces puede que necesites registrar una ruta que responda a verbos HTTP múltiples. Puedes hacer eso usando el método `match`. O también, puedes incluso registrar una ruta que responda a todos los verbos HTTP usando el método `any`:
+Algunas veces puede que necesites registrar una ruta que responda a verbos HTTP múltiples. Puedes hacer eso usando el método `match`. También, puedes incluso registrar una ruta que responda a todos los verbos HTTP usando el método `any`:
 
     Route::match(['get', 'post'], '/', function () {
         //
@@ -62,7 +62,7 @@ Algunas veces puede que necesites registrar una ruta que responda a verbos HTTP 
 
 #### Protección CSRF
 
-Cualquiera de los formularios HTML que apunten a rutas `POST`, `PUT`, or `DELETE` que sean definidas en el archivo de rutas `web` deberían incluir un campo de token CSRF. De otra manera, el será rechazado. Puedes leer más sobre protección CSRF en la [documentación CSRF](/docs/{{version}}/csrf):
+Cualquiera de los formularios HTML que apunten a rutas `POST`, `PUT`, or `DELETE` que sean definidas en el archivo de rutas `web` deberían incluir un campo de token CSRF. De otra manera, la solicitud será rechazada. Puedes leer más sobre protección CSRF en la [documentación CSRF](/docs/{{version}}/csrf):
 
     <form method="POST" action="/profile">
         {{ csrf_field() }}
@@ -167,7 +167,7 @@ Las rutas nombradas permiten la generación de URLs o redirecciones para rutas e
         //
     })->name('profile');
 
-También puedes  especificar los nombes de ruta para acciones de controlador:
+También puedes especificar los nombes de ruta para acciones de controlador:
 
     Route::get('user/profile', 'UserController@showProfile')->name('profile');
 
@@ -217,7 +217,7 @@ Los grupos de ruta permiten que tu compartas atributos de ruta, tales como los m
 <a name="route-group-middleware"></a>
 ### Los Middleware
 
-Para asignar los middleware a todas las rutas dentro de un grupo, puedes usar el método `middleware` antes de la definición del grupo. Los middleware son ejecutados en el orden que ellos son listados en el arreglo:
+Para asignar los middleware a todas las rutas dentro de un grupo, puedes usar el método `middleware` antes de la definición del grupo. Los middleware son ejecutados en base al orden en el cual son listados en el arreglo:
 
     Route::middleware(['first', 'second'])->group(function () {
         Route::get('/', function () {
@@ -232,7 +232,7 @@ Para asignar los middleware a todas las rutas dentro de un grupo, puedes usar el
 <a name="route-group-namespaces"></a>
 ### Los Espacios de Nombres
 
-Otro uso-común para los grupos de ruta es la asignación del mismo espacio de nombre de PHP a un grupo de controladores usando el métod `namespace`:
+Otro uso común para los grupos de ruta es la asignación del mismo espacio de nombre de PHP a un grupo de controladores usando el métod `namespace`:
 
     Route::namespace('Admin')->group(function () {
         // Controladores dentro del espacio de nombre "App\Http\Controllers\Admin"
