@@ -1,7 +1,7 @@
 # Protección CSRF
 
 - [Introducción](#csrf-introduction)
-- [Excluyendo las URIs](#csrf-excluding-uris)
+- [Excluyendo URIs](#csrf-excluding-uris)
 - [X-CSRF-Token](#csrf-x-csrf-token)
 - [X-XSRF-Token](#csrf-x-xsrf-token)
 
