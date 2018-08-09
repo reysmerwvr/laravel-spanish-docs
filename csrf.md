@@ -21,7 +21,7 @@ En cualquier momento que definas un formulario HTML en tu aplicación, deberías
 
 El [middleware] `VerifyCsrfToken` (/docs/{{version}}/middleware), el cual es incluido en el grupo de middleware `web`, verificará automáticamente que el token en el campo de entrada de la solicitud coincida con el almacenado para la sesión.
 
-#### Los Token CSRF & JavaScript
+#### Tokens CSRF & JavaScript
 
 Cuando se crean aplicaciones controladas por JavaScript, es conveniente tener tu librería HTTP de JavaScript conectada automáticamente al token CSRF para cada solicitud realizada. Por defecto, el archivo `resources/assets/js/bootstrap.js` registra el valor de la meta etiqueta `csrf-token` con la librería HTTP Axios. Si no estás usando esta librería, necesitarás configurarla manualmente para tu aplicación.
 
