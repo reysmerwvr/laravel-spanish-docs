@@ -18,15 +18,15 @@
 <a name="introduction"></a>
 ## Introducción
 
-En lugar de definir toda la lógica de manejo de solicitud como Closures en archivos de ruta, puedes desear organizar este comportamiento usando clases Controlador. Los controladores pueden agrupar la lógica de manejo de solicitud relacionada dentro de una sola clase. Los controladores son almacenados en el directorio `app/Http/Controllers`.
+En lugar de definir toda la lógica de manejo de solicitud como Closures en archivos de ruta, puedes desear organizar este comportamiento usando clases Controller. Los controladores pueden agrupar la lógica de manejo de solicitud relacionada dentro de una sola clase. Los controladores son almacenados en el directorio `app/Http/Controllers`.
 
 <a name="basic-controllers"></a>
 ## Controladores Básicos
 
 <a name="defining-controllers"></a>
-### Definiiendo Controladores
+### Definiendo Controladores
 
-Debajo está un ejemplo de una clase de controlador básica. Note que el controlador extiende la clase de controlador base incluida con Laravel. La clase base proporciona unos cuantos métodos de conveniencia tal como el método `middleware`, el cual puede ser usado para conectar middleware a acciones de controlador:
+Debajo está un ejemplo de una clase de controlador básica. Nota que el controlador extiende la clase de controlador base incluida con Laravel. La clase base proporciona unos cuantos métodos de conveniencia tal como el método `middleware`, el cual puede ser usado para conectar un middleware a acciones de controlador:
 
     <?php
 
@@ -49,11 +49,11 @@ Debajo está un ejemplo de una clase de controlador básica. Note que el control
         }
     }
 
-Puedes definir una ruta a esta acción de controlador como esta:
+Puedes definir una ruta a esta acción de controlador de esta forma:
 
     Route::get('user/{id}', 'UserController@show');
 
-Ahora, cuando una solicitud coincide con la URI de la ruta especificada, el método `show` de la clase `UserController` será ejecutado. Ciertamente, los parámetros de ruta también serán pasado al método.
+Ahora, cuando una solicitud coincide con la URI de la ruta especificada, el método `show` de la clase `UserController` será ejecutado. Ciertamente, los parámetros de ruta también serán pasados al método.
 
 > {tip} Los controladores no son **obligatorios** para extender una clase base. Sin embargo, no tendrás acceso a características de conveniencia tales como los métodos `middleware`, `validate`, y `dispatch`.
 
@@ -62,7 +62,7 @@ Ahora, cuando una solicitud coincide con la URI de la ruta especificada, el mét
 
 Es muy importante notar que no necesitamos especificar el espacio de nombre completo del controlador al momento de definir la ruta del controlador. Debido a que el `RouteServiceProvider` carga sus archivos de ruta dentro de un grupo de ruta que contiene el espacio de nombre, solamente necesitaremos la porción del nombre de la clase que viene después de la porción `App\Http\Controllers` del espacio de nombre.
 
-Si eliges anidar tus controladores más profundo dentro del directorio `App\Http\Controllers`, usa el nombre de clase específico relativo al espacio de nombre raíz `App\Http\Controllers`. Así, si tu clase de controlador completa es `App\Http\Controllers\Photos\AdminController`, deberías registrar rutas al controlador como esta:
+Si eliges anidar tus controladores dentro del directorio `App\Http\Controllers`, usa el nombre de clase específico relativo al espacio de nombre raíz `App\Http\Controllers`. Así, si tu clase de controlador completa es `App\Http\Controllers\Photos\AdminController`, deberías registrar rutas al controlador de esta forma:
 
     Route::get('foo', 'Photos\AdminController@method');
 
@@ -130,7 +130,7 @@ También los controladores permiten que registres  los middleware usando una Clo
         return $next($request);
     });
 
-> {tip} Puedes asignar los middleware a un subconjunto de acciones de controlador, esto puede indicar que tu controlador está creciendo demasiado. En lugar de esto, considera dividir tu controlador en varios, controladores más pequeños.
+> {tip} Puedes asignar los middleware a un subconjunto de acciones de controlador, esto puede indicar que tu controlador está creciendo demasiado. En lugar de esto, considera dividir tu controlador en varios controladores más pequeños.
 
 <a name="resource-controllers"></a>
 ## Controladores de Recursos
@@ -155,10 +155,10 @@ Puedes registrar muchos controladores de recursos a la vez pasando un arreglo al
         'posts' => 'PostController'
     ]);
 
-#### Acciones manejadas por el Controlador de Recurso
+#### Acciones manejadas por el Controlador de Recursos
 
-Verb      | URI                  | Acción       | Nombre de Ruta
-----------|-----------------------|--------------|---------------------
+Tipo      | URI                    | Acción       | Nombre de la Ruta
+----------|----------------------- |--------------|---------------------
 GET       | `/photos`              | índice       | photos.index
 GET       | `/photos/create`       | crear        | photos.create
 POST      | `/photos`              | guardar      | photos.store
@@ -192,7 +192,7 @@ Al momento de declarar una ruta de recurso, puedes especificar un subconjunto de
         'create', 'store', 'update', 'destroy'
     ]]);
 
-#### Rutas de Recurso API
+#### Rutas de Recursos para APIs
 
 Al momento de declarar rutas de recursos que serán consumidas por APIs, normalmente te gustará excluir rutas que presentan plantillas HTML tales como `create` y `edit`. Por conveniencia, puedes usar el método `apiResource` para excluir automáticamente estas dos rutas:
 
@@ -208,7 +208,7 @@ Puedes registrar muchos controladores de recursos de API de una sola vez pasando
 <a name="restful-naming-resource-routes"></a>
 ### Nombrando Rutas de Recursos
 
-De forma predeterminada, todas las acciones de controlador de recursos tienen un nombre de ruta; sin embargo, puedes sobreescribir esos nombres al pasar un arreglo de nombres con tus opciones:
+De forma predeterminada, todas las acciones de controlador de recursos tienen un nombre de ruta; sin embargo, puedes sobrescribir esos nombres al pasar un arreglo de nombres con tus opciones:
 
     Route::resource('photo', 'PhotoController', ['names' => [
         'create' => 'photo.build'
@@ -217,20 +217,20 @@ De forma predeterminada, todas las acciones de controlador de recursos tienen un
 <a name="restful-naming-resource-route-parameters"></a>
 ### Nombrando Parámetros de Rutas de Recursos
 
-De forma predeterminada, `Route::resource` creará los parámetros de ruta para tus rutas de recursos basado en la versión "singularizada" del nombre de recurso. Puedes sobreescribir fácilmente esto sobre una base de nombramiento por recurso al pasar `parámetros` en el arreglo de opciones. El arreglo de opciones debería ser un arreglo asociativo de nombres de recursos y nombres de parámetros: 
+De forma predeterminada, `Route::resource` creará los parámetros de ruta para tus rutas de recursos basado en la versión "singularizada" del nombre de recurso. Puedes sobrescribir fácilmente esto para cada recurso pasando `parameters` en el arreglo de opciones. El arreglo de opciones debería ser un arreglo asociativo de nombres de recursos y nombres de parámetros: 
 
     Route::resource('user', 'AdminUserController', ['parameters' => [
         'user' => 'admin_user'
     ]]);
 
-El ejemplo anterior genera las URIs siguientes para la ruta `show`del recurso:
+El ejemplo anterior genera las URIs siguientes para la ruta `show` del recurso:
 
     /user/{admin_user}
 
 <a name="restful-localizing-resource-uris"></a>
 ### Localizando URIs de Recursos
 
-De forma predeterminada, `Route::resource` creará URIs de recursos usando verbos en Inglés. Si necesitas localizar los verbos de acción `create` and `edit`, puedes usar el método `Route::resourceVerbs`. Esto puede ser hecho en el método `boot` de tu `AppServiceProvider`:
+De forma predeterminada, `Route::resource` creará URIs de recursos usando verbos en Inglés. Si necesitas localizar los verbos de acción `create` y `edit`, puedes usar el método `Route::resourceVerbs`. Esto puede ser hecho en el método `boot` de tu `AppServiceProvider`:
 
     use Illuminate\Support\Facades\Route;
 
@@ -247,7 +247,7 @@ De forma predeterminada, `Route::resource` creará URIs de recursos usando verbo
         ]);
     }
 
-Una vez que los verbos han sido personalizados, un registro de ruta de recurso tal como `Route::resource('fotos', 'PhotoController')` producirá las URIs siguientes:
+Una vez que los verbos han sido personalizados, un registro de ruta de recurso tal como `Route::resource('fotos', 'PhotoController')` producirá las siguientes URIs:
 
     /fotos/crear
 
@@ -256,20 +256,20 @@ Una vez que los verbos han sido personalizados, un registro de ruta de recurso t
 <a name="restful-supplementing-resource-controllers"></a>
 ### Suplementando Controladores de Recursos
 
-Si necesitas agregar rutas adicionales para un controlador de recursos más allá del conjunto predeterminado de rutas de recursos, deberías definir esas rutas antes de que ejecutes `Route::resource`; de otra forma, las rutas definidas por el método `resource` pueden tomar precedencia no intencionadamente sobre tus rutas suplementarias:
+Si necesitas agregar rutas adicionales para un controlador de recursos más allá del conjunto predeterminado de rutas de recursos, deberías definir esas rutas antes de que ejecutes `Route::resource`; de otra forma, las rutas definidas por el método `resource` pueden tomar precedencia involuntariamente sobre tus rutas suplementarias:
 
     Route::get('photos/popular', 'PhotoController@method');
 
     Route::resource('photos', 'PhotoController');
 
-> {tip} Recuerda mantener la lógica de tus controladores enfocada. Si te encuentras a ti mismo necesitando rutinariamente métodos fuera del conjunto típico de acciones de recurso, considera dividir tu controlador en dos, controladores más pequeños.
+> {tip} Recuerda mantener la lógica de tus controladores enfocada. Si te encuentras a ti mismo necesitando rutinariamente métodos fuera del conjunto típico de acciones de recurso, considera dividir tu controlador en dos controladores más pequeños.
 
 <a name="dependency-injection-and-controllers"></a>
 ## Inyección de Dependencia & Controladores
 
 #### Inyección de Constructor
 
-El [contenedor de servicio](/docs/{{version}}/container) de Laravel es usado para resolver todos los controladores de Laravel. Como resultado, estás habilitado para adjuntar cualquier dependencia que tu controlador puede necesitar en su constructor. Las dependencias declaradas serán automáticamente resueltas e inyectadas dentro de la instancia del controlador:
+El [contenedor de servicio](/docs/{{version}}/container) de Laravel es usado para resolver todos los controladores de Laravel. Como resultado, estás habilitado para adjuntar cualquier dependencia que tu controlador pueda necesitar en su constructor. Las dependencias declaradas serán automáticamente resueltas e inyectadas dentro de la instancia del controlador:
 
     <?php
 
@@ -328,7 +328,7 @@ Si tu método de controlador también está esperando entrada de un parámetro d
 
     Route::put('user/{id}', 'UserController@update');
 
-Aún puedes adjuntar la clase `Illuminate\Http\Request` y acceder a tu parámetro `id` al definir tu método de controlador como sigue:
+Aún puedes adjuntar la clase `Illuminate\Http\Request` y acceder a tu parámetro `id` al definir tu método de controlador de la siguiente manera:
 
     <?php
 
@@ -352,15 +352,15 @@ Aún puedes adjuntar la clase `Illuminate\Http\Request` y acceder a tu parámetr
     }
 
 <a name="route-caching"></a>
-## Cacheo de Ruta
+## Cacheo de Rutas
 
-> {note} Las rutas basadas en Closure no pueden ser cacheada. Para usar cacheo de ruta, debes convertir cualquiera de las rutas Closure a clases de controlador.
+> {note} Las rutas basadas en Closure no pueden ser cacheadas. Para usar cacheo de rutas, debes convertir cualquiera de las rutas Closure a clases de controlador.
 
-Si tu aplicación está usando exclusivamente rutas basadas en controlador, deberías tomar ventaja del cache de ruta de Laravel. Usando el cache de ruta bajará drásticamente la cantidad de tiempo que toma registrar todas las rutas de tu aplicación. En algunos casos,incluso la rapidez de tu registro de ruta puede llegar a ser hasta 100 veces más rápida.
+Si tu aplicación está usando exclusivamente rutas basadas en controlador, deberías tomar ventaja del cacheo de rutas de Laravel. Usar la cache de rutas reducirá drásticamente la cantidad de tiempo que toma registrar todas las rutas de tu aplicación. En algunos casos, incluso la rapidez de tu registro de rutas puede llegar a ser hasta 100 veces más rápida.
 
     php artisan route:cache
 
-Después de ejecutar este comando, tu archivo de rutas cacheado será cargado en cada solicitud. Recuerda, si agregas cualquiera de las rutas nuevas necesitarás generar un cache de ruta nuevo. Por causa de esto, deberías ejecutar solamente el comando `route:cache` durante la implementación del proyecto.
+Después de ejecutar este comando, tu archivo de rutas cacheado será cargado en cada solicitud. Recuerda, si agregas cualquier ruta nueva necesitarás generar un cache de ruta nuevo. Debido a esto, deberías ejecutar solamente el comando `route:cache` durante la implementación del proyecto.
 
 Puedes usar el comando `route:clear` para limpiar el cache de ruta:
 
