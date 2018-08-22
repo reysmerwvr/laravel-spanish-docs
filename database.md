@@ -3,7 +3,7 @@
 - [Introducción](#introduction)
     - [Configuración](#configuration)
     - [Conexiones de Lectura & Escritura](#read-and-write-connections)
-    - [Usando Conexiones de Bases de Datos Múltiples](#using-multiple-database-connections)
+    - [Usando Múltiples Conexiones de Bases de Datos](#using-multiple-database-connections)
 - [Ejecutando Consultas SQL Nativas](#running-queries)
     - [Listeners de Eventos de Consultas](#listening-for-query-events)
 - [Transacciones de Bases de Datos](#database-transactions)
@@ -25,7 +25,7 @@ Laravel hace que la interacción con las bases de datos sea extremadamente fáci
 
 La configuración de base de datos para tu aplicación esta localizada en `config/database.php`. Puedes definir todo lo concerniente a tus conexiones de bases de datos, y también especificar que conexión debería ser usada por defecto. Ejemplos para la mayoría de los sistemas de bases de datos soportados son proporcionados en este archivo.
 
-Por defecto, la [configuración de entorno](/docs/{{version}}/configuration#environment-configuration) de muestra de Laravel está lista para usar con [Laravel Homestead](/docs/{{version}}/homestead), la cual es una máquina virtual conveniente para hacer desarrollo Laravel en tu máquina local. De seguro, eres libre de modificar esta configuración de acuerdo a tus necesidades para tu base de datos local.
+Por defecto, la [configuración de entorno](/docs/{{version}}/configuration#environment-configuration) de muestra de Laravel está lista para usar con [Laravel Homestead](/docs/{{version}}/homestead), la cual es una máquina virtual conveniente para el desarrollo con Laravel en tu máquina local. Por supuesto, eres libre de modificar esta configuración de acuerdo a tus necesidades de tu base de datos local.
 
 #### Configuración SQLite
 
@@ -37,7 +37,7 @@ Después de la creación de una nueva base de datos SQLite usando un comando tal
 <a name="read-and-write-connections"></a>
 ### Conexiones de Lectura & Escritura
 
-Algunas veces puedes desear contar con una conexión de base de datos para los comandos SELECT, y otra para los comandos UPDATE, y DELETE. Laravel hace esto una tarea fácil, y las conexiones propias siempre serán usadas si estás usando consultas nativas, el constructor de consultas Query Builder, o el ORM Eloquent.
+Algunas veces puedes desear contar con una conexión de base de datos para los comandos SELECT y otra para los comandos UPDATE y DELETE. Laravel hace esto una tarea fácil, y las conexiones propias siempre serán usadas si estás usando consultas nativas, el constructor de consultas Query Builder o el ORM Eloquent.
 
 Para ver como las conexiones de lectura / escritura deberían ser configuradas, vamos a mirar este ejemplo:
 
@@ -60,31 +60,31 @@ Para ver como las conexiones de lectura / escritura deberían ser configuradas, 
 
 Observa que tres claves han sido agregadas al arreglo de configuración: `read`, `write` y `sticky`. Las claves `read` y `write` tienen valores de arreglo conteniendo una sola clave: la dirección ip del`host`. El resto de las opciones de la base de datos para las conexiones `read` y `write` serán tomadas del arreglo principal `mysql`.
 
-Únicamente necesitas colocar items en los arreglos `read` and `write`  si deseas sobreescribir los valores del arreglo principal. Así, en este caso,  `192.168.1.1` será usado como la máquina para la conexión de "lectura", mientras que `192.168.1.2` será usada para la conexión de "escritura".  Las credenciales de bases de datos, prefijo, conjunto de caracteres, y todas las demás opciones en el arreglo principal `mysql` serán compartidas a través de ambas conexiones.
+Únicamente necesitas colocar elementos en los arreglos `read` y `write`  si deseas sobreescribir los valores del arreglo principal. Así, en este caso,  `192.168.1.1` será usado como la máquina para la conexión de "lectura", mientras que `192.168.1.2` será usada para la conexión de "escritura".  Las credenciales de bases de datos, prefijo, conjunto de caracteres, y todas las demás opciones en el arreglo principal `mysql` serán compartidas a través de ambas conexiones.
 
 #### La Opción `sticky`
 
-La opción `sticky` es un valor *opcional* que puede ser usado para permitir la lectura inmediata de registros que han sido escritos a la base de datos durante el ciclo de solicitudes actual. Si la opción `sticky` está habilitada y una operación de "escritura" ha sido ejecutada contra la base de datos durante el ciclo de solicitudes actual, cualquiera de las operaciones de "lectura" hasta aquí usarán la conexión "write". Esto asegura que cualquier dato escrito durante el ciclo de solicitud puede ser leído de regreso inmediatamente de la base de datos durante la misma solicitud. Es posible para ti decidir si este es el comportamiento deseado para tu aplicación.
+La opción `sticky` es un valor *opcional* que puede ser usado para permitir la lectura inmediata de registros que han sido escritos a la base de datos durante el ciclo de solicitudes actual. Si la opción `sticky` está habilitada y una operación de "escritura" ha sido ejecutada contra la base de datos durante el ciclo de solicitudes actual, cualquiera de las operaciones de "lectura" hasta aquí usarán la conexión "write". Esto asegura que cualquier dato escrito durante el ciclo de solicitud pueda ser leído inmediatamente de la base de datos durante la misma solicitud. Es posible para ti decidir si este es el comportamiento deseado para tu aplicación.
 
 <a name="using-multiple-database-connections"></a>
 ### Usando Conexiones de Bases de Datos Múltiples
 
-Cuando estamos usando conexiones múltiples, puedes accesar cada conexión por medio del método `connection` en la clase facade `DB`.  El nombre `name` pasado al método de conexión `connection` debería corresponder a una de las conexiones listadas en tu archivo de configuración `config/database.php`:
+Cuando estamos usando conexiones múltiples, puedes accesar cada conexión por medio del método `connection` en el Facade `DB`.  El nombre `name` pasado al método de conexión `connection` debería corresponder a una de las conexiones listadas en tu archivo de configuración `config/database.php`:
 
     $users = DB::connection('foo')->select(...);
 
-También puedes accesar los datos nativos, de la instancia PDO subyacente que usa el método `getPdo` en una instancia de conexión:
+También puedes accesar los datos nativos de la instancia PDO subyacente que usa el método `getPdo` en una instancia de conexión:
 
     $pdo = DB::connection()->getPdo();
 
 <a name="running-queries"></a>
 ## Ejecutando Consultas SQL Nativas
 
-Una vez que has configurado tu conexión de base de datos, puedes ejecutar consultas usando la clase facade `DB`. La clase facade `DB`proporciona métodos para cada tipo de consulta: `select`, `update`, `insert`, `delete`, y `statement`.
+Una vez que has configurado tu conexión de base de datos, puedes ejecutar consultas usando el Facade `DB`. La clase facade `DB` proporciona métodos para cada tipo de consulta: `select`, `update`, `insert`, `delete` y `statement`.
 
 #### Ejecutando una consulta Select
 
-Para ejecutar una consulta básica, puedes usar el método `select` en la clase facade `DB`
+Para ejecutar una consulta básica, puedes usar el método `select` en el facade `DB`:
 
     <?php
 
@@ -108,9 +108,9 @@ Para ejecutar una consulta básica, puedes usar el método `select` en la clase 
         }
     }
 
-El primer argumento pasado al método `select` es la consulta SQL nativa; en este caso está parametrizada, mientras el segundo argumento es cualquier parámetro a enlazar que necesita estar conectado a la consulta. Típicamente, estos son los valores de la restricciones de cláusula `where`. El enlazamiento de parámetro proporciona protección contra ataques de inyección de SQL.
+El primer argumento pasado al método `select` es la consulta SQL nativa; en este caso está parametrizada, mientras el segundo argumento es cualquier parámetro a enlazar que necesita estar conectado a la consulta. Típicamente, estos son los valores de las restricciones de cláusula `where`. El enlazamiento de parámetro proporciona protección contra ataques de inyección SQL.
 
-El método `select` siempre devolverá un arreglo de resultados, `array`. Cada resultado dentro del arreglo será un objeto  `StdClass` de PHP, permitiendo que acceses los valores de los resultados:
+El método `select` siempre devolverá un arreglo de resultados. Cada resultado dentro del arreglo será un objeto `StdClass` de PHP, permitiendo que accedas a los valores de los resultados:
 
     foreach ($users as $user) {
         echo $user->name;
@@ -130,7 +130,7 @@ Para ejecutar una instrucción `insert`, puedes usar el método `insert` en la c
 
 #### Ejecutando una Instrucción Update
 
-El método `update` debería ser usado para actualizar los registros existentes en la base de datos. El número de filas afectadas por la instrucción serán devueltos:
+El método `update` debería ser usado para actualizar los registros existentes en la base de datos. El número de filas afectadas por la instrucción serán devueltas:
 
     $affected = DB::update('update users set votes = 100 where name = ?', ['John']);
 
@@ -149,7 +149,7 @@ Algunas instrucciones de bases de datos no devuelven algún valor. Para estos ti
 <a name="listening-for-query-events"></a>
 ### Listeners de Eventos de Consultas
 
-Si prefieres recibir cada consulta SQL ejecutada por tu aplicación, puedes usar el método `listen`. Este método es útil para consultas de bitácoras o depurar. Puedes registrar tus listeners de consultas en un [proveedor de servicio](/docs/{{version}}/providers):
+Si prefieres recibir cada consulta SQL ejecutada por tu aplicación, puedes usar el método `listen`. Este método es útil para registrar consultas o depurar. Puedes registrar tus listeners de consultas en un [proveedor de servicio](/docs/{{version}}/providers):
 
     <?php
 
@@ -161,7 +161,7 @@ Si prefieres recibir cada consulta SQL ejecutada por tu aplicación, puedes usar
     class AppServiceProvider extends ServiceProvider
     {
         /**
-         * Bootstrap cualquiera de los servicios de aplicación.
+         * Inicializa cualquiera de los servicios de la aplicación.
          *
          * @return void
          */
@@ -196,7 +196,7 @@ Puedes usar el método `transaction` en la clase facade `DB` para ejecutar un co
         DB::table('posts')->delete();
     });
 
-#### Manejando Deadlocks (Abrazo Mortal)
+#### Manejando Deadlocks (Bloqueo mutuo)
 
 El método `transaction` acepta un segundo argumento opcional el cual define el número de veces que la ejecución de una transacción debería ser reintentada cuando un ocurra un deadlock. Una vez que estos intentos hayan sido completados sin éxito, un error de excepción será arrojado:
 
@@ -220,4 +220,4 @@ Finalmente, puedes confirmar una transacción por medio del método `commit`:
 
     DB::commit();
 
-> {tip} Los métodos de transacción de la clase facde `DB` controlan las transacciones para ambos backends de bases de datos el constructor de consultas [query builder](/docs/{{version}}/queries) y el [ORM Eloquent](/docs/{{version}}/eloquent).
+> {tip} Los métodos de transacción del Facade `DB` controlan las transacciones para ambos backends de bases de datos del constructor de consultas [query builder](/docs/{{version}}/queries) y el [ORM Eloquent](/docs/{{version}}/eloquent).
