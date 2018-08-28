@@ -1,11 +1,11 @@
 # Solicitudes HTTP
 
-- [Accediendo la Solicitud](#accessing-the-request)
+- [Accediendo a la Solicitud](#accessing-the-request)
     - [Ruta de Solicitud Path & Método](#request-path-and-method)
     - [Solicitudes PSR-7](#psr7-requests)
 - [Recorte & Normalización de Entrada](#input-trimming-and-normalization)
-- [Obteniendo la Entrada](#retrieving-input)
-    - [Entrada Antígua](#old-input)
+- [Obteniendo Datos Ingresados](#retrieving-input)
+    - [Datos Antíguos](#old-input)
     - [Cookies](#cookies)
 - [Archivos](#files)
     - [Obteniendo Archivos Cargados](#retrieving-uploaded-files)
@@ -13,7 +13,7 @@
 - [Configurando Proxies de Confianza](#configuring-trusted-proxies)
 
 <a name="accessing-the-request"></a>
-## Accediendo la Solicitud
+## Accediendo a la Solicitud
 
 Para obtener una instancia de la solicitud HTTP actual por medio de una inyección de dependencia, deberías poner la referencia de la clase `Illuminate\Http\Request` en tu método de controlador. La instancia de la solicitud entrante automáticamente será inyectada por el [contenedor de servicio](/docs/{{version}}/container):
 
@@ -39,13 +39,13 @@ Para obtener una instancia de la solicitud HTTP actual por medio de una inyecci�
         }
     }
 
-#### Inyección de Dpendencia & Parámetros de Ruta
+#### Inyección de Dependencias & Parametros de Rutas
 
 Si tu método de controlador también está esperando la entrada de un parámetro de ruta deberías listar tus parámetros de ruta después de tus otras dependencias. Por ejemplo, si tu ruta es definida como sigue:
 
     Route::put('user/{id}', 'UserController@update');
 
-Todavía puedes poner la referencia de la clase `Illuminate\Http\Request` y acceder tu parámetro de ruta `id` al definir tu método de controlador como sigue:
+Todavía puedes poner la referencia de la clase `Illuminate\Http\Request` y acceder a tu parámetro de ruta `id` al definir tu método de controlador como sigue:
 
     <?php
 
@@ -68,7 +68,7 @@ Todavía puedes poner la referencia de la clase `Illuminate\Http\Request` y acce
         }
     }
 
-#### Accediendo la Solicitud A Través de Closures de Ruta
+#### Accediendo la Solicitud A Través de Closures de Rutas
 
 También puedes poner la referencia de la clase `Illuminate\Http\Request` en una Closure de ruta. El contenedor de servicio automáticamente inyectará la solicitud entrante dentro de la Closure que es ejecutada:
 
@@ -81,7 +81,7 @@ También puedes poner la referencia de la clase `Illuminate\Http\Request` en una
 <a name="request-path-and-method"></a>
 ### Ruta de Solicitud & Método
 
-La instancia `Illuminate\Http\Request` proporciona una variedad de métodos para examinar la solicitud HTTP para tu aplicación y extiende la clase `Symfony\Component\HttpFoundation\Request`. Discutiremos algunos de los más importantes métodos a continuación.
+La instancia `Illuminate\Http\Request` proporciona una variedad de métodos para examinar la solicitud HTTP para tu aplicación y extiende la clase `Symfony\Component\HttpFoundation\Request`. Discutiremos algunos de los métodos más importantes a continuación
 
 #### Obteniendo la Ruta de la Solicitud
 
@@ -136,22 +136,22 @@ Una vez que has instalado estas librerías, puedes obtener una solicitud PSR-7 a
 <a name="input-trimming-and-normalization"></a>
 ## Recorte & Normalización de Entrada
 
-De forma predeterminada, Laravel incluye los middleware `TrimStrings` y `ConvertEmptyStringsToNull`en la pila de middleware global de tu aplicación. Estos middleware son listados en la pila por la clase `App\Http\Kernel`. Estos middleware automáticamente recortarán todos los campos de cadena entrantes en la solicitud, al igual que convertiran cualquier campo de cadena vacío a `null`. Esto permite que no tengas que preocuparte sobre estos asuntos de normalización en tus rutas y controladores.
+De forma predeterminada, Laravel incluye los middleware `TrimStrings` y `ConvertEmptyStringsToNull` en la pila de middleware global de tu aplicación. Estos middleware son listados en la pila por la clase `App\Http\Kernel`. Estos middleware automáticamente recortarán todos los campos de cadena entrantes en la solicitud, al igual que convertiran cualquier campo de cadena vacío a `null`. Esto permite que no tengas que preocuparte sobre estos asuntos de normalización en tus rutas y controladores.
 
 Si prefieres deshabilitar este comportamiento, puedes remover los dos middleware de tu pila de middleware de tu aplicación al removerlos de la propiedad `$middleware` de tu clase `App\Http\Kernel`.
 
 <a name="retrieving-input"></a>
-## Obteniendo la Entrada
+## Obteniendo Datos Ingresados
 
-#### Obteniendo Todos los Datos de Entrada
+#### Obteniendo Todos los Datos Ingresados
 
-También puedes obtener todos los datos de entrada como un `array` usando el método `all`:
+También puedes obtener todos los datos ingresados en forma de arreglo usando el método `all`:
 
     $input = $request->all();
 
-#### Obteniendo una Valor de Entrada
+#### Obteniendo el Valor de un Campo
 
-Usando unos pocos métodos básicos, puedes acceder a toda la entrada de usuario de tu instancia `Illuminate\Http\Request` sin preocuparte por cual verbo HTTP fue usado por la solicitud. Sin importar el verbo HTTP, el método `input` puede ser usado para obtener la entrada de usuario:
+Usando unos pocos métodos básicos, puedes acceder a todos los datos ingresados por el usuario desde la instancia `Illuminate\Http\Request` sin preocuparte por cual verbo HTTP fue usado por la solicitud. Sin importar el verbo HTTP, el método `input` puede ser usado para obtener la entrada de usuario:
 
     $name = $request->input('name');
 
@@ -159,19 +159,19 @@ Puedes pasar un valor predeterminado como segundo argumento del método `input`.
 
     $name = $request->input('name', 'Sally');
 
-Al momento de trabajar con formularios que contienen entradas de arreglo, usa notación "." para acceder estos arreglos:
+Al momento de trabajar con formularios que contienen arreglos de campos, usa notación de "punto" para acceder a estos arreglos:
 
     $name = $request->input('products.0.name');
 
     $names = $request->input('products.*.name');
 
-#### Obteniendo Entrada de la Cadena de Consulta
+#### Obteniendo Datos desde la Cadena de Consulta
 
 Mientras el método `input` obtiene valores de la porción de datos de la solicitud completa (incluyendo la cadena de consulta), el método `query` solamente obtendrá valores de la cadena de consulta:
 
     $name = $request->query('name');
 
-Si los datos de los valores de la cadena de consulta solicitada no están presentes, el segundo argumento de este método serán devueltos:
+Si los datos de los valores de la cadena de consulta solicitada no están presentes, el segundo argumento de este método será devuelto:
 
     $name = $request->query('name', 'Helen');
 
@@ -179,23 +179,23 @@ Puedes ejecutar el método `query` sin ningún argumento con el propósito de ob
 
     $query = $request->query();
 
-#### Recuperando la Entrada por Medio de Propiedades Dinámicas
+#### Recuperando Datos por Medio de Propiedades Dinámicas
 
-También puedes acceder a la entrada de usuario usando propiedades dinámicas en la instancia `Illuminate\Http\Request`. Por ejemplo, si uno de los formularios de tu aplicación contiene un campo `name`, puedes acceder al valor de el campo como sigue:
+También puedes acceder a los datos ingresados por el usuario usando propiedades dinámicas en la instancia `Illuminate\Http\Request`. Por ejemplo, si uno de los formularios de tu aplicación contiene un campo `name`, puedes acceder al valor del campo de la siguiente forma:
 
     $name = $request->name;
 
 Al momento de usar propiedades dinámicas, Laravel primero buscará por el valor del parámetro en la porción de datos de la solicitud. Si no está presente, buscará el campo en los parámetros de ruta.
 
-#### Obteniendo Valores de Entrada JSON
+#### Obteniendo Valores JSON
 
-Al momento de enviar solicitudes JSON a tu aplicación, puedes acceder los datos JSON por medio del método `input` al tiempo que el encabezado `Content-Type` de la solicitud sea establecido apropiadamente a `application/json`. Incluso puedes usar sintaxis "." para buscar adentro de los arreglos JSON:
+Al momento de enviar solicitudes JSON a tu aplicación, puedes acceder a los datos JSON por medio del método `input` al tiempo que el encabezado `Content-Type` de la solicitud sea establecido apropiadamente a `application/json`. Incluso puedes usar sintaxis "." para buscar adentro de los arreglos JSON:
 
     $name = $request->input('user.name');
 
-#### Obteniendo una Porción de los Datos de Entrada
+#### Obteniendo una Porción de los Datos Ingresados
 
-Si necesitas obtener un subconjunto de los datos de entrada, puedes usar los métodos `only` y `except`. Ambos métodos aceptan un solo `array` o una lista dinámica de argumentos:
+Si necesitas obtener un subconjunto de los datos ingresados, puedes usar los métodos `only` y `except`. Ambos métodos aceptan un solo arreglo o una lista dinámica de argumentos:
 
     $input = $request->only(['username', 'password']);
 
@@ -207,7 +207,7 @@ Si necesitas obtener un subconjunto de los datos de entrada, puedes usar los mé
 
 > {tip} El método `only` devuelve todos los pares clave / valor que solicites; sin embargo, no devolverá pares clave / valor que no esten presentes en la solicitud.
 
-#### Determinando Si un Valor de Entrada Está Presente
+#### Determinando si un Valor Ingresado está presente
 
 Deberías usar el método `has` para determinar si un valor está presente en la solicitud. El método `has` devuelve `true` si el valor está presente en la solicitud:
 
@@ -230,23 +230,23 @@ Si prefieres determinar si un valor está presente en la solicitud y no esté va
 <a name="old-input"></a>
 ### Entrada Antígua
 
-Laravel permite que mantengas la entrada de una solicitud durante la próxima solicitud. Esta característica es útil particularmente para volver a llenar los formularios después de detectar errores de validación. Sin embargo, si estás usando [características de validación](/docs/{{version}}/validation) incluidas con Laravel, es poco probable que necesites usar manualmente estos métodos, ya que algunas de las facilidades de validación integradas con Laravel las ejecutarán automáticamente.
+Laravel permite que mantengas los datos de una solicitud durante la próxima solicitud. Esta característica es útil particularmente para volver a llenar los formularios después de detectar errores de validación. Sin embargo, si estás usando [características de validación](/docs/{{version}}/validation) incluidas con Laravel, es poco probable que necesites usar manualmente estos métodos, ya que algunas de las facilidades de validación integradas con Laravel las ejecutarán automáticamente.
 
-#### Moviendo Rápidamente la Entrada de la Sesión
+#### Enviando Datos a la Sesión
 
-El método `flash` en la clase `Illuminate\Http\Request` moverá rápidamente la entrada actual de la [sesión](/docs/{{version}}/session) de modo que esté disponible durante la próxima solicitud del usuario de la aplicación:
+El método `flash` en la clase `Illuminate\Http\Request` enviará los datos ingresados a la [sesión](/docs/{{version}}/session) para que así estén disponibles durante la próxima solicitud realizada por el usuario:
 
     $request->flash();
 
-También puedes usar los métodos `flashOnly` y `flashExcept` para mover rápidamente un subconjunto de los datos de la solicitud de la sesión. Estos métodos son útiles para mantener información sensitiva tales como contraseñas fuera de la sesión:
+También puedes usar los métodos `flashOnly` y `flashExcept` para enviar un subconjunto de datos de la solicitud a la sesión. Estos métodos son útiles para mantener información sensitiva tales como contraseñas fuera de la sesión:
 
     $request->flashOnly(['username', 'email']);
 
     $request->flashExcept('password');
 
-#### Moviendo Rápidamente la Entrada Después Redireccionar
+#### Enviando Datos y Redirigir
 
-Ya que con frecuencia querrás mover rápidamente la entrada de la sesión y después redireccionar a la página previa, puedes encadenar fácilmente el movimiento rápido de la entrada hacia una redirección usando el método `withInput`:
+Ya que con frecuencia querrás enviar datos a la sesión y luego redirigir a la página anterior puedes encadenar datos a una redirección usando el método `withInput`:
 
     return redirect('form')->withInput();
 
@@ -254,13 +254,13 @@ Ya que con frecuencia querrás mover rápidamente la entrada de la sesión y des
         $request->except('password')
     );
 
-#### Obteniendo la Entrada Antígua
+#### Obteniendo Datos Antiguos
 
-Para obtener la entrada movida rápidamente de la solicitud previa, usa el método `old` en la instancia `Request`. El método `old` extraerá los datos de la entrada movidos rápidamente y previamente de la [sesión](/docs/{{version}}/session):
+Para obtener los datos de la sesión anterior, usa el método `old` en la instancia `Request`. El método old extrarerá los datos de la solicitiud y [sesión](/docs/{{version}}/session) anterior:
 
     $username = $request->old('username');
 
-Laravel también proporciona un helper global `old`. Si estas mostrando entrada antígua dentro de una [plantilla Blade](/docs/{{version}}/blade), es más conveniente usar el helper `old`. Si no existe entrada antígua para el campo dado, será devuelto `null`:
+Laravel también proporciona un helper global `old`. Si estás mostrando datos antiguos dentro de una [plantilla Blade](/docs/{{version}}/blade), es más conveniente usar el helper `old`. Si no existen datos antiguos para el campo dado, será devuelto `null`:
 
     <input type="text" name="username" value="{{ old('username') }}">
 
@@ -269,17 +269,17 @@ Laravel también proporciona un helper global `old`. Si estas mostrando entrada 
 
 #### Obteniendo Cookies de las Solicitudes
 
-Todos los cookies creados por el framework Laravel son encriptados y firmados con un código de autenticación, significa que serán considerados no válidos si han sido cambiados por el cliente. Para obtener un valor de cookie de la solicitud, usa el método cookie en una instancia de `Illuminate\Http\Request`:
+Todos los cookies creados por el framework Laravel son encriptados y firmados con un código de autenticación, significa que serán considerados no válidos si han sido cambiados por el cliente. Para obtener el valor de una cookie de la solicitud, usa el método cookie en una instancia de `Illuminate\Http\Request`:
 
     $value = $request->cookie('name');
 
-Alternativamente, puedes usar la clase facade `Cookie` para acceder valores de cookie:
+Alternativamente, puedes usar la clase facade `Cookie` para acceder a los valores de las cookies:
 
     $value = Cookie::get('name');
 
 #### Adjuntando Cookies a las Respuestas
 
-Puedes adjuntar un cookie a una instancia saliente de `Illuminate\Http\Response` usando el método `cookie`. Deberías pasar el nombre, valor, y número de minutos del cookie por medio del cual debería ser considerado válido para este método:
+Puedes adjuntar una cookie a una instancia saliente de `Illuminate\Http\Response` usando el método `cookie`. Debes pasar el nombre, valor y el número de minutos en los cuales dicha cookie debería ser valida:
 
     return response('Hello World')->cookie(
         'name', 'value', $minutes
@@ -291,7 +291,7 @@ El método `cookie` también acepta unos cuantos argumentos los cuales son usado
         'name', 'value', $minutes, $path, $domain, $secure, $httpOnly
     );
 
-Alternativamente, puedes usar la clase facade `Cookie` para "encolar" cookies para adjuntar a la respuesta saliente de tu aplicación. El método `queue` acepta una instancia `Cookie` o los argumentos que son necesitados para crear una instancia `Cookie`. Estos cookies serán adjuntados a la respuesta saliente antes de que sea enviada al navegador:
+Alternativamente, puedes usar la clase facade `Cookie` para "encolar" cookies para adjuntar a la respuesta saliente de tu aplicación. El método `queue` acepta una instancia `Cookie` o los argumentos necesarios para crear una instancia `Cookie`. Estas cookies serán adjuntadas a la respuesta saliente antes de que sea enviada al navegador:
 
     Cookie::queue(Cookie::make('name', 'value', $minutes));
 
@@ -325,7 +325,7 @@ Puedes determinar si un archivo está presente en la solicitud usando el método
 
 #### Validando Cargas Exitosas
 
-Además de chequear si el archivo está presente, puedes verificar que no habían problemas cargando el archivo por medio del método `isValid`:
+Además de chequear si el archivo está presente, puedes verificar que no ocurrieron problemas cargando el archivo por medio del método `isValid`:
 
     if ($request->file('photo')->isValid()) {
         //
@@ -333,7 +333,7 @@ Además de chequear si el archivo está presente, puedes verificar que no había
 
 #### Rutas & Extensiones de Archivo
 
-La clase `UploadedFile` también contiene métodos para acceder a la ruta completamente calificada del archivo y sus extension. El método `extension` intentará suponer la extensión del archivo basado en su contenido. Esta extensión puede ser diferente de la extensión que fue suministrada por el cliente:
+La clase `UploadedFile` también contiene métodos para acceder a la ruta completa del archivo y su extensión. El método `extension` intentará adivinar la extensión del archivo en base a su contenido. Esta extensión puede ser diferente de la extensión que fue suministrada por el cliente:
 
     $path = $request->photo->path();
 
