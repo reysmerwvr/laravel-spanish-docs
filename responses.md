@@ -21,25 +21,25 @@
 
 #### Cadenas & Arreglos
 
-Todas las rutas y controladores deberían devolver una respuesta para ser enviada de regreso al navegador del usuario. Laravel proporciona varias formas diferentes para devolver respuestas. La respuesta más básica es devolviendo una cadena desde una ruta o controlador. El framework convertirá automáticamente la cadena dentro de una respuesta HTTP completa:
+Todas las rutas y controladores deberían devolver una respuesta para ser enviada de regreso al navegador del usuario. Laravel proporciona diferentes formas de devolver respuestas. La respuesta más básica es devolver una cadena desde una ruta o controlador. El framework convertirá la cadena en una respuesta HTTP completa:
 
     Route::get('/', function () {
         return 'Hello World';
     });
 
-Además de devolver cadenas desde tus rutas y controladores, también puedes devolver arreglos. El framework convertirá automáticamente el arreglo dentro de una respuesta JSON:
+Además de devolver cadenas desde tus rutas y controladores, también puedes devolver arreglos. El framework convertirá automáticamente el arreglo en una respuesta JSON:
 
     Route::get('/', function () {
         return [1, 2, 3];
     });
 
-> {tip} Sabías que también puedes devolver [colecciones de Eloquent](/docs/{{version}}/eloquent-collections) desde tus rutas o controladores? Serán convertidas automáticamente a JSON. ¡Dale un punto!
+> {tip} ¿Sabias que también puedes devolver [colecciones de Eloquent](/docs/{{version}}/eloquent-collections) desde tus rutas o controladores? Estas serán convertidas automáticamente a JSON. ¡Inténtalo!
 
 #### Objetos de Respuesta
 
 Típicamente, no sólo estarás devolviendo cadenas básicas o arreglos desde tus acciones de ruta. Además, estarás devolviendo instancias `Illuminate\Http\Response` completas o [vistas](/docs/{{version}}/views).
 
-Devolver una instancia de `Response` completa permite que personalices el codigo de estado y encabezados HTTP de la respuesta. Una instancia `Response` hereda desde la clase `Symfony\Component\HttpFoundation\Response`, la cual proporciona una variedad de métodos para construir respuestas HTTP:
+Devolver una instancia `Response` completa te permite personalizar el código de estado y los encabezados HTTP de la respuesta. Una instancia `Response` hereda desde la clase `Symfony\Component\HttpFoundation\Response`, la cual proporciona una variedad de métodos para construir respuestas HTTP:
 
     Route::get('home', function () {
         return response('Hello World', 200)
@@ -49,7 +49,7 @@ Devolver una instancia de `Response` completa permite que personalices el codigo
 <a name="attaching-headers-to-responses"></a>
 #### Adjuntando Encabezados a las Respuestas
 
-Mantén en mente que las mayoría de los métodos de respuestas son encadenables, permitiendo la construcción fluida de instancias de respuesta. Por ejemplo, puedes usar el método `header` para agregar una serie de encabezados para la respuesta antes de enviarla de regreso al usuario:
+Ten en cuenta que la mayoría de los métodos de respuestas son encadenables, permitiendo la construcción fluida de instancias de respuesta. Por ejemplo, puedes usar el método `header` para agregar una serie de encabezados para la respuesta antes de enviarla de regreso al usuario:
 
     return response($content)
                 ->header('Content-Type', $type)
@@ -68,17 +68,17 @@ O, puedes usar el método `withHeaders` para especificar un arreglo de encabezad
 <a name="attaching-cookies-to-responses"></a>
 #### Adjuntando Cookies a las Respuestas
 
-El método `cookie` en las instancias de respuesta permite que adjuntes fácilmente cookies a la respuesta. Por ejemplo, puedes usar el método `cookie` para generar un cookie y adjuntarlo fluidamente a la instancia de respuesta como sigue:
+El método `cookie` en las instancias de respuesta permite que adjuntes fácilmente cookies a la respuesta. Por ejemplo, puedes usar el método `cookie` para generar una cookie y adjuntarla fluidamente a la instancia de respuesta, de la siguiente manera:
 
     return response($content)
                     ->header('Content-Type', $type)
                     ->cookie('name', 'value', $minutes);
 
-El método `cookie` también acepta unos cuantos argumentos los cuales son usados con menos frecuencia. Generalmente, estos argumentos tienen el mismo propósito y significado como los argumentos que deberían ser dados al método [setcookie](https://secure.php.net/manual/en/function.setcookie.php) nativo de PHP:
+El método `cookie` también acepta unos cuantos argumentos los cuales son usados con menos frecuencia. Generalmente, estos argumentos tienen el mismo propósito y significado que los argumentos que serán dados al método nativo de PHP [setcookie](https://secure.php.net/manual/en/function.setcookie.php):
 
     ->cookie($name, $value, $minutes, $path, $domain, $secure, $httpOnly)
 
-Alternativamente, puedes usar la clase facade `Cookie` para "encolar" cookies para adjuntar a la respuesta saliente de tu aplicación. El método `queue`acepta una instancia `Cookie` o los argumentos que se necesitan para crear una instancia `Cookie`. Estos cookies serán adjuntados a la respuesta saliente antes de que sea enviada al navegador:
+Alternativamente, puedes usar la clase facade `Cookie` para agregar cookies a la cola y adjuntarlas a la respuesta saliente de tu aplicación. El método `queue` acepta una instancia `Cookie` o los argumentos que se necesitan para crear una instancia `Cookie`. Estas cookies serán adjuntadas a la respuesta saliente antes de que sea enviada al navegador:
 
     Cookie::queue(Cookie::make('name', 'value', $minutes));
 
@@ -101,13 +101,13 @@ De forma predeterminada, todos los cookies generados por Laravel son encriptados
 <a name="redirects"></a>
 ## Redirecciones
 
-Las respuestas redireccionadas son instancias de la clase `Illuminate\Http\RedirectResponse`, y contienen los encabezados apropiados que se necesitan para redireccionar el usuario a otra URL. Hay varias formas de generar una instancia `RedirectResponse`. El método más simple es usar el helper global `redirect`:
+Las respuestas redireccionadas son instancias de la clase `Illuminate\Http\RedirectResponse` y contienen los encabezados apropiados que se necesitan para redireccionar al usuario a otra URL. Hay varias formas de generar una instancia `RedirectResponse`. El método más simple es usar el helper global `redirect`:
 
     Route::get('dashboard', function () {
         return redirect('home/dashboard');
     });
 
-Algunas veces podras querer redireccionar al usuario a su página previa, tal como cuando un formulario enviado no es válido. Puedes hacer eso usando la función helper global `back`. Ya que esta característica utiliza la [session](/docs/{{version}}/session), asegura la ruta ejecutando la función `back` que está usando el grupo de middleware `web` o tiene todos los middleware de sesión aplicados:
+Algunas veces podras querer redireccionar al usuario a su página previa, tal como cuando un formulario enviado no es válido. Puedes hacer eso usando la función helper global `back`. Ya que esta característica utiliza la [sesión](/docs/{{version}}/session), asegurate de que la ruta llamando a la función `back` está usando el grupo de middleware `web` o tiene todos los middleware de sesión aplicados.
 
     Route::post('user/profile', function () {
         // Validate the request...
@@ -118,7 +118,7 @@ Algunas veces podras querer redireccionar al usuario a su página previa, tal co
 <a name="redirecting-named-routes"></a>
 ### Redireccionando a Rutas Nombradas
 
-Cuando ejecutas el helper `redirect` sin parámetros, una instancia de `Illuminate\Routing\Redirector` es devuelta, permitiendo que ejecutes cualquier método en la instancia `Redirector`. POr ejemplo, para generar una `RedirectResponse` para una ruta nombrada, puedes usar el método `route`:
+Cuando ejecutas el helper `redirect` sin parámetros, una instancia de `Illuminate\Routing\Redirector` es devuelta, permitiendo que ejecutes cualquier método en la instancia `Redirector`. Por ejemplo, para generar una `RedirectResponse` para una ruta nombrada, puedes usar el método `route`:
 
     return redirect()->route('login');
 
@@ -128,15 +128,15 @@ Si tu ruta tiene parámetros, puedes pasarlos como segundo argumento del método
 
     return redirect()->route('profile', ['id' => 1]);
 
-#### Populando Parámetros por Medio de Modelos de Eloquent
+#### Rellenando Parámetros a través de Modelos de Eloquent
 
-Si estás redireccionando a una ruta con un parámetro "ID" que está siendo populada desde un modelo Eloquent, puedes pasar el modelo mismo. El ID será extraído automáticamente:
+Si estás redireccionando a una ruta con un parámetro "ID" que está siendo rellenado desde un modelo Eloquent, puedas pasar el modelo como tal. puedes pasar el modelo mismo. El ID será extraído automáticamente:
 
     // For a route with the following URI: profile/{id}
 
     return redirect()->route('profile', [$user]);
 
-Si prefieres personalizar el valor que es colocado en el parámetro de la ruta, deberías sobreescribir el método `getRouteKey` en tu modelo Eloquent:
+Si prefieres personalizar el valor que es colocado en el parámetro de la ruta, deberías sobrescribir el método `getRouteKey` en tu modelo Eloquent:
 
     /**
      * Get the value of the model's route key.
@@ -169,9 +169,9 @@ Algunas veces puedes necesitar redireccionar a un dominio fuera de tu aplicació
     return redirect()->away('https://www.google.com');
 
 <a name="redirecting-with-flashed-session-data"></a>
-### Redireccionando con los Datos de Sesión Movidos Rápidamente
+### Redireccionando con Datos de Sesión
 
-El redireccionamiento a una nueva URL y [el movimiento rápido de los datos de la sesión](/docs/{{version}}/session#flash-data) son hechos usualmente al mismo tiempo. Típicamente, esto es hecho después de ejecutar una acción exitosamente cuando mueves rápidamente un mensaje de éxito de la sesión. Por conveniencia, puedes crear una instancia `RedirectResponse` y mover rápidamente los datos de la sesión en un solo encadenamiento de método, fluido:
+El redireccionamiento a una nueva URL y [el envío de los datos de la sesión](/docs/{{version}}/session#flash-data) son hechos usualmente al mismo tiempo. Típicamente, esto es hecho después de ejecutar una acción exitosamente cuando mueves rápidamente un mensaje de éxito de la sesión. Por conveniencia, puedes crear una instancia `RedirectResponse` y mover rápidamente los datos de la sesión en un solo encadenamiento de método fluido:
 
     Route::post('user/profile', function () {
         // Update the user's profile...
@@ -179,7 +179,7 @@ El redireccionamiento a una nueva URL y [el movimiento rápido de los datos de l
         return redirect('dashboard')->with('status', 'Profile updated!');
     });
 
-Después de que el usuario es redireccionado, puedes mostrar el mensaje movido rápidamente desde la [sesión](/docs/{{version}}/session). Por ejemplo, usando [sintaxis Blade](/docs/{{version}}/blade):
+Después de que el usuario es redireccionado, puedes mostrar el mensaje enviado desde la [sesión](/docs/{{version}}/session). Por ejemplo, usando la [sintaxis de Blade](/docs/{{version}}/blade):
 
     @if (session('status'))
         <div class="alert alert-success">
@@ -195,7 +195,7 @@ El helper `response` puede ser usado para generar otros tipos de instancias de r
 <a name="view-responses"></a>
 ### Respuestas de Vista
 
-Si necesitas control sobre el estado y encabezados de la respuesta pero también necesitas devolver una [vista](/docs/{{version}}/views) como el contenido de la respuests, deberías usar el método `view`:
+Si necesitas control sobre el estado y encabezados de la respuesta pero también necesitas devolver una [vista](/docs/{{version}}/views) como el contenido de la respuesta, deberías usar el método `view`:
 
     return response()
                 ->view('hello', $data, 200)
@@ -230,7 +230,7 @@ El método `download` puede ser usado para generar una respuesta que fuerza al n
 
     return response()->download($pathToFile)->deleteFileAfterSend(true);
 
-> {note} Symfony HttpFoundation,la cual administra las descargas de archivo, requiere que el archivo que esté siendo descargado tenga un nombre de archivo ASCII.
+> {note} Symfony HttpFoundation, la cual administra las descargas de archivo, requiere que el archivo que esté siendo descargado tenga un nombre de archivo ASCII.
 
 <a name="file-responses"></a>
 ### Respuestas de Archivo
@@ -244,7 +244,7 @@ El método `file` puede ser usado para mostrar un archivo, tal como una imagen o
 <a name="response-macros"></a>
 ## Macros de Respuesta
 
-Si prefieres definir una respuesta personalizada que puedas re-usar en una variedad de tus rutas y controladores, puedes usar el método `macro` de la clase facade `Response`. Por ejemplo, desde un método `boot` del [proveedor de servicio](/docs/{{version}}/providers)
+Si prefieres definir una respuesta personalizada que puedas volver a usar en múltiples rutas y controladores, puedes usar el método `macro` de la clase facade `Response`. Por ejemplo, desde un método `boot` del [proveedor de servicio](/docs/{{version}}/providers)
 
     <?php
 
@@ -268,6 +268,6 @@ Si prefieres definir una respuesta personalizada que puedas re-usar en una varie
         }
     }
 
-La función `macro` acepta un nombre como su primer argumento, y una Closure como su segundo. La Closure de la macro será ejecutada al momento de ejecutar el nombre de la macro desde una implementación `ResponseFactory` o el helper `response`:
+La función `macro` acepta un nombre como su primer argumento y una Closure como segundo. La Closure de la macro será ejecutada al momento de ejecutar el nombre de la macro desde una implementación `ResponseFactory` o el helper `response`:
 
     return response()->caps('foo');
