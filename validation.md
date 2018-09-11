@@ -430,7 +430,7 @@ En este ejemplo, el marcador `:attribute` será reemplazado por el nombre real d
 
 #### Especificando un Mensaje Personalizado para un Atributo Dado
 
-Algunas veces puedes querer especificar un mensaje de error personalizado sólo para un campo específico. Puedes hacer eso usando notación "punto". Especifica el nombre del atributo al principio, seguido por la regla:
+Algunas veces puedes querer especificar un mensaje de error personalizado sólo para un campo específico. Puedes hacer eso usando notación de "punto". Especifica el nombre del atributo al principio, seguido por la regla:
 
     $messages = [
         'email.required' => 'We need to know your e-mail address!',
@@ -439,7 +439,7 @@ Algunas veces puedes querer especificar un mensaje de error personalizado sólo 
 <a name="localization"></a>
 #### Especificando Mensajes Personalizados en Archivos por Idiomas
 
-En muchos casos, probablemente especificarás tus mensajes personalizados en un archivo de idioma en lugar de pasarlos directamente al `Validator`. Para hacer eso, agrega tus mensajes al arreglo `custom` en el archivo de idioma `resources/lang/xx/validation.php`.
+En muchos casos, probablemente especificarás tus mensajes personalizados en un archivo de idioma en lugar de pasarlos directamente al `Validator`. Para hacer eso, agrega tus mensajes al arreglo `custom` en el archivo de idioma `resources/lang/xx/validation.php`:
 
     'custom' => [
         'email' => [
@@ -533,7 +533,7 @@ Debajo hay una lista con todas las reglas de validación disponibles y su funci�
 <a name="rule-accepted"></a>
 #### accepted
 
-El campo bajo validación debe ser _yes_, _on_, _1_, o _true_. Esto es útil para la aceptación de "Términos de Servicio" de validación
+El campo bajo validación debe ser _yes_, _on_, _1_, o _true_. Esto es útil para validar la aceptación de "Términos de Servicio", por ejemplo.
 
 <a name="rule-active-url"></a>
 #### active_url
@@ -547,7 +547,7 @@ El campo bajo validación debe ser un valor después de una fecha dada. Las fech
 
     'start_date' => 'required|date|after:tomorrow'
 
-En lugar de pasar una cadena de fecha para que sea evaluada por `strtotime`, puedes especificar otro campo para contra que comparar la fecha:
+En lugar de pasar una cadena de fecha para que sea evaluada por `strtotime`, puedes especificar otro campo para comparar con la fecha:
 
     'finish_date' => 'required|date|after:start_date'
 
@@ -665,14 +665,14 @@ Al momento de trabajar con arreglos, el campo bajo validación no debe tener nin
 <a name="rule-email"></a>
 #### email
 
-El campo bajo validación debe estar formateado como una dirección de correo electrónica.
+El campo bajo validación debe estar formateado como una dirección de correo electrónico.
 
 <a name="rule-exists"></a>
 #### exists:_table_,_column_
 
 El campo bajo validación debe existir en una tabla de base de datos dada.
 
-#### Uso Básico de la Regla Existe
+#### Uso Básico de la Regla Exists
 
     'state' => 'exists:states'
 
@@ -680,7 +680,7 @@ El campo bajo validación debe existir en una tabla de base de datos dada.
 
     'state' => 'exists:states,abbreviation'
 
-Ocasionalmente, puedes necesitar especificar una conexión de base de datos para que sea usada por la consulta de `exists`. Puedes acompañar esto al anteponer al nombre de la conexión el nombre de la tabla usando syntaxis "punto":
+Ocasionalmente, puedes necesitar especificar una conexión de base de datos para que sea usada por la consulta de `exists`. Puedes acompañar esto al anteponer al nombre de la conexión el nombre de la tabla usando sintaxis de "punto":
 
     'email' => 'exists:connection.staff,email'
 
@@ -710,12 +710,12 @@ El campo bajo validación no debe estar vacío cuando esté presente.
 <a name="rule-image"></a>
 #### image
 
-El archivo bajo validación debe ser una imagen (jpeg, png, bmp, gif, or svg)
+El archivo bajo validación debe ser una imagen (jpeg, png, bmp, gif o svg)
 
 <a name="rule-in"></a>
 #### in:_foo_,_bar_,...
 
-El archivo bajo validación debe estar incluidos en la lista dada de valores. Debido a que esta regla requiere con frecuencia que hagas `implode` a un arreglo, el método `Rule::in` puede ser usado para construir fluidamente la regla:
+El archivo bajo validación debe estar incluido en la lista dada de valores. Debido a que esta regla requiere con frecuencia que hagas `implode` a un arreglo, el método `Rule::in` puede ser usado para construir fluidamente la regla:
 
     use Illuminate\Validation\Rule;
 
@@ -757,7 +757,7 @@ El campo bajo validación debe ser una cadena JSON válida.
 <a name="rule-max"></a>
 #### max:_value_
 
-El campo bajo validación debe ser menor que o igual a un _value_ máximo. Las cadenas, los números, los arreglos, y los archivos son evaluados de la misma forma como la regla [`size`](#rule-size).
+El campo bajo validación debe ser menor que o igual a un _valor_ máximo. Las cadenas, los números, los arreglos, y los archivos son evaluados de la misma forma como la regla [`size`](#rule-size).
 
 <a name="rule-mimetypes"></a>
 #### mimetypes:_text/plain_,...
@@ -784,7 +784,7 @@ Una lista completa de tipos MIME y sus correspondientes extensiones pueden ser e
 <a name="rule-min"></a>
 #### min:_value_
 
-El campo bajo validación deben tener un _value_ mínimo. Las cadenas, los números, los arreglos, y los archivos son evaluados en la misma forma como la regla [`size`](#rule-size).
+El campo bajo validación deben tener un _valor_ mínimo. Las cadenas, los números, los arreglos, y los archivos son evaluados en la misma forma como la regla [`size`](#rule-size).
 
 <a name="rule-nullable"></a>
 #### nullable
@@ -825,7 +825,7 @@ El campo bajo validación debe coincidir con la expresión regular dada.
 <a name="rule-required"></a>
 #### required
 
-El campo bajo validación debe estar presente entre los datos entrada y no vacío. Un campo es considerado "vacío" si una de las siguientes condiciones son ciertas:
+El campo bajo validación debe estar presente entre los datos entrada y no vacío. Un campo es considerado "vacío" si algunas de las siguientes condiciones es cierta:
 
 <div class="content-list" markdown="1">
 
@@ -839,12 +839,12 @@ El campo bajo validación debe estar presente entre los datos entrada y no vací
 <a name="rule-required-if"></a>
 #### required_if:_anotherfield_,_value_,...
 
-El campo bajo validación debe estar presente y no vacío si el campo _anotherfield_ es igual a cualquier _value_.
+El campo bajo validación debe estar presente y no vacío si el campo _anotherfield_ es igual a cualquier _valor_.
 
 <a name="rule-required-unless"></a>
 #### required_unless:_anotherfield_,_value_,...
 
-El campo bajo validación debe estar presente y no vacío a menos que el campo _anotherfield_ sea igual a cualquier _value_.
+El campo bajo validación debe estar presente y no vacío a menos que el campo _anotherfield_ sea igual a cualquier _valor_.
 
 <a name="rule-required-with"></a>
 #### required_with:_foo_,_bar_,...
@@ -874,7 +874,7 @@ El campo _field_ dado debe coincidir con el campo bajo validación.
 <a name="rule-size"></a>
 #### size:_value_
 
-El campo bajo validación debe tener un tamaño que coincida con el valor _value_ dado. Para datos de cadena, el valor _value_ corresponde al número de caracteres. Para datos numéricos, el valor _value_ corresponde a un valor entero dado. Para un arreglo, el valor _size_ corresponde con el de `count` de elementos del arreglo. Para archivos, el valor de _size_ corresponde al tamaño del archivo en kilobytes.
+El campo bajo validación debe tener un tamaño que coincida con el _valor_ dado. Para datos de cadena, el _valor_ corresponde al número de caracteres. Para datos numéricos, el _valor_ corresponde a un valor entero dado. Para un arreglo, el valor _size_ corresponde con el número de elementos del arreglo. Para archivos, el valor de _size_ corresponde al tamaño del archivo en kilobytes.
 
 <a name="rule-string"></a>
 #### string
@@ -889,7 +889,7 @@ El campo bajo validación debe ser un identificador de zona horaria válida de a
 <a name="rule-unique"></a>
 #### unique:_table_,_column_,_except_,_idColumn_
 
-El campo bajo validación debe ser único en una tabla de base de datos dada. Si la opción `column` no es especificado, el nombre del campo será usado.
+El campo bajo validación debe ser único en una tabla de base de datos dada. Si la opción `column` no es especificada, el nombre del campo será usado.
 
 **Especificando Un Nombre de Columna Personalizado:**
 
@@ -897,7 +897,7 @@ El campo bajo validación debe ser único en una tabla de base de datos dada. Si
 
 **Conexión de Base de Datos Personalizada**
 
-Ocasionalmente, puedes necesitar establecer una conexión personalizada para las consultas de bases de datos hechas por el Validador. Como has visto anteriormente, al establecer `unique:users` como una regla de validación usará la conexión de base de datos predeterminada en la consulta de base de datos. Para sobrescribir esto, especifica la conexión y el nombre de la tabla usando la sintaxis "punto".
+Ocasionalmente, puedes necesitar establecer una conexión personalizada para las consultas de bases de datos hechas por el validador. Como has visto anteriormente, al establecer `unique:users` como una regla de validación usará la conexión de base de datos predeterminada en la consulta de base de datos. Para sobrescribir esto, especifica la conexión y el nombre de la tabla usando la sintaxis de "punto":
 
     'email' => 'unique:connection.users,email_address'
 
@@ -922,7 +922,7 @@ Si tu tabla usa un nombre de columna de clave primaria en vez de `id`, puedes es
 
 **Agregando Cláusulas Where Adicionales:**
 
-También puedes especificar restricciones de consultas al personalizar la consulta usando el método `where`. Por ejemplo, agreguemos una restricción que verifique que el `account_id` is `1`:
+También puedes especificar restricciones de consultas al personalizar la consulta usando el método `where`. Por ejemplo, agreguemos una restricción que verifique que el `account_id` es `1`:
 
     'email' => Rule::unique('users')->where(function ($query) {
         return $query->where('account_id', 1);
@@ -936,9 +936,9 @@ El campo bajo validación debe ser una URL válida.
 <a name="conditionally-adding-rules"></a>
 ## Agregando Reglas Condicionalmente
 
-#### Validando Cuando Presente
+#### Validando sólo cuando un Campo esté Presente
 
-En algunas situaciones, puedes desear ejecutar la verificación contra un campo **solamente** si ese campo está presente en el arreglo de entrada. Para conseguir esto rápidamente, agrega la regla `sometimes` en tu lista:
+En algunas situaciones, puedes desear ejecutar la verificación contra un campo **solamente** si ese campo está presente en el arreglo de campos. Para conseguir esto rápidamente, agrega la regla `sometimes` en tu lista:
 
     $v = Validator::make($data, [
         'email' => 'sometimes|required|email',
@@ -946,7 +946,7 @@ En algunas situaciones, puedes desear ejecutar la verificación contra un campo 
 
 En el ejemplo anterior, el campo `email` solamente será validado si está presente en el arreglo `$data`.
 
-> {tip} i estás intentando validar un campo que siempre deba estar presente pero puede estar vacío, revisa [esta nota sobre campos opcionales](#a-note-on-optional-fields)
+> {tip} Si estás intentando validar un campo que siempre deba estar presente pero puede estar vacío, revisa [esta nota sobre campos opcionales](#a-note-on-optional-fields)
 
 #### Validación Condicional Compleja
 
@@ -957,7 +957,7 @@ Algunas veces puedes desear agregar reglas de validación basadas en lógica con
         'games' => 'required|numeric',
     ]);
 
-Asumamos que nuestra aplicación web is sobre coleccionistas de juegos. Si un coleccionista de juego se registra con nuestra aplicación y posee más de 100 juegos, queremos que explique porqué posee tantos juegos. Por ejemplo, quizá administre una tienda de reventa de juego, o puede ser que solo disfrute coleccionar. Para agregar este requerimiento condicionalmente, podemos usar el método `sometimes` en la instancia `Validator`.
+Asumamos que nuestra aplicación web es sobre coleccionistas de juegos. Si un coleccionista de juego se registra con nuestra aplicación y posee más de 100 juegos, queremos que explique porqué posee tantos juegos. Por ejemplo, quizá administre una tienda de reventa de juegos, o puede ser que solo disfrute coleccionar. Para agregar este requerimiento condicionalmente, podemos usar el método `sometimes` en la instancia `Validator`:
 
     $v->sometimes('reason', 'required|max:500', function ($input) {
         return $input->games >= 100;
@@ -969,7 +969,7 @@ El primer argumento pasado al método `sometimes` es el nombre del campo que est
         return $input->games >= 100;
     });
 
-> {tip} El parámetro `$input` pasado a tu `Closure` será una instancia de `Illuminate\Support\Fluent` y puede ser usado para acceder tu entrada y archivos.
+> {tip} El parámetro `$input` pasado a tu `Closure` será una instancia de `Illuminate\Support\Fluent` y puede ser usado para acceder a tus campos y archivos.
 
 <a name="validating-arrays"></a>
 ## Validando Arreglos
@@ -987,7 +987,7 @@ También puedes validar cada elemento de un arreglo. Por ejemplo, para validar q
         'person.*.first_name' => 'required_with:person.*.last_name',
     ]);
 
-De igual forma, puedes usar el carácter `*` al momento de especificar tus mensajes de validación en tus archivos de idiomas, haciendo una brisa usar un único mensaje de validación para campos basados en arreglos:
+De igual forma, puedes usar el carácter `*` al momento de especificar tus mensajes de validación en tus archivos de idiomas, haciendo que sea muy fácil usar un único mensaje de validación para campos basados en arreglos:
 
     'custom' => [
         'person.*.email' => [
@@ -999,7 +999,7 @@ De igual forma, puedes usar el carácter `*` al momento de especificar tus mensa
 ## Reglas de Validación Personalizadas
 
 <a name="using-rule-objects"></a>
-### Usando Objetos de Regla
+### Usando Objetos de Reglas
 
 Laravel proporciona una variedad de reglas de validación útiles; sin embargo, puedes desear especificar algunas propias. Un método para registrar reglas de validación personalizadas es usar objetos de regla. Para generar un nuevo objeto de regla, puedes usar el comando Artisan `make:rule`. Usemos este comando para generar una regla que verifique que una cadena esté en mayuscula. Laravel colocará la nueva regla en el directorio `app/Rules`:
 
@@ -1143,4 +1143,4 @@ Para que una regla se ejecute incluso cuando un atributo esté vacío, la regla 
         return $value == 'foo';
     });
 
-> {note} Una extensión "implícita" solamente _implica_ que el atributo es obligatorio. Si esto realmente invalida un atributo vacío o faltante es para ti.
+> {note} Una extensión "implícita" solamente _implica_ que el atributo es obligatorio. Si esto realmente invalida un atributo vacío o faltante depende de ti.
