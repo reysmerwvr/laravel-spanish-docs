@@ -7,7 +7,7 @@
     - [Escribiendo la Lógica de Validación](#quick-writing-the-validation-logic)
     - [Mostrando los Errores de Validación](#quick-displaying-the-validation-errors)
     - [Una Observación Sobre los Campos Opcionales](#a-note-on-optional-fields)
-- [Validación de Solicitude de Formulario](#form-request-validation)
+- [Validación de Solicitudes de Formulario](#form-request-validation)
     - [Creando Solicitudes de Formulario](#creating-form-requests)
     - [Autorizando Solicitudes de Formulario](#authorizing-form-requests)
     - [Personalizando los Mensajes de Error](#customizing-the-error-messages)
@@ -130,11 +130,11 @@ Si tu solicitud HTTP contiene parámetros "anidados", puedes especificarlos en t
 <a name="quick-displaying-the-validation-errors"></a>
 ### Mostrando los Errores de Validación
 
-¿Qué si los parámetros de solicitud entrantes no pasan las reglas de validación dados? Cómo mencionamos anteriormente, Laravel redirigirá al usuario de regreso a su ubicación previa. En adición, todos los errores de validación serán automáticamente [movidos instantáneamente a la sesión](/docs/{{version}}/session#flash-data).
+¿Qué sucede si los parámetros de solicitud entrantes no pasan las reglas de validación dados? Cómo mencionamos anteriormente, Laravel redirigirá al usuario de regreso a su ubicación previa. En adición, todos los errores de validación serán automáticamente [movidos instantáneamente a la sesión](/docs/{{version}}/session#flash-data).
 
 De nuevo, observa que no tuvimos que enlazar explícitamente los mensajes de error con la vista en nuestra ruta `GET`. Esto es porque Laravel revisará los errores en la sesión de datos, y los enlazará automáticamente a la vista si están disponibles. La variable `$errors` será una instancia de `Illuminate\Support\MessageBag`. Para mayor información sobre como trabajar con este objeto, [revisa su documentación](#working-with-error-messages).
 
-> {tip} La variable `$errors` es enlazada a la vista por el middleware `Illuminate\View\Middleware\ShareErrorsFromSession`, el cual es proporcionado por el grupo de middleware `web`. **Cuando este middleware se aplique a una variable `$errors` siempre estará disponible en tus vistas**, permitiendo que asumas convenientemente que la variable `$errors` está definida siempre y puede ser usada con seguridad.
+> {tip} La variable `$errors` es enlazada a la vista por el middleware `Illuminate\View\Middleware\ShareErrorsFromSession`, el cual es proporcionado por el grupo de middleware `web`. **Cuando este middleware se aplique una variable `$errors` siempre estará disponible en tus vistas**, permitiendo que asumas convenientemente que la variable `$errors` está definida siempre y puede ser usada con seguridad.
 
 Así, en nuestro ejemplo, el usuario será redirigido al método `create` de nuestro controlador cuando la validación falle, permitiéndonos que muestre los mensajes de error en la vista:
 
@@ -170,7 +170,7 @@ En este ejemplo, estamos especificando que el campo `publish_at` puede que sea o
 <a name="quick-ajax-requests-and-validation"></a>
 #### Solicitudes AJAX & Validación
 
-En este ejemplo, usamos un formulario tradicional para enviar datos a la aplicación. Sin embargo, muchas aplicaciones usan solicitudes AJAX. Al momento de usar el método `validate` durante una solicitud AJAX, Laravel no generará una respuesta de redirigir. En su lugar, Laravel genera una respuesta JSON conteniendo todos los errores de validación. Esta respuesta JSON será enviada con un código de estado HTTP 422.
+En este ejemplo, usamos un formulario tradicional para enviar datos a la aplicación. Sin embargo, muchas aplicaciones usan solicitudes AJAX. Al momento de usar el método `validate` durante una solicitud AJAX, Laravel no generará una respuesta de redirección. En su lugar, Laravel genera una respuesta JSON conteniendo todos los errores de validación. Esta respuesta JSON será enviada con un código de estado HTTP 422.
 
 <a name="form-request-validation"></a>
 ## Validación de Solicitud de Formulario
@@ -178,7 +178,7 @@ En este ejemplo, usamos un formulario tradicional para enviar datos a la aplicac
 <a name="creating-form-requests"></a>
 ### Creando Solicitudes de Formulario
 
-Para escenarios de validación más complejos, puede que desees crear una "solicitud de formulario". Las solicitudes de formularios son clases de solicitud personalizadas que contienen la lógica de validación. Para crear una clase de solicitud de formulario, usa el comando  de CLI de Artisan `make:request`:
+Para escenarios de validación más complejos, puede que desees crear una "solicitud de formulario". Las solicitudes de formularios son clases de solicitud personalizadas que contienen la lógica de validación. Para crear una clase de solicitud de formulario, usa el comando de CLI de Artisan `make:request`:
 
     php artisan make:request StoreBlogPost
 
@@ -197,7 +197,7 @@ La clase generada será colocada en el directorio `app/Http/Requests`. Si este d
         ];
     }
 
-Así que, ¿Cómo son evaluadas las reglas de validación?, Todo lo que necesitas hacer es poner la referencia de la solicitud en tu método de controlador. La solicitud de formulario entrante es validada antes de que el método de controlador sea ejecutado, significa que no necesitas complicar tu controlador con ninguna lógica de validación:
+Así que, ¿Cómo son evaluadas las reglas de validación? Todo lo que necesitas hacer es poner la referencia de la solicitud en tu método de controlador. La solicitud de formulario entrante es validada antes de que el método de controlador sea ejecutado, significa que no necesitas complicar tu controlador con ninguna lógica de validación:
 
     /**
      * Store the incoming blog post.
@@ -210,7 +210,7 @@ Así que, ¿Cómo son evaluadas las reglas de validación?, Todo lo que necesita
         // The incoming request is valid...
     }
 
-Si la validación falla, una respuesta de redirigir será generada para enviar al usuario de vuelta a su ubicación previa. Los errores también serán movidos instantáneamente a la sesión de modo que estén disponibles para mostrarlos. Si la solicitud fuese una solicitud AJAX, una respuesta HTTP con un código de estado 422 será devuelta al usuario incluyendo una representación JSON de los errores de validación.
+Si la validación falla, una respuesta de redirección será generada para enviar al usuario de vuelta a su ubicación previa. Los errores también serán movidos instantáneamente a la sesión de modo que estén disponibles para mostrarlos. Si la solicitud fuese una solicitud AJAX, una respuesta HTTP con un código de estado 422 será devuelta al usuario incluyendo una representación JSON de los errores de validación.
 
 #### Agregando Hooks Posteriores a Solicitudes de Formularios
 
@@ -287,7 +287,7 @@ Puedes personalizar los mensajes de error usados por la solicitud de formulario 
 <a name="manually-creating-validators"></a>
 ## Creando Validadores Manualmente
 
-Si no quieres usar el método `messages` en la solicitud, puedes crear una instancia de validador manualmente usando la clase [facade](/docs/{{version}}/facades) `Validator`. El método `make` en la clase facade genera una nueva instancia de validador:
+Si no quieres usar el método `messages` en la solicitud, puedes crear una instancia de validador manualmente usando la clase [facade](/docs/{{version}}/facades) `Validator`. El método `make` en la clase facade genera una nueva instancia del validador:
 
     <?php
 
@@ -322,14 +322,14 @@ Si no quieres usar el método `messages` en la solicitud, puedes crear una insta
         }
     }
 
-El primer argumento pasado al métod `make` son los datos bajo validación. El segundo argumento son las reglas de validación que deberían ser aplicadas a los datos.
+El primer argumento pasado al método `make` son los datos bajo validación. El segundo argumento son las reglas de validación que deberían ser aplicadas a los datos.
 
 Después de verificar si la validación de solicitud falló, puedes usar el método `withErrors` para mover instantáneamente los mensajes de error a la sesión. Al momento de usar este método, la variable `$errors` será compartida automáticamente con tus vistas después de la redirección, permitiendo que los muestres de vuelta al usuario. El método `withErrors` acepta un validador, un `MessageBag`, o un `array` de PHP.
 
 <a name="automatic-redirection"></a>
 ### Redirección Automática
 
-Si prefieres crear manualmente una instancia de validador pero aún tomar ventaja de la redirección automática ofrecida por el método `validate` de la solicitud, puedes ejecutar el método `validate` en una instancia de validador existente. Si la validación falla, el usuario automáticamente será redirigido o, en el caso de una solicitud AJAX, le será devuelta una respuesta JSON:
+Si prefieres crear manualmente una instancia del validador pero aún tomar ventaja de la redirección automática ofrecida por el método `validate` de la solicitud, puedes ejecutar el método `validate` en una instancia de validador existente. Si la validación falla, el usuario automáticamente será redirigido o, en el caso de una solicitud AJAX, le será devuelta una respuesta JSON:
 
     Validator::make($request->all(), [
         'title' => 'required|unique:posts|max:255',
