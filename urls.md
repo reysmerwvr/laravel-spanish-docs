@@ -1,7 +1,7 @@
 # Generación de URL
 
 - [Introducción](#introduction)
-- [Los Fundamentos](#the-basics)
+- [Fundamentos](#the-basics)
     - [Generando URLs Básicas](#generating-basic-urls)
     - [Accediendo la URL Actual](#accessing-the-current-url)
 - [URLs para Rutas Nombradas](#urls-for-named-routes)
@@ -32,16 +32,16 @@ El helper `url` puede ser usado en URLs arbitrarias de tu aplicación. La URL ge
 
 Si ninguna ruta es proporcionada al helper `url`, una instancia `Illuminate\Routing\UrlGenerator` es devuelta, permitiéndote que accedas información sobre la URL actual:
 
-    // Get the current URL without the query string...
+    // Obtener la URL actual sin la cadena de consulta...
     echo url()->current();
 
-    // Get the current URL including the query string...
+    // Obtener la URL actual incluyendo la cadena de consulta...
     echo url()->full();
 
-    // Get the full URL for the previous request...
+    // Obtener la URL completa de la solicitud anterior...
     echo url()->previous();
 
-Cada uno de estos métodos también puede ser accedido por medio de la clase [facade](/docs/{{version}}/facades) `URL`:
+Cada uno de estos métodos también puede ser accedido por medio del [facade](/docs/{{version}}/facades) `URL`:
 
     use Illuminate\Support\Facades\URL;
 
@@ -50,19 +50,19 @@ Cada uno de estos métodos también puede ser accedido por medio de la clase [fa
 <a name="urls-for-named-routes"></a>
 ## URLs para Rutas Nombradas
 
-El helper `route` puede ser usado para generar URLs para rutas nombradas. Las rutas nombradas permiten generar URLs sin estar acopladas a la URL real definida en la ruta. Por lo tanto, si la URL de la ruta cambia, ningún cambio necesita ser hecho a tus llamadas de función `route`. Por ejemplo, imagina que tu aplicación contiene una ruta definida como la siguiente:
+El helper `route` puede ser usado para generar URLs para rutas nombradas. Las rutas nombradas permiten generar URLs sin estar acopladas a la URL real definida en la ruta. Por lo tanto, si la URL de la ruta cambia, ningún cambio necesita ser hecho en las llamadas a la función `route`. Por ejemplo, imagina que tu aplicación contiene una ruta definida de la siguiente forma:
 
     Route::get('/post/{post}', function () {
         //
     })->name('post.show');
 
-Para generar una URL a esta ruta, puedes usar el helper `route` como sigue:
+Para generar una URL a esta ruta, puedes usar el helper `route` así:
 
     echo route('post.show', ['post' => 1]);
 
     // http://example.com/post/1
 
-Con frecuencia estarás generando URLs usando la clave primaria de [modelos Eloquent](/docs/{{version}}/eloquent). Por esta razón, puedes pasar modelos Eloquent como valores de parámetro. El helper `route` extraerá automáticamente la clave primaria del modelo:
+Con frecuencia estarás generando URLs usando la clave primaria de [modelos de Eloquent](/docs/{{version}}/eloquent). Por esta razón, puedes pasar modelos de Eloquent como valores de parámetro. El helper `route` extraerá automáticamente la clave primaria del modelo:
 
     echo route('post.show', ['post' => $post]);
 
@@ -80,7 +80,7 @@ Si el método del controlador acepta parámetros de ruta, puedes pasarlas como s
 <a name="default-values"></a>
 ## Valores Predeterminados
 
-Para algunas aplicaciones, puedes querer especificar los valores predeterminados de largas-solicitudes para los parámetros de ciertas URL. Por ejemplo, imagina que muchas de tus rutas definen un parámetro `{locale}`:
+Para algunas aplicaciones, puedes querer especificar valores predeterminados para toda la solicitud en los parámetros de ciertas URL. Por ejemplo, imagina que muchas de tus rutas definen un parámetro `{locale}`:
 
     Route::get('/{locale}/posts', function () {
         //
