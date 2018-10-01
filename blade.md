@@ -1,7 +1,7 @@
 # Plantillas Blade
 
 - [Introducción](#introduction)
-- [Herencia De Templates](#template-inheritance)
+- [Herencia De Plantillas](#template-inheritance)
     - [Definir Un Layout](#defining-a-layout)
     - [Extender Un Layout](#extending-a-layout)
 - [Componentes & Slots](#components-and-slots)
@@ -24,15 +24,15 @@
 <a name="introduction"></a>
 ## Introducción
 
-Blade es un motor de plantillas proporcionado por Laravel simple y a la vez poderoso. A diferencia de otros motores de plantillas de PHP populares, Blade no le impide utilizar código PHP plano en sus vistas. De hecho, todas las vistas de Blade son compiladas en código PHP plano y almacenadas en caché hasta que sean modificadas, lo que significa que Blade no añade sobrecarga a su aplicación. Los archivos de las vistas de Blade tienen la extensión `.blade.php` y son usualmente almacenados en el directorio `resources/views`.
+Blade es un motor de plantillas simple y a la vez poderoso proporcionado por Laravel. A diferencia de otros motores de plantillas populares de PHP, Blade no te impide utilizar código PHP plano en sus vistas. De hecho, todas las vistas de Blade son compiladas en código PHP plano y almacenadas en caché hasta que sean modificadas, lo que significa que Blade no añade sobrecarga a tu aplicación. Los archivos de las vistas de Blade tienen la extensión `.blade.php` y son usualmente almacenados en el directorio `resources/views`.
 
 <a name="template-inheritance"></a>
-## Herencia De Templates
+## Herencia De Plantillas
 
 <a name="defining-a-layout"></a>
 ### Definir Un Layout
 
-Dos de los principales beneficios de usar Blade son _la herencia de templates_ y _secciones_. Para empezar, veamos un ejemplo simple. Primero, vamos a examinar una página de layout "master". Ya que la mayoría de las aplicaciones web mantienen el mismo layout general a través de varias páginas, es conveniente defini este layout como una sola vista de Blade:
+Dos de los principales beneficios de usar Blade son _la herencia de plantillas y _secciones_. Para empezar, veamos un ejemplo simple. Primero, vamos a examinar una página de layout "master". Ya que la mayoría de las aplicaciones web mantienen el mismo layout general a través de varias páginas, es conveniente definir este layout como una sola vista de Blade:
 
     <!-- Almacenado en resources/views/layouts/app.blade.php -->
 
@@ -51,14 +51,14 @@ Dos de los principales beneficios de usar Blade son _la herencia de templates_ y
         </body>
     </html>
 
-Como puede ver, este archivo contiene el marcado HTML típico. Sin embargo, tome nota de las directivas `@section` y `@yield`. La directiva `@section`, como su nombre lo indica, define una sección de contenido, mientras que la directiva `@yield` es utilizada para mostrar el contenido en una sección determiniada.
+Como puedes ver, este archivo contiene el marcado típico de HTML. Sin embargo, toma nota de las directivas `@section` y `@yield`. La directiva `@section`, como su nombre lo indica, define una sección de contenido, mientras que la directiva `@yield` es utilizada para mostrar el contenido en una sección determinada.
 
 Ahora que hemos definido un layout para nuestra aplicación, vamos a definir una página hija que herede el layout.
 
 <a name="extending-a-layout"></a>
 ### Extender Un Layout
 
-Al definir una vista hija, utilice la directiva de Blade `@extends` para indicar el layout que deberá "heredarse" en la vista hija. Las vistas que extiendan un layout de Blade pueden inyectar contenido en la sección del layout usando la directiva `@section`. Recuerde, como vimos en el ejemplo anterior, los contenidos de estas secciones se mostrarán en el layout usando `@yield`:
+Al definir una vista hija, utiliza la directiva de Blade `@extends` para indicar el layout que deberá "heredarse" en la vista hija. Las vistas que extiendan un layout de Blade pueden inyectar contenido en la sección del layout usando la directiva `@section`. Recuerda, como vimos en el ejemplo anterior, los contenidos de estas secciones se mostrarán en el layout usando `@yield`:
 
     <!-- Almacenado en resources/views/child.blade.php -->
 
@@ -76,9 +76,9 @@ Al definir una vista hija, utilice la directiva de Blade `@extends` para indicar
         <p>This is my body content.</p>
     @endsection
 
-En este ejemplo, la sección `sidebar` está utilizando la directiva `@@parent` para adjuntar (en lugar de sobreescribir) contenido al sidebar del layout. La directiva `@@parent` será reemplazada por el contenido del layout cuando la vista sea renderizada.
+En este ejemplo, la sección `sidebar` está utilizando la directiva `@@parent` para adjuntar (en lugar de sobrescribir) contenido al sidebar del layout. La directiva `@@parent` será reemplazada por el contenido del layout cuando la vista sea renderizada.
 
-> {tip} Contrario al ejemplo anterior, esta sección `sidebar` termina con `@endsection` en lugar de `@show`. La directiva `@endsection` sólo definirá una sección mientras que `@show` definira y **automáticamente creará un yield** de la sección.
+> {tip} Contrario al ejemplo anterior, esta sección `sidebar` termina con `@endsection` en lugar de `@show`. La directiva `@endsection` sólo definirá una sección mientras que `@show` definirá y **automáticamente creará un yield** de la sección.
 
 Las vistas de Blade se pueden retornar desde las rutas usando el helper global `view`:
 
@@ -89,9 +89,7 @@ Las vistas de Blade se pueden retornar desde las rutas usando el helper global `
 <a name="components-and-slots"></a>
 ## Componentes & Slots
 
-Components and slots provide similar benefits to sections and layouts; however, some may find the mental model of components and slots easier to understand. First, let's imagine a reusable "alert" component we would like to reuse throughout our application:
-
-Los componentes y slots proporcionan beneficios similares a secciones y layouts; sin embargo, algunos encontrarán el modelo mentar de componentes y slots más fácil e comprender. Primero, imginemos un componente "alerta" reutilizable que queremos que se reutilice en toda nuestra aplicación
+Los componentes y slots proporcionan beneficios similares a secciones y layouts; sin embargo, algunos encontrarán el modelo mental de componentes y slots más fácil de comprender. Primero, imginemos un componente "alert" reutilizable que queremos que se reutilice en toda nuestra aplicación:
 
     <!-- /resources/views/alert.blade.php -->
 
@@ -127,7 +125,7 @@ Ahora, podemos inyectar contenido en el slot nombrado usando la directiva `@slot
 
 #### Pasando Información Adicional A Los Componentes
 
-En ocasiones puede necesitar pasar información adicional al componente. Por esta razón, puede pasar un arreglo de información como segundo arumento a la directiva `@component`. Toda la información se hará disponible para el template del componente como variables:
+En ocasiones puedes necesitar pasar información adicional al componente. Por esta razón, puedes pasar un arreglo de información como segundo arumento a la directiva `@component`. Toda la información se hará disponible para la plantilla del componente como variables:
 
     @component('alert', ['foo' => 'bar'])
         ...
@@ -136,17 +134,17 @@ En ocasiones puede necesitar pasar información adicional al componente. Por est
 <a name="displaying-data"></a>
 ## Mostrando Datos
 
-Puede mostrar datos pasados a su vista de Blade al envolver la variable entre llaves. Por ejemplo, dadas la siguiente ruta:
+Puedes mostrar datos pasados a tu vista de Blade al envolver la variable entre llaves. Por ejemplo, dada la siguiente ruta:
 
     Route::get('greeting', function () {
         return view('welcome', ['name' => 'Samantha']);
     });
 
-Puede mostrar el contenido de la variable `name` de la siguiente manera:
+Puedes mostrar el contenido de la variable `name` de la siguiente manera:
 
     Hello, {{ $name }}.
 
-Desde luego, no se está limitado a mostrar el contenido de las variables pasadas a la vista. También puede hacer echo al resultado de cualquier función de PHP. De hecho, puede poner cualquier código PHP que desee dentro de la declaración echo de Blade
+Desde luego, no estás limitado a mostrar sólo el contenido de las variables pasadas a la vista. También puedes hacer echo al resultado de cualquier función de PHP. De hecho, puedes poner cualquier código PHP que desees dentro de la declaración echo de Blade:
 
     The current UNIX timestamp is {{ time() }}.
 
@@ -154,21 +152,21 @@ Desde luego, no se está limitado a mostrar el contenido de las variables pasada
 
 #### Mostrar Datos No Escapados
 
-De manera predeterminada, las declaraciónes `{{  }}` de Blade son enviadas mediante la función `htmlspecialchars` de PHP para prevenir ataques XSS. Si no desea que su información sea escapada, puede utilizar la siguiente sintáxis:
+De manera predeterminada, las declaraciónes `{{  }}` de Blade son enviadas mediante la función `htmlspecialchars` de PHP para prevenir ataques XSS. Si no deseas que tu información sea escapada, puedes utilizar la siguiente sintáxis:
 
     Hello, {!! $name !!}.
 
-> {note} Sea muy cuidadoso cuando muestre contenido que sea suministrado por los usuarios de su aplicación. Siempre use las sentencias escapadas, lo cual previene ataques XSS cuando se muestren datos suministrados por los usuarios.
+> {note} Se muy cuidadoso cuando muestres contenido que sea suministrado por los usuarios de tu aplicación. Usa siempre las sentencias escapadas, ya que estas previenen ataques XSS cuando se muestran datos suministrados por los usuarios.
 
 #### Renderizar JSON
 
-En ocasiones puede pasar un arreglo a su vista con la intención de renderizarla como JSON paa inicializar una variable JavAscript. Por ejemplo:
+En ocasiones puedes pasar un arreglo a tu vista con la intención de renderizarla como JSON para inicializar una variable JavaScript. Por ejemplo:
 
     <script>
         var app = <?php echo json_encode($array); ?>;
     </script>
 
-Sin embargo, en lugar de llamar manualmente `json_encode`, puede usar la directiva de Blade `@json`:
+Sin embargo, en lugar de llamar manualmente a `json_encode`, puedes usar la directiva de Blade `@json`:
 
     <script>
         var app = @json($array);
@@ -177,17 +175,17 @@ Sin embargo, en lugar de llamar manualmente `json_encode`, puede usar la directi
 <a name="blade-and-javascript-frameworks"></a>
 ### Frameworks De Blade Y JavaScript
 
-Dado que muchos frameworks de JavaScript también usan llaves para indicar que una expresión dada debe mostrarse en el navegador, puede utilizar el símbolo `@` para informar al motor de renderizado de Blade que una expresión debe permanecer intacta. Por ejemplo:
+Dado que muchos frameworks de JavaScript también usan llaves para indicar que una expresión dada debe mostrarse en el navegador, puedes utilizar el símbolo `@` para informar al motor de renderizado de Blade que una expresión debe permanecer intacta. Por ejemplo:
 
     <h1>Laravel</h1>
 
     Hello, @{{ name }}.
 
-En este ejemplo, el símbolo `@` será removido por Blade; sin embargo, la expresión `{{ name }}` permanecerá intacta por el motor de Blade, lo que permitirá que pueda ser procesada por su framework JavaScript.
+En este ejemplo, el símbolo `@` será removido por Blade; sin embargo, la expresión `{{ name }}` permanecerá intacta por el motor de Blade, lo que permitirá que pueda ser procesada por tu framework de JavaScript.
 
 #### La Directiva `@verbatim`
 
-Si está mostrando variables de JavaScript en una gran parte de su template, puede ajustar el HTML en la directiva `@verbatim` para que no tenga que poner un prefijo en cada instrucción echo de Blade con un símbolo `@`:
+Si estás mostrando variables de JavaScript en una gran parte de tu plantilla, puedes ajustar el HTML en la directiva `@verbatim` para que no tengas que poner un prefijo en cada instrucción echo de Blade con un símbolo `@`:
 
     @verbatim
         <div class="container">
@@ -198,7 +196,7 @@ Si está mostrando variables de JavaScript en una gran parte de su template, pue
 <a name="control-structures"></a>
 ## Estructuras De Control
 
-Además de la herencia del template y la visualización de datos, Blade también proporciona accesos directos y convenientes para las estructuras de control comunes de PHP, tales como sentencias condicionales y búcles. Estos accesos directos proporcionan una manera muy limpia y concisa de trabajar con estructuras de control de PHP, al tiempo que permanecen familiares para sus contrapartes de PHP.
+Además de la herencia de plantillas y la visualización de datos, Blade también proporciona accesos directos y convenientes para las estructuras de control comunes de PHP, tales como sentencias condicionales y búcles. Estos accesos directos proporcionan una manera muy limpia y concisa de trabajar con estructuras de control de PHP, al tiempo que permanecen familiares para sus contrapartes de PHP.
 
 <a name="if-statements"></a>
 ### Sentencias If
@@ -380,7 +378,7 @@ Blade también le permite definir comentarios en sus vistas. Sin embargo, a dife
 <a name="php"></a>
 ### PHP
 
-En algunas situaciones, es útil insertar código PHP en sus vistas. Puee usar la directiva de Blade `@php` para ejecutar un bloque de PHP plano en su template:
+En algunas situaciones, es útil insertar código PHP en sus vistas. Puedes usar la directiva de Blade `@php` para ejecutar un bloque de PHP plano en tu plantilla:
 
     @php
         //
@@ -391,7 +389,7 @@ En algunas situaciones, es útil insertar código PHP en sus vistas. Puee usar l
 <a name="including-sub-views"></a>
 ## Incluyendo Sub-Vistas
 
-La directiva `@include` de Blade le permite incluir una vista de Blade desde otra vista. Todas las variables que estén disponibles en la vista padre estarán disponibles para la vista incluida:
+La directiva `@include` de Blade te permite incluir una vista de Blade desde otra vista. Todas las variables que estén disponibles en la vista padre estarán disponibles para la vista incluida:
 
     <div>
         @include('shared.errors')
@@ -401,7 +399,7 @@ La directiva `@include` de Blade le permite incluir una vista de Blade desde otr
         </form>
     </div>
 
-Aunque la vista incluida heredará todos los datos disponibles en la vista principal, también puede pasar una matriz de datos adicionales a la vista incluida:
+Aunque la vista incluida heredará todos los datos disponibles en la vista principal, también puedes pasar una matriz de datos adicionales a la vista incluida:
 
     @include('view.name', ['some' => 'data'])
 
@@ -409,11 +407,11 @@ Por supuesto, si utiliza `@include` en una vista que no existe, Laravel lanzará
 
     @includeIf('view.name', ['some' => 'data'])
 
-Si desea incluir una vista dependiendo de una condición booleana dada, puede utilizar la directiva `@includeWhen`:
+Si desea incluir una vista dependiendo de una condición booleana dada, puedes utilizar la directiva `@includeWhen`:
 
     @includeWhen($boolean, 'view.name', ['some' => 'data'])
 
-Para incluir la primera vista que exista para un arreglo dado de vistas, puede usar la directiva `@includeFirst`:
+Para incluir la primera vista que exista para un arreglo dado de vistas, puedes usar la directiva `@includeFirst`:
 
     @includeFirst(['custom.admin', 'admin'], ['some' => 'data'])
 
@@ -426,7 +424,7 @@ Puede combinar bucles e incluirlos en una sola línea con la directiva `@each` d
 
     @each('view.name', $jobs, 'job')
 
-El primr argumento es la vista parcial a renderizar por cada elemento en el arreglo o colección. El segundo argumento es el arreglo o colección en que que desea iterar, mientras que el tercer argumento es el nombre de la variable que será asignada a la iteración actual dentro de la vista. Así que, por ejemplo, si está iterando en un arreglo `jobs`, típicamente querrá tener acceso a cada trabajo como una variable `job` en su vista parcial. La llave de la iteración actual estará disponible como la variable `key` en su vista parcial.
+El primer argumento es la vista parcial a renderizar por cada elemento en el arreglo o colección. El segundo argumento es el arreglo o colección en que que desea iterar, mientras que el tercer argumento es el nombre de la variable que será asignada a la iteración actual dentro de la vista. Así que, por ejemplo, si está iterando en un arreglo `jobs`, típicamente querrá tener acceso a cada trabajo como una variable `job` en su vista parcial. La llave de la iteración actual estará disponible como la variable `key` en su vista parcial.
 
 También puede pasar un cuarto argumento a la directiva `@each`. Este argumento determina la vista que se va a renderizar si el arreglo dado está vacío.
 
