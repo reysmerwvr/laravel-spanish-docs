@@ -1,26 +1,26 @@
 # Deployment
 
-- [Introduction](#introduction)
-- [Server Configuration](#server-configuration)
+- [Introducción](#introduction)
+- [Configuración Del Servidor](#server-configuration)
     - [Nginx](#nginx)
-- [Optimization](#optimization)
-    - [Autoloader Optimization](#autoloader-optimization)
-    - [Optimizing Configuration Loading](#optimizing-configuration-loading)
-    - [Optimizing Route Loading](#optimizing-route-loading)
-- [Deploying With Forge](#deploying-with-forge)
+- [Optimización](#optimization)
+    - [Optimizar Autoloader](#autoloader-optimization)
+    - [Optimizar Configuración Local](#optimizing-configuration-loading)
+    - [Optimizar Carga De Rutas](#optimizing-route-loading)
+- [Deploy En Forge](#deploying-with-forge)
 
 <a name="introduction"></a>
-## Introduction
+## Introducción
 
-When you're ready to deploy your Laravel application to production, there are some important things you can do to make sure your application is running as efficiently as possible. In this document, we'll cover some great starting points for making sure your Laravel application is deployed properly.
+Una vez que se esté listo para hacer deploy de su aplicación de Laravel a producción, debería considerar algunos aspectos importantes para hacer que su aplicación se esté ejecutando lo más eficientemente posible. En este documento, vamos a cubrir muy buenos puntos para hacer que su aplicación de Laravel sea desplegada correctamente.
 
 <a name="server-configuration"></a>
-## Server Configuration
+## Configuración Del Servidor
 
 <a name="nginx"></a>
 ### Nginx
 
-If you are deploying your application to a server that is running Nginx, you may use the following configuration file as a starting point for configuring your web server. Most likely, this file will need to be customized depending on your server's configuration. If you would like assistance in managing your server, consider using a service such as [Laravel Forge](https://forge.laravel.com):
+Si estás haciendo deploy de tu aplicación hacia un servidor que está ejecutando Nginx, puede utilizar el siguiente archivo de configuración como punto de inicio para configurar su servidor web. Principalmente, este archivo tendrá que ser personalizado dependiendo de la configuración de su servidor. Si desea asistenca en la administración de su servidor, considere utilizar un servicio como [Laravel Forge](https://forge.laravel.com):
 
     server {
         listen 80;
@@ -57,40 +57,40 @@ If you are deploying your application to a server that is running Nginx, you may
     }
 
 <a name="optimization"></a>
-## Optimization
+## Optimización
 
 <a name="autoloader-optimization"></a>
-### Autoloader Optimization
+### Optimizar Autoloader
 
-When deploying to production, make sure that you are optimizing Composer's class autoloader map so Composer can quickly find the proper file to load for a given class:
+Al hacer deploy a producción, debe asegurarse de optimizar el autoloader de composer, para que este pueda localizar rápidamente el archivo apropiado para cargar una clase dada:
 
     composer install --optimize-autoloader
 
-> {tip} In addition to optimizing the autoloader, you should always be sure to include a `composer.lock` file in your project's source control repository. Your project's dependencies can be installed much faster when a `composer.lock` file is present.
+> {tip} Adicionalmente, para optimizar el autoloader, deberá asegurarse de incluir siempre el archivo `composer.lock` al controlador de versiones de su proyecto. Las dependencias de su proyecto se instalarán más rápido cuando exista el archivo `composer.lock`.
 
 <a name="optimizing-configuration-loading"></a>
-### Optimizing Configuration Loading
+### Optimizar Configuración Local
 
-When deploying your application to production, you should make sure that you run the `config:cache` Artisan command during your deployment process:
+Al hacer deploy de su aplicación a producción, deberá asegurarse de ejecutar el comando de Artisan `config:cache` durante el proceso de deploy:
 
     php artisan config:cache
 
-This command will combine all of Laravel's configuration files into a single, cached file, which greatly reduces the number of trips the framework must make to the filesystem when loading your configuration values.
+Este comando combinará todos los archivos de configuración de Laravel en un solo archivo en caché, lo que reduce en gran medida la cantidad de consultas que el framework debe hacer al sistema de archivos cuando carga sus valores de configuración
 
 <a name="optimizing-route-loading"></a>
-### Optimizing Route Loading
+### Optimizar Configuración Local
 
-If you are building a large application with many routes, you should make sure that you are running the `route:cache` Artisan command during your deployment process:
+Si está construyendo una aplicación muy grande que contenga muchas rutas, debería asegurarse de ejecutar el comando `route:cache` de Artisan durante el proceso de deploy.
 
     php artisan route:cache
 
-This command reduces all of your route registrations into a single method call within a cached file, improving the performance of route registration when registering hundreds of routes.
+Este comando reduce todas sus rutas registradas en una única llamada al método dentro del archivo en cache, mejorando el rendimiento de registro de rutas cuando se tienen cientos de ellas.
 
-> {note} Since this feature uses PHP serialization, you may only cache the routes for applications that exclusively use controller based routes. PHP is not able to serialize Closures.
+> {note} Ya que esta característica utiliza la serialización de PHP, sólo se pueden almacenar en cache las rutas para las aplicaciones que estén basadas exclusivamente en controladores. PHP no es capaz de seralizar Closures.
 
 <a name="deploying-with-forge"></a>
-## Deploying With Forge
+## Deploy En Forge
 
-If you aren't quite ready to manage your own server configuration or aren't comfortable configuring all of the various services needed to run a robust Laravel application, [Laravel Forge](https://forge.laravel.com) is a wonderful alternative.
+Si no está del todo listo para administrar la configuración de su servidor o no se siente cómodo configurando los diferentes servicios necesarios para ejecutar aplicaciones robustas de Laravel, [Laravel Forge](https://forge.laravel.com) es una excelente alternativa.
 
-Laravel Forge can create servers on various infrastructure providers such as DigitalOcean, Linode, AWS, and more. In addition, Forge installs and manages all of the tools needed to build robust Laravel applications, such as Nginx, MySQL, Redis, Memcached, Beanstalk, and more.
+Laravel Forge puede crear servidores en varios proveedores de infraestructura como pueden ser DigitalOcean, Linode, AWS, y más. Adicionalmente, Forge instala y administra todas las herramientas necesarias para construir aplicaciones robustas de Laravel, como Nginx, MySQL, Redis, Memcached, Beanstalk y más.
