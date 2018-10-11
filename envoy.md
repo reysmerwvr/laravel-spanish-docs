@@ -1,43 +1,43 @@
-# Envoy Task Runner
+# Ejecutor De Tareas Envoy
 
-- [Introduction](#introduction)
-    - [Installation](#installation)
-- [Writing Tasks](#writing-tasks)
+- [Introducción](#introduction)
+    - [Instalación](#installation)
+- [Escribir Tareas](#writing-tasks)
     - [Setup](#setup)
     - [Variables](#variables)
-    - [Stories](#stories)
-    - [Multiple Servers](#multiple-servers)
-- [Running Tasks](#running-tasks)
-    - [Confirming Task Execution](#confirming-task-execution)
-- [Notifications](#notifications)
+    - [Historias](#stories)
+    - [Múltiples Servidores](#multiple-servers)
+- [Ejecutar Tareas](#running-tasks)
+    - [Confirmar Ejecución De Tarea](#confirming-task-execution)
+- [Notificaciones](#notifications)
     - [Slack](#slack)
 
 <a name="introduction"></a>
-## Introduction
+## Introducción
 
-[Laravel Envoy](https://github.com/laravel/envoy) provides a clean, minimal syntax for defining common tasks you run on your remote servers. Using Blade style syntax, you can easily setup tasks for deployment, Artisan commands, and more. Currently, Envoy only supports the Mac and Linux operating systems.
+[Laravel Envoy](https://github.com/laravel/envoy) proporciona una sintaxis limpia y minima para definir las tareas comunes que ejecuta en sus servidores remotos. Utilizando el estilo de sintaxis de Blade, puede configurar fácilmente tareas para deploy, comandos de Artisan y más. Envoy solamente es compatible en sistemas operativos Mac y Linux.
 
 <a name="installation"></a>
-### Installation
+### Instalación
 
-First, install Envoy using the Composer `global require` command:
+Primero, instale Envoy utilizando el comando de composer `global require`:
 
     composer global require laravel/envoy
 
-Since global Composer libraries can sometimes cause package version conflicts, you may wish to consider using `cgr`, which is a drop-in replacement for the `composer global require` command. The `cgr` library's installation instructions can be [found on GitHub](https://github.com/consolidation-org/cgr).
+Dado que las librerías globales de Composer ocasionalmente pueden causar conflictos en la versión del paquete, puede considerar utilizar `cgr`, el cuál es un remplazo directo para el comando `composer global require`. Las instrucciones de instalación de la librería `gcr` pueden ser [localizadas en GitHub](https://github.com/consolidation-org/cgr).
 
-> {note} Make sure to place the `~/.composer/vendor/bin` directory in your PATH so the `envoy` executable is found when running the `envoy` command in your terminal.
+> {note} Asegúrese de colocar el directorio `~/.composer/vendor/bin` en su PATH para que el ejecutable `envoy` pueda ser localizado cuando se ejecute el comando `envoy` en su terminal.
 
-#### Updating Envoy
+#### Actualizar Envoy
 
 You may also use Composer to keep your Envoy installation up to date. Issuing the `composer global update` command will update all of your globally installed Composer packages:
 
     composer global update
 
 <a name="writing-tasks"></a>
-## Writing Tasks
+## Escribir Tareas
 
-All of your Envoy tasks should be defined in an `Envoy.blade.php` file in the root of your project. Here's an example to get you started:
+Todas sus tareas de envoy deberán definirse en un archivo `Envoy.blade.php` en la raíz de su proyecto. Aquí un ejemplo para comenzar:
 
     @servers(['web' => ['user@192.168.1.1']])
 
@@ -45,16 +45,16 @@ All of your Envoy tasks should be defined in an `Envoy.blade.php` file in the ro
         ls -la
     @endtask
 
-As you can see, an array of `@servers` is defined at the top of the file, allowing you to reference these servers in the `on` option of your task declarations. Within your `@task` declarations, you should place the Bash code that should run on your server when the task is executed.
+Como puede ver, un arreglo de `@servers` es definido en la parte superior del archivo, permitiéndloe hacer referencia a estos servidores en la opción `on` en la declaración de sus tareas. Dentro de sus declaraciones `@task`, deberá colocar el código Bash que se deberá ejecutar en su servidor una vez que la tarea sea ejecutada.
 
-You can force a script to run locally by specifying the server's IP address as `127.0.0.1`:
+Puede forzar que un script se ejecute localmente especificando la dirección IP del servidor como `127.0.0.1`:
 
     @servers(['localhost' => '127.0.0.1'])
 
 <a name="setup"></a>
 ### Setup
 
-Sometimes, you may need to execute some PHP code before executing your Envoy tasks. You may use the ```@setup``` directive to declare variables and do other general PHP work before any of your other tasks are executed:
+En ocasiones, puede que necesite ejecutar algún código PHP antes de sus tareas de Envoy. Puede hacer uso de la directiva `@setup` para declarar variables y hacer uso de PHP en general antes de que sus otras tareas sean ejecutadas:
 
     @setup
         $now = new DateTime();
@@ -62,7 +62,7 @@ Sometimes, you may need to execute some PHP code before executing your Envoy tas
         $environment = isset($env) ? $env : "testing";
     @endsetup
 
-If you need to require other PHP files before your task is executed, you may use the `@include` directive at the top of your `Envoy.blade.php` file:
+Si necesita de otros archivos PHP antes de ejecutar sus tareas, puede utilizar la directiva `@include` en la parte superior de su archivo `Envoy.blade.php`:
 
     @include('vendor/autoload.php')
 
@@ -73,11 +73,11 @@ If you need to require other PHP files before your task is executed, you may use
 <a name="variables"></a>
 ### Variables
 
-If needed, you may pass option values into Envoy tasks using the command line:
+Si es necesario, puede pasar valores de opciones a las tareas de Envoy usando la línea de comandos:
 
     envoy run deploy --branch=master
 
-You may access the options in your tasks via Blade's "echo" syntax. Of course, you may also use `if` statements and loops within your tasks. For example, let's verify the presence of the `$branch` variable before executing the `git pull` command:
+Puede acceder a las opciones en sus tareas por medio de la sintaxis "echo" de Blade. Por supuesto, también puede usar declaraciones y bucles `if` dentro de sus tareas. Por ejemplo, Para verificar la presencia de la variable `$branch` antes de ejecutar el comando `git pull`:
 
     @servers(['web' => '192.168.1.1'])
 
@@ -92,9 +92,9 @@ You may access the options in your tasks via Blade's "echo" syntax. Of course, y
     @endtask
 
 <a name="stories"></a>
-### Stories
+### Historias
 
-Stories group a set of tasks under a single, convenient name, allowing you to group small, focused tasks into large tasks. For instance, a `deploy` story may run the `git` and `composer` tasks by listing the task names within its definition:
+Las historias agrupan un conjunto de tareas con un nombre único y conveniente, permitiendo agrupar tareas pequeñas enfocandose en tareas más grandes. Por ejemplo, una historia `deploy` puede ejecutar las tareas `git` y `composer` al listar los nombres de las tareas en su definición:
 
     @servers(['web' => '192.168.1.1'])
 
@@ -111,14 +111,14 @@ Stories group a set of tasks under a single, convenient name, allowing you to gr
         composer install
     @endtask
 
-Once the story has been written, you may run it just like a typical task:
+Una vez que haya finalizado de escribir su historia, puede ejecutarla como una tarea típica:
 
     envoy run deploy
 
 <a name="multiple-servers"></a>
-### Multiple Servers
+### Múltiples Servidores
 
-Envoy allows you to easily run a task across multiple servers. First, add additional servers to your `@servers` declaration. Each server should be assigned a unique name. Once you have defined your additional servers, list each of the servers in the task's `on` array:
+Envoy le permite fácilemnte ejecutar tareas a través de múltiples servidores. Primero, agregue servidores adicionales a su declaración `@servers`. A cada servidor se le debe asignar un nombre único. Una vez definidos los servidores adicionales, deberá indicar en cuáles servidores se van a ejecutar las tareas, esto puede hacerse en el arreglo `on` de cada tarea:
 
     @servers(['web-1' => '192.168.1.1', 'web-2' => '192.168.1.2'])
 
@@ -128,9 +128,9 @@ Envoy allows you to easily run a task across multiple servers. First, add additi
         php artisan migrate
     @endtask
 
-#### Parallel Execution
+#### Ejecución Paralela
 
-By default, tasks will be executed on each server serially. In other words, a task will finish running on the first server before proceeding to execute on the second server. If you would like to run a task across multiple servers in parallel, add the `parallel` option to your task declaration:
+Por defecto, las tareas serán ejecutadas en cada servidor en serie. En otras palabras, una tarea finaliza su ejecución en el primer servidor antes de proceder a ejecutarse en el segundo servidor. Si desea ejecutar una tarea a través de múltiples servidores en paralelo, agregue la opción `parallel` a la declaración de su tarea:
 
     @servers(['web-1' => '192.168.1.1', 'web-2' => '192.168.1.2'])
 
@@ -141,16 +141,16 @@ By default, tasks will be executed on each server serially. In other words, a ta
     @endtask
 
 <a name="running-tasks"></a>
-## Running Tasks
+## Ejecutar Tareas
 
-To run a task or story that is defined in your `Envoy.blade.php` file, execute Envoy's `run` command, passing the name of the task or story you would like to execute. Envoy will run the task and display the output from the servers as the task is running:
+Para ejecutar una tarea o historia que esté definida en su archivo `Envoy.blade.php`, ejecute el comando de Envoy `run`, pasando el nombre de la tarea o historia que desee ejecutar. Envoy va a ejecutar la tarea y mostrará el resultado de los servidores mientras se ejecuta la tarea:
 
     envoy run task
 
 <a name="confirming-task-execution"></a>
-### Confirming Task Execution
+### Confirmar Ejecución De Tarea
 
-If you would like to be prompted for confirmation before running a given task on your servers, you should add the `confirm` directive to your task declaration. This option is particularly useful for destructive operations:
+Si desea que se le solicite confirmación antes de ejecutar una tarea en sus servidores, deberá añadir la directiva `confirm` a la declaración de su tarea. Esta opción es particularmente útil para operaciones destructivas:
 
     @task('deploy', ['on' => 'web', 'confirm' => true])
         cd site
@@ -160,21 +160,21 @@ If you would like to be prompted for confirmation before running a given task on
 
 <a name="notifications"></a>
 <a name="hipchat-notifications"></a>
-## Notifications
+## Notificaciones
 
 <a name="slack"></a>
 ### Slack
 
-Envoy also supports sending notifications to [Slack](https://slack.com) after each task is executed. The `@slack` directive accepts a Slack hook URL and a channel name. You may retrieve your webhook URL by creating an "Incoming WebHooks" integration in your Slack control panel. You should pass the entire webhook URL into the `@slack` directive:
+Envoy también permite enviar notificaciones a [Slack](https://slack.com) después de ejecutar cada tarea. La directiva `@slack`acepta una URL de webhook a Slack y un nombre de canal. Puede recuperar su URL de webhook creando una integración "Incoming WebHooks" en el panel de control de su Slack. Debe pasar la URL de webhook completa en la directiva `@slack`:
 
     @finished
         @slack('webhook-url', '#bots')
     @endfinished
 
-You may provide one of the following as the channel argument:
+Puede proporcionar uno de los siguientes como   el argumento del canal:
 
 <div class="content-list" markdown="1">
-- To send the notification to a channel: `#channel`
-- To send the notification to a user: `@user`
+- Para enviar notificaciones a un canal: `#canal`
+- Para enviar notificaciones a un usuario: `@usuario`
 </div>
 
