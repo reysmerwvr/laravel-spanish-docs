@@ -47,7 +47,7 @@ Si prefieres especificar una ruta de directorio de salida personalizada para la 
 
 Una clase de migración contiene dos métodos: `up` y `down`. El método `up` es usado para agregar nuevas tablas, columnas, o índices para tu base de datos, mientras el método `down` debería reversar las operaciones ejecutadas por el método `up`.
 
-Dentro de ambos métodos puedes usar el constructor de esquema de Laravel para crear y modificar expresivamente las tablas. Para aprender sobe todos los métodos disponibles en el constructor `Schema`, [inspecciona su documentación](#creating-tables). Por ejemplo, este ejemplo de migración crea una tabla `flights`:
+Dentro de ambos métodos puedes usar el constructor de esquema de Laravel para crear y modificar expresivamente las tablas. Para aprender sobre todos los métodos disponibles en el constructor `Schema`, [inspecciona su documentación](#creating-tables). Por ejemplo, este ejemplo de migración crea una tabla `flights`:
 
     <?php
 
@@ -90,18 +90,18 @@ Para ejecutar todas tus maravillosas migraciones, ejecuta el comando Artisan `mi
 
     php artisan migrate
 
-> {note} Si estás usando [La máquina virtual de Homestead](/docs/{{version}}/homestead), deberías ejecutar este comando desde adentro de tu máquina virtual.
+> {note} Si estás usando [La máquina virtual de Homestead](/docs/{{version}}/homestead), deberías ejecutar este comando desde dentro de tu máquina virtual.
 
 #### Forzando las Migraciones para Ejecutar en Producción
 
-Algunas operaciones de migración son destructivas, lo que significa que ellas pueden causar que pierdas tus datos. Con el propósito de protegerte de ejecutar estos comandos contra tu base de datos de producción, recibirás un mensaje de confirmación antes que los comandos sean ejecutados. Para forzar que los comandos se ejecuten sin un retardo, use la bandera `--force`.
+Algunas operaciones de migración son destructivas, lo que significa que pueden causar que pierdas tus datos. Con el propósito de protegerte de ejecutar estos comandos contra tu base de datos de producción, recibirás un mensaje de confirmación antes que los comandos sean ejecutados. Para forzar que los comandos se ejecuten sin retardo, usa el indicador `--force`.
 
     php artisan migrate --force
 
 <a name="rolling-back-migrations"></a>
 ### Reversando Migraciones
 
-Para reversar la operación the migración más reciente, puedes usar el comando `rollback`. Este comando reversa el último "lote" de migraciones, los cuales pueden incluir archivos de migración múltiples.
+Para reversar la operación de migración más reciente, puedes usar el comando `rollback`. Este comando reversa el último "lote" de migraciones, los cuales pueden incluir archivos de migración múltiples.
 
     php artisan migrate:rollback
 
@@ -109,7 +109,7 @@ Puedes reversar un número limitado de migraciones proporcionando la opción `st
 
     php artisan migrate:rollback --step=5
 
-El comando `migrate:reset` reversará todas las migraciones de tu aplicación:
+El comando `migrate:reset` revertirá todas las migraciones de tu aplicación:
 
     php artisan migrate:reset
 
@@ -122,7 +122,7 @@ El comando `migrate:refresh` reversará todas tus migraciones y después ejecuta
     // Refresh the database and run all database seeds...
     php artisan migrate:refresh --seed
 
-Puedes reversar y volver a migrar un número limitado de migraciones proporcionando la opción `step` al comando `refresh`. Por ejemplo, el siguiente comando reversará y volverá a migrar las cinco migraciones más recientes:
+Puedes reversar y volver a migrar un número limitado de migraciones proporcionando la opción `step` al comando `refresh`. Por ejemplo, el siguiente comando revertirá y volverá a migrar las cinco migraciones más recientes:
 
     php artisan migrate:refresh --step=5
 
@@ -140,7 +140,7 @@ El comando `migrate:fresh` eliminará todas las tablas de la base de datos y des
 <a name="creating-tables"></a>
 ### Creando Tablas
 
-Para crear una nueva tabla en la base de datos, usa el método `create` en la clase facade `Schema`. El método `create` acepta dos argumentos. El primero es el nombre de la tabla, mientras que el segundo es una `Closure` la cual recive un objeto de la clase `Blueprint` que puede ser usado para definir la nueva tabla:
+Para crear una nueva tabla en la base de datos, usa el método `create` en la clase facade `Schema`. El método `create` acepta dos argumentos. El primero es el nombre de la tabla, mientras que el segundo es una `Closure` la cual recibe un objeto de la clase `Blueprint` que puede ser usado para definir la nueva tabla:
 
     Schema::create('users', function (Blueprint $table) {
         $table->increments('id');
@@ -162,7 +162,7 @@ Puedes inspeccionar fácilmente la existencia de una tabla o columna usando los 
 
 #### Conexión de Base de Datos & Opciones de Tabla
 
-Si quieres ejecutar una operación de esquema en una conexión de base de datos que no es tu conexión predeterminada, use el método `connection`:
+Si quieres ejecutar una operación de esquema en una conexión de base de datos que no es tu conexión predeterminada, usa el método `connection`:
 
     Schema::connection('foo')->create('users', function (Blueprint $table) {
         $table->increments('id');
@@ -174,13 +174,13 @@ Command  |  Description
 -------  |  -----------
 `$table->engine = 'InnoDB';`  |  Especificar el motor de almacenamiento de la tabla. (Sólo en MySQL).
 `$table->charset = 'utf8';`  |  Especificar un conjunto de caracteres. (Sólo en MySQL).
-`$table->collation = 'utf8_unicode_ci';`  |  Especificar un ordenamiento predeterminado para la tabla. (Sólo en MySQL)
+`$table->collation = 'utf8_unicode_ci';`  |  Especificar un orden predeterminado para la tabla. (Sólo en MySQL)
 `$table->temporary();`  |  Crea una tabla temporal (excepto en SQL Server).
 
 <a name="renaming-and-dropping-tables"></a>
 ### Renombrando / Eliminando Tablas
 
-Para renombrar una tabla de base de datos existente, use el método `rename`:
+Para renombrar una tabla de base de datos existente, usa el método `rename`:
 
     Schema::rename($from, $to);
 
@@ -220,10 +220,10 @@ Command  |  Description
 `$table->date('created_at');`  |  Tipo de columna equivalente a DATE.
 `$table->dateTime('created_at');`  |  Tipo de columna equivalente a DATETIME.
 `$table->dateTimeTz('created_at');`  |  Tipo de columna equivalente a DATETIME (con hora de la zona).
-`$table->decimal('amount', 8, 2);`  |  Tipo de columna equivalente a DECIMAL con una precisión (el total de dígitos) y escala de(dígitos decimales).
-`$table->double('amount', 8, 2);`  |  Tipo de columna equivalente a DOUBLE con una precisión (el total de dígitos) y escala de(dígitos decimales).
+`$table->decimal('amount', 8, 2);`  |  Tipo de columna equivalente a DECIMAL con una precisión (el total de dígitos) y escala de dígitos decimales.
+`$table->double('amount', 8, 2);`  |  Tipo de columna equivalente a DOUBLE con una precisión (el total de dígitos) y escala de dígitos decimales.
 `$table->enum('level', ['easy', 'hard']);`  |  Tipo de columna equivalente a ENUM.
-`$table->float('amount', 8, 2);`  |  Tipo de columna equivalente a FLOAT con una precisión (el total de dígitos) y escala de(dígitos decimales).
+`$table->float('amount', 8, 2);`  |  Tipo de columna equivalente a FLOAT con una precisión (el total de dígitos) y escala de dígitos decimales.
 `$table->geometry('positions');`  |  Tipo de columna equivalente a GEOMETRY.
 `$table->geometryCollection('positions');`  |  Tipo de columna equivalente a GEOMETRYCOLLECTION.
 `$table->increments('id');`  |  Tipo de columna equivalente a Auto-incremento UNSIGNED INTEGER (clave primaria).
@@ -410,7 +410,7 @@ Alternativamente, puedes habilitar la opción `innodb_large_prefix` para tu base
 <a name="dropping-indexes"></a>
 ### Eliminando Índices
 
-Para eliminar un índice, debes especificar el nombre del índice. De forma predeterminada, Laravel asigna automáticamente un nombre razonable para los índices. Concatena el nombre de la tabla, el nombre de la columna indexada, y el tipo de índice. Aquí están algunos ejemplos:
+Para eliminar un índice, debes especificar el nombre del índice. De forma predeterminada, Laravel asigna automáticamente un nombre razonable para los índices. Concatena el nombre de la tabla, el nombre de la columna indexada y el tipo de índice. Aquí están algunos ejemplos:
 
 Command  |  Description
 -------  |  -----------
@@ -450,7 +450,7 @@ O, puedes pasar un arreglo de valores el cual usará automáticamente el nombre 
 
     $table->dropForeign(['user_id']);
 
-Puedes habilitar o deshabilitar las restricciones de clave foránea dentro de tus migraciones usando los métodos siguientes:
+Puedes habilitar o deshabilitar las restricciones de clave foránea dentro de tus migraciones usando los siguientes métodos:
 
     Schema::enableForeignKeyConstraints();
 
