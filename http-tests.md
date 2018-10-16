@@ -4,7 +4,7 @@
     - [Personalizando Encabezados de Solicitud](#customizing-request-headers)
 - [Sesión / Autenticación](#session-and-authentication)
 - [Probando APIs JSON](#testing-json-apis)
-- [Probando las Subidas de Archivo](#testing-file-uploads)
+- [Probando las Subidas de Archivos](#testing-file-uploads)
 - [Aserciones Disponibles](#available-assertions)
     - [Aserciones de Respuesta](#response-assertions)
     - [Aserciones de Autenticación](#authentication-assertions)
@@ -37,7 +37,7 @@ Laravel proporciona una API muy fluida para hacer solicitudes HTTP a tu aplicaci
         }
     }
 
-El método `get` simula una solicitud `GET` dentro de la aplicación, mientras que el método `assertStatus` comprueba que la respuesta devuelta debería tener el código de status HTTP dado. Además de esta sencilla aserción, Laravel también contiene una variedad de aserciones para inspeccionar los encabezados, contenidos, estructura JSON, y más cosas de la respuesta. 
+El método `get` simula una solicitud `GET` dentro de la aplicación, mientras que el método `assertStatus` comprueba que la respuesta devuelta debería tener el código de estado HTTP dado. Además de esta sencilla aserción, Laravel también contiene una variedad de aserciones para inspeccionar los encabezados, contenidos, estructura JSON y más de la respuesta. 
 
 <a name="customizing-request-headers"></a>
 ### Personalizando Encabezados de Solicitud
@@ -70,7 +70,7 @@ Puedes usar el método `withHeaders` para personalzar los encabezados de la soli
 <a name="session-and-authentication"></a>
 ## Sesión / Autenticación
 
-Laravel proporciona varios helpers para trabajar con la sesión durante las pruebas HTTP. Primero, puedes colocar los datos de la sesión en un arreglo dado usando el método `withSession`. Esto es útil para cargar la sesión con los datos antes de usar una solicitud a tu aplicación:
+Laravel proporciona varios helpers para trabajar con la sesión durante las pruebas HTTP. Primero, puedes colocar los datos de la sesión en un arreglo dado usando el método `withSession`. Esto es útil para cargar la sesión con los datos antes de realizar una solicitud a tu aplicación:
 
     <?php
 
@@ -83,7 +83,7 @@ Laravel proporciona varios helpers para trabajar con la sesión durante las prue
         }
     }
 
-Ciertamente, un uso común de la sesión es para mantener el estado del usuario autenticado. El método helper `actingAs` proporciona una foma sencilla de autenticar un usuario dado con el usuario actual. Por ejemplo, podemos usar una [fábrica de modelos](/docs/{{version}}/database-testing#writing-factories) para generar y autenticar un usuario:
+Ciertamente, un uso común de la sesión es para mantener el estado del usuario autenticado. El método helper `actingAs` proporciona una foma sencilla de autenticar un usuario dado con el usuario actual. Por ejemplo, podemos usar un [model factorie](/docs/{{version}}/database-testing#writing-factories) para generar y autenticar un usuario:
 
     <?php
 
@@ -101,14 +101,14 @@ Ciertamente, un uso común de la sesión es para mantener el estado del usuario 
         }
     }
 
-También puedes especificar que guardian debería ser usado para autenticar el usuario dado al pasar el nombre del guardian como segundo argumento del método `actingAs`:
+También puedes especificar que guard debería ser usado para autenticar el usuario dado al pasar el nombre del guard como segundo argumento del método `actingAs`:
 
     $this->actingAs($user, 'api')
 
 <a name="testing-json-apis"></a>
 ## Probando APIs JSON
 
-Laravel también proporciona varios helpers para probar APIs JSOn y sus respuestas. Por ejemplo, los métodos `json`, `get`, `post`, `put`, `patch`, y `delete` pueden ser usados para suministrar solicitudes con varios verbos HTTP. También puedes pasar datos y encabezados fácilmente a estos métodos. Para empezar, vamos a escribir una prueba para hacer una solicitud `POST` a `/user` y comprobar que los datos esperados fueron devueltos:
+Laravel también proporciona varios helpers para probar APIs JSOn y sus respuestas. Por ejemplo, los métodos `json`, `get`, `post`, `put`, `patch` y `delete` pueden ser usados para suministrar solicitudes con varios verbos HTTP. También puedes pasar datos y encabezados fácilmente a estos métodos. Para empezar, vamos a escribir una prueba para hacer una solicitud `POST` a `/user` y comprobar que los datos esperados fueron devueltos:
 
     <?php
 
@@ -160,9 +160,9 @@ Si prefieres verificar que el arreglo dado esté contenido **exactamente** en la
     }
 
 <a name="testing-file-uploads"></a>
-## Probando las Subidas de Archivo
+## Probando las Subidas de Archivos
 
-La clase `Illuminate\Http\UploadedFile` proporciona un método `fake` el cual puede ser usado para generar archivos de prueba o imágenes para prueba. Esto, combinado con el método `fake` de la clase facade `Storage` simplifica grandemente la prueba de subidas de archivo. Por ejemplo, puedes combinar estas dos características para probar fácilmente un formulario de subida de un avatar:
+La clase `Illuminate\Http\UploadedFile` proporciona un método `fake` el cual puede ser usado para generar archivos de prueba o imágenes para prueba. Esto, combinado con el método `fake` de la clase facade `Storage` simplifica grandemente la prueba de subidas de archivos. Por ejemplo, puedes combinar estas dos características para probar fácilmente un formulario de subida de un avatar:
 
     <?php
 
@@ -208,7 +208,7 @@ Además de crear imágenes, puedes crear archivos de cualquier otro tipo usando 
 <a name="response-assertions"></a>
 ### Aserciones de Respuesta
 
-Laravel proporciona una variedad de métodos de aserción personalizados para tus pruebas [PHPUnit](https://phpunit.de/). Estas aserciones pueden ser accedidas en la respuesta que es devuelta de los métodos de prueba `json`, `get`, `post`, `put`, y `delete`:
+Laravel proporciona una variedad de métodos de aserción personalizados para tus pruebas [PHPUnit](https://phpunit.de/). Estas aserciones pueden ser accedidas en la respuesta que es retornada por los métodos de prueba `json`, `get`, `post`, `put` y `delete`:
 
 <style>
     .collection-method-list > p {
@@ -434,21 +434,21 @@ Comprueba que la respuesta tenga un código de estado de éxito:
 <a name="assert-view-has"></a>
 #### assertViewHas
 
-Comprueba que la vista de la respuesta fué dada en una proción de los datos:
+Comprueba que la vista de la respuesta dada contiene los valores indicados:
 
     $response->assertViewHas($key, $value = null);
 
 <a name="assert-view-has-all"></a>
 #### assertViewHasAll
 
-Comprueba que la vista de la respuesta tiene una lista dada de datos:
+Comprueba que la vista de la respuesta tiene una lista de datos:
 
     $response->assertViewHasAll(array $data);
 
 <a name="assert-view-is"></a>
 #### assertViewIs
 
-Comprueba que la vista dada fué devuelta por la ruta:
+Comprueba que la vista dada fué retornada por la ruta:
 
     $response->assertViewIs($value);
 
@@ -470,4 +470,4 @@ Método  | Descripción
 `$this->assertGuest($guard = null);`  |  Comprueba que el usuario no está autenticado.
 `$this->assertAuthenticatedAs($user, $guard = null);`  |  Comprueba que el usuario dado está autenticado.
 `$this->assertCredentials(array $credentials, $guard = null);`  |  Comprueba que las credenciales dadas son válidas.
-`$this->assertInvalidCredentials(array $credentials, $guard = null);`  |  Comprueba que las credenciales dadads no son válidas.
+`$this->assertInvalidCredentials(array $credentials, $guard = null);`  |  Comprueba que las credenciales dadas no son válidas.
