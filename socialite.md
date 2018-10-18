@@ -1,32 +1,32 @@
-# Laravel Socialite
+# Socialite para Laravel
 
-- [Introduction](#introduction)
-- [Installation](#installation)
-- [Configuration](#configuration)
-- [Routing](#routing)
-- [Optional Parameters](#optional-parameters)
-- [Access Scopes](#access-scopes)
-- [Stateless Authentication](#stateless-authentication)
-- [Retrieving User Details](#retrieving-user-details)
+- [Introducción](#introduction)
+- [Instalación](#installation)
+- [Configuración](#configuration)
+- [Enrutamiento](#routing)
+- [Parámetros Opcionales](#optional-parameters)
+- [Alcances de Acceso](#access-scopes)
+- [Autenticación Sin Estado](#stateless-authentication)
+- [Obteniendo Detalles de Usuario](#retrieving-user-details)
 
 <a name="introduction"></a>
-## Introduction
+## Introducción
 
-In addition to typical, form based authentication, Laravel also provides a simple, convenient way to authenticate with OAuth providers using [Laravel Socialite](https://github.com/laravel/socialite). Socialite currently supports authentication with Facebook, Twitter, LinkedIn, Google, GitHub and Bitbucket.
+Además de la típica, autenticación basada en formulario, Laravel también proporciona una sencilla, forma conveniente de autenticar con proveedores OAuth usando [Socialite para Laravel](https://github.com/laravel/socialite). Actualmente Socialite soporta autenticación con Facebook, Twitter, LinkedIn, Google, Github y Bitbucket.
 
-> {tip} Adapters for other platforms are listed at the community driven [Socialite Providers](https://socialiteproviders.github.io/) website.
+> {tip} Los adaptadores para otras plataformas son listados en el sitio web de [Proveedores de Socialite](https://socialiteproviders.github.io/) manejado por la comunidad.
 
 <a name="installation"></a>
-## Installation
+## Instalación
 
-To get started with Socialite, use Composer to add the package to your project's dependencies:
+Para empezar con Socialite, usa Composer para agregar el paquete a las dependencias de tu proyecto:
 
     composer require laravel/socialite
 
 <a name="configuration"></a>
-## Configuration
+## Configuración
 
-Before using Socialite, you will also need to add credentials for the OAuth services your application utilizes. These credentials should be placed in your `config/services.php` configuration file, and should use the key `facebook`, `twitter`, `linkedin`, `google`, `github` or `bitbucket`, depending on the providers your application requires. For example:
+Antes de usar Socialite, también necesitaras agregar las credenciales para los servicios OAuth que tu aplicación utiliza . Estas credenciales deberían estar colocadas en tu archivo de configuración `config/services.php`, y debería usar la clave `facebook`, `twitter`, `linkedin`, `google`, `github` or `bitbucket`, dependiendo del proveedor que tu aplicación requiere. Por ejemplo:
 
     'github' => [
         'client_id' => env('GITHUB_CLIENT_ID'),         // Your GitHub Client ID
@@ -34,12 +34,12 @@ Before using Socialite, you will also need to add credentials for the OAuth serv
         'redirect' => 'http://your-callback-url',
     ],
 
-> {tip} If the `redirect` option contains a relative path, it will automatically be resolved to a fully qualified URL.
+> {tip} Si la opción `redirect` contiene una ruta relativa, será resuelta automátiicamente a una URL completamente calificada.
 
 <a name="routing"></a>
-## Routing
+## Enrutamiento
 
-Next, you are ready to authenticate users! You will need two routes: one for redirecting the user to the OAuth provider, and another for receiving the callback from the provider after authentication. We will access Socialite using the `Socialite` facade:
+En el siguiente paso, ¡estás listo para autenticar usuarios! Necesitarás dos rutas: una para redireccionar el usuario al proveedor OAuth, y otra para recibir la función de retorno del proveedor después de la autenticación. Accesaremos Socialite usando la clase facade `Socialite`:
 
     <?php
 
@@ -72,50 +72,50 @@ Next, you are ready to authenticate users! You will need two routes: one for red
         }
     }
 
-The `redirect` method takes care of sending the user to the OAuth provider, while the `user` method will read the incoming request and retrieve the user's information from the provider.
+El método `redirect` toma el cuidado de enviar el usuario al proveedor OAuth, mientras que el método `user` leerá la solicitud entrante y obtendrá lá información del usuario desde el proveedor.
 
-Of course, you will need to define routes to your controller methods:
+Ciertamente, necesitarás definir las rutas para tus métodos de controlador:
 
     Route::get('login/github', 'Auth\LoginController@redirectToProvider');
     Route::get('login/github/callback', 'Auth\LoginController@handleProviderCallback');
 
 <a name="optional-parameters"></a>
-## Optional Parameters
+## Parámetros Opcionales
 
-A number of OAuth providers support optional parameters in the redirect request. To include any optional parameters in the request, call the `with` method with an associative array:
+Un número de proveedores OAuth soportan parámetros opcionales en la solicitud de redirección. Para incluir algunos de los parámetros opcionales en la solicitud, ejecuta el método `with` con un arreglo asociativo:
 
     return Socialite::driver('google')
         ->with(['hd' => 'example.com'])
         ->redirect();
 
-> {note} When using the `with` method, be careful not to pass any reserved keywords such as `state` or `response_type`.
+> {note} Al momento de usar el método `with`, procura no pasar algunas palabras reservadas tales como `state` or `response_type`.
 
 <a name="access-scopes"></a>
-## Access Scopes
+## Alcances de Acceso
 
-Before redirecting the user, you may also add additional "scopes" on the request using the `scopes` method. This method will merge all existing scopes with the ones you supply:
+Antes de redirecionar al usuario, también puedes agregar "alcances" adicionales en la solicitud usando el método `scopes`. Este método mezclará todos los alcances existentes con los que suministras:
 
     return Socialite::driver('github')
         ->scopes(['read:user', 'public_repo'])
         ->redirect();
 
-You can overwrite all exisiting scopes using the `setScopes` method:
+Puedes sobreescribir todos los alcances existentes usando el método `setScopes`:
 
     return Socialite::driver('github')
         ->setScopes(['read:user', 'public_repo'])
         ->redirect();
 
 <a name="stateless-authentication"></a>
-## Stateless Authentication
+## Autenticación Sin Estado
 
-The `stateless` method may be used to disable session state verification. This is useful when adding social authentication to an API:
+El método `stateless` puede ser usado para deshabilitar la verificación de estado de sesión. Esto es útil al momento de agregar la autenticación en una red social a una API.
 
     return Socialite::driver('google')->stateless()->user();
 
 <a name="retrieving-user-details"></a>
-## Retrieving User Details
+## Obteniendo Detalles de Usuario
 
-Once you have a user instance, you can grab a few more details about the user:
+Una vez que tengas una instancia de usuario, puedes aprovechar de agarrar unos cuantos detalles del usuario:
 
     $user = Socialite::driver('github')->user();
 
@@ -135,14 +135,14 @@ Once you have a user instance, you can grab a few more details about the user:
     $user->getEmail();
     $user->getAvatar();
 
-#### Retrieving User Details From A Token (OAuth2)
+#### Obteniendo los Detalles de Usuario desde un Token (OAuth2)
 
-If you already have a valid access token for a user, you can retrieve their details using the `userFromToken` method:
+Si ya tienes un token de acceso válido de un usuario, puedes obtener sus detalles usando el método `userFromToken`:
 
     $user = Socialite::driver('github')->userFromToken($token);
     
-#### Retrieving User Details From A Token And Secret (OAuth1)
+#### Obteniendo los Detalles de Usuario desde un Token y Secreto (OAuth1)
 
-If you already have a valid pair of token / secret for a user, you can retrieve their details using the `userFromTokenAndSecret` method:
+Si ya tienes un par válido de token / secreto de un usuario, puedes obtener sus detalles usando el método `userFromTokenAndSecret`:
 
     $user = Socialite::driver('twitter')->userFromTokenAndSecret($token, $secret);
