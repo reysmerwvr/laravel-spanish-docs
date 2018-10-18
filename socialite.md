@@ -12,7 +12,7 @@
 <a name="introduction"></a>
 ## Introducción
 
-Además de la típica, autenticación basada en formulario, Laravel también proporciona una sencilla, forma conveniente de autenticar con proveedores OAuth usando [Socialite para Laravel](https://github.com/laravel/socialite). Actualmente Socialite soporta autenticación con Facebook, Twitter, LinkedIn, Google, Github y Bitbucket.
+Además de la típica, autenticación basada en formulario, Laravel también proporciona una sencilla y conveniente forma de autenticar con proveedores OAuth usando [Socialite para Laravel](https://github.com/laravel/socialite). Actualmente Socialite soporta autenticación con Facebook, Twitter, LinkedIn, Google, Github y Bitbucket.
 
 > {tip} Los adaptadores para otras plataformas son listados en el sitio web de [Proveedores de Socialite](https://socialiteproviders.github.io/) manejado por la comunidad.
 
@@ -26,7 +26,7 @@ Para empezar con Socialite, usa Composer para agregar el paquete a las dependenc
 <a name="configuration"></a>
 ## Configuración
 
-Antes de usar Socialite, también necesitaras agregar las credenciales para los servicios OAuth que tu aplicación utiliza . Estas credenciales deberían estar colocadas en tu archivo de configuración `config/services.php`, y debería usar la clave `facebook`, `twitter`, `linkedin`, `google`, `github` or `bitbucket`, dependiendo del proveedor que tu aplicación requiere. Por ejemplo:
+Antes de usar Socialite, también necesitaras agregar las credenciales para los servicios OAuth que tu aplicación utiliza. Estas credenciales deberían estar colocadas en tu archivo de configuración `config/services.php`, y debería usar la clave `facebook`, `twitter`, `linkedin`, `google`, `github` o `bitbucket` dependiendo del proveedor que tu aplicación requiera. Por ejemplo:
 
     'github' => [
         'client_id' => env('GITHUB_CLIENT_ID'),         // Your GitHub Client ID
@@ -34,12 +34,12 @@ Antes de usar Socialite, también necesitaras agregar las credenciales para los 
         'redirect' => 'http://your-callback-url',
     ],
 
-> {tip} Si la opción `redirect` contiene una ruta relativa, será resuelta automátiicamente a una URL completamente calificada.
+> {tip} Si la opción `redirect` contiene una ruta relativa, será resuelta automáticamente a una URL completamente calificada.
 
 <a name="routing"></a>
 ## Enrutamiento
 
-En el siguiente paso, ¡estás listo para autenticar usuarios! Necesitarás dos rutas: una para redireccionar el usuario al proveedor OAuth, y otra para recibir la función de retorno del proveedor después de la autenticación. Accesaremos Socialite usando la clase facade `Socialite`:
+En el siguiente paso, ¡estás listo para autenticar usuarios! Necesitarás dos rutas: una para redireccionar el usuario al proveedor OAuth y otra para recibir la función de retorno del proveedor después de la autenticación. Accederemos a Socialite usando la clase facade `Socialite`:
 
     <?php
 
@@ -72,7 +72,7 @@ En el siguiente paso, ¡estás listo para autenticar usuarios! Necesitarás dos 
         }
     }
 
-El método `redirect` toma el cuidado de enviar el usuario al proveedor OAuth, mientras que el método `user` leerá la solicitud entrante y obtendrá lá información del usuario desde el proveedor.
+El método `redirect` se toma la tarea de enviar el usuario al proveedor OAuth, mientras que el método `user` leerá la solicitud entrante y obtendrá lá información del usuario desde el proveedor.
 
 Ciertamente, necesitarás definir las rutas para tus métodos de controlador:
 
@@ -99,7 +99,7 @@ Antes de redirecionar al usuario, también puedes agregar "alcances" adicionales
         ->scopes(['read:user', 'public_repo'])
         ->redirect();
 
-Puedes sobreescribir todos los alcances existentes usando el método `setScopes`:
+Puedes sobrescribir todos los alcances existentes usando el método `setScopes`:
 
     return Socialite::driver('github')
         ->setScopes(['read:user', 'public_repo'])
@@ -108,14 +108,14 @@ Puedes sobreescribir todos los alcances existentes usando el método `setScopes`
 <a name="stateless-authentication"></a>
 ## Autenticación Sin Estado
 
-El método `stateless` puede ser usado para deshabilitar la verificación de estado de sesión. Esto es útil al momento de agregar la autenticación en una red social a una API.
+El método `stateless` puede ser usado para deshabilitar la verificación de estado de sesión. Esto es útil al momento de agregar la autenticación de una red social a una API.
 
     return Socialite::driver('google')->stateless()->user();
 
 <a name="retrieving-user-details"></a>
 ## Obteniendo Detalles de Usuario
 
-Una vez que tengas una instancia de usuario, puedes aprovechar de agarrar unos cuantos detalles del usuario:
+Una vez que tengas una instancia de usuario, puedes aprovechar de obtener algunos detalles del usuario:
 
     $user = Socialite::driver('github')->user();
 
