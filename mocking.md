@@ -1,25 +1,25 @@
 # Mocking
 
 - [Introducción](#introduction)
-- [El Método Fake de la Clase Facade Bus](#bus-fake)
-- [El Método Fake de la Clase Facade Event](#event-fake)
-- [El Método Fake de la Clase Facade Mail](#mail-fake)
-- [El Método Fake de la Clase Facade Notification](#notification-fake)
-- [El Método Fake de la Clase Facade Queue](#queue-fake)
-- [El Método Fake de la Clase Facade Storage](#storage-fake)
-- [Las Clases Facades](#mocking-facades)
+- [Método Fake de la Clase Facade Bus](#bus-fake)
+- [Método Fake de la Clase Facade Event](#event-fake)
+- [Método Fake de la Clase Facade Mail](#mail-fake)
+- [Método Fake de la Clase Facade Notification](#notification-fake)
+- [Método Fake de la Clase Facade Queue](#queue-fake)
+- [Método Fake de la Clase Facade Storage](#storage-fake)
+- [Clases Facade](#mocking-facades)
 
 <a name="introduction"></a>
 ## Introducción
 
-Al momento de probar aplicaciones de Laravel, puedes querer "simular" ciertos aspectos de tu aplicación de modo que realmente no sean ejecutados durante una prueba dada. Por ejemplo, al momento de probar un controlador que despacha un evento, puedes querer simular los listeners de eventos de modo que en realmente no se ejecuten durante la prueba. Esto te permite probar solamente la respuesta HTTP del controlador sin preocuparte por la ejecución de los listeners de eventos, ya que los listener de eventos pueden ser evaluados en su propios caso de prueba.
+Al momento de probar aplicaciones de Laravel, puedes querer "simular" ciertos aspectos de tu aplicación de modo que realmente no sean ejecutados durante una prueba dada. Por ejemplo, al momento de probar un controlador que despacha un evento, puedes querer simular los listeners de eventos de modo que realmente no se ejecuten durante la prueba. Esto te permite probar solamente la respuesta HTTP del controlador sin preocuparte por la ejecución de los listeners de eventos, ya que los listeners de eventos pueden ser evaluados en sus propios casos de prueba.
 
-Laravel proporciona helpers para simular eventos, tareas, y clases facades predeterminadas. Estos helpers proporcionan principalmente una capa conveniente sobre la clase Mockery de modo que no tengas que hacer manualmente llamadas de métodos Mockery complicadas. Ciertamente, eres libre de usar [Mockery](http://docs.mockery.io/en/latest/) o PHPUnit para crear tus propios mocks o spies.
+Laravel provee helpers para simular eventos, tarea, y clases facades predeterminadas. Estos helpers proporcionan principalmente una capa conveniente sobre la clase Mockery de modo que no tengas que hacer manualmente llamadas complicadas a métodos Mockery. Ciertamente, eres libre de usar [Mockery](http://docs.mockery.io/en/latest/) o PHPUnit para crear tus propios mocks o spies.
 
 <a name="bus-fake"></a>
 ## El Método Fake de la Clase Facade Bus
 
-Como una alternativa a mocking, puedes usar el método `fake` de la clase facade `Bus` para prevenir tareas de ser despachadas. Al momento de usar fakes, las aserciones serán hechas después que el código bajo prueba sea ejecutado.
+Como una alternativa a mocking, puedes usar el método `fake` de la clase facade `Bus` para evitar que determinadas tareas sean despachadas. Al momento de usar fakes, las aserciones serán hechas después de que el código bajo prueba sea ejecutado.
 
     <?php
 
@@ -51,7 +51,7 @@ Como una alternativa a mocking, puedes usar el método `fake` de la clase facade
 <a name="event-fake"></a>
 ## El método Fake de la Clase Facade Event
 
-Como una alternativa a mocking, puedes usar el método `fake` de la clase facade `Event` para prevenir la ejecución de todos los listeners de eventos. Después puedes comprobar que los eventos fueron despachados e incluso inspeccionar los datos que recibieron. Al momento de usar fakes, las asercciones son hechas después de que el código bajo prueba sea ejecutado:
+Como una alternativa a mocking, puedes usar el método `fake` de la clase facade `Event` para prevenir la ejecución de todos los listeners de eventos. Después puedes comprobar que los eventos fueron despachados e incluso inspeccionar los datos que recibieron. Al momento de usar fakes, las aserciones son hechas después de que el código bajo prueba sea ejecutado:
 
     <?php
 
@@ -86,7 +86,7 @@ Como una alternativa a mocking, puedes usar el método `fake` de la clase facade
 <a name="mail-fake"></a>
 ## El Método Fake de la Clase Facade Mail
 
-Puedes usar el método `fake` de la clase facade `Mail` para prevenir que los correos sean enviados. Después puedes comprobar que [correos que pueden ser entregados](/docs/{{version}}/mail) fueron enviados a los usuarios e incluso inspeccionar los datos que recibieron. Al momento de usar fakes, las aserciones son hechas después que el código bajo test sea ejecutado.
+Puedes usar el método `fake` de la clase facade `Mail` para prevenir que los correos sean enviados. Después puedes comprobar que [los correos que pueden ser entregados](/docs/{{version}}/mail) fueron enviados a los usuarios e incluso inspeccionar los datos que recibieron. Al momento de usar fakes, las aserciones son hechas después de que el código bajo prueba sea ejecutado.
 
     <?php
 
@@ -133,7 +133,7 @@ Si estas encolando correos que pueden ser enviados para entregar en segundo plan
 <a name="notification-fake"></a>
 ## El Método Fake de la Clase Facade Notification
 
-Puedes usar el método `fake` de la clase facade `Notification` para prevenir que se envién las notificaciones. Después puedes comprobar que [notificaciones](/docs/{{version}}/notifications) fueron enviadas a los usuarios e incluso inspeccionar los datos que recibieron. Al momento de usar fakes, las aserciones son hechas después que el código bajo prueba es ejecutado:
+Puedes usar el método `fake` de la clase facade `Notification` para prevenir que se envién las notificaciones. Después puedes comprobar que [notificaciones](/docs/{{version}}/notifications) fueron enviadas a los usuarios e incluso inspeccionar los datos que recibieron. Al momento de usar fakes, las aserciones son hechas después de que el código bajo prueba es ejecutado:
 
     <?php
 
@@ -176,7 +176,7 @@ Puedes usar el método `fake` de la clase facade `Notification` para prevenir qu
 <a name="queue-fake"></a>
 ## El Método Fake de la Clase Facade Queue
 
-Como alternativa a mocking, puedes usar el método `fake` de la clase facade `Queue` para prevenir que las tareas sean encoladas. Después puedes comprobar que tareas fueron empujadas a la cola e incluso inspeccionar los datos que recibieron. Al momento de usar fakes, las aserciones son hechas después que el código bajo prueba es ejecutado:
+Como alternativa a mocking, puedes usar el método `fake` de la clase facade `Queue` para prevenir que las tareas sean encoladas. Después puedes comprobar que tareas fueron empujadas a la cola e incluso inspeccionar los datos que recibieron. Al momento de usar fakes, las aserciones son hechas después de que el código bajo prueba es ejecutado:
 
     <?php
 
@@ -244,7 +244,7 @@ El método fake de la clase facade Storage permite que generes fácilmente una d
         }
     }
 
-> {tip} De forma predeterminada, el método `fake` borrará todos los archivos en su directorio temporal. Si prefieres mantener estos archivos, puedes usar el método "persistentFake" en su lugar.
+> {tip} De forma predeterminada, el método `fake` borrará todos los archivos en su directorio temporal. Si prefieres mantener estos archivos, puedes usar en su lugar el método "persistentFake".
 
 <a name="mocking-facades"></a>
 ## Las Clases Facades
