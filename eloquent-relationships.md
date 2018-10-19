@@ -20,19 +20,19 @@
 - [Insertando & Actualizando Modelos Relacionados](#inserting-and-updating-related-models)
     - [El Método `save`](#the-save-method)
     - [El Método `create`](#the-create-method)
-    - [Relaciones Pertenece a](#updating-belongs-to-relationships)
-    - [Relaciones Muchos a Muchos](#updating-many-to-many-relationships)
+    - [Actualizando Relaciones Pertenece a](#updating-belongs-to-relationships)
+    - [Actualizando Relaciones Muchos a Muchos](#updating-many-to-many-relationships)
 - [Tocando Marcas de Tiempo del Padre](#touching-parent-timestamps)
 
 <a name="introduction"></a>
 ## Introducción
 
-Las tablas de Base de datos frecuentemente estan relacionadas a otra tabla. Por ejemplo, un post de blog puede tener muchos comentarios, o un pedido podría estar relacionado al usuario que lo colocó. Eloquent hace que manejar y trabajar con estas relaciones sea fácil, y soporta varios tipos de relaciones:
+Las tablas de Base de datos frecuentemente estan relacionadas a otra tabla. Por ejemplo, un post de blog puede tener muchos comentarios o un pedido podría estar relacionado al usuario que lo colocó. Eloquent hace que manejar y trabajar con estas relaciones sea fácil, y soporta varios tipos de relaciones:
 
 - [Una a Una](#one-to-one)
 - [Una a Muchos](#one-to-many)
 - [Muchos a Muchos](#many-to-many)
-- [Has Many Through](#has-many-through)
+- [Muchos a Través de](#has-many-through)
 - [Relaciones Polimórficas](#polymorphic-relations)
 - [Relaciones Polimórficas Muchos a Muchos](#many-to-many-polymorphic-relations)
 
@@ -67,15 +67,15 @@ Una relación una a una es una relación muy sencilla. Por ejemplo, un modelo `U
         }
     }
 
-El primer argumento pasado al método `hasOne` es el nombre del modelo relacionado. Una vez que la relación es definida, podemos obtener el registro relacionado usando propiedades dinámicas de Eloquent. Las propiedades dinámicas permiten que accedas métodos de relación como si fueran propiedades definidas en el modelo:
+El primer argumento pasado al método `hasOne` es el nombre del modelo relacionado. Una vez que la relación es definida, podemos obtener el registro relacionado usando propiedades dinámicas de Eloquent. Las propiedades dinámicas permiten que accedas a métodos de relación como si fueran propiedades definidas en el modelo:
 
     $phone = User::find(1)->phone;
 
-Eloquent determina la clave foránea de la relación basado en el nombre del modelo. En este caso, se asume automáticamente que el modelo `Phone` tenga una clave foránea `user_id`. Si deseas sobreescribir esta convención, puedes pasar un segundo argumento al método `hasOne`:
+Eloquent determina la clave foránea de la relación en base al nombre del modelo. En este caso, se asume automáticamente que el modelo `Phone` tenga una clave foránea `user_id`. Si deseas sobrescribir esta convención, puedes pasar un segundo argumento al método `hasOne`:
 
     return $this->hasOne('App\Phone', 'foreign_key');
 
-Adicionalmente, Eloquent asume que la clave foránea debería tener un valor que coincida con la columna `id` (o la `$primaryKey` personalizada) del padre. En otras palabras, Eloquent buscará el valor de la columna `id` del usuario en la columna `user_id` de `Phone`. Si prefieres que la relación use un valor distinto de `id`, puedes pasar un tercer argumento al método `hasOne` especificando tu clave personalizada:
+Adicionalmente, Eloquent asume que la clave foránea debería tener un valor que coincida con la columna `id` (o `$primaryKey` personalizada) del padre. En otras palabras, Eloquent buscará el valor de la columna `id` del usuario en la columna `user_id` de `Phone`. Si prefieres que la relación use un valor distinto de `id`, puedes pasar un tercer argumento al método `hasOne` especificando tu clave personalizada:
 
     return $this->hasOne('App\Phone', 'foreign_key', 'local_key');
 
@@ -177,9 +177,9 @@ Una relación "una-a-muchos" es usada para definir relaciones donde un solo mode
         }
     }
 
-Recuerda, Eloquent determinará automáticamente la columna de clave foránea apropiada en el modelo `Comment`. Por convención, Eloquent tomará el nombre "snake_case" del modelo que la contiene y le agregará el sufijo `_id`. Para este ejemplo, Eloquent asumirá que la clave foránea del modelo `Comment` sea `post_id`.
+Recuerda, Eloquent determinará automáticamente la columna de clave foránea apropiada en el modelo `Comment`. Por convención, Eloquent tomará el nombre "snake_case" del modelo que la contiene y le agregará el sufijo `_id`. Para este ejemplo, Eloquent asumirá que la clave foránea del modelo `Comment` es `post_id`.
 
-Una vez que la relación ha sido definida, podemos acceder la colección de comentarios al acceder la propiedad `comments`. Recuerda, ya que Eloquent proporciona, "propiedades dinámicas", podemos acceder a los métodos de la relación como si ellos fueran definidos como propiedades en el modelo:
+Una vez que la relación ha sido definida, podemos acceder a la colección de comentarios al acceder a la propiedad `comments`. Recuerda, ya que Eloquent proporciona "propiedades dinámicas", podemos acceder a los métodos de la relación como si fueran definidos como propiedades en el modelo:
 
     $comments = App\Post::find(1)->comments;
 
@@ -191,7 +191,7 @@ Ciertamente, ya que todas las relaciones también sirven como constructores de c
 
     $comments = App\Post::find(1)->comments()->where('title', 'foo')->first();
 
-Igual que el método `hasOne`, también puedes sobreescribir las claves foráneas y locales al pasar argumentos adicionales al método `hasMany`:
+Igual que el método `hasOne`, también puedes sobrescribir las claves foráneas y locales al pasar argumentos adicionales al método `hasMany`:
 
     return $this->hasMany('App\Comment', 'foreign_key');
 
@@ -219,7 +219,7 @@ Ahora que puedes acceder a todos los comentarios de un post, vamos a definir una
         }
     }
 
-Una vez que la relación ha sido definida, podemos obtener el modelo `Post` para un `Comment` accediendo la "propiedad dinámica" `post`:
+Una vez que la relación ha sido definida, podemos obtener el modelo `Post` para un `Comment` accediendo a la "propiedad dinámica" `post`:
 
     $comment = App\Comment::find(1);
 
@@ -248,7 +248,7 @@ Si tu modelo padre no usa `id` como su clave primaria, o deseas hacer join al mo
 <a name="many-to-many"></a>
 ### Muchos a Muchos
 
-Las relaciones muchos-a-muchos son ligeramente más complicadas que las relaciones `hasOne` y `hasMany`. Un ejemplo de tal relación es un usuario con muchos roles, donde los roles también son compartidos por otros usuarios. Por ejemplo, muchos usuarios pueden tener el rol "Admin". Para definir esta relación, tres bases de datos son necesitadas: `users`, `roles`, y `role_user`. La tabla `role_user` es derivada del orden alfabético de los nombres de modelo relacionados, y contiene las columnas `user_id` y `role_id`.
+Las relaciones muchos-a-muchos son ligeramente más complicadas que las relaciones `hasOne` y `hasMany`. Un ejemplo de tal relación es un usuario con muchos roles, donde los roles también son compartidos por otros usuarios. Por ejemplo, muchos usuarios pueden tener el rol "Admin". Para definir esta relación, tres tablas de bases de datos son necesitadas: `users`, `roles`, y `role_user`. La tabla `role_user` es derivada del orden alfabético de los nombres de modelo relacionados y contiene las columnas `user_id` y `role_id`.
 
 Las relaciones Muchos-a-Muchos son definidas escribiendo un método que devuelve el resultado del método `belongsToMany`. Por ejemplo, vamos a definir el método `roles` en nuestro modelo `User`:
 
@@ -281,7 +281,7 @@ Ciertamente, como con los otros tipos de relación, puedes ejecutar el método `
 
     $roles = App\User::find(1)->roles()->orderBy('name')->get();
 
-Como mencionamos previamente, para determinar el nombre de la tabla asociativa, Eloquent juntará los dos nombres de modelo en orden alfabético. Sin embargo, eres libre de sobreescribir esta convención. Puedes hacer eso pasando un segundo argumento al método `belongsToMany`:
+Como mencionamos previamente, para determinar el nombre de la tabla asociativa, Eloquent juntará los dos nombres de modelo en orden alfabético. Sin embargo, eres libre de sobrescribir esta convención. Puedes hacer eso pasando un segundo argumento al método `belongsToMany`:
 
     return $this->belongsToMany('App\Role', 'role_user');
 
@@ -289,7 +289,7 @@ Además de personalizar el nombre de la tabla asociativa, también puedes person
 
     return $this->belongsToMany('App\Role', 'role_user', 'user_id', 'role_id');
 
-#### Defining The Inverse Of The Relationship
+#### Definiendo el Inverso de la Relación
 
 Para definir el inverso de una relación muchos-a-muchos, puedes colocar otra ejecución de `belongsToMany` en tu modelo relacionado. Para continuar con nuestro ejemplo de roles de usuario, vamos a definir el método `users` en el modelo `Role`:
 
@@ -314,7 +314,7 @@ Como puedes ver, la relación es definida exactamente de la misma forma que su c
 
 #### Obteniendo Columnas de Tablas Intermedias
 
-Como ya has aprendido, trabajar con relaciones muchos-a-muchos requiere la presencia de una tabla intermedia. Eloquent proporciona algunas formas muy útiles de interactuar con esta tabla. Por ejemplo, vamos a asumir que nuestro objeto `User` tiene muchos objetos `Role` al que esté relacionado. Después de acceder a esta relación, podemos acceder la tabla inermedia usando el atributo `pivot` en los modelos:
+Como ya has aprendido, trabajar con relaciones muchos-a-muchos requiere la presencia de una tabla intermedia. Eloquent proporciona algunas formas muy útiles de interactuar con esta tabla. Por ejemplo, vamos a asumir que nuestro objeto `User` tiene muchos objetos `Role` al que esté relacionado. Después de acceder a esta relación, podemos acceder a la tabla intermedia usando el atributo `pivot` en los modelos:
 
     $user = App\User::find(1);
 
@@ -322,7 +322,7 @@ Como ya has aprendido, trabajar con relaciones muchos-a-muchos requiere la prese
         echo $role->pivot->created_at;
     }
 
-Nota que cada modelo `Role` que obtenemos le es asignado automáticamente un atributo `pivot`. Este atributo contiene un modelo que representa la tabla intermedia, y puede ser usado como cualquier otro modelo de Eloquent.
+Nota que a cada modelo `Role` que obtenemos le es asignado automáticamente un atributo `pivot`. Este atributo contiene un modelo que representa la tabla intermedia y puede ser usado como cualquier otro modelo de Eloquent.
 
 De forma predeterminada, solo las claves del modelo estarán presentes en el objeto `pivot`. Si tu tabla pivote contiene atributos extras, debes especificarlos cuando definas la relación.
 
@@ -342,7 +342,7 @@ Por ejemplo, si tu aplicación contiene usuarios que pueden suscribirse a podcas
                     ->as('subscription')
                     ->withTimestamps();
 
-Una vez que esto es hecho, puedes acceder los datos de la tabla intermedia usando el nombre personalizado:
+Una vez que esto es hecho, puedes acceder a los datos de la tabla intermedia usando el nombre personalizado:
 
     $users = User::with('podcasts')->get();
 
@@ -478,7 +478,7 @@ Dos columnas importantes a notar son las columnas `commentable_id` y `commentabl
 
 #### Estructura del Modelo
 
-Seguido, vamos a examinar las definiciones de modelo necesitadas para construir esta relación:
+Seguido, vamos a examinar las definiciones de modelo necesarias para construir esta relación:
 
     <?php
 
@@ -521,7 +521,7 @@ Seguido, vamos a examinar las definiciones de modelo necesitadas para construir 
 
 #### Obteniendo Relaciones Polimórficas
 
-Una vez que definas tus tablas de base de datos y los modelos, puedes accesar las relaciones por medio de tus modelos. Por ejemplo, para acceder a todos los comentarios de un post, podemos usar la propiedad dinámica `comments`:
+Una vez que definas tus tablas de base de datos y los modelos, puedes accesar a las relaciones por medio de tus modelos. Por ejemplo, para acceder a todos los comentarios de un post, podemos usar la propiedad dinámica `comments`:
 
     $post = App\Post::find(1);
 
@@ -548,14 +548,14 @@ De forma predeterminada, Laravel usará el nombre de la clase totalmente cualifi
         'videos' => 'App\Video',
     ]);
 
-Puedes registrar la `morphMap` en la función `boot` de tu `AppServiceProvider` o crear un proveedor de servicio separado si lo deseas.
+Puedes registrar `morphMap` en la función `boot` de tu `AppServiceProvider` o crear un proveedor de servicio separado si lo deseas.
 
 <a name="many-to-many-polymorphic-relations"></a>
 ### Relaciones Polimórficas Muchas a Muchas
 
 #### Estructura de Tabla
 
-En adición a las relaciones polimórficas tradicionales, también puedes definir relaciones polimórficas "muchos a muchos". Por ejemplo, un modelo `Post` y `Video` de un blog podría compartir una relación polimórfica con un modelo `Tag`. Usando una relación polimórfica muchos-a-muchos permitirá que tengas una lista de etiquetas única que son compartidas a través de posts y videos de blog. Primero, vamos a examinar la estructura de la tabla:
+En adición a las relaciones polimórficas tradicionales, también puedes definir relaciones polimórficas "muchos a muchos". Por ejemplo, un modelo `Post` y `Video` de un blog podría compartir una relación polimórfica con un modelo `Tag`. Usando una relación polimórfica muchos-a-muchos permitirá que tengas una lista de etiquetas únicas que son compartidas a través de posts y videos de blog. Primero, vamos a examinar la estructura de la tabla:
 
     posts
         id - integer
@@ -576,7 +576,7 @@ En adición a las relaciones polimórficas tradicionales, también puedes defini
 
 #### Estructura del Modelo
 
-Seguidamente, estamos listos para definir las relaciones en el modelo. Ambos modelos `Post` y `Video` tendrán un método `tags` que ejecuta el método `morphToMany` en la clase Eloquent base:
+Seguidamente, estamos listos para definir las relaciones en el modelo. Ambos modelos `Post` y `Video` tendrán un método `tags` que ejecuta el método `morphToMany` en la clase base de Eloquent:
 
     <?php
 
@@ -626,7 +626,7 @@ Siguiendo, en el modelo `Tag`, deberías definir un método para cada uno de sus
 
 #### Obteniendo la Relación
 
-Una vez que tu tabla de base de datos y modelos son definidos, puedes acceder las relaciones por medio de tus modelos. Por ejemplo, para acceder a todos los tags de un post, puedes usar la propiedad dinámica `tags`:
+Una vez que tu tabla en la base de datos y modelos son definidos, puedes acceder las relaciones por medio de tus modelos. Por ejemplo, para acceder a todos los tags de un post, puedes usar la propiedad dinámica `tags`:
 
     $post = App\Post::find(1);
 
@@ -634,7 +634,7 @@ Una vez que tu tabla de base de datos y modelos son definidos, puedes acceder la
         //
     }
 
-También puedes obtener el propietario de una relación polimórfica desde el modelo polimórfico accediendo el nombre del método que ejecutó la llamada a `morphedByMany`. En nuestro caso, esos son los métodos `posts` o `videos` en el modelo `Tag`. Así, accederemos a esos métodos como propiedades dinámicas:
+También puedes obtener el propietario de una relación polimórfica desde el modelo polimórfico accediendo al nombre del método que ejecutó la llamada a `morphedByMany`. En nuestro caso, esos son los métodos `posts` o `videos` en el modelo `Tag`. Así, accederemos a esos métodos como propiedades dinámicas:
 
     $tag = App\Tag::find(1);
 
@@ -666,13 +666,13 @@ Por ejemplo, imagina un sistema de blog en el cual un modelo `User` tiene muchos
         }
     }
 
-You may query the `posts` relationship and add additional constraints to the relationship like so:
+Puedes consultar la relación `posts` y agregar limitaciones a la relación de la siguiente forma:
 
     $user = App\User::find(1);
 
     $user->posts()->where('active', 1)->get();
 
-Puedes usar cualquiera de los métodos de [constructor de consultas](/docs/{{version}}/queries), así asegurate de revisar la documentación del constructor de consultas para aprender sobre todos los métodos que estan disponibles para ti.
+Puedes usar cualquiera de los métodos de [constructor de consultas](/docs/{{version}}/queries) y así asegurate de revisar la documentación del constructor de consultas para aprender sobre todos los métodos que estan disponibles para ti.
 
 <a name="relationship-methods-vs-dynamic-properties"></a>
 ### Métodos de Relación Vs. Propiedades Dinámicas
@@ -695,12 +695,12 @@ Cuando accedes a los registros de un modelo, puedes desear limitar sus resultado
     // Retrieve all posts that have at least one comment...
     $posts = App\Post::has('comments')->get();
 
-También puedes especificar un operador y la cuenta para optimizar más la consulta
+También puedes especificar un operador y la cuenta para optimizar más la consulta:
 
     // Retrieve all posts that have three or more comments...
     $posts = Post::has('comments', '>=', 3)->get();
 
-Las instrucciones `has` anidadas también pueden ser construidas usando la notación "punto". Por ejemplo, puedes obtener todos los posts que tienen al menos un comentario con votos:
+Las instrucciones `has` anidadas también pueden ser construidas usando la notación de "punto". Por ejemplo, puedes obtener todos los posts que tienen al menos un comentario con votos:
 
     // Retrieve all posts that have at least one comment with votes...
     $posts = Post::has('comments.votes')->get();
@@ -715,11 +715,11 @@ Incluso si necesitas más potencia, puedes usar los métodos `whereHas` y `orWhe
 <a name="querying-relationship-absence"></a>
 ### Consultando la Ausencia de una Relación
 
-Al momento de acceder los registros de un modelo, puedes desear limitar tus resultados basados en la ausencia de una relación. Por ejemplo, imagina que quieras obtener todos los posts de blogs que **no** tienen algún comentario. Para hacer eso, puedes pasar el nombre de la relación a los métodos `doesntHave` y `orDoesntHave`:
+Al momento de acceder a los registros de un modelo, puedes desear limitar tus resultados en base a la ausencia de una relación. Por ejemplo, imagina que quieras obtener todos los posts de blogs que **no** tienen algún comentario. Para hacer eso, puedes pasar el nombre de la relación a los métodos `doesntHave` y `orDoesntHave`:
 
     $posts = App\Post::doesntHave('comments')->get();
 
-Incluso si necesitas más potencia, puedes usar los métodos `whereDoesntHave` y `orWhereDoesntHave` para poner condiciones "where" en tus consultas `doesntHave`.  Estos métodos permiten que agregues restricciones personalizadas a una restricción de relación, tal como verificar el contenido de un comentario:
+Incluso si necesitas más potencia, puedes usar los métodos `whereDoesntHave` y `orWhereDoesntHave` para poner condiciones "where" en tus consultas `doesntHave`. Estos métodos permiten que agregues restricciones personalizadas a una restricción de relación, tal como verificar el contenido de un comentario:
 
     $posts = Post::whereDoesntHave('comments', function ($query) {
         $query->where('content', 'like', 'foo%');
@@ -736,7 +736,7 @@ si quieres contar el número de resultados de una relación sin cargarlos realme
         echo $post->comments_count;
     }
 
-Puedes agregar las "cuentas" para múltiples relaciones como también agregar restricciones a las consultas:
+Puedes agregar las "cuentas" para múltiples relaciones así como también agregar restricciones a las consultas:
 
     $posts = Post::withCount(['votes', 'comments' => function ($query) {
         $query->where('content', 'like', 'foo%');
@@ -761,7 +761,7 @@ También puedes poner alias al resultado de la cuenta de la relación, permitien
 <a name="eager-loading"></a>
 ## Carga Previa
 
-Al momento de acceder las relaciones Eloquent como propiedades, los datos de la relación son "cargados diferidamente". Esto significa que los datos de la relación no son cargados realmente hasta que primero accedas la propiedad. Sin embargo, Eloquent puede "cargar previamente" las relaciones al mismo tiempo que consultas el modelo padre. La carga previa alivia el problema de la consulta N + 1. Para ilustrar el problema de la consulta N + 1, considera un modelo `Book` que está relacionado a `Author`:
+Al momento de acceder a las relaciones Eloquent como propiedades, los datos de la relación son "cargados diferidamente". Esto significa que los datos de la relación no son cargados realmente hasta que primero accedas a la propiedad. Sin embargo, Eloquent puede "cargar previamente" las relaciones al mismo tiempo que consultas el modelo padre. La carga previa alivia el problema de la consulta N + 1. Para ilustrar el problema de la consulta N + 1, considera un modelo `Book` que está relacionado a `Author`:
 
     <?php
 
@@ -788,9 +788,9 @@ Ahora, vamos a obtener todos los libros y sus autores:
         echo $book->author->name;
     }
 
-Este ciclo ejecutará una consulta para obtener todos los libros en la tabla, despues otra consulta para cada libro para obtener el autor. Así, si tenemos 25 libros, este ciclo debería ejecutar 26 consultas: 1 para el libro original, y 25 consultas adicionales para obtener el autor de cada libro.
+Este ciclo ejecutará una consulta para obtener todos los libros en la tabla, despues otra consulta para cada libro para obtener el autor. Así, si tenemos 25 libros, este ciclo debería ejecutar 26 consultas: 1 para el libro original y 25 consultas adicionales para obtener el autor de cada libro.
 
-Afortunadamente, podemos usar la carga previa para reducir esta operación a solo 2 consultas. Al momento de consultar, puedes especificar cuales relaciones deberían ser precarcadas usando el método `with:
+Afortunadamente, podemos usar la carga previa para reducir esta operación a solo 2 consultas. Al momento de consultar, puedes especificar cuales relaciones deberían ser pre-cargadas usando el método `with`:
 
     $books = App\Book::with('author')->get();
 
@@ -806,13 +806,13 @@ Para esta operación, solo dos consultas serán ejecutadas:
 
 #### Carga Previa de Múltiples Relaciones
 
-Algunas veces puedes necesitar la carga previa de varias relaciones diferentes en una operación única. Para hacer eso, pasa justo los argumentos adicionales al método `with`:
+Algunas veces puedes necesitar la carga previa de varias relaciones diferentes en una operación única. Para hacer eso, pasa sólo los argumentos adicionales al método `with`:
 
     $books = App\Book::with(['author', 'publisher'])->get();
 
 #### Carga Previa Anidada
 
-Para pre-cargar relaciones anidadas, puedes usar la sintaxis "punto". Por ejemplo, vamos a pre-cargar todos los autores de los libros y todos los contactos personales del autor en una instrucción de Eloquent:
+Para pre-cargar relaciones anidadas, puedes usar la sintaxis de "punto". Por ejemplo, vamos a pre-cargar todos los autores de los libros y todos los contactos personales del autor en una instrucción de Eloquent:
 
     $books = App\Book::with('author.contacts')->get();
 
@@ -842,7 +842,7 @@ En este ejemplo, Eloquent solamente precargará los posts donde la columna `titl
 <a name="lazy-eager-loading"></a>
 ### Carga Previa Diferida
 
-Algunas veces puedes necesitar pre-cargar una relación después que el modelo padre ya ha sido obtenido. Por ejemplo, esto puede ser útil si necesitas decidir dinámicamente si se cargan modelos relacionados:
+Algunas veces puedes necesitar pre-cargar una relación después de que el modelo padre ya ha sido obtenido. Por ejemplo, esto puede ser útil si necesitas decidir dinámicamente si se cargan modelos relacionados:
 
     $books = App\Book::all();
 
@@ -856,7 +856,7 @@ Si necesitas establecer restricciones de consultas adicionales en la consulta de
         $query->orderBy('published_date', 'asc');
     }]);
 
-Para cargar una relación solamente cuando no ha sido cargada todavía, usa el método `loadMissing`:
+Para cargar una relación solamente cuando aún no ha sido cargada, usa el método `loadMissing`:
 
     public function format(Book $book)
     {
@@ -896,7 +896,7 @@ Si necesitas guardar múltiples modelos relacionados, puedes usar el método `sa
 <a name="the-create-method"></a>
 ### El Método Create
 
-En adición a los métodos save` y `saveMany`, también puedes usar el método `create`, el cual acepta un arreglo de atributos, crea un modelo, y lo inserta dentro de la base de datos. Otra vez, la diferencia entre `save` y `create` es que `save` acepta una instancia de modelo Eloquent llena mientras `create` acepta un `array` PHP plano:
+En adición a los métodos `save` y `saveMany`, también puedes usar el método `create`, el cual acepta un arreglo de atributos, crea un modelo y lo inserta dentro de la base de datos. Otra vez, la diferencia entre `save` y `create` es que `save` acepta una instancia de modelo Eloquent llena mientras `create` acepta un `array` PHP plano:
 
     $post = App\Post::find(1);
 
@@ -920,7 +920,7 @@ Puedes usar el método `createMany` para crear múltiples modelos relacionados:
     ]);
 
 <a name="updating-belongs-to-relationships"></a>
-### Relaciones Pertenece A
+### Actualizar Relación Pertenece A
 
 Al momento de actualizar una relación `belongsTo`, puedes usar el método `associate`. Este método establecerá la clave foránea en el modelo hijo:
 
@@ -952,6 +952,7 @@ Al momento de atar una relación a un modelo, también puedes pasar un arreglo d
     $user->roles()->attach($roleId, ['expires' => $expires]);
 
 Ciertamente, algunas veces puede ser necesario remover un rol de un usuario. Para remover un registro de una relación muchos-a-muchos, usa el método `detach`. El método `detach` removerá el registro apropiado de la tabla intermedia; sin embargo, ambos modelos permanecerán en la base de datos:
+
     // Detach a single role from the user...
     $user->roles()->detach($roleId);
 
@@ -975,7 +976,7 @@ También puedes usar el método `sync` para construir asociaciones muchos-a-much
 
     $user->roles()->sync([1, 2, 3]);
 
-También puedes pasar valores de tabla intermedia adicionales con los IDs:
+También puedes pasar valores adicionales de tabla intermedia con los IDs:
 
     $user->roles()->sync([1 => ['expires' => true], 2, 3]);
 
@@ -1006,7 +1007,7 @@ Si necesitas actualizar una fila existente en tu tabla pivote, puedes usar el m�
 <a name="touching-parent-timestamps"></a>
 ## Tocando Marcas de Tiempo del Padre
 
-Cuando un modelo `belongsTo` o `belongsToMany` otro modelo, tal como un `Comment` el cual pertenece a un `Post`, algunas veces es útil actualizar la marca de tiempo del padre cuando el modelo hijo es actualizado. Por ejemplo, cuando un modelo `Comment` es actualizado, puedes querer "tocar" automáticamente la marca de tiempo `updated_at` del `Post` que lo posee. Eloquent hace esto fácil. Justo agregue una propiedad `touches` conteniendo los nombres de las relaciones al modelo hijo:
+Cuando un modelo `belongsTo` o `belongsToMany` a otro modelo, tal como un `Comment` el cual pertenece a un `Post`, algunas veces es útil actualizar la marca de tiempo del padre cuando el modelo hijo es actualizado. Por ejemplo, cuando un modelo `Comment` es actualizado, puedes querer "tocar" automáticamente la marca de tiempo `updated_at` del `Post` que lo posee. Eloquent hace esto fácil. Simplemente agrega una propiedad `touches` conteniendo los nombres de las relaciones al modelo hijo:
 
     <?php
 
