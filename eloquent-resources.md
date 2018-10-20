@@ -27,7 +27,7 @@ Para generar una clase de recurso, puedes usar el comando Artisan `make:resource
 
 Además de generar recursos que transforman los modelos individuales, puedes generar recursos que sean responsables de transformar colecciones de modelos. Esto permite que tu respuesta incluya enlaces y otra meta información que sea relevante a una colección entera de un recurso dado.
 
-Para crear una colección de recursos, deberías usar la bandera `--collection` al momento de crear el recurso. O, incluir la palabra `Collection` en el nombre del recurso lo que le indicará a Laravel que debería crear un recurso de colección. Los recursos de colección extienden la clase `Illuminate\Http\Resources\Json\ResourceCollection`:
+Para crear una colección de recursos, deberías usar el indicador `--collection` al momento de crear el recurso. O, incluir la palabra `Collection` en el nombre del recurso, lo que le indicará a Laravel que debería crear un recurso de colección. Los recursos de colección extienden la clase `Illuminate\Http\Resources\Json\ResourceCollection`:
 
     php artisan make:resource Users --collection
 
@@ -38,7 +38,7 @@ Para crear una colección de recursos, deberías usar la bandera `--collection` 
 
 > {tip} Esto es un resumen del último nivel de recursos y colecciones de recursos. Es aconsejable que leas las otras secciones de esta documentación para que ganes un conocimiento más a fondo de la personalización y la potencia que te ofrecen los recursos.
 
-Antes de profundizar en todas las opciones disponibles para tí al momento de escribir recursos, primero vamos a echar un vistazo de alto nivel sobre como los recursos son usados dentro de Laravel. Una clase de recurso representa un solo modelo que necesita ser transformado en una estructura JSON. Por ejemplo, aquí está una clase `UserResource` básica:
+Antes de profundizar en todas las opciones disponibles para tí al momento de escribir recursos, primero vamos a echar un vistazo a como los recursos son usados dentro de Laravel. Una clase de recurso representa un solo modelo que necesita ser transformado en una estructura JSON. Por ejemplo, aquí está una clase `UserResource` básica:
 
     <?php
 
@@ -66,7 +66,7 @@ Antes de profundizar en todas las opciones disponibles para tí al momento de es
         }
     }
 
-Cada clase recurso define un método `toArray` el cual devuelve el arreglo de atributos que debería ser convertido a JSON al momento de enviar la respuesta. Note que podemos acceder las propiedades del modelo directamente desde la variable `$this`. Esto es debido a que una clase recurso representará automáticamente la propiedad y método que acceden al modelo subyacente para un acceso conveniente. Una vez que el recurso es definido, puede ser devuelto desde una ruta o controlador:
+Cada clase de recurso define un método `toArray` el cual devuelve el arreglo de atributos que debería ser convertido a JSON al momento de enviar la respuesta. Observa que podemos acceder a las propiedades del modelo directamente desde la variable `$this`. Esto es debido a que una clase de  recurso representará automáticamente la propiedad y método que acceden al modelo subyacente para un acceso conveniente. Una vez que el recurso es definido, puede ser devuelto desde una ruta o controlador:
 
     use App\User;
     use App\Http\Resources\UserResource;
@@ -90,7 +90,7 @@ Ciertamente, esto no permite alguna adición de meta datos que pueda necesitar s
 
     php artisan make:resource UserCollection
 
-Una vez que la clase colección de recursos ha sido generada, puedes definir fácilmente cualquiera de los meta datos que deberían estar incluidos con la respuesta:
+Una vez que la clase de colección de recursos ha sido generada, puedes definir fácilmente cualquiera de los meta datos que deberían estar incluidos con la respuesta:
 
     <?php
 
@@ -117,7 +117,7 @@ Una vez que la clase colección de recursos ha sido generada, puedes definir fá
         }
     }
 
-Despues de definir tu colección de recursos, puede ser devuelta desde una ruta o controlador:
+Despues de definir tu colección de recursos, esta puede ser devuelta desde una ruta o controlador:
 
     use App\User;
     use App\Http\Resources\UserCollection;
@@ -131,7 +131,7 @@ Despues de definir tu colección de recursos, puede ser devuelta desde una ruta 
 
 > {tip} Si no has leído el [resumen de concepto](#concept-overview), es aconsejable que lo hagas antes de proceder con esta documentación.
 
-En esencia, los recursos son sencillos. Solamente necesitan transformar un modelo dado en un arreglo. Así, cada recurso contiene un método `toArray` el cual traduce los atributos de tu modelo en una arreglo amigable para API que puede ser devuelto a tus usuarios:
+En esencia, los recursos son sencillos. Solamente necesitan transformar un modelo dado en un arreglo. Así, cada recurso contiene un método `toArray` el cual traduce los atributos de tu modelo en un arreglo amigable para API que puede ser retornado a tus usuarios:
 
     <?php
 
@@ -194,7 +194,7 @@ Si prefieres incluir recursos relacionados en tu respuesta, puedes agregarlos al
 
 #### Colecciones de Recursos
 
-Mientras los recursos traducen un solo modelo dentro de un arreglo, las colecciones de recursos traducen una colección de modelos dentro de un arreglo. No es absolutamente necesario definir una clase de colección de recursos para cada uno de tus tipos de modelo ya que todos los recursos proporcionan un método `collection` para generar una colección de recursos "para que esto se haga" al vuelo:
+Mientras los recursos traducen un solo modelo dentro de un arreglo, las colecciones de recursos traducen una colección de modelos dentro de un arreglo. No es absolutamente necesario definir una clase de colección de recursos para cada uno de tus tipos de modelo ya que todos los recursos proporcionan un método `collection` para generar una colección de recursos "para que esto se haga" en el momento:
 
     use App\User;
     use App\Http\Resources\UserResource;
@@ -242,7 +242,7 @@ Al igual que los recursos singulares, las colecciones de recursos pueden ser dev
 <a name="data-wrapping"></a>
 ### Envoltorio de Datos
 
-De forma predeterminada, tu recurso más-externo es envuelto en una clave `data` cuando la respuesta del recurso es convertida a JSON. Así, por ejemplo, una respuesta de colección de recurso típica luce como lo siguiente:
+De forma predeterminada, tu recurso más externo es envuelto en una clave `data` cuando la respuesta del recurso es convertida a JSON. Así, por ejemplo, una respuesta de colección de recurso típica luce como lo siguiente:
 
     {
         "data": [
@@ -259,7 +259,7 @@ De forma predeterminada, tu recurso más-externo es envuelto en una clave `data`
         ]
     }
 
-Si prefieres deshabilitar el envoltorio del recurso más-externo, puedes usar el método `withoutWrapping` en la clase de recurso base. Típicamente, deberías ejecutar este método desde tu `AppServiceProvider` u otro [proveedor de servicio](/docs/{{version}}/providers) que sea cargado en cada solicitud de tu aplicación:
+Si prefieres deshabilitar el envoltorio del recurso más externo, puedes usar el método `withoutWrapping` en la clase de recurso base. Típicamente, deberías ejecutar este método desde tu `AppServiceProvider` u otro [proveedor de servicio](/docs/{{version}}/providers) que sea cargado en cada solicitud de tu aplicación:
 
     <?php
 
@@ -291,13 +291,13 @@ Si prefieres deshabilitar el envoltorio del recurso más-externo, puedes usar el
         }
     }
 
-> {note} El método `withoutWrapping` afecta solamente la respuesta más-externa y no removerá las claves de `data` que agregaste manualmente a tus propias colecciones de recursos.
+> {note} El método `withoutWrapping` afecta solamente la respuesta más externa y no removerá las claves de `data` que agregaste manualmente a tus propias colecciones de recursos.
 
 ### Envolviendo Recursos Anidados
 
-Tienes libertad total para determinar la forma como tus relaciones de recursos son envueltas. Si prefieres que todas las colecciones de recursos sean envueltas en una clave `data`, a pesar de las dificultades de su anidamiento, deberías definir una clase de colección de recursos para cada recurso y devolver la colección dentro de una clave `data`.
+Tienes total libertad para determinar la forma en la que tus relaciones de recursos son envueltas. Si prefieres que todas las colecciones de recursos sean envueltas en una clave `data`, a pesar de las dificultades de su anidamiento, deberías definir una clase de colección de recursos para cada recurso y devolver la colección dentro de una clave `data`.
 
-Ciertamente, puedes estar preguntandote si esto causará que tus recursos más-externos sean envueltos en dos claves `data`. No te preocupes, Laravel nunca permitirá que tus recursos sean envueltos-doblemente por accidente, como consecuencia no tienes que estar preocupado sobre el nivel de anidamiento de la colección de recursos que estás transformando:
+Ciertamente, puedes estar preguntandote si esto causará que tus recursos más externos sean envueltos en dos claves `data`. No te preocupes, Laravel nunca permitirá que tus recursos sean envueltos doblemente por accidente, como consecuencia no tienes que estar preocupado sobre el nivel de anidamiento de la colección de recursos que estás transformando:
 
     <?php
 
@@ -428,11 +428,11 @@ El método `when` también acepta una Closure como su segundo argumento, permiti
         return 'secret-value';
     }),
 
-> {tip} Recuerda, las ejecuciones de métodos sobre los recursos representan la instancia del modelo subyacente. Así que, en este caso, el método `isAdmin` está representando al modelo Eloquent subyacente que fué dado originalmente al recurso.
+> {tip} Recuerda, las ejecuciones de métodos sobre los recursos representan la instancia del modelo subyacente. Así que, en este caso, el método `isAdmin` está representando al modelo Eloquent subyacente que fue dado originalmente al recurso.
 
 #### Mezclando Atributos Condicionales
 
-Algunas veces puedes tener varios atributos que deberían ser incluidos solamente en la respuesta del recurso basado en la misma condición. En este caso, puedes usar el método `mergeWhen` para incluir los atributos en la respuesta solamente cuando la condición dada sea `true`:
+Algunas veces puedes tener varios atributos que deberían ser incluidos solamente en la respuesta del recurso en base a la misma condición. En este caso, puedes usar el método `mergeWhen` para incluir los atributos en la respuesta solamente cuando la condición dada sea `true`:
 
     /**
      * Transform the resource into an array.
@@ -457,12 +457,12 @@ Algunas veces puedes tener varios atributos que deberían ser incluidos solament
 
 Otra vez, si la condición dada es `false`, estos atributos serán removidos completamente de la respuesta del recurso antes de que sea enviada al cliente.
 
-> {note} El método `mergeWhen` no debería ser usado dentro de arreglos que mezclan claves de cadenas y numéricas. Tampoco, debería ser usada dentro de arreglos con claves numéricas que no estén ordenados secuencialmente.
+> {note} El método `mergeWhen` no debería ser usado dentro de arreglos que mezclan claves de cadenas y numéricas. Tampoco debería ser usadas dentro de arreglos con claves numéricas que no estén ordenados secuencialmente.
 
 <a name="conditional-relationships"></a>
 ### Relaciones Condicionales
 
-Además de cargar atributos condicionalmente, puedes incluir relaciones condicionalmente en tus respuestas de recursos dependiendo si la relaciones ya han sido cargadas en el modelo. Esto permite que tu controlador decida cuáles relaciones deberían ser cargadas en el modelo y tu recurso pueda incluirlos fácilmente cuando hayan sido cargados realmente.
+Además de cargar atributos condicionalmente, puedes incluir relaciones condicionalmente en tus respuestas de recursos dependiendo de si la relaciones ya han sido cargadas en el modelo. Esto permite que tu controlador decida cuáles relaciones deberían ser cargadas en el modelo y tu recurso pueda incluirlos fácilmente cuando hayan sido cargados realmente.
 
 Finalmente, esto hace que sea más fácil evitar los problemas de consulta "N+1" dentro de tus recursos. El método `whenLoaded` puede ser usado para cargar una relación condicionalmente. Con el propósito de evitar cargar innecesariamente las relaciones, este método acepta el nombre de la relación en lugar de la relación misma:
 
@@ -510,7 +510,7 @@ Además de información de relación que se incluye condicionalmente en tus resp
 <a name="adding-meta-data"></a>
 ### Agregando Meta Datos
 
-Algunos estándares API de JSON requieren la adición de meta datos en tus respuestas de recursos y colecciones de recursos. Esto incluye frecuentemente cosas como `links` del recurso o recursos relacionados, o meta datos sobre el mismo recurso. Si necesitas devolver meta datos adicionales sobre un recurso, inclúyelo en tu método `toArray`. Por ejemplo, podrías incluir información de `link` al momento de transformar una colección de recursos:
+Algunos estándares API de JSON requieren la adición de meta datos en tus respuestas de recursos y colecciones de recursos. Esto incluye frecuentemente cosas como `links` del recurso o recursos relacionados o meta datos sobre el mismo recurso. Si necesitas devolver meta datos adicionales sobre un recurso, inclúyelo en tu método `toArray`. Por ejemplo, podrías incluir información de `link` al momento de transformar una colección de recursos:
 
     /**
      * Transform the resource into an array.
@@ -528,11 +528,11 @@ Algunos estándares API de JSON requieren la adición de meta datos en tus respu
         ];
     }
 
-Al momento de devolver meta datos adicionales de tus recursos, nunca tienes que preocupate acerca de sobreescribir accidentalmente las claves `links` o `meta` que son agregadas automáticamente por Laravel al momento de devolver respuestas paginadas. Cualquiera de los `links` adicionales que definas serán mezclados con los enlaces proporcionados por el paginador.
+Al momento de devolver meta datos adicionales de tus recursos, nunca tienes que preocupate acerca de sobrescribir accidentalmente las claves `links` o `meta` que son agregadas automáticamente por Laravel al momento de devolver respuestas paginadas. Cualquiera de los `links` adicionales que definas serán mezclados con los enlaces proporcionados por el paginador.
 
 #### Meta Datos del Nivel más Alto
 
-Algunas veces puedes querer incluir ciertos meta datos solamente con una respuesta de recurso si el recurso es el recurso más-externo que está siendo devuelto. Típicamente, esto incluye meta información sobre la respuesta como un todo. Para definir este meta dato, agrega un método `with` a tu clase de recurso. Este método debería devolver un arreglo de meta datos a ser incluido con la respuesta del recurso solamente cuando el recurso es el recurso más-externo que esta siendo renderizado.
+Algunas veces puedes querer incluir ciertos meta datos solamente con una respuesta de recurso si el recurso es el recurso más externo que está siendo devuelto. Típicamente, esto incluye meta información sobre la respuesta como un todo. Para definir este meta dato, agrega un método `with` a tu clase de recurso. Este método debería devolver un arreglo de meta datos a ser incluido con la respuesta del recurso solamente cuando el recurso es el recurso más externo que esta siendo renderizado.
 
     <?php
 
@@ -601,7 +601,7 @@ Sin embargo, algunas veces puedes necesitar personalizar la respuesta HTTP que s
                     ->header('X-Value', 'True');
     });
 
-Alternativamente, puedes definir un método `withResponse` dentro del mismo recurso. Este método será ejecutado cuando el recurso sea devuelto como el recurso más-externo en la respuesta:
+Alternativamente, puedes definir un método `withResponse` dentro del mismo recurso. Este método será ejecutado cuando el recurso sea devuelto como el recurso más externo en la respuesta:
 
     <?php
 
