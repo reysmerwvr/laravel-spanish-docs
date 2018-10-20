@@ -7,7 +7,7 @@
 <a name="introduction"></a>
 ## Introducción
 
-Todos los conjuntos de multi-resultados devueltos por Eloquent son instancias del objeto `Illuminate\Database\Eloquent\Collection`, incluyendo los resultados obtenidos por medio del método `get` o accedidos por medio de una relación. El objeto de la colección Eloquent extiende la [collección base](/docs/{{version}}/collections) de Laravel, así hereda naturalmente  docenas de métodos usados para trabajar fluidamente con el arreglo subyacente de modelos de Eloquent.
+Todos los conjuntos de multi-resultados retornados por Eloquent son instancias del objeto `Illuminate\Database\Eloquent\Collection`, incluyendo los resultados obtenidos por medio del método `get` o accedidos por medio de una relación. El objeto de la colección Eloquent extiende la [collección base](/docs/{{version}}/collections) de Laravel, así hereda naturalmente docenas de métodos usados para trabajar fluidamente con el arreglo subyacente de modelos de Eloquent.
 
 Ciertamente, todas las colecciones tambien sirven como iteradores, permitiendo que iteres sobre ellas como si fueran simples arreglos de PHP:
 
@@ -17,7 +17,7 @@ Ciertamente, todas las colecciones tambien sirven como iteradores, permitiendo q
         echo $user->name;
     }
 
-Sin embargo, las colecciones son mucho más poderosas que los arreglos y exponen una variedad de mapeos / reduce operaciones que pueden ser encadenadas usando una interfase intuitiva. Por ejemplo, vamos a remover todos los modelos inactivos y traeremos el primer nombre para cada usuario restante:
+Sin embargo, las colecciones son mucho más poderosas que los arreglos y exponen una variedad de mapeos / reduce operaciones que pueden ser encadenadas usando una interfaz intuitiva. Por ejemplo, vamos a remover todos los modelos inactivos y traeremos el primer nombre para cada usuario restante:
 
     $users = App\User::all();
 
@@ -35,7 +35,7 @@ Sin embargo, las colecciones son mucho más poderosas que los arreglos y exponen
 
 ### La Colección Base
 
-Todas las colecciones de Eloquent extienden el objeto de [colección de Laravel](/docs/{{version}}/collections) base; sin embargo, heredan todo los métodos poderosos proporcionados por la clase colección base:
+Todas las colecciones de Eloquent extienden el objeto de [colección de Laravel](/docs/{{version}}/collections) base; sin embargo, heredan todos los métodos poderosos proporcionados por la clase de colección base:
 
 <style>
     #collection-method-list > p {
@@ -145,7 +145,7 @@ Todas las colecciones de Eloquent extienden el objeto de [colección de Laravel]
 <a name="custom-collections"></a>
 ## Colecciones Personalizadas
 
-Si necesitas usar un objeto de `Collection` personalizada con tus propios métodos de extensión, puedes sobreescribir el método `newCollection` en tu modelo:
+Si necesitas usar un objeto `Collection` personalizado con tus propios métodos de extensión, puedes sobrescribir el método `newCollection` en tu modelo:
 
     <?php
 
@@ -168,4 +168,4 @@ Si necesitas usar un objeto de `Collection` personalizada con tus propios métod
         }
     }
 
-Una vez que has definido un método `newCollection`, recibirás una instancia de tu colección personalizada cada vez que Eloquent devuelve una instancia `Collection` de ese modelo. Si prefieres usar una colección personalizada para cada modelo en tu aplicación, deberías sobreescribir el método `newCollection` en una clase del modelo base que es extendida por todos tus modelos.
+Una vez que has definido un método `newCollection`, recibirás una instancia de tu colección personalizada cada vez que Eloquent devuelva una instancia `Collection` de ese modelo. Si prefieres usar una colección personalizada para cada modelo en tu aplicación, deberías sobrescribir el método `newCollection` en una clase del modelo base que es extendida por todos tus modelos.
