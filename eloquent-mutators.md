@@ -11,7 +11,7 @@
 <a name="introduction"></a>
 ## Introducción
 
-Los accesadores y mutadores permiten que des formato a los valores de atributos de Eloquent cuando los obtienes o estableces en las instancias de modelo. Por ejemplo, puede que te guste usar el [encriptador de Laravel](/docs/{{version}}/encryption) para encriptar un valor mientras es almacenado en la base de datos, y después desencriptar automáticamente el atributo cuando lo accedes en un modelo Eloquent.
+Los accesadores y mutadores permiten que des formato a los valores de atributos de Eloquent cuando los obtienes o estableces en las instancias de modelo. Por ejemplo, puede que te guste usar el [encriptador de Laravel](/docs/{{version}}/encryption) para encriptar un valor mientras es almacenado en la base de datos y después desencriptar automáticamente el atributo cuando accedes a el en un modelo de Eloquent.
 
 En adición a accesadores y mutadores personalizados, Eloquent también puede convertir automáticamente campos de fecha a instancias [Carbon](https://github.com/briannesbitt/Carbon) o incluso [convertir campos de texto a JSON](#attribute-casting).
 
@@ -21,7 +21,7 @@ En adición a accesadores y mutadores personalizados, Eloquent también puede co
 <a name="defining-an-accessor"></a>
 ### Definiendo un Accesador
 
-Para definir un accesador, crea un método `getFooAttribute` en tu modelo donde `Foo` es el nombre en letras "incrustado" de la columna que deseas acceder. En este ejemplo, definiremos un accesador para el atributo `first_name`. El accesador automáticamente será ejecutado por Eloquent al momento de intentar obtener el valor del atributo `first_name`:
+Para definir un accesador crea un método `getFooAttribute` en tu modelo, donde `Foo` es el nombre en letras "incrustado" de la columna que deseas acceder. En este ejemplo, definiremos un accesador para el atributo `first_name`. El accesador automáticamente será ejecutado por Eloquent al momento de intentar obtener el valor del atributo `first_name`:
 
     <?php
 
@@ -43,13 +43,13 @@ Para definir un accesador, crea un método `getFooAttribute` en tu modelo donde 
         }
     }
 
-Como puedes ver, el valor original de la columna es pasado al accesador, permitiendote manipular y devolver el valor. Para acceder al valor del accesador, puedes acceder al atributo `first_name` en una instancia de modelo:
+Como puedes ver, el valor original de la columna es pasado al accesador, permitiendote manipular y devolver el valor. Para acceder al valor del accesador, puedes acceder al atributo `first_name` en una instancia del modelo:
 
     $user = App\User::find(1);
 
     $firstName = $user->first_name;
 
-Ciertamente, también puedes usar accesadores para devolver nuevos, valores computados de atributos existentes:
+Ciertamente, también puedes usar accesadores para retornar nuevos valores computados de atributos existentes:
 
     /**
      * Get the user's full name.
@@ -96,7 +96,7 @@ En este ejemplo, la función `setFirstNameAttribute` será ejecutada con el valo
 <a name="date-mutators"></a>
 ## Mutadores de Fecha
 
-De forma predeterminada, Eloquent convierte las columnas `created_at` y `updated_at` a instancias de [Carbon](https://github.com/briannesbitt/Carbon), la cual extiende la clase `DateTime` de PHP para proporcionar una mezcla de métodos útiles. Puedes personalizar cuales fechas sean automáticamente mutadas, e incluso deshabilitar completamente esta mutación, al sobreescribir la propiedad `$dates` de tu modelo:
+De forma predeterminada, Eloquent convierte las columnas `created_at` y `updated_at` a instancias de [Carbon](https://github.com/briannesbitt/Carbon), la cual extiende la clase `DateTime` de PHP para proporcionar una mezcla de métodos útiles. Puedes personalizar cuales fechas serán automáticamente mutadas e incluso deshabilitar completamente esta mutación, al sobreescribir la propiedad `$dates` de tu modelo:
 
     <?php
 
@@ -118,7 +118,7 @@ De forma predeterminada, Eloquent convierte las columnas `created_at` y `updated
         ];
     }
 
-Cuando una columna es considerada una fecha, puedes establecer su valor a una marca de tiempo UNIX, cadena de fecha (`Y-m-d`), cadena fecha-hora, y ciertamente una instancia `DateTime` / `Carbon`, y el valor de la fecha será automáticamente almacenado correctamente en tu base de datos:
+Cuando una columna es considerada una fecha, puedes establecer su valor a una marca de tiempo UNIX, cadena de fecha (`Y-m-d`), cadena fecha-hora y ciertamente una instancia `DateTime` / `Carbon` y el valor de la fecha será automáticamente almacenado correctamente en tu base de datos:
 
     $user = App\User::find(1);
 
@@ -126,7 +126,7 @@ Cuando una columna es considerada una fecha, puedes establecer su valor a una ma
 
     $user->save();
 
-Como se apreció anteriormente, al momento de obtener atributos que son listados en tu propiedad `$dates`, serán automáticamente convertidos a instancias [Carbon](https://github.com/briannesbitt/Carbon), permitiendo que uses cualquiera de los métodos de Carbon en tus atributos:
+Como se apreció anteriormente, al momento de obtener atributos que son listados en tu propiedad `$dates`, estos serán automáticamente convertidos a instancias [Carbon](https://github.com/briannesbitt/Carbon), permitiendo que uses cualquiera de los métodos de Carbon en tus atributos:
 
     $user = App\User::find(1);
 
@@ -134,7 +134,7 @@ Como se apreció anteriormente, al momento de obtener atributos que son listados
 
 #### Formatos de Fecha
 
-De forma predeterminada, las marcas de tiempo son formateadas como `'Y-m-d H:i:s'`. Si necesitas personalizar el formato de marca de hora, establece la propiedad `$dateFormat`en tu modelo. Esta propiedad determina como los atributos de fecha son almacenados en la base de datos, también como su formato cuando el modelo es serializado a un arreglo o JSON:
+De forma predeterminada, las marcas de tiempo son formateadas como `'Y-m-d H:i:s'`. Si necesitas personalizar el formato de marca de hora, establece la propiedad `$dateFormat` en tu modelo. Esta propiedad determina como los atributos de fecha son almacenados en la base de datos así como también su formato cuando el modelo es serializado a un arreglo o JSON:
 
     <?php
 
@@ -155,9 +155,9 @@ De forma predeterminada, las marcas de tiempo son formateadas como `'Y-m-d H:i:s
 <a name="attribute-casting"></a>
 ## Conversión de Atributos
 
-La propiedad `$casts` en tu modelo proporciona un método conveniente de convertir atributos a tipos de datos comunes. La propiedad `$casts` debería ser un arreglo donde la clave es el nombre del atributo que esta siendo convertido y el valor es el tipo al que deseas convertir la columna. Los tipos de conversión soportados son: `integer`, `real`, `float`, `double`, `string`, `boolean`, `object`, `array`, `collection`, `date`, `datetime`, y `timestamp`.
+La propiedad `$casts` en tu modelo proporciona un método conveniente de convertir atributos a tipos de datos comunes. La propiedad `$casts` debería ser un arreglo donde la clave es el nombre del atributo que esta siendo convertido y el valor es el tipo al que deseas convertir la columna. Los tipos de conversión soportados son: `integer`, `real`, `float`, `double`, `string`, `boolean`, `object`, `array`, `collection`, `date`, `datetime` y `timestamp`.
 
-Por ejemplo, vamos a convertir el atributo `is_admin`, el cual es almacenado en nuestra base de datos como un entero (`0` or `1`) a un valor booleano:
+Por ejemplo, vamos a convertir el atributo `is_admin`, el cual es almacenado en nuestra base de datos como un entero (`0` o `1`) a un valor booleano:
 
     <?php
 
@@ -188,7 +188,7 @@ Ahora el atributo `is_admin` será siempre convertido a un booleano cuando lo ac
 <a name="array-and-json-casting"></a>
 ### Conversión Arreglo & JSON
 
-El tipo de conversión `array` es particularmente útil al momento de trabajar con columnas que son almacenadas como JSON serializado. Por ejemplo, si tu base de datos tiene un tipo de campo `JSON` o `TEXT` que contiene JSON serializado, agregando la conversión `array` a ese atributo deserializará automáticamente el atributo a un arreglo PHP cuando lo accedas en tu modelo Eloquent:
+El tipo de conversión `array` es particularmente útil al momento de trabajar con columnas que son almacenadas como JSON serializado. Por ejemplo, si tu base de datos tiene un tipo de campo `JSON` o `TEXT` que contiene JSON serializado, agregar la conversión `array` a ese atributo deserializará automáticamente el atributo a un arreglo PHP cuando lo accedas en tu modelo Eloquent:
 
     <?php
 
