@@ -6,10 +6,10 @@
 <a name="introduction"></a>
 ## Introducción
 
-Laravel incluye una variedad de funciones PHP "ayudantes" globales. Muchas de esas funciones son usadas por el mismo framework; sin embargo, tu eres libre de usarlas en tus aplicaciones si lo encuentras conveniente.
+Laravel incluye una variedad de funciones "helpers" globales de PHP. Muchas de esas funciones son usadas por el mismo framework; sin embargo, eres libre de usarlas en tus aplicaciones si lo encuentras conveniente.
 
 <a name="available-methods"></a>
-## Métodos Dispnibles
+## Métodos Disponibles
 
 <style>
     .collection-method-list > p {
@@ -211,7 +211,7 @@ La función `array_collapse` colapsa un arreglo de arreglos en un único arreglo
 <a name="method-array-divide"></a>
 #### `array_divide()` {#collection-method}
 
-La función `array_divide` retorna dos arreglos, uno contiene las claves y el otro contiene los valores del array dado:
+La función `array_divide` retorna dos arreglos, uno contiene las claves y el otro contiene los valores del arreglo dado:
 
     list($keys, $values) = array_divide(['name' => 'Desk']);
     
@@ -222,7 +222,7 @@ La función `array_divide` retorna dos arreglos, uno contiene las claves y el ot
 <a name="method-array-dot"></a>
 #### `array_dot()` {#collection-method}
 
-La función `array_dot` aplana un arreglo multi dimensional en un arreglo de un nivel que usas la notación "punto" para indicar profundidad:
+La función `array_dot` aplana un arreglo multidimensional en un arreglo de un sólo nivel que usa la notación de "punto" para indicar la profundidad:
 
     $array = ['products' => ['desk' => ['price' => 100]]];
     
@@ -272,7 +272,7 @@ La función `array_flatten` unifica un arreglo multidimensional en un arreglo de
 <a name="method-array-forget"></a>
 #### `array_forget()` {#collection-method}
 
-La función `array_forget` remueve un par clave / valor de un arreglo anidado usando la notación "punto":
+La función `array_forget` remueve un par clave / valor de un arreglo anidado usando la notación de "punto":
 
     $array = ['products' => ['desk' => ['price' => 100]]];
     
@@ -283,7 +283,7 @@ La función `array_forget` remueve un par clave / valor de un arreglo anidado us
 <a name="method-array-get"></a>
 #### `array_get()` {#collection-method}
 
-La función `array_get` recupera un valor de un arreglo anidado usando la notación "punto":
+La función `array_get` recupera un valor de un arreglo anidado usando la notación de "punto":
 
     $array = ['products' => ['desk' => ['price' => 100]]];
     
@@ -291,7 +291,7 @@ La función `array_get` recupera un valor de un arreglo anidado usando la notaci
     
     // 100
 
-La función `array_get` acepta un valor por defecto, el cual será devuelto si la clave específica no es encontrada:
+La función `array_get` acepta un valor por defecto, el cual será devuelto si la clave especificada no es encontrada:
 
     $discount = array_get($array, 'products.desk.discount', 0);
     
@@ -300,7 +300,7 @@ La función `array_get` acepta un valor por defecto, el cual será devuelto si l
 <a name="method-array-has"></a>
 #### `array_has()` {#collection-method}
 
-La función `array_has` chequea si un ítem o ítems dados existen en un arreglo usando la notación "punto":
+La función `array_has` comprueba si un elemento o elementos dados existen en un arreglo usando la notación de "punto":
 
     $array = ['product' => ['name' => 'Desk', 'price' => 100]];
     
@@ -325,7 +325,7 @@ La función `array_last` retorna el último elemento de un arreglo que cumpla la
     
     // 300
 
-Un valor por defecto puede ser pasado como un tercer argumento al método. Este valor será devuelto si ningún valor que cumpla la condición:
+Un valor por defecto puede ser pasado como tercer argumento al método. Este valor será devuelto si ningún valor cumple la condición:
 
     $last = array_last($array, $callback, $default);
 
@@ -363,7 +363,7 @@ Puedes además especificar como deseas que la lista resultante sea codificada:
 <a name="method-array-prepend"></a>
 #### `array_prepend()` {#collection-method}
 
-La función `array_prepend` colocará un ítem al comienzo de un arreglo:
+La función `array_prepend` colocará un elemento al comienzo de un arreglo:
 
     $array = ['one', 'two', 'three', 'four'];
     
@@ -392,7 +392,7 @@ La función `array_pull` retorna y remueve un par clave / valor de un arreglo:
     
     // $array: ['price' => 100]
 
-Un valor por defecto puede ser pasado como el tercer argumento del método. Este valor será devuelto si la clave no existe:
+Un valor por defecto puede ser pasado como tercer argumento del método. Este valor será devuelto si la clave no existe:
 
     $value = array_pull($array, $key, $default);
 
@@ -407,7 +407,7 @@ La función `array_random` retorna un valor aleatorio de un arreglo:
     
     // 4 - (retrieved randomly)
 
-Puedes además especificar el número de elementos a retornar como un segundo argumento opcional. Nota que proveyendo este argumento retornará un arreglo, incluso si solo deseas un ítem:
+Puedes además especificar el número de elementos a retornar como un segundo argumento opcional. Nota que proveer este argumento retornará un arreglo, incluso si solo deseas un elemento:
 
     $items = array_random($array, 2);
     
@@ -416,7 +416,7 @@ Puedes además especificar el número de elementos a retornar como un segundo ar
 <a name="method-array-set"></a>
 #### `array_set()` {#collection-method}
 
-La función `array_set` establece un valor dentro de un arreglo anidado usando la notación "punto":
+La función `array_set` establece un valor dentro de un arreglo anidado usando la notación de "punto":
 
     $array = ['products' => ['desk' => ['price' => 100]]];
     
@@ -509,7 +509,7 @@ Si el valor dado es nulo, un arreglo vacío será devuelto:
 <a name="method-data-fill"></a>
 #### `data_fill()` {#collection-method}
 
-La función `data_fill` establece un valor faltante dentro de un array anidado u objeto usando la notación "punto":
+La función `data_fill` establece un valor faltante dentro de un arreglo anidado u objeto usando la notación de "punto":
 
     $data = ['products' => ['desk' => ['price' => 100]]];
     
@@ -544,7 +544,7 @@ Esta función además acepta asteriscos como comodines y rellenará el objetivo 
 <a name="method-data-get"></a>
 #### `data_get()` {#collection-method}
 
-La función `data_get` recupera un valor de un arreglo anidado u objeto usando la notación "punto":
+La función `data_get` recupera un valor de un arreglo anidado u objeto usando la notación de "punto":
 
     $data = ['products' => ['desk' => ['price' => 100]]];
     
@@ -552,7 +552,7 @@ La función `data_get` recupera un valor de un arreglo anidado u objeto usando l
     
     // 100
 
-La función `data_get` acepta además un valor por defecto, el cual será retornado si la clave específica no es encontrada:
+La función `data_get` acepta además un valor por defecto, el cual será retornado si la clave especificada no es encontrada:
 
     $discount = data_get($data, 'products.desk.discount', 0);
     
@@ -561,7 +561,7 @@ La función `data_get` acepta además un valor por defecto, el cual será retorn
 <a name="method-data-set"></a>
 #### `data_set()` {#collection-method}
 
-La función `data_set` establece un valor dentro de un arreglo anidado u objeto usando la notación "punto":
+La función `data_set` establece un valor dentro de un arreglo anidado u objeto usando la notación de "punto":
 
     $data = ['products' => ['desk' => ['price' => 100]]];
     
@@ -589,7 +589,7 @@ Esta función además acepta comodines y establecerá valores en el objetivo en 
         ]
     */
 
-Por defecto, cualquiera valores existentes son sobrescrito. Si deseas solo establecer un valor si no existe, puedes pasar `false` como tercer argumento:
+Por defecto, cualquier valor existente es sobrescrito. Si deseas solo establecer un valor si no existe, puedes pasar `false` como tercer argumento:
 
     $data = ['products' => ['desk' => ['price' => 100]]];
     
@@ -625,7 +625,7 @@ La función `last` retorna el último elemento en el arreglo dado:
 <a name="method-app-path"></a>
 #### `app_path()` {#collection-method}
 
-La función `app_path` retorna la ruta completa al directorio `app`. Tu además puedes usar la función `app_path` para generar una ruta completa a un archivo relativo al directorio de la aplicación:
+La función `app_path` retorna la ruta completa al directorio `app`. Además puedes usar la función `app_path` para generar una ruta completa a un archivo relativo al directorio de la aplicación:
 
     $path = app_path();
     
@@ -634,7 +634,7 @@ La función `app_path` retorna la ruta completa al directorio `app`. Tu además 
 <a name="method-base-path"></a>
 #### `base_path()` {#collection-method}
 
-La función `base_path` retorna la ruta completa a la raíz del proyecto. Tu además puedes usar la función `base_path` para generar una ruta completa a un archivo dado relativo al directorio raíz del proyecto:
+La función `base_path` retorna la ruta completa a la raíz del proyecto. Además puedes usar la función `base_path` para generar una ruta completa a un archivo dado relativo al directorio raíz del proyecto:
 
     $path = base_path();
     
@@ -643,7 +643,7 @@ La función `base_path` retorna la ruta completa a la raíz del proyecto. Tu ade
 <a name="method-config-path"></a>
 #### `config_path()` {#collection-method}
 
-La función `config_path` retorna la ruta completa al directorio `config`. Tu puedes además usar la función `config_path` para generar una ruta completa a un archivo dado dentro del directorio de configuración de la aplicación:
+La función `config_path` retorna la ruta completa al directorio `config`. Puedes además usar la función `config_path` para generar una ruta completa a un archivo dado dentro del directorio de configuración de la aplicación:
 
     $path = config_path();
     
@@ -652,7 +652,7 @@ La función `config_path` retorna la ruta completa al directorio `config`. Tu pu
 <a name="method-database-path"></a>
 #### `database_path()` {#collection-method}
 
-La función `database_path` retorna la ruta completa al directorio `database`.Tu puedes además usar la función `database_path` para generar una ruta completa a un archivo dado dentro del directorio database:
+La función `database_path` retorna la ruta completa al directorio `database`. Puedes además usar la función `database_path` para generar una ruta completa a un archivo dado dentro del directorio database:
 
     $path = database_path();
     
@@ -668,7 +668,7 @@ La función `mix` retorna la ruta al [archivo versionado Mix](/docs/{{version}}/
 <a name="method-public-path"></a>
 #### `public_path()` {#collection-method}
 
-La función `public_path` retorna la ruta completa al directorio `public`. Tu puedes además usar la función `public_path` para generar una ruta completa a un archivo dado dentro del directorio public:
+La función `public_path` retorna la ruta completa al directorio `public`. Puedes además usar la función `public_path` para generar una ruta completa a un archivo dado dentro del directorio public:
 
     $path = public_path();
     
@@ -677,7 +677,7 @@ La función `public_path` retorna la ruta completa al directorio `public`. Tu pu
 <a name="method-resource-path"></a>
 #### `resource_path()` {#collection-method}
 
-La función `resource_path` retorna la ruta completa al directorio `resources`. Tu puedes además usar la función `resource_path` para generar una ruta completa a un archivo dado dentro del directorio resources:
+La función `resource_path` retorna la ruta completa al directorio `resources`. Puedes además usar la función `resource_path` para generar una ruta completa a un archivo dado dentro del directorio resources:
 
     $path = resource_path();
     
@@ -686,7 +686,7 @@ La función `resource_path` retorna la ruta completa al directorio `resources`. 
 <a name="method-storage-path"></a>
 #### `storage_path()` {#collection-method}
 
-La función `storage_path` retorna la ruta compelta al directorio `storage`. Tu puedes además usar la función `storage_path` para generar una ruta completa a un archivo dado dentro del directorio storage:
+La función `storage_path` retorna la ruta compelta al directorio `storage`. Puedes además usar la función `storage_path` para generar una ruta completa a un archivo dado dentro del directorio storage:
 
     $path = storage_path();
     
@@ -718,7 +718,7 @@ La función `camel_case` convierte la cadena dada a `camelCase`:
 <a name="method-class-basename"></a>
 #### `class_basename()` {#collection-method}
 
-La función `class_basename` retorna el nombre de la clase de la clase dada con el nombre de espacio de la clase' removido:
+La función `class_basename` retorna el nombre de la clase dada con el nombre de espacio de la clase removido:
 
     $class = class_basename('Foo\Bar\Baz');
     
@@ -727,7 +727,7 @@ La función `class_basename` retorna el nombre de la clase de la clase dada con 
 <a name="method-e"></a>
 #### `e()` {#collection-method}
 
-La función `e` ejecuta la función de PHP `htmlspecialchars` con la opción `double_encode` establecida en`false`:
+La función `e` ejecuta la función de PHP `htmlspecialchars` con la opción `double_encode` establecida en `false`:
 
     echo e('<html>foo</html>');
     
@@ -736,7 +736,7 @@ La función `e` ejecuta la función de PHP `htmlspecialchars` con la opción `do
 <a name="method-ends-with"></a>
 #### `ends_with()` {#collection-method}
 
-La función `ends_with` determina si la cadena dada finaliza con el valor dado determines:
+La función `ends_with` determina si la cadena dada finaliza con el valor dado:
 
     $result = ends_with('This is my name', 'name');
     
@@ -807,7 +807,7 @@ La función `str_contains` determina si la cadena dada contiene el valor dado:
     
     // true
 
-Tu puedes además pasar un arreglo de valores para determinar si la cadena dada contiene cualquiera de los valores:
+Puedes además pasar un arreglo de valores para determinar si la cadena dada contiene cualquiera de los valores:
 
     $contains = str_contains('This is my name', ['my', 'foo']);
     
@@ -849,7 +849,7 @@ La función `str_limit` trunca la cadena dada en la longitud especificada:
     
     // The quick brown fox...
 
-Tu puedes además pasar un tercer argumento para cambiar la cadena que será adjuntada al final:
+Puedes además pasar un tercer argumento para cambiar la cadena que será adjuntada al final:
 
     $truncated = str_limit('The quick brown fox jumps over the lazy dog', 20, ' (...)');
     
@@ -859,7 +859,7 @@ Tu puedes además pasar un tercer argumento para cambiar la cadena que será adj
 
 #### `Str::orderedUuid` {#collection-method}
 
-El método `Str::orderedUuid`  genera una "primera marca de tiempo" UUID que puede ser eficientemente almacenada en una columna indexada de la base de datos:
+El método `Str::orderedUuid` genera una "primera marca de tiempo" UUID que puede ser eficientemente almacenada en una columna indexada de la base de datos:
 
 ```
 use Illuminate\Support\Str;
@@ -871,7 +871,7 @@ return (string) Str::orderedUuid();
 
 #### `str_plural()` {#collection-method}
 
-La función `str_plural` convierte una cadena a su forma plural. Esta función actualmente solo soporta el lenguaje Inglés:
+La función `str_plural` convierte una cadena a su forma plural. Esta función actualmente solo soporta el idioma inglés:
 
     $plural = str_plural('car');
     
@@ -881,7 +881,7 @@ La función `str_plural` convierte una cadena a su forma plural. Esta función a
     
     // children
 
-Tu puedes además proveer un entero como un segundo argumento a la función para recuperar la forma singular o plural de la cadena:
+Puedes además proporcionar un entero como segundo argumento a la función para recuperar la forma singular o plural de la cadena:
 
     $plural = str_plural('child', 2);
     
@@ -894,7 +894,7 @@ Tu puedes además proveer un entero como un segundo argumento a la función para
 <a name="method-str-random"></a>
 #### `str_random()` {#collection-method}
 
-La función `str_random` genera una cadena aleatoria con la longitud especificada. Esta función usa la función PHP`random_bytes` :
+La función `str_random` genera una cadena aleatoria con la longitud especificada. Esta función usa la función PHP `random_bytes`:
 
     $random = str_random(40);
 
@@ -930,7 +930,7 @@ La función `str_replace_last` reemplaza la última ocurrencia de un valor dado 
 <a name="method-str-singular"></a>
 #### `str_singular()` {#collection-method}
 
-La función `str_singular` convierte una cadena a su forma singular. Esta función actualmente solo soporta el lenguaje Inglés:
+La función `str_singular` convierte una cadena a su forma singular. Esta función actualmente solo soporta el idioma inglés:
 
     $singular = str_singular('cars');
     
@@ -943,7 +943,7 @@ La función `str_singular` convierte una cadena a su forma singular. Esta funci�
 <a name="method-str-slug"></a>
 #### `str_slug()` {#collection-method}
 
-La función `str_slug` genera una URL amigable "slug" de la cadena dada:
+La función `str_slug` genera una URL amigable con la cadena dada:
 
     $slug = str_slug('Laravel 5 Framework', '-');
     
@@ -974,7 +974,7 @@ La función `studly_case` convierte la cadena dada a `StudlyCase`:
 <a name="method-title-case"></a>
 #### `title_case()` {#collection-method}
 
-La función `title_case` convierte la cadena dada a`Title Case`:
+La función `title_case` convierte la cadena dada a `Title Case`:
 
     $converted = title_case('a nice title uses the correct case');
     
@@ -996,7 +996,7 @@ La función `trans_choice` traduce la clave de traducción dada con inflexión:
 
     echo trans_choice('messages.notifications', $unreadCount);
 
-Si la clave de traducción dada no existe, la función`trans_choice` returnará la clave dada. Así, usando el ejemplo de arriba, la función `trans_choice` podría retornar `messages.notifications` si la clave de traducción no existe.
+Si la clave de traducción dada no existe, la función `trans_choice` retornará la clave dada. Así, usando el ejemplo de arriba, la función `trans_choice` podría retornar `messages.notifications` si la clave de traducción no existe.
 
 <a name="method-str-uuid"></a>
 
@@ -1016,11 +1016,11 @@ return (string) Str::uuid();
 <a name="method-action"></a>
 #### `action()` {#collection-method}
 
-La función `action` genera una URL para la acción del controlador dada. Tu no necesitas pasar el nombre de espacio completo. En vez de eso, pasa al controlador el nombre de clase relativo al nombre de espacio a `App\Http\Controllers`:
+La función `action` genera una URL para la acción del controlador dada. No necesitas pasar el nombre de espacio completo. En lugar de eso, pasa al controlador el nombre de clase relativo al nombre de espacio `App\Http\Controllers`:
 
     $url = action('HomeController@index');
 
-Si el método acepta parámetros de ruta, tu puedes pasarlos como el segundo argumento al método:
+Si el método acepta parámetros de ruta, puedes pasarlos como segundo argumento al método:
 
     $url = action('UserController@profile', ['id' => 1]);
 
@@ -1045,11 +1045,11 @@ La función `route` genera una URL para el nombre de ruta dado:
 
     $url = route('routeName');
 
-Si la ruta acepta parámetros, tu puedes pasarlos como el segundo argumento al método:
+Si la ruta acepta parámetros, puedes pasarlos como segundo argumento al método:
 
     $url = route('routeName', ['id' => 1]);
 
-Por defecto, la función `route` genera una URL absoluta. Si deseas generar una URL relativa, puedes pasar `false` como el tercer argumento:
+Por defecto, la función `route` genera una URL absoluta. Si deseas generar una URL relativa, puedes pasar `false` como tercer argumento:
 
     $url = route('routeName', ['id' => 1], false);
 
@@ -1071,7 +1071,7 @@ La función `url` genera una URL completa a la ruta dada:
     
     $url = url('user/profile', [1]);
 
-Si no hay una ruta proveída, una instancia de `Illuminate\Routing\UrlGenerator` es retornada:
+Si una ruta no es proporcionada, una instancia de `Illuminate\Routing\UrlGenerator` es retornada:
 
     $current = url()->current();
     
@@ -1085,7 +1085,7 @@ Si no hay una ruta proveída, una instancia de `Illuminate\Routing\UrlGenerator`
 <a name="method-abort"></a>
 #### `abort()` {#collection-method}
 
-La función `abort` arroja [una excepción HTTP](/docs/{{version}}/errors#http-exceptions) la cual será renderizada por el [manejador de excepciones](/docs/{{version}}/errors#the-exception-handler):
+La función `abort` arroja [una excepción HTTP](/docs/{{version}}/errors#http-exceptions) que será renderizada por el [manejador de excepciones](/docs/{{version}}/errors#the-exception-handler):
 
     abort(403);
 
@@ -1096,11 +1096,11 @@ Puedes además proporcionar el texto de respuesta de la excepción y las cabecer
 <a name="method-abort-if"></a>
 #### `abort_if()` {#collection-method}
 
-La función `abort_if` arroja una excepción HTTP si una expresión booleana dada es evaluada a`true`:
+La función `abort_if` arroja una excepción HTTP si una expresión booleana dada es evaluada a `true`:
 
     abort_if(! Auth::user()->isAdmin(), 403);
 
-Como el método `abort`, puedes proveer además el texto de respuesta para la excepción como el tercer argumento y un arreglo de cabeceras de respuesta personalizadas como el cuarto argumento.
+Como el método `abort`, puedes proporcionar además el texto de respuesta para la excepción como tercer argumento y un arreglo de cabeceras de respuesta personalizadas como cuarto argumento.
 
 <a name="method-abort-unless"></a>
 #### `abort_unless()` {#collection-method}
@@ -1109,7 +1109,7 @@ La función `abort_unless` arroja una excepción HTTP si una expresión booleana
 
     abort_unless(Auth::user()->isAdmin(), 403);
 
-Como el método `abort`, puedes proveer además  el texto de respuesta para la excepción como el tercer argumento y un arreglo de cabeceras de respuesta personalizadas como el cuarto argumento.
+Como el método `abort`, puedes proporcionar además el texto de respuesta para la excepción como tercer argumento y un arreglo de cabeceras de respuesta personalizadas como cuarto argumento.
 
 <a name="method-app"></a>
 #### `app()` {#collection-method}
@@ -1129,14 +1129,14 @@ La función `auth` retorna una instancia del [autenticador](/docs/{{version}}/au
 
     $user = auth()->user();
 
-Si es necesario, puedes especificar con cual instancia del guard tu podrías acceder:
+Si es necesario, puedes especificar con cual instancia del guard podrías acceder:
 
     $user = auth('admin')->user();
 
 <a name="method-back"></a>
 #### `back()` {#collection-method}
 
-La función `back` genera [respuesta de redirección HTTP](/docs/{{version}}/responses#redirects) a la ubicación previa del usuario:
+La función `back` genera una [respuesta de redirección HTTP](/docs/{{version}}/responses#redirects) a la ubicación previa del usuario:
 
     return back($status = 302, $headers = [], $fallback = false);
     
@@ -1152,7 +1152,7 @@ La función `bcrypt` [encripta](/docs/{{version}}/hashing) el valor dado usando 
 <a name="method-broadcast"></a>
 #### `broadcast()` {#collection-method}
 
-La función `broadcast` [emite](/docs/{{version}}/broadcasting) el [evento](/docs/{{version}}/events) dado a sus oyentes:
+La función `broadcast` [emite](/docs/{{version}}/broadcasting) el [evento](/docs/{{version}}/events) dado a sus listeners:
 
     broadcast(new UserRegistered($user));
 
@@ -1179,7 +1179,7 @@ Para lo inverso de `blank`, mira el método [`filled`](#method-filled).
 <a name="method-cache"></a>
 #### `cache()` {#collection-method}
 
-La función `cache` puede ser usado para obtener valor de la [cache](/docs/{{version}}/cache). Si la clave dada no existe en la cache, un valor opcional por defecto será retornado:
+La función `cache` puede ser usada para obtener un valor de la [cache](/docs/{{version}}/cache). Si la clave dada no existe en la cache, un valor opcional por defecto será retornado:
 
     $value = cache('key');
     
@@ -1208,7 +1208,7 @@ La función `collect` crea una instancia de [colecciones](/docs/{{version}}/coll
 <a name="method-config"></a>
 #### `config()` {#collection-method}
 
-La función `config` obtiene el valor de una variable de [configuración](/docs/{{version}}/configuration). Los valores de configuración pueden ser accesados usando la sintaxis "punto", la cual incluye el nombre del archivo y la opción que deseas acceder. Un valor por defecto puede ser especificado y es retornado si la opción de configuración no existe:
+La función `config` obtiene el valor de una variable de [configuración](/docs/{{version}}/configuration). Los valores de configuración pueden ser accesados usando la sintaxis de "punto", la cual incluye el nombre del archivo y la opción que deseas acceder. Un valor por defecto puede ser especificado y es retornado si la opción de configuración no existe:
 
     $value = config('app.timezone');
     
@@ -1228,7 +1228,7 @@ La función `cookie` crea una nueva instancia de [cookie](/docs/{{version}}/requ
 <a name="method-csrf-field"></a>
 #### `csrf_field()` {#collection-method}
 
-La función `csrf_field` genera un campo de entrada `hidden` que contiene el valor del token CSRF. por ejemplo, usando la [sintaxis de Blade](/docs/{{version}}/blade):
+La función `csrf_field` genera un campo de entrada `hidden` que contiene el valor del token CSRF. Por ejemplo, usando la [sintaxis de Blade](/docs/{{version}}/blade):
 
     {{ csrf_field() }}
 
@@ -1292,26 +1292,26 @@ La función `encrypt` encripta el valor dado usando el [encriptador](/docs/{{ver
 <a name="method-env"></a>
 #### `env()` {#collection-method}
 
-La función `env` recupera el valor de una [variable de ambiente](/docs/{{version}}/configuration#environment-configuration) o retorna un valor por defecto:
+La función `env` recupera el valor de una [variable de entorno](/docs/{{version}}/configuration#environment-configuration) o retorna un valor por defecto:
 
     $env = env('APP_ENV');
     
     // Returns 'production' if APP_ENV is not set...
     $env = env('APP_ENV', 'production');
 
-> {note} Si ejecutas el comando `config:cache` durante tu proceso de despliegue, deberías estar seguro que tu eres el único llamando a la función `env` desde dentro de tus archivos de configuración. Una vez la configuración está en caché, el archivo `.env` no será cargado y todas las llamadas a la función `.env` retornarán `null`.
+> {note} Si ejecutas el comando `config:cache` durante tu proceso de despliegue, deberías estar seguro de que eres el único llamando a la función `env` desde dentro de tus archivos de configuración. Una vez que la configuración está en caché, el archivo `.env` no será cargado y todas las llamadas a la función `.env` retornarán `null`.
 
 <a name="method-event"></a>
 #### `event()` {#collection-method}
 
-La función `event` despacha el [event](/docs/{{version}}/events) dado a sus oyentes:
+La función `event` despacha el [event](/docs/{{version}}/events) dado a sus listeners:
 
     event(new UserRegistered($user));
 
 <a name="method-factory"></a>
 #### `factory()` {#collection-method}
 
-La función `factory` crea un constructor de modelos de fábrica para una clase dada, nombre y cantidad. Este puede ser usado mientras [testea](/docs/{{version}}/database-testing#writing-factories) o [seedea](/docs/{{version}}/seeding#using-model-factories):
+La función `factory` crea un constructor de modelos de fábrica para una clase dada, nombre y cantidad. Este puede ser usado mientras [pruebas](/docs/{{version}}/database-testing#writing-factories) o haces [seeding](/docs/{{version}}/seeding#using-model-factories):
 
     $user = factory(App\User::class)->make();
 
@@ -1319,7 +1319,7 @@ La función `factory` crea un constructor de modelos de fábrica para una clase 
 
 #### `filled()` {#collection-method}
 
-La función `filled` retorna el valor dado que no esté en "vacío":
+La función `filled` retorna el valor dado que no esté "vacío":
 
     filled(0);
     filled(true);
@@ -1358,14 +1358,14 @@ Un arreglo de datos contextuales puede además ser pasado a la función:
 
     logger('User has logged in.', ['id' => $user->id]);
 
-Una instancia del [logger](/docs/{{version}}/errors#logging) será retornada si no hay valor pasado a la función:
+Una instancia del [logger](/docs/{{version}}/errors#logging) será retornada si no hay un valor pasado a la función:
 
     logger()->error('You are not allowed here.');
 
 <a name="method-method-field"></a>
 #### `method_field()` {#collection-method}
 
-La función `method_field` genera un campo de entrada HTML `hidden` que contiene el valor falsificado del verbo de los formularios HTTP. Por ejemplo, usando la [sintaxis Blade](/docs/{{version}}/blade):
+La función `method_field` genera un campo de entrada HTML `hidden` que contiene el valor falsificado del verbo de los formularios HTTP. Por ejemplo, usando la [sintaxis de Blade](/docs/{{version}}/blade):
 
     <form method="POST">
         {{ method_field('DELETE') }}
@@ -1374,7 +1374,7 @@ La función `method_field` genera un campo de entrada HTML `hidden` que contiene
 <a name="method-now"></a>
 #### `now()` {#collection-method}
 
-La función `now` crea una nueva instancia `Illuminate\Support\Carbon` para el tiempo actual:
+La función `now` crea una nueva instancia `Illuminate\Support\Carbon` con la hora actual:
 
     $now = now();
 
@@ -1396,13 +1396,13 @@ La función `optional` acepta cualquier argumento y te permite acceder a propied
     
     {!! old('name', optional($user)->name) !!}
 
-Puedes llamar además métodos en el objeto retornado. Al igual que con la propiedad de acceso, si el objeto dado es `null` llamando a un método retornará `null` en vez de causar un error:
+Puedes llamar además a métodos en el objeto retornado. Al igual que con la propiedad de acceso, si el objeto dado es `null` llamar a un método retornará `null` en vez de causar un error:
 
 ```
 return optional($user)->getTwitterProfile();
 ```
 
-Si el método que quieres llamar no está en el objeto en si, puedes pasar una función de retorno a `optional` como su segundo argumento:
+Si el método que quieres llamar no está en el objeto en si, puedes pasar una función de retorno a `optional` como segundo argumento:
 
 ```
 return optional(User::find($id), function ($user) {
@@ -1410,7 +1410,7 @@ return optional(User::find($id), function ($user) {
 });
 ```
 
-Si el objeto dado no es `null`, la función de retorno será llamada y su valor de retorno seré devuelto como está. Si el objeto dado es `null,` la función de retorno no será llamada, y `òptional` retornará `null` en vez de causar un error.
+Si el objeto dado no es `null`, la función de retorno será llamada y su valor de retorno seré devuelto como está. Si el objeto dado es `null`, la función de retorno no será llamada y `optional` retornará `null` en vez de causar un error.
 
 <a name="method-policy"></a>
 
@@ -1423,7 +1423,7 @@ El método `policy` recupera una instancia de la [política](/docs/{{version}}/a
 <a name="method-redirect"></a>
 #### `redirect()` {#collection-method}
 
-La función `redirect` retorna [respuesta de redirección HTTP](/docs/{{version}}/responses#redirects), o retorna la instancia del redirector si no hay argumentos llamados:
+La función `redirect` retorna una [respuesta de redirección HTTP](/docs/{{version}}/responses#redirects) o retorna la instancia del redirector si no hay argumentos llamados:
 
     return redirect($to = null, $status = 302, $headers = [], $secure = null);
     
@@ -1441,7 +1441,7 @@ La función `report` reportará una excepción usando el método `report` de tu 
 <a name="method-request"></a>
 #### `request()` {#collection-method}
 
-La función `request` retorna la instancia de la [solicitud](/docs/{{version}}/requests) actual u obtiene un ítem de entrada:
+La función `request` retorna la instancia de la [solicitud](/docs/{{version}}/requests) actual u obtiene un elemento de entrada:
 
     $request = request();
     
@@ -1531,7 +1531,7 @@ Si no hay función de retorno para la función `tap`, puedes llamar cualquier m�
 <a name="method-today"></a>
 #### `today()` {#collection-method}
 
-La función `today` crear una nueva instancia de `Illuminate\Support\Carbon` para la fecha actual:
+La función `today` crea una nueva instancia de `Illuminate\Support\Carbon` para la fecha actual:
 
     $today = today();
 
@@ -1571,7 +1571,7 @@ La función `trait_uses_recursive` retorna todos los traits usados por un trait:
 <a name="method-transform"></a>
 #### `transform()` {#collection-method}
 
-La función `transform` ejecuta una función de retorno en un valor dado si el valor no está en [vacío](#method-blank) y retorna el resultado de la función de retorno`:
+La función `transform` ejecuta una función de retorno en un valor dado si el valor no está en [vacío](#method-blank) y retorna el resultado de la función de retorno:
 
     $callback = function ($value) {
         return $value * 2;
@@ -1581,7 +1581,7 @@ La función `transform` ejecuta una función de retorno en un valor dado si el v
     
     // 10
 
-Un valor o `Closure` puede ser pasado como el tercer parámetro al método. Este valor será retornado si el valor dado es vacío:
+Un valor o `Closure` puede ser pasado como el tercer parámetro al método. Este valor será retornado si el valor dado está vacío:
 
     $result = transform(null, $callback, 'The value is blank');
     
@@ -1597,7 +1597,7 @@ La función `validator` crea un nueva instancia del [validador](/docs/{{version}
 <a name="method-value"></a>
 #### `value()` {#collection-method}
 
-La función `value` retorna el valor que se de da. Sin embargo, si pasas un `Closure` a la función, el `Closure` será ejecutado y su resultado será devuelto:
+La función `value` retorna el valor dado. Sin embargo, si pasas un `Closure` a la función, el `Closure` será ejecutado y su resultado será devuelto:
 
     $result = value(true);
     
@@ -1612,14 +1612,14 @@ La función `value` retorna el valor que se de da. Sin embargo, si pasas un `Clo
 <a name="method-view"></a>
 #### `view()` {#collection-method}
 
-La función `view` recupera una instancia de la [vista](/docs/{{version}}/views) :
+La función `view` recupera una instancia de la [vista](/docs/{{version}}/views):
 
     return view('auth.login');
 
 <a name="method-with"></a>
 #### `with()` {#collection-method}
 
-La función `with` retorna el que se le da. Si se le pasa un `Closure` como segundo argumento a la función, el `Closure` será ejecutado y su resultado será devuelto:
+La función `with` retorna el valor dado. Si se le pasa un `Closure` como segundo argumento a la función, el `Closure` será ejecutado y su resultado será devuelto:
 
     $callback = function ($value) {
         return (is_numeric($value)) ? $value * 2 : 0;
