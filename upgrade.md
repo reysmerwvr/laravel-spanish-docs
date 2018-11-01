@@ -1,21 +1,21 @@
 # Upgrade Guide
 
-- [Upgrading To 5.5.0 From 5.4](#upgrade-5.5.0)
+- [Actualizando A 5.5.0 Desde 5.4](#upgrade-5.5.0)
 
 <a name="upgrade-5.5.0"></a>
-## Upgrading To 5.5.0 From 5.4
+## Actualizando A 5.5.0 Desde 5.4
 
-#### Estimated Upgrade Time: 1 Hour
+#### Tiempo Estimado de Actualización: 1 Hora
 
-> {note} We attempt to document every possible breaking change. Since some of these breaking changes are in obscure parts of the framework only a portion of these changes may actually affect your application.
+> {note} Tratamos de documentar cada posible cambio. Dado que algunos de estos cambios están en partes oscuras del framework sólo una porción de estos cambios podrían afectar tu aplicación.
 
 ### PHP
 
-Laravel 5.5 requires PHP 7.0.0 or higher.
+Laravel 5.5 requiere PHP 7.0.0 o superior.
 
-### Updating Dependencies
+### Actualizando Dependencias
 
-Update your `laravel/framework` dependency to `5.5.*` in your `composer.json` file. In addition, you should update your `phpunit/phpunit` dependency to `~6.0`. Next, add the `filp/whoops` package with version `~2.0` to the `require-dev` section of your `composer.json` file. Finally, in the `scripts` section of your `composer.json` file, add the `package:discover` command to the `post-autoload-dump` event:
+Actualiza tu dependencia de `laravel/framework` a `5.5.*` en tu archivo `composer.json`. Adicionalmente, debes actualizar tu dependencia `phpunit/phpunit` a `~6.0`. Luego, agrega el paquete `filp/whoops` con la version `~2.0` a la sección`require-dev` de tu archivo `composer.json`. Finalmente, en la sección `scripts` de tu archivo `composer.json`, agrega el comando `package:discover` al evento `post-autoload-dump`:
 
     "scripts": {
         ...
@@ -25,61 +25,61 @@ Update your `laravel/framework` dependency to `5.5.*` in your `composer.json` fi
         ],
     }
 
-Of course, don't forget to examine any 3rd party packages consumed by your application and verify you are using the proper version for Laravel 5.5 support.
+Por supuesto, no olvides examinar cualquier otro paquete de terceros consumido por tu aplicación y verificar que estás usando la versión adecuada para soportar Laravel 5.5
 
-#### Laravel Installer
+#### Instalador De Laravel
 
-> {tip} If you commonly use the Laravel installer via `laravel new`, you should update your Laravel installer package using the `composer global update` command.
+> {tip} Si normalmente usas el instalador de Laravel mediante `laravel new`, deberías actualizar el paquete del instalador de Laravel usando el comando `composer global update`.
 
 #### Laravel Dusk
 
-Laravel Dusk `2.0.0` has been released to provide compatibility with Laravel 5.5 and headless Chrome testing.
+Laravel Dusk `2.0.0` ha sido liberado para proporcionar compatibilidad con Laravel 5.5 y pruebas sin encabezado de Chrome.
 
 #### Pusher
 
-The Pusher event broadcasting driver now requires version `~3.0` of the Pusher SDK.
+El driver para difusión de eventos Pusher ahora requiere la versión `~3.0` del SDK de Pusher.
 
 #### Swift Mailer
 
-Laravel 5.5 requires version `~6.0` of Swift Mailer.
+Laravel 5.5 requiere la versión `~6.0` de Swift Mailer.
 
 ### Artisan
 
-#### Auto-Loading Commands
+#### Carga Automática de Comandos
 
-In Laravel 5.5, Artisan can automatically discover commands so that you do not have to manually register them in your kernel. To take advantage of this new feature, you should add the following line to the `commands` method of your  `App\Console\Kernel` class:
+En Laravel 5.5, Artisan puede descubrir comandos automáticamente para que así no tengas que registrarlos manualmente en tu kernel. Para tomar ventaja de esta característica, debes agregar la siguiente línea al método `commands` de tu clase `App\Console\Kernel`:
 
     $this->load(__DIR__.'/Commands');
 
-#### The `fire` Method
+#### Método `fire`
 
-Any `fire` methods present on your Artisan commands should be renamed to `handle`.
+Cualquier método `fire` presente en tus comandos de Artisan deben ser renombrados a `handle`.
 
-#### The `optimize` Command
+#### Comando `optimize`
 
-With recent improvements to PHP op-code caching, the `optimize` Artisan command is no longer needed. You should remove any references to this command from your deployment scripts as it will be removed in a future release of Laravel.
+Con mejoras recientes a la cache op-code de PHP, el comando `optimize` de Artisan ya no es necesario. Debes eleminar cualquier referencia a este comando de tus scripts de deployment ya que será removido en versiones futuras de Laravel.
 
-### Authorization
+### Autorización
 
-#### The `authorizeResource` Controller Method
+#### Método De Controlador `authorizeResource`
 
-When passing a multi-word model name to the `authorizeResource` method, the resulting route segment will now be "snake" case, matching the behavior of resource controllers.
+Al pasar un nombre de modelo con múltiples palabras al método `authorizeResource`, el segmento de ruta resultante ahora será de tipo "snake", igualando el comportamiento de los controladores de recursos.
 
-#### The `before` Policy Method
+#### Método De Política `before`
 
-The `before` method of a policy class will not be called if the class doesn't contain a method matching the name of the ability being checked.
+El método `before` de una clase de política no será llamado si la clase no contiene un método que iguale el nombre de la habilidad siendo comprobada.
 
 ### Cache
 
-#### Database Driver
+#### Driver De Base De Datos
 
-If you are using the database cache driver, you should run `php artisan cache:clear` when deploying your upgraded Laravel 5.5 application for the first time.
+Si estás usando el driver de cache de la base de datos, debes ejecutar `php artisan cache:clear` al desplegar tu aplicación actualizada de Laravel 5.5 por primera vez.
 
 ### Eloquent
 
-#### The `belongsToMany` Method
+#### Método `belongsToMany`
 
-If you are overriding the `belongsToMany` method on your Eloquent model, you should update your method signature to reflect the addition of new arguments:
+Si estás sobrescribiendo el método `belongsToMany` en tu modelo de Eloquent, debes actualizar la firma de tu método para reflejar la adición de nuevos argumentos:
 
     /**
      * Define a many-to-many relationship.
@@ -102,15 +102,15 @@ If you are overriding the `belongsToMany` method on your Eloquent model, you sho
 
 #### BelongsToMany `getQualifiedRelatedKeyName`
 
-The `getQualifiedRelatedKeyName` method has been renamed to `getQualifiedRelatedPivotKeyName`.
+El método `getQualifiedRelatedKeyName` ha sido renombrado a `getQualifiedRelatedPivotKeyName`.
 
 #### BelongsToMany `getQualifiedForeignKeyName`
 
-The `getQualifiedForeignKeyName` method has been renamed to `getQualifiedForeignPivotKeyName`.
+El método `getQualifiedForeignKeyName` ha sido renombrado a `getQualifiedForeignPivotKeyName`.
 
-#### Model `is` Method
+#### Método De Modelo `is`
 
-If you are overriding the `is` method of your Eloquent model, you should remove the `Model` type-hint from the method. This allows the `is` method to receive `null` as an argument:
+Si estás sobrescribiendo el método `is` de tu modelo de Eloquent, debes eliminar la determinación de tipo de `Model` del método. Esto permite que el método is reciba `null` como argumento:
 
     /**
      * Determine if two models have the same ID and belong to the same table.

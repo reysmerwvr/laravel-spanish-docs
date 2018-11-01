@@ -1,44 +1,44 @@
 # Queues
 
-- [Introduction](#introduction)
-    - [Connections Vs. Queues](#connections-vs-queues)
-    - [Driver Prerequisites](#driver-prerequisites)
-- [Creating Jobs](#creating-jobs)
-    - [Generating Job Classes](#generating-job-classes)
-    - [Class Structure](#class-structure)
-- [Dispatching Jobs](#dispatching-jobs)
-    - [Delayed Dispatching](#delayed-dispatching)
-    - [Job Chaining](#job-chaining)
-    - [Customizing The Queue & Connection](#customizing-the-queue-and-connection)
-    - [Specifying Max Job Attempts / Timeout Values](#max-job-attempts-and-timeout)
-    - [Rate Limiting](#rate-limiting)
-    - [Error Handling](#error-handling)
-- [Running The Queue Worker](#running-the-queue-worker)
-    - [Queue Priorities](#queue-priorities)
-    - [Queue Workers & Deployment](#queue-workers-and-deployment)
-    - [Job Expirations & Timeouts](#job-expirations-and-timeouts)
-- [Supervisor Configuration](#supervisor-configuration)
-- [Dealing With Failed Jobs](#dealing-with-failed-jobs)
-    - [Cleaning Up After Failed Jobs](#cleaning-up-after-failed-jobs)
-    - [Failed Job Events](#failed-job-events)
-    - [Retrying Failed Jobs](#retrying-failed-jobs)
-- [Job Events](#job-events)
+- [Introducción](#introduction)
+    - [Conexiones Vs. Colas](#connections-vs-queues)
+    - [Prerrequisitos De COntroladores](#driver-prerequisites)
+- [Crear Trabajos](#creating-jobs)
+    - [Generar Clases De Trabajos](#generating-job-classes)
+    - [Estructura De Clases](#class-structure)
+- [Despachar TRabajos](#dispatching-jobs)
+    - [Despacho POstergado](#delayed-dispatching)
+    - [Encadenamiento De Trabajos](#job-chaining)
+    - [Personalizar La Cola Y COnexión](#customizing-the-queue-and-connection)
+    - [Especificar Intentos Máximos De Trabajos / Valores De Timeout](#max-job-attempts-and-timeout)
+    - [Límites De Rango](#rate-limiting)
+    - [Manejo De Errores](#error-handling)
+- [Ejecutar El Worker De Cola](#running-the-queue-worker)
+    - [Prioridades En Cola](#queue-priorities)
+    - [Workers de Cola Y Su Implementación](#queue-workers-and-deployment)
+    - [Expiraciones Y Timeouts de Trabajos](#job-expirations-and-timeouts)
+- [COnfiguración de Supervisor](#supervisor-configuration)
+- [Manejo De Trabajos Fallidos](#dealing-with-failed-jobs)
+    - [Remediando Trabajos Fallidos](#cleaning-up-after-failed-jobs)
+    - [Eventos De Trabajos Fallidos](#failed-job-events)
+    - [Reintentando Trabajos Fallidos](#retrying-failed-jobs)
+- [Eventos De Trabajo](#job-events)
 
 <a name="introduction"></a>
-## Introduction
+## Introducción
 
-> {tip} Laravel now offers Horizon, a beautiful dashboard and configuration system for your Redis powered queues. Check out the full [Horizon documentation](/docs/{{version}}/horizon) for more information.
+> {tip} Laravel ahora ofrece Horizon, un hermoso tablero y sistema de configuración para las colas motorizadas por Redis. Entra en [Horizon documentation](/docs/{{version}}/horizon) para más inormación.
 
-Laravel queues provide a unified API across a variety of different queue backends, such as Beanstalk, Amazon SQS, Redis, or even a relational database. Queues allow you to defer the processing of a time consuming task, such as sending an email, until a later time. Deferring these time consuming tasks drastically speeds up web requests to your application.
+Las colas de Laravel brinadan una API unificada a través de una variedad de backends de cola diferentes, como Beanstalk, Amazon SQS, Redis, o incluso una base de datos relacional. Las colas permiten diferir el procesamiento de una tarea que consume tiempo, como enviar un correo electrónico, para un momento posterior. Diferir estas tareas acelera drásticamente las solicitudes web en tu aplicación.
 
-The queue configuration file is stored in `config/queue.php`. In this file you will find connection configurations for each of the queue drivers that are included with the framework, which includes a database, [Beanstalkd](https://kr.github.io/beanstalkd/), [Amazon SQS](https://aws.amazon.com/sqs/), [Redis](https://redis.io),  and a synchronous driver that will execute jobs immediately (for local use). A `null` queue driver is also included which discards queued jobs.
+La configuración d cola está almacenada en `config/queue.php`. En este archivo encontrarás configuraciones de conexión para cada controlador de cola incluido con la estructura, que incluye una base de datos, [Beanstalkd](https://kr.github.io/beanstalkd/), [Amazon SQS](https://aws.amazon.com/sqs/), [Redis](https://redis.io), y un controlador sincrónico que ejecutará trabajos inmediatamente (para uso local). Un controlador de cola `null` también está incluido, que descarta trabajos completados de la cola.
 
 <a name="connections-vs-queues"></a>
-### Connections Vs. Queues
+### Conexiones Vs. COlas
 
-Before getting started with Laravel queues, it is important to understand the distinction between "connections" and "queues". In your `config/queue.php` configuration file, there is a `connections` configuration option. This option defines a particular connection to a backend service such as Amazon SQS, Beanstalk, or Redis. However, any given queue connection may have multiple "queues" which may be thought of as different stacks or piles of queued jobs.
+Antes de empezar con las colas de Laravel, es importante entender la distinción entre "conexiones" y "colas". En tu archivo `config/queue.php`, hay una opción de configuración `connections`. Esta opción define una conexión particular a un servicio de backend como Amazon SQS, Beanstalk, o Redis. SIn embargo, cualquier conexión de cola dada puede tener múltiples "colas" las cuales pueden ser imaginadas como diferentes pilas de trabajos en espera.
 
-Note that each connection configuration example in the `queue` configuration file contains a `queue` attribute. This is the default queue that jobs will be dispatched to when they are sent to a given connection. In other words, if you dispatch a job without explicitly defining which queue it should be dispatched to, the job will be placed on the queue that is defined in the `queue` attribute of the connection configuration:
+Nótese que cada ejemplo de configuración de conexión en el archivo `queue` contiene un atributo `queue`. ESta es la cola por defecto a la cual los trabajos serán despachados cuando son enviados a una conexión dada. EN otras palabras, si despachas un trabajo si definir explícitamente a cuál cola debe ser despachado, el trabajo será colocado en la cola definida en el atributo `queue` de la configuración de conexión:
 
     // This job is sent to the default queue...
     Job::dispatch();
@@ -46,16 +46,16 @@ Note that each connection configuration example in the `queue` configuration fil
     // This job is sent to the "emails" queue...
     Job::dispatch()->onQueue('emails');
 
-Some applications may not need to ever push jobs onto multiple queues, instead preferring to have one simple queue. However, pushing jobs to multiple queues can be especially useful for applications that wish to prioritize or segment how jobs are processed, since the Laravel queue worker allows you to specify which queues it should process by priority. For example, if you push jobs to a `high` queue, you may run a worker that gives them higher processing priority:
+Algunas aplicaciones quizá no necesiten nunca empujar trabajos a múltiples colas, prefiriendo en su lugar tener una cola sencilla. Sin embargo, empujar trabajos a múltiples colas puede ser especialmente útil para aplicaciones que deseen priorizar o segmentar el procesamiento de sus trabajos, puesto que el worker de cola de Laravel permite especificar cuáles colas deben ser procesadas de acuerdo a su prioridad. Por ejemplo, si se empujan trabajos a una cola `high` se puede ejecutar un worker que les dé mayor prioridad de procesamiento:
 
     php artisan queue:work --queue=high,default
 
 <a name="driver-prerequisites"></a>
-### Driver Prerequisites
+### Prerrequisitos de Controladores
 
 #### Database
 
-In order to use the `database` queue driver, you will need a database table to hold the jobs. To generate a migration that creates this table, run the `queue:table` Artisan command. Once the migration has been created, you may migrate your database using the `migrate` command:
+Para utilizar el controlador de cola `database` queue driver, you will need a database table to hold the jobs. To generate a migration that creates this table, run the `queue:table` Artisan command. Once the migration has been created, you may migrate your database using the `migrate` command:
 
     php artisan queue:table
 
@@ -63,9 +63,9 @@ In order to use the `database` queue driver, you will need a database table to h
 
 #### Redis
 
-In order to use the `redis` queue driver, you should configure a Redis database connection in your `config/database.php` configuration file.
+Para usar el controlador de cola `redis`, debes configurar una conexión a una base de datos Redis en tu archivo `config/database.php`.
 
-If your Redis queue connection uses a Redis Cluster, your queue names must contain a [key hash tag](https://redis.io/topics/cluster-spec#keys-hash-tags). This is required in order to ensure all of the Redis keys for a given queue are placed into the same hash slot:
+Si tu conexión de cola Redis usa un Redis Cluster, tus nombres de cola deben contener un [key hash tag](https://redis.io/topics/cluster-spec#keys-hash-tags). Esto es requerido para asegurar que todas las llaves Redis para una determinada cola sean colocadas en el mismo hash slot:
 
     'redis' => [
         'driver' => 'redis',
@@ -74,9 +74,9 @@ If your Redis queue connection uses a Redis Cluster, your queue names must conta
         'retry_after' => 90,
     ],
 
-#### Other Driver Prerequisites
+#### Prerrequisitos Para Otros COntroladores
 
-The following dependencies are needed for the listed queue drivers:
+Las siguientes dependencias son necesarias para sus controladores respectivos:
 
 <div class="content-list" markdown="1">
 - Amazon SQS: `aws/aws-sdk-php ~3.0`
@@ -85,21 +85,21 @@ The following dependencies are needed for the listed queue drivers:
 </div>
 
 <a name="creating-jobs"></a>
-## Creating Jobs
+## Crear Trabajos
 
 <a name="generating-job-classes"></a>
-### Generating Job Classes
+### Generar Clases de Trabajos
 
-By default, all of the queueable jobs for your application are stored in the `app/Jobs` directory. If the `app/Jobs` directory doesn't exist, it will be created when you run the `make:job` Artisan command. You may generate a new queued job using the Artisan CLI:
+Por defecto, todos los trabajos que se pueden poner en cola para la aplicación son almacenados en el directorio `app/Jobs`. Si `app/Jobs` no existe, será creado cuando se ejecute el comando Artisan `make:job`. Puede que sea necesario generar un nuevo trabajo en cola usando Artisan CLI:
 
     php artisan make:job ProcessPodcast
 
-The generated class will implement the `Illuminate\Contracts\Queue\ShouldQueue` interface, indicating to Laravel that the job should be pushed onto the queue to run asynchronously.
+La clase generada implementará la interfaz `Illuminate\Contracts\Queue\ShouldQueue`, indicando a Laravel que el trabajo debe ser empujado a la cola de forma asíncrona.
 
 <a name="class-structure"></a>
-### Class Structure
+### Estructura De Clases
 
-Job classes are very simple, normally containing only a `handle` method which is called when the job is processed by the queue. To get started, let's take a look at an example job class. In this example, we'll pretend we manage a podcast publishing service and need to process the uploaded podcast files before they are published:
+Las clases de trabajos son muy sencillas, normalmente contienen un único método `handle` que es llamado cuando el trabajo es procesado por la cola. Para empezar, observemos un ejemplo de clase de trabajos. En este ejemplo, asumiremos que manejamos un servicio de publicación de podcasts y necesitamos procesar los archivos del podcast subido antes de que sean publicados:
 
     <?php
 
@@ -142,16 +142,16 @@ Job classes are very simple, normally containing only a `handle` method which is
         }
     }
 
-In this example, note that we were able to pass an [Eloquent model](/docs/{{version}}/eloquent) directly into the queued job's constructor. Because of the `SerializesModels` trait that the job is using, Eloquent models will be gracefully serialized and unserialized when the job is processing. If your queued job accepts an Eloquent model in its constructor, only the identifier for the model will be serialized onto the queue. When the job is actually handled, the queue system will automatically re-retrieve the full model instance from the database. It's all totally transparent to your application and prevents issues that can arise from serializing full Eloquent model instances.
+En este ejemplo, nótese que somos capaces de pasar un [Eloquent model](/docs/{{version}}/eloquent) directamente hacia el constructor del trabajo en cola. Debido al atributo `SerializesModels` que el trabajo está usando, los modelos ELoquent serán serializados y deserializados grácilmente cuando el trabajo se esté procesando. Si tu trabajo en cola acepta un modelo Eloquent en su constructor, sólo el identificador para el modelo será serializado en la cola. Cuando el trabajo esté manejado, el sistema de colas re-recuperará automáticamente la instancia completa del modelo desde la base de datos. Todo es totalmente transparente a tu aplicación y previene inconvenientes que pueden surgir de serializar instancias Eloquent completas.
 
-The `handle` method is called when the job is processed by the queue. Note that we are able to type-hint dependencies on the `handle` method of the job. The Laravel [service container](/docs/{{version}}/container) automatically injects these dependencies.
+El método `handle` es llamado cuando el trabajo es procesado por la cola. Nótese que somos capaces de sugerir dependencias en el método `handle` del trabajo. El [service container](/docs/{{version}}/container) de Laravel automáticamente inyecta estas dependencias.
 
-> {note} Binary data, such as raw image contents, should be passed through the `base64_encode` function before being passed to a queued job. Otherwise, the job may not properly serialize to JSON when being placed on the queue.
+> {note} Los datos binarios, como los contenidos de imagen, deben ser pasados a través de la función `base64_encode` antes de ser pasados a un trabajo en cola. De otra forma, el trabajo podría no serializar correctamente a JSON cuando es colocado en la cola.
 
 <a name="dispatching-jobs"></a>
-## Dispatching Jobs
+## Despachar Trabajos
 
-Once you have written your job class, you may dispatch it using the `dispatch` method on the job itself. The arguments passed to the `dispatch` method will be given to the job's constructor:
+Una vez escrita la clase de trabajo, se puede dspachar usando el método `dispatch` en el mismo trabajo. Los argumentos pasados a `dispatch` serán dados al constructor de trabajos:
 
     <?php
 
@@ -178,9 +178,9 @@ Once you have written your job class, you may dispatch it using the `dispatch` m
     }
 
 <a name="delayed-dispatching"></a>
-### Delayed Dispatching
+### Despacho Postergado
 
-If you would like to delay the execution of a queued job, you may use the `delay` method when dispatching a job. For example, let's specify that a job should not be available for processing until 10 minutes after it has been dispatched:
+Si se quiere postergar la ejecución de un trabajo en cola, se puede utilizar el método `delay` al despachar un trabajo. Por ejemplo, especifiquemos que un trabajo no debería estar disponible para procesamiento hasta 10 minutos después que haya sido despachado:
 
     <?php
 
@@ -207,7 +207,7 @@ If you would like to delay the execution of a queued job, you may use the `delay
         }
     }
 
-> {note} The Amazon SQS queue service has a maximum delay time of 15 minutes.
+> {note} El servicio de cola Amazon SQS tiene un tiempo máximo de retraso de 15 minutos.
 
 <a name="job-chaining"></a>
 ### Job Chaining
