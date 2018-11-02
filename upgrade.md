@@ -123,44 +123,44 @@ Si estás sobrescribiendo el método `is` de tu modelo de Eloquent, debes elimin
         //
     }
 
-#### Model `$events` Property
+#### Propiedad De Modelos `$events`
 
-The `$events` property on your models should be renamed to `$dispatchesEvents`. This change was made because of a high number of users needing to define an `events` relationship, which caused a conflict with the old property name.
+La propiedad `$events` en tus modelos debe ser renombrada a `$dispatchesEvents`. Este cambio fue hecho debido a que un gran número de usuarios necesitan definir una relación `events`, que puede causar conflictos con el nombre de propiedad antiguo.
 
-#### Pivot `$parent` Property
+#### Propiedad `$parent` De Pivot
 
-The protected `$parent` property on the `Illuminate\Database\Eloquent\Relations\Pivot` class has been renamed to `$pivotParent`.
+La propiedad protegida `$parent` en la clase `Illuminate\Database\Eloquent\Relations\Pivot` ha sido renombrada a `$pivotParent`.
 
-#### Relationship `create` Methods
+#### Métodos `create` De Relaciones
 
-The `BelongsToMany`, `HasOneOrMany`, and `MorphOneOrMany` classes' `create` methods have been modified to provide a default value for the `$attributes` argument. If you are overriding these methods, you should update your signatures to match the new definition:
+Los métodos `create` de las clases `BelongsToMany`, `HasOneOrMany` y `MorphOneOrMany` han sido modificados para proporcionar un valor por defecto para el argumento `$attributes`. Si estás sobrescribiendo estos métodos, debes actualizar tus firmas para que coincidan con la nueva definición:
 
     public function create(array $attributes = [])
     {
         //
     }
 
-#### Soft Deleted Models
+#### Eliminación Parcial De Modelos
 
-When deleting a "soft deleted" model, the `exists` property on the model will remain `true`.
+Al eliminar un modelo "eliminado parcialmente", la propiedad `exists` en el modelo permanecerá `true`.
 
-#### `withCount` Column Formatting
+#### Formato De Columna `withCount`
 
-When using an alias, the `withCount` method will no longer automatically append `_count` onto the resulting column name. For example, in Laravel 5.4, the following query would result in a `bar_count` column being added to the query:
+Al usar un alias, el método `withCount` ya no agregará automáticamente `_count` al nombre de columna resultante. Por ejemplo, en Laravel 5.4, la siguiente consulta resultaría en una columna `bar_count` siendo agregada a la consulta:
 
     $users = User::withCount('foo as bar')->get();
 
-However, in Laravel 5.5, the alias will be used exactly as it is given. If you would like to append `_count` to the resulting column, you must specify that suffix when defining the alias:
+Sin embargo, en Laravel 5.5, el alias será usado exactamente como es dado. Si te gustaría agregar `_count` a la columna resultante, debes especificar dicho sufijo al definir el alias:
 
     $users = User::withCount('foo as bar_count')->get();
 
-#### Model Methods & Attribute Names
+#### Métodos & Nombres De Atributos De Modelos
 
-To prevent accessing a model's private properties when using array access, it's no longer possible to have a model method with the same name as an attribute or property. Doing so will cause exceptions to be thrown when accessing the model's attributes via array access (`$user['name']`) or the `data_get` helper function.
+Para prevenir el acceso a las propiedades privadas de un modelo al usar acceso de arreglo, ya no es posible tener un método de modelo con el mismo nombre de un atributo o propiedad. Hacer eso causará que excepciones sean lanzadas al acceder a los atributos del modelo mediante acceso de arreglo (`$user['name']`) o la función helper `data_get`.
 
-### Exception Format
+### Formato De Excepción
 
-In Laravel 5.5, all exceptions, including validation exceptions, are converted into HTTP responses by the exception handler. In addition, the default format for JSON validation errors has changed. The new format conforms to the following convention:
+En Laravel 5.5, todas las excepciones, incluyendo las excepciones de validación, son convertidas en respuestas HTTP por el manejador de excepciones. Adicionalmente, el formato por defecto para los errores de validación de JSON ha cambiado. El nuevo formato se ajusta a la siguiente convención:
 
     {
         "message": "The given data was invalid.",
@@ -176,7 +176,7 @@ In Laravel 5.5, all exceptions, including validation exceptions, are converted i
         }
     }
 
-However, if you would like to maintain the Laravel 5.4 JSON error format, you may add the following method to your `App\Exceptions\Handler` class:
+Sin embargo, si te gustaría mantener el formato de error de JSON de Laravel 5.4, puedes agregar el siguiente método a tu clase `App\Exceptions\Handler`:
 
     use Illuminate\Validation\ValidationException;
 
@@ -192,13 +192,13 @@ However, if you would like to maintain the Laravel 5.4 JSON error format, you ma
         return response()->json($exception->errors(), $exception->status);
     }
 
-#### JSON Authentication Attempts
+#### Intentos De Autenticación De JSON
 
-This change also affects the validation error formatting for authentication attempts made over JSON. In Laravel 5.5, JSON authentication failures will return the error messages following the new formatting convention described above.
+Este cambio también afecta el formato de error de validación para los intentos de autenticación mediante JSON. En Laravel 5.5, los fallos de autenticación de JSON retornarán los mensajes de errores siguiendo la nueva convención de forma descrita arriba.
 
-#### A Note On Form Requests
+#### Una Nota Sobre Form Requests
 
-If you were customizing the response format of an individual form request, you should now override the `failedValidation` method of that form request, and throw an `HttpResponseException` instance containing your custom response:
+Si estuvierás personalizando el formato de respuesta para un form request individual, ahora debes sobrescribir el método `failedValidation` de dicho form request y lanzar una instancia de `HttpResponseException` que contenga tu respuesta personalizada:
 
     use Illuminate\Http\Exceptions\HttpResponseException;
 
@@ -215,19 +215,19 @@ If you were customizing the response format of an individual form request, you s
         throw new HttpResponseException(response()->json(..., 422));
     }
 
-### Filesystem
+### Sistema De Archivos
 
-#### The `files` Method
+#### Método `files`
 
-The `files` method of the `Illuminate\Filesystem\Filesystem` class has changed its signature to add the `$hidden` argument and now returns an array of `SplFileInfo` objects, similar to the `allFiles` method. Previously, the `files` method returned an array of string path names. The new signature is as follows:
+El método `files` de la clase `Illuminate\Filesystem\Filesystem` ha cambiado su firma para agregar el argumento `$hidden` y ahora retorna un arreglo de objetos `SplFileInfo`, similar al método `allFiles`. Previamente, el método `files` retornaba un arreglo de cadenas con nombres de rutas. La nueva firma es la siguiente:
 
     public function files($directory, $hidden = false)
 
-### Mail
+### Correo
 
-#### Unused Parameters
+#### Parametros Sin Usar
 
-The unused `$data` and `$callback` arguments were removed from the `Illuminate\Contracts\Mail\MailQueue` contract's `queue` and `later` methods:
+Los argumentos sin usar `$data` y `$callback` fueron removidos de los métodos `queue` y `later` del contrato `Illuminate\Contracts\Mail\MailQueue`:
 
     /**
      * Queue a new e-mail message for sending.
@@ -248,11 +248,11 @@ The unused `$data` and `$callback` arguments were removed from the `Illuminate\C
      */
     public function later($delay, $view, $queue = null);
 
-### Queues
+### Colas
 
-#### The `dispatch` Helper
+#### Helper `dispatch`
 
-If you would like to dispatch a job that runs immediately and returns a value from the `handle` method, you should use the `dispatch_now` or `Bus::dispatchNow` method to dispatch the job:
+Si te gustaría despachar un trabajo que se ejecuta inmediatamente y retorna un valor desde el método `handle`, deberías usar los métodos `dispatch_now` o `Bus::dispatchNow` para despachar el trabajo:
 
     use Illuminate\Support\Facades\Bus;
 
@@ -260,11 +260,11 @@ If you would like to dispatch a job that runs immediately and returns a value fr
 
     $value = Bus::dispatchNow(new Job);
 
-### Requests
+### Solicitudes
 
-#### The `all` Method
+#### Método `all`
 
-If you are overriding the `all` method of the `Illuminate\Http\Request` class, you should update your method signature to reflect the new `$keys` argument:
+Si estás sobrescribiendo el método `all` de la clase `Illuminate\Http\Request`, deberías actualizar la firma de tu método para reflejar el nuevo argumento `$keys`:
 
     /**
      * Get all of the input and files for the request.
@@ -277,87 +277,87 @@ If you are overriding the `all` method of the `Illuminate\Http\Request` class, y
         //
     }
 
-#### The `has` Method
+#### Método `has`
 
-The `$request->has` method will now return `true` even if the input value is an empty string or `null`. A new `$request->filled` method has been added that provides the previous behavior of the `has` method.
+El método `$request->has` ahora retornará `true` incluso si el valor del campo es una cadena vacia o `null`. Un nuevo método `$request->filled` ha sido agregado que proporciona el comportamiento anterior del método `has`.
 
-#### The `intersect` Method
+#### Método `intersect`
 
-The `intersect` method has been removed. You may replicate this behavior using `array_filter` on a call to `$request->only`:
+El método `intersect` ha sido eliminado. Puedes replicar este comportamiento usando `array_filter` en una llamada a `$request->only`:
 
     return array_filter($request->only('foo'));
 
-#### The `only` Method
+#### Método `only`
 
-The `only` method will now only return attributes that are actually present in the request payload. If you would like to preserve the old behavior of the `only` method, you may use the `all` method instead.
+El método `only` ahora sólo retornará atributos que estén presentes en la carga de la solicitud. Si te gustaría preservar el comportamiento anterior del método `only`, puedes usar el método `all` en su lugar.
 
     return $request->all('foo');
 
-#### The `request()` Helper
+#### Helper `request()`
 
-The `request` helper will no longer retrieve nested keys. If needed, you may use the `input` method of the request to achieve this behavior:
+El helper `request` ya no retornará claves anidadas. Si es necesario, puedes usar el método `input` de la solicitud para lograr este comportamiento:
 
     return request()->input('filters.date');
 
-### Testing
+### Pruebas
 
-#### Authentication Assertions
+#### Aserciones De Autenticación
 
-Some authentication assertions were renamed for better consistency with the rest of the framework's assertions:
+Algunas aserciones de autenticación fueron renombradas para mejor consistencia con el resto de las aserciones del framework:
 
 <div class="content-list" markdown="1">
-- `seeIsAuthenticated` was renamed to `assertAuthenticated`.
-- `dontSeeIsAuthenticated` was renamed to `assertGuest`.
-- `seeIsAuthenticatedAs` was renamed to `assertAuthenticatedAs`.
-- `seeCredentials` was renamed to `assertCredentials`.
-- `dontSeeCredentials` was renamed to `assertInvalidCredentials`.
+- `seeIsAuthenticated` fue renombrada a `assertAuthenticated`.
+- `dontSeeIsAuthenticated` fue renombrada a `assertGuest`.
+- `seeIsAuthenticatedAs` fue renombrada a `assertAuthenticatedAs`.
+- `seeCredentials` fue renombrada a `assertCredentials`.
+- `dontSeeCredentials` fue renombrada a `assertInvalidCredentials`.
 </div>
 
 #### Mail Fake
 
-If you are using the `Mail` fake to determine if a mailable was **queued** during a request, you should now use `Mail::assertQueued` instead of `Mail::assertSent`. This distinction allows you to specifically assert that the mail was queued for background sending and not sent during the request itself.
+Si estás usando el fake `Mail` para determinar si un mailable fue **agregado a la cola** durante una solicitud, ahora debes usar `Mail::assertQueued` en lugar de `Mail::assertSent`. Esta distinción te permite verificar específicamente que correo fue agregado a la cola para envio en segundo plano y que no es enviado durante la solicitud como tal.
 
 #### Tinker
 
-Laravel Tinker now supports omitting namespaces when referring to your application classes. This feature requires an optimized Composer class-map, so you should add the `optimize-autoloader` directive to the `config` section of your `composer.json` file:
+Laravel Tinker ahora soporta omitir nombres de espacio al hacer referencia a las clases de tu aplicación. Esta característica requiere un mapeo de clase optimizado de Composer, así que debes agregar la directiva `optimize-autoloader` a la sección `config` de tu archivo `composer.json`:
 
     "config": {
         ...
         "optimize-autoloader": true
     }
 
-### Translation
+### Traducción
 
-#### The `LoaderInterface`
+#### `LoaderInterface`
 
-The `Illuminate\Translation\LoaderInterface` interface has been moved to `Illuminate\Contracts\Translation\Loader`.
+La interfaz `Illuminate\Translation\LoaderInterface` ha sido movida a `Illuminate\Contracts\Translation\Loader`.
 
-### Validation
+### Validación
 
-#### Validator Methods
+#### Métodos Del Validador
 
-All of the validator's validation methods are now `public` instead of `protected`.
+Todos los métodos de validación del validador ahora son `publicos` en lugar de `protegidos`.
 
-### Views
+### Vistas
 
-#### Dynamic "With" Variable Names
+#### Nombres De Variable Dinámicos "With"
 
-When allowing the dynamic `__call` method to share variables with a view, these variables will automatically use "camel" case. For example, given the following:
+Al permitir que el método dinámico `__call` comporta variables con una vista, estas variables automáticamente usarán "camel case". Por ejemplo, dado lo siguiente:
 
     return view('pool')->withMaximumVotes(100);
 
-The `maximumVotes` variable may be accessed in the template like so:
+La variable `maximumVotes` será accedida en la plantilla de la siguiente forma:
 
     {{ $maximumVotes }}
 
-#### `@php` Blade Directive
+#### Directiva `@php` De Blade
 
-The `@php` blade directive no longer accepts inline tags. Instead, use the full form of the directive:
+La directiva `@php` de blade ya no acepta etiquetas en línea. En su lugar, usa la forma completa de la directiva:
 
     @php
         $teamMember = true;
     @endphp
 
-### Miscellaneous
+### Misceláneo
 
-We also encourage you to view the changes in the `laravel/laravel` [GitHub repository](https://github.com/laravel/laravel). While many of these changes are not required, you may wish to keep these files in sync with your application. Some of these changes will be covered in this upgrade guide, but others, such as changes to configuration files or comments, will not be. You can easily view the changes with the [GitHub comparison tool](https://github.com/laravel/laravel/compare/5.4...master) and choose which updates are important to you.
+También te invitamos a ver los cambios en el [repositorio de GitHub](https://github.com/laravel/laravel) `laravel/laravel`. Mientras que muchos de estos cambios no son requeridos, puedes querer mantener estos archivos sincronizados con tu aplicación. Algunos de estos cambios serán cubiertos en esta guía de actualización, pero otros, tales como cambios a archivos de configuración o comentarios, no lo serán. Puedes fácilmente ver los cambios con la [herramienta de comparación de GitHub](https://github.com/laravel/laravel/compare/5.4...master) y elegir que actualizaciones son importantes para ti.
