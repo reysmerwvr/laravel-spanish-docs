@@ -210,9 +210,9 @@ Si se quiere postergar la ejecución de un trabajo en cola, se puede utilizar el
 > {note} El servicio de cola Amazon SQS tiene un tiempo máximo de retraso de 15 minutos.
 
 <a name="job-chaining"></a>
-### Job Chaining
+### Encadenamiento De Trabajos
 
-Job chaining allows you to specify a list of queued jobs that should be run in sequence. If one job in the sequence fails, the rest of the jobs will not be run. To execute a queued job chain, you may use the `withChain` method on any of your dispatchable jobs:
+El encadenamiento de trabajos te permite especificar una lista de trabajos en cola que deben ser ejecutados en secuencia. Si un trabajo en la secuencia falla, el resto no será ejecutado. Para ejecutar una cadena de trabajos en cola, se puede utilizar el método `withChain` en cualquier trabajo despachable:
 
     ProcessPodcast::withChain([
         new OptimizePodcast,
@@ -220,11 +220,11 @@ Job chaining allows you to specify a list of queued jobs that should be run in s
     ])->dispatch();
 
 <a name="customizing-the-queue-and-connection"></a>
-### Customizing The Queue & Connection
+### Personalizar La Cola Y La Conexión
 
-#### Dispatching To A Particular Queue
+#### Despachar A Una Cola Específica
 
-By pushing jobs to different queues, you may "categorize" your queued jobs and even prioritize how many workers you assign to various queues. Keep in mind, this does not push jobs to different queue "connections" as defined by your queue configuration file, but only to specific queues within a single connection. To specify the queue, use the `onQueue` method when dispatching the job:
+Al empujar trabajos a diferentes colas, se pueden "categorizar" los trabajos en cola e incluso priorizar cuántos workers son asignados a las distintas colas. Sin embargo, es precios recordar que esto no empuja trabajos a diferentes "conexiones" de cola definidas en el archivo de configuración de colas, sino a colas específicas dentro de una sola conexión. Para especificar la cola, se usa el método `onQueue` al despachar un trabajo:
 
     <?php
 
@@ -250,9 +250,9 @@ By pushing jobs to different queues, you may "categorize" your queued jobs and e
         }
     }
 
-#### Dispatching To A Particular Connection
+#### Despachar A Una Conexión Específica
 
-If you are working with multiple queue connections, you may specify which connection to push a job to. To specify the connection, use the `onConnection` method when dispatching the job:
+Si se está trabajando con múltiples conexiones de cola, se puede especificar a cuál conexión se desea empujar un trabajo. Para especificar la conexión, se utiliza el método `onConnection` al despachar el trabajo:
 
     <?php
 
@@ -278,22 +278,22 @@ If you are working with multiple queue connections, you may specify which connec
         }
     }
 
-Of course, you may chain the `onConnection` and `onQueue` methods to specify the connection and the queue for a job:
+Por supuesto, se puedn encadenar los métodos `onConnection` y `onQueue` para especificar la conexión y cola de un trabajo:
 
     ProcessPodcast::dispatch($podcast)
                   ->onConnection('sqs')
                   ->onQueue('processing');
 
 <a name="max-job-attempts-and-timeout"></a>
-### Specifying Max Job Attempts / Timeout Values
+### Especificar Intentos Máximos De Un Trabajo Y Valores De Timeout
 
-#### Max Attempts
+#### MaNúmero De Intentos Máximo
 
-One approach to specifying the maximum number of times a job may be attempted is via the `--tries` switch on the Artisan command line:
+Una forma de especificar el número máximo de veces que un trabajo pued ser intentado es mediante el interruptor `--tries` en la línea de comandos Artisan:
 
     php artisan queue:work --tries=3
 
-However, you may take a more granular approach by defining the maximum number of attempts on the job class itself. If the maximum number of attempts is specified on the job, it will take precedence over the value provided on the command line:
+Sin embargo, se puede tomar un camino más granular definiendo el número máximo de intentos dentro de la clase de trabajos. Si el número máximo de intentos está especificado en el trabajo, precederá sobre el valor provisto en la línea de comandos:
 
     <?php
 
@@ -310,9 +310,9 @@ However, you may take a more granular approach by defining the maximum number of
     }
 
 <a name="time-based-attempts"></a>
-#### Time Based Attempts
+#### Intentos Basados En Tiempo
 
-As an alternative to defining how many times a job may be attempted before it fails, you may define a time at which the job should timeout. This allows a job to be attempted any number of times within a given time frame. To define the time at which a job should timeout, add a `retryUntil` method to your job class:
+Como alternativa a definir cuántas veces un trabajo puede ser intentado antes de que falle, se puede definir en qué momento el trabajo debería pasar a timeout. Esto le permite al trabajo ser intentado cualquiér numero de veces dentro de un período de tiempo. Para definir el momento en el que un trabajo debería pasar a timeout, se agrega un método `retryUntil` en la clase de trabajos:
 
     /**
      * Determine the time at which the job should timeout.
@@ -324,17 +324,17 @@ As an alternative to defining how many times a job may be attempted before it fa
         return now()->addSeconds(5);
     }
 
-> {tip} You may also define a `retryUntil` method on your queued event listeners.
+> {tip} Tmbién se puede definir un método `retryUntil`en los listeners de eventos en cola.
 
 #### Timeout
 
-> {note} The `timeout` feature is optimized for PHP 7.1+ and the `pcntl` PHP extension.
+> {note} La característica `timeout` está optimizada para PHP 7.1+ y la extensión `pcntl`.
 
-Likewise, the maximum number of seconds that jobs can run may be specified using the `--timeout` switch on the Artisan command line:
+De igual modo, el número máximo de segundos para ejecutar un trabajo pueden ser especificados usando el interruptor `--timeout` en la línea de comandos Artisan:
 
     php artisan queue:work --timeout=30
 
-However, you may also define the maximum number of seconds a job should be allowed to run on the job class itself. If the timeout is specified on the job, it will take precedence over any timeout specified on the command line:
+Sin embargo, es posible querer definir el número máximo de segundos para ejecutar un trabajo dentro de su clase. Si el timeout está esecificado en el trabajo, prevalecerá sobre cualquier otro timeout especificado en la linea de comandos:
 
     <?php
 
@@ -351,11 +351,11 @@ However, you may also define the maximum number of seconds a job should be allow
     }
 
 <a name="rate-limiting"></a>
-### Rate Limiting
+### Límite De Frecuencias
 
-> {note} This feature requires that your application can interact with a [Redis server](/docs/{{version}}/redis).
+> {note} Esta característica requiere que la aplicación pueda interactuar con un [Redis server](/docs/{{version}}/redis).
 
-If your application interacts with Redis, you may throttle your queued jobs by time or concurrency. This feature can be of assistance when your queued jobs are interacting with APIs that are also rate limited. For example, using the `throttle` method, you may throttle a given type of job to only run 10 times every 60 seconds. If a lock can not be obtained, you should typically release the job back onto the queue so it can be retried later:
+Si tu aplicación interactúa con Redis, se pueden regular los trabajos en cola por tiempo o concurrencia. Esta característica pued ser de ayuda cuando los trabajos en cola interactúan con APIs que también poseen límite de frecuencia. Por ejemplo, usando el método `throttle` method, se puede regular cierto tipo de trabajo para que se ejecute sólo diez veces por minuto. Si un lock no puede ser obtenido, se puede generalmente liberar el trabajo de vuelta a la cola para que pueda ser reintentado luego:
 
     Redis::throttle('key')->allow(10)->every(60)->then(function () {
         // Job logic...
@@ -365,9 +365,9 @@ If your application interacts with Redis, you may throttle your queued jobs by t
         return $this->release(10);
     });
 
-> {tip} In the example above, the `key` may be any string that uniquely identifies the type of job you would like to rate limit. For example, you may wish to construct the key based on the class name of the job and the IDs of the Eloquent models it operates on.
+> {tip} EN el ejemplo anterior, `key` puede ser cualquier hilo que identifique únicamente el tipo de trabajo que se quiere limitar. Por ejemplo, se puede desear construir key basado en el nombre de clase del trabajo y las IDS de los modelos Eloquent en los cuales opera.
 
-Alternatively, you may specify the maximum number of workers that may simultaneously process a given job. This can be helpful when a queued job is modifying a resource that should only be modified by one job at a time. For example, using the `funnel` method, you may limit jobs of a given type to only be processed by one worker at a time:
+De forma alterna, se puede especificar el número máximo de workers que pueden procesar simultáneamente cierto trabajo. Esto puede ser útil cuando un trabajo en cola está modificando un recurso que sólo debe ser modificado por un trabajo a la vez. Por ejemplo, usando el método `funnel` se pueden limitar trabajos de cierto tipo para que sean procesados por un worker a la vez:
 
     Redis::funnel('key')->limit(1)->then(function () {
         // Job logic...
@@ -377,105 +377,105 @@ Alternatively, you may specify the maximum number of workers that may simultaneo
         return $this->release(10);
     });
 
-> {tip} When using rate limiting, the number of attempts your job will need to run successfully can be hard to determine. Therefore, it is useful to combine rate limiting with [time based attempts](#time-based-attempts).
+> {tip} Al utilizar límite de frecuencias, el número de intentos que el trabajo necesitará para ejecutarse exitosamente puede ser difícil de determinar. Por lo tanto, es útil combinar límite de frecuencias con [time based attempts](#time-based-attempts).
 
 <a name="error-handling"></a>
-### Error Handling
+### Manejo De Errores
 
-If an exception is thrown while the job is being processed, the job will automatically be released back onto the queue so it may be attempted again. The job will continue to be released until it has been attempted the maximum number of times allowed by your application. The maximum number of attempts is defined by the `--tries` switch used on the `queue:work` Artisan command. Alternatively, the maximum number of attempts may be defined on the job class itself. More information on running the queue worker [can be found below](#running-the-queue-worker).
+Si una excepción es lanzada mientras el trabajo está siendo procesado, el trabajo será automáticamente liberado a la cola para que pueda ser intentado de nuevo. EL trabajo continuará siendo liberado hasta que haya sido intentado el número de veces máximo permitido por tu aplicación. El número máximo de intentos es definido por el interruptor `--tries` usado en el comando Artisan `queue:work`. De forma alterna, el número máximo de intentos puede ser definido en la clase de trabajos en sí. Más información acerca de ejecutar el worker de cola [can be found below](#running-the-queue-worker).
 
 <a name="running-the-queue-worker"></a>
-## Running The Queue Worker
+## Ejecutar el Worker De Cola
 
-Laravel includes a queue worker that will process new jobs as they are pushed onto the queue. You may run the worker using the `queue:work` Artisan command. Note that once the `queue:work` command has started, it will continue to run until it is manually stopped or you close your terminal:
+Laravel incluye un worker de cola que procesará trabajos nuevos a medida que éstos son empujados a la cola. Se puede ejecutar el worker usando el comando Artisan `queue:work`. Nótese que una vez iniciado `queue:work`, continuará ejecutándose hasta que sea detenido manualmente o hasta que la terminal sea cerrada:
 
     php artisan queue:work
 
-> {tip} To keep the `queue:work` process running permanently in the background, you should use a process monitor such as [Supervisor](#supervisor-configuration) to ensure that the queue worker does not stop running.
+> {tip} Para mantener el proceso `queue:work` ejecutado permanentemente en segundo plano, se debe usar un monitor de procesos como [Supervisor](#supervisor-configuration) to ensure that the queue worker does not stop running.
 
-Remember, queue workers are long-lived processes and store the booted application state in memory. As a result, they will not notice changes in your code base after they have been started. So, during your deployment process, be sure to [restart your queue workers](#queue-workers-and-deployment).
+Hay que recordar que los workers de cola son procesos de vida útil larga y almacenan el estado de la aplicación iniciada en la memoria. COmo resultado, no notarán cambios en el código una vez sean iniciados. Así que durante el proceso de implementación, asegúrate de [restart your queue workers](#queue-workers-and-deployment).
 
-#### Processing A Single Job
+#### Procesar Un Sólo Trabajo
 
-The `--once` option may be used to instruct the worker to only process a single job from the queue:
+La opción `--once` puede ser usada para instruir al worker a procesar sólo un trabajo de la cola:
 
     php artisan queue:work --once
 
-#### Specifying The Connection & Queue
+#### Especificar La Conexión Y COla
 
-You may also specify which queue connection the worker should utilize. The connection name passed to the `work` command should correspond to one of the connections defined in your `config/queue.php` configuration file:
+Tambiénse puede especificar cuál conexión de cola debería utilizar el worker. El nombre pasado al comando `work` debe corresponder con una de las conexiones definidas en el archivo `config/queue.php`:
 
     php artisan queue:work redis
 
-You may customize your queue worker even further by only processing particular queues for a given connection. For example, if all of your emails are processed in an `emails` queue on your `redis` queue connection, you may issue the following command to start a worker that only processes only that queue:
+Se puede personalizar el worker de cola aún más sólo procesando colas específicas en una conexión determinada. Por ejemplo si todos tus correos electrónicos son procesados en una cola `emails` en tu conexión `redis`, se puede emitir el siguiente comando para iniciar un worker que procese solamente esa cola:
 
     php artisan queue:work redis --queue=emails
 
-#### Resource Considerations
+#### Consideraciones De Recursos
 
-Daemon queue workers do not "reboot" the framework before processing each job. Therefore, you should free any heavy resources after each job completes. For example, if you are doing image manipulation with the GD library, you should free the memory with `imagedestroy` when you are done.
+Los workers de cola Daemon no "reinician" la estructura antes de procesar cada trabajo. Por lo tanto, se debe iberar cualquier recurso pesado luego de que cada trabajo sea completado. Por ejemplo, si se está realizando manipulación de imágenes con la librería GD, se debe liberar la memoria cuando se termine con `imagedestroy`.
 
 <a name="queue-priorities"></a>
-### Queue Priorities
+### Prioridades De Cola
 
-Sometimes you may wish to prioritize how your queues are processed. For example, in your `config/queue.php` you may set the default `queue` for your `redis` connection to `low`. However, occasionally you may wish to push a job to a `high` priority queue like so:
+A veces puede desearse priorizar cómo se procesan las colas. Por ejemplo, en tu `config/queue.php` se puede establecer la `queue` predeterminada para tu conexión `redis` en `low`. Sin embargo, ocasionalmente puede desearse empujar un trabajo a una cola de prioridad `high` de esta forma:
 
     dispatch((new Job)->onQueue('high'));
 
-To start a worker that verifies that all of the `high` queue jobs are processed before continuing to any jobs on the `low` queue, pass a comma-delimited list of queue names to the `work` command:
+Para iniciar un worker que verifique que todos los trabajos en la cola `high` sean procesados antes de continuar con los tabajos en `low`, se pasar una lista de nombres de colas delimitada por comas al comando `work`:
 
     php artisan queue:work --queue=high,low
 
 <a name="queue-workers-and-deployment"></a>
-### Queue Workers & Deployment
+### Workers De Cola E Implementación
 
-Since queue workers are long-lived processes, they will not pick up changes to your code without being restarted. So, the simplest way to deploy an application using queue workers is to restart the workers during your deployment process. You may gracefully restart all of the workers by issuing the `queue:restart` command:
+Debido a que los workers de cola son procesos de vida útil larga, no detectarán cambios en el código sin ser reiniciados.Así que la forma más sencilla de implementar una aplicación utilizando workers de cola es reiniciando los workers durante el proceso de implementación. Se puede grácilmente reiniciar todos los workers emitiendo el comando `queue:restart`:
 
     php artisan queue:restart
 
-This command will instruct all queue workers to gracefully "die" after they finish processing their current job so that no existing jobs are lost. Since the queue workers will die when the `queue:restart` command is executed, you should be running a process manager such as [Supervisor](#supervisor-configuration) to automatically restart the queue workers.
+Este comando instruirá a todos los workers de cola que "mueran" luego de terminar el procesamiento de su trabajo actual para que ningún trabajo existente se pierda. COmo los workers de cola morirán cuando se ejecute el comando `queue:restart`, un administrador de procesos debe estar en ejecución, como [Supervisor](#supervisor-configuration) to automatically restart the queue workers.
 
-> {tip} The queue uses the [cache](/docs/{{version}}/cache) to store restart signals, so you should verify a cache driver is properly configured for your application before using this feature.
+> {tip} La cola utiliza el [cache](/docs/{{version}}/cache) para almacenar señales de reinicio, así que se debe verificar si un controlador d caché está configurado debidamente para tu aplicación antes de utilizar esta característica.
 
 <a name="job-expirations-and-timeouts"></a>
-### Job Expirations & Timeouts
+### Expiraciones Y Timeouts DE Trabajos
 
-#### Job Expiration
+#### Expiración De TRabajos
 
-In your `config/queue.php` configuration file, each queue connection defines a `retry_after` option. This option specifies how many seconds the queue connection should wait before retrying a job that is being processed. For example, if the value of `retry_after` is set to `90`, the job will be released back onto the queue if it has been processing for 90 seconds without being deleted. Typically, you should set the `retry_after` value to the maximum number of seconds your jobs should reasonably take to complete processing.
+En tu archivo de configuración `config/queue.php`, cada conexión de cola define una opción `retry_after`. ESta opción especifica cuántos segundos debe esperar la conexión de cola antes de reintentar un trabajo que está siendo procesado. Por ejempo, si el valor de `retry_after` es establecido en `90`, el trabajo será liberado de nuevo a la cola si se ha estado procesando por 90 segundos sin haber sido eliminado. Generalmente, se debería fijar el valor de `retry_after` al número máximo de segundos que le toma razonablemente a tus trabajos ser completamente procesados.
 
-> {note} The only queue connection which does not contain a `retry_after` value is Amazon SQS. SQS will retry the job based on the [Default Visibility Timeout](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/AboutVT.html) which is managed within the AWS console.
+> {note} La única conexión de cola que no contiene un valor `retry_after` es Amazon SQS. SQS reintentará el trabajo basándose en el [Default Visibility Timeout](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/AboutVT.html) which is managed within the AWS console.
 
 #### Worker Timeouts
 
-The `queue:work` Artisan command exposes a `--timeout` option. The `--timeout` option specifies how long the Laravel queue master process will wait before killing off a child queue worker that is processing a job. Sometimes a child queue process can become "frozen" for various reasons, such as an external HTTP call that is not responding. The `--timeout` option removes frozen processes that have exceeded that specified time limit:
+EL comando Artisan `queue:work` expone una opción `--timeout`. `--timeout` especifica qué tánto el proceso maestro de cola de Laravel esperará antes de detener un worker de cola child que está procesando un trabajo. A veces un proceso de cola child puede "congelarse" por varias razones, como una llamada HTTP externa que no responde. La opción `--timeout` remueve procesos congelados que han excedido el tiempo límite especificado:
 
     php artisan queue:work --timeout=60
 
-The `retry_after` configuration option and the `--timeout` CLI option are different, but work together to ensure that jobs are not lost and that jobs are only successfully processed once.
+La opción de configuración `retry_after` y la opción CLI `--timeout` son diferentes, pero trabajan juntas para asegurarse de que los trabajos no se pierdan y que los trabajos se procesen exitosamente sólo una vez.
 
-> {note} The `--timeout` value should always be at least several seconds shorter than your `retry_after` configuration value. This will ensure that a worker processing a given job is always killed before the job is retried. If your `--timeout` option is longer than your `retry_after` configuration value, your jobs may be processed twice.
+> {note} El valor `--timeout` siempre debe ser al menos unos segundos menor que el valor de configuración `retry_after`. Esto asegurará que un worker procesando un trabajo determinado siempre sea detenido antes que el trabajo se reintente. Si la opción `--timeout` es mayor al valor de configuración `retry_after`, los trabajos podrían ser procesados dos veces.
 
-#### Worker Sleep Duration
+#### Duración De Descanso del Worker
 
-When jobs are available on the queue, the worker will keep processing jobs with no delay in between them. However, the `sleep` option determines how long the worker will "sleep" if there are no new jobs available. While sleeping, the worker will not process any new jobs - the jobs will be processed after the worker wakes up again.
+Cuando hay trabajos disponibles en cola, el worker seguirá procesando trabajos sin retraso entre ellos. Sin embargo, la opción `sleep` determina por cuánto tiempo "dormirá" el worker si no hay nuevos trabajos disponibles. Mientras duerme, el worker no procesará trabajos nuevos - los trabajos serán procesados luego de que el worker despierte.
 
     php artisan queue:work --sleep=3
 
 <a name="supervisor-configuration"></a>
-## Supervisor Configuration
+## Configuración DE Supervisor
 
-#### Installing Supervisor
+#### Instalar Supervisor
 
-Supervisor is a process monitor for the Linux operating system, and will automatically restart your `queue:work` process if it fails. To install Supervisor on Ubuntu, you may use the following command:
+Supervisor es un monitor de procesos para el sistema operativo Linux, y reiniciará automáticamente tu proceso `queue:work` si éste falla. Para instalar Supervisor en Ubuntu, se puede usar el siguiente comando:
 
     sudo apt-get install supervisor
 
-> {tip} If configuring Supervisor yourself sounds overwhelming, consider using [Laravel Forge](https://forge.laravel.com), which will automatically install and configure Supervisor for your Laravel projects.
+> {tip} Si configurar Supervisor por ti mismo suena abrumador, considera usar [Laravel Forge](https://forge.laravel.com), el cual instalará y configurará Supervisor automáticamente para tus proyectos en Laravel.
 
-#### Configuring Supervisor
+#### Configurar Supervisor
 
-Supervisor configuration files are typically stored in the `/etc/supervisor/conf.d` directory. Within this directory, you may create any number of configuration files that instruct supervisor how your processes should be monitored. For example, let's create a `laravel-worker.conf` file that starts and monitors a `queue:work` process:
+Los archivos de configuración de Supervisor están almacenados generalmente en el directorio `/etc/supervisor/conf.d`. Dentro de este directorio, se pueden crear cualquier número de archivos de configuración que le instruyan a Supervisor cómo monitorear los procesos.Por ejemplo, creemos un archivo de configuración `laravel-worker.conf` que inicie y monitoree el proceso `queue:work`:
 
     [program:laravel-worker]
     process_name=%(program_name)s_%(process_num)02d
@@ -487,11 +487,11 @@ Supervisor configuration files are typically stored in the `/etc/supervisor/conf
     redirect_stderr=true
     stdout_logfile=/home/forge/app.com/worker.log
 
-In this example, the `numprocs` directive will instruct Supervisor to run 8 `queue:work` processes and monitor all of them, automatically restarting them if they fail. Of course, you should change the `queue:work sqs` portion of the `command` directive to reflect your desired queue connection.
+En este ejemplo, la directiva `numprocs` le instruirá a Supervisor ejecutar ocho procesos `queue:work` y monitorearlos todos, reiniciándolos automáticamente si fallan. Por supuesto, se debe cambiar la porción `queue:work sqs` de la directiva `command` para reflejar la conexión de cola deseada.
 
-#### Starting Supervisor
+#### Iniciar Supervisor
 
-Once the configuration file has been created, you may update the Supervisor configuration and start the processes using the following commands:
+Una vez que el archivo de configuración haya sido creado, se puede actualizar la configuración de Supervisor e iniciar los procesos usando los siguientes comandos:
 
     sudo supervisorctl reread
 
@@ -499,25 +499,25 @@ Once the configuration file has been created, you may update the Supervisor conf
 
     sudo supervisorctl start laravel-worker:*
 
-For more information on Supervisor, consult the [Supervisor documentation](http://supervisord.org/index.html).
+Para más información acerca de Supervisor, consulta [Supervisor documentation](http://supervisord.org/index.html).
 
 <a name="dealing-with-failed-jobs"></a>
-## Dealing With Failed Jobs
+## Manejo De Trabajos Fallidos
 
-Sometimes your queued jobs will fail. Don't worry, things don't always go as planned! Laravel includes a convenient way to specify the maximum number of times a job should be attempted. After a job has exceeded this amount of attempts, it will be inserted into the `failed_jobs` database table. To create a migration for the `failed_jobs` table, you may use the `queue:failed-table` command:
+Algunas veces los trabajos en cola fallarán. Esto no es problema, ¡las cosas no siempre salen como esperamos! Laravel incluyeuna forma conveniente de especificar el número máximo de veces que un trabajo debe ser intentado. Luego que un trabajo haya excedido esta cantidad de intentos, será insertado en la tabla de base de datos `failed_jobs`. Para crear una migración para la tabla `failed_jobs` se puede usar el comando `queue:failed-table`:
 
     php artisan queue:failed-table
 
     php artisan migrate
 
-Then, when running your [queue worker](#running-the-queue-worker), you should specify the maximum number of times a job should be attempted using the `--tries` switch on the `queue:work` command. If you do not specify a value for the `--tries` option, jobs will be attempted indefinitely:
+Entonces, al ejecutar el [queue worker](#running-the-queue-worker), se debe especificar el numero máximo de intentos que un trabajo debe intentarse usando el interruptor `--tries` en el comando `queue:work` Si no se especifica un valor para `--tries` los trabajos se intentarán indefinidamente:
 
     php artisan queue:work redis --tries=3
 
 <a name="cleaning-up-after-failed-jobs"></a>
-### Cleaning Up After Failed Jobs
+### Limpiar Después De Un Trabajo Fallido
 
-You may define a `failed` method directly on your job class, allowing you to perform job specific clean-up when a failure occurs. This is the perfect location to send an alert to your users or revert any actions performed by the job. The `Exception` that caused the job to fail will be passed to the `failed` method:
+Se puede definir un método `failed` directamente en la clase de trabajo, permitiendo realizar una limpieza específica de trabajo cuando una falla ocurre. ESta es la ubicación perfecta para enviar una alerta a tus usuarios o revertir cualquier acción realizada por el trabajo. La `Exception` que causó la falla en el trabajo será pasada al método `failed`:
 
     <?php
 
@@ -572,9 +572,9 @@ You may define a `failed` method directly on your job class, allowing you to per
     }
 
 <a name="failed-job-events"></a>
-### Failed Job Events
+### Eventos De Trabajo Fallido
 
-If you would like to register an event that will be called when a job fails, you may use the `Queue::failing` method. This event is a great opportunity to notify your team via email or [HipChat](https://www.hipchat.com). For example, we may attach a callback to this event from the `AppServiceProvider` that is included with Laravel:
+Si se quiere registrar un evento a ser llamado cuando un trabajo falle, se puede usar el método `Queue::failing`. ESte evento representa una gran oportunidad para notificarle a tu equipo por correo electrónico o por [HipChat](https://www.hipchat.com). POr ejemplo, se puede adjuntar una respuesta a este evento desde el `AppServiceProvider` incluido en Laravel:
 
     <?php
 
@@ -612,32 +612,32 @@ If you would like to register an event that will be called when a job fails, you
     }
 
 <a name="retrying-failed-jobs"></a>
-### Retrying Failed Jobs
+### Reintentando Trabajos Fallidos
 
-To view all of your failed jobs that have been inserted into your `failed_jobs` database table, you may use the `queue:failed` Artisan command:
+Para visualizar todos los trabajos fallidos insertados en la tabla de base de datos `failed_jobs` se puede usar el comando Artisan `queue:failed`:
 
     php artisan queue:failed
 
-The `queue:failed` command will list the job ID, connection, queue, and failure time. The job ID may be used to retry the failed job. For instance, to retry a failed job that has an ID of `5`, issue the following command:
+EL comando `queue:failed` enlistará la ID del trabajo, su conexión, cola y el tiempo en el cual falló. La ID del trabajo puede ser usada para reintentar el trabajo fallido. Por ejemplo, para reintentar un trabajo fallido con una ID `5`, se libera el siguiente comando:
 
     php artisan queue:retry 5
 
-To retry all of your failed jobs, execute the `queue:retry` command and pass `all` as the ID:
+Para reintentar todos tus trabajos fallidos, se ejecuta el comando `queue:retry` y se pasa `all` como ID:
 
     php artisan queue:retry all
 
-If you would like to delete a failed job, you may use the `queue:forget` command:
+Si se desea borrar un trabajo fallido, se puede usar el comando `queue:forget`:
 
     php artisan queue:forget 5
 
-To delete all of your failed jobs, you may use the `queue:flush` command:
+Para eliminar todos los trabajos fallidos, se puede usar el comando `queue:flush`:
 
     php artisan queue:flush
 
 <a name="job-events"></a>
-## Job Events
+## Eventos De Trabajo
 
-Using the `before` and `after` methods on the `Queue` [facade](/docs/{{version}}/facades), you may specify callbacks to be executed before or after a queued job is processed. These callbacks are a great opportunity to perform additional logging or increment statistics for a dashboard. Typically, you should call these methods from a [service provider](/docs/{{version}}/providers). For example, we may use the `AppServiceProvider` that is included with Laravel:
+Usando los métodos `before` y `after` en `Queue` [facade](/docs/{{version}}/facades), se puede especificar respuestas para que sean ejecutadas antes o después de que un trabajo en cola sea procesado. Estas respuestas son una gran oportunidad para realizar registro adicional o incrementar estadísticas para un tablero. Generalmente, se debe llamar a estos métodos desde un [service provider](/docs/{{version}}/providers). Por ejemplo se puede usar  `AppServiceProvider`, incluido en Laravel:
 
     <?php
 
@@ -681,7 +681,7 @@ Using the `before` and `after` methods on the `Queue` [facade](/docs/{{version}}
         }
     }
 
-Using the `looping` method on the `Queue` [facade](/docs/{{version}}/facades), you may specify callbacks that execute before the worker attempts to fetch a job from a queue. For example, you might register a Closure to rollback any transactions that were left open by a previously failed job:
+Usando el método `looping` en `Queue` [facade](/docs/{{version}}/facades), se pueden especificar respuestas que se ejecuten antes que el worker intente recuperar un trabajo de una cola. Por ejemplo, quizás se necesite registrar Closure para deshacer cualquier transacción abierta por un trabajo fallido anteriormente:
 
     Queue::looping(function () {
         while (DB::transactionLevel() > 0) {
