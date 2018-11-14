@@ -1,21 +1,21 @@
-# Solicitudes HTTP
+# HTTP Requests
 
-- [Accediendo a la Solicitud](#accessing-the-request)
-    - [Ruta de Solicitud Path & Método](#request-path-and-method)
-    - [Solicitudes PSR-7](#psr7-requests)
-- [Recorte & Normalización de Entrada](#input-trimming-and-normalization)
-- [Obteniendo Datos Ingresados](#retrieving-input)
-    - [Datos Antíguos](#old-input)
+- [Accessing The Request](#accessing-the-request)
+    - [Request Path & Method](#request-path-and-method)
+    - [PSR-7 Requests](#psr7-requests)
+- [Input Trimming & Normalization](#input-trimming-and-normalization)
+- [Retrieving Input](#retrieving-input)
+    - [Old Input](#old-input)
     - [Cookies](#cookies)
-- [Archivos](#files)
-    - [Obteniendo Archivos Cargados](#retrieving-uploaded-files)
-    - [Almacenando Archivos Cargados](#storing-uploaded-files)
-- [Configurando Proxies de Confianza](#configuring-trusted-proxies)
+- [Files](#files)
+    - [Retrieving Uploaded Files](#retrieving-uploaded-files)
+    - [Storing Uploaded Files](#storing-uploaded-files)
+- [Configuring Trusted Proxies](#configuring-trusted-proxies)
 
 <a name="accessing-the-request"></a>
-## Accediendo a la Solicitud
+## Accessing The Request
 
-Para obtener una instancia de la solicitud HTTP actual por medio de una inyección de dependencia, deberías poner la referencia de la clase `Illuminate\Http\Request` en tu método de controlador. La instancia de la solicitud entrante automáticamente será inyectada por el [contenedor de servicio](/docs/{{version}}/container):
+To obtain an instance of the current HTTP request via dependency injection, you should type-hint the `Illuminate\Http\Request` class on your controller method. The incoming request instance will automatically be injected by the [service container](/docs/{{version}}/container):
 
     <?php
 
@@ -39,13 +39,13 @@ Para obtener una instancia de la solicitud HTTP actual por medio de una inyecci�
         }
     }
 
-#### Inyección de Dependencias & Parametros de Rutas
+#### Dependency Injection & Route Parameters
 
-Si tu método de controlador también está esperando la entrada de un parámetro de ruta deberías listar tus parámetros de ruta después de tus otras dependencias. Por ejemplo, si tu ruta es definida como sigue:
+If your controller method is also expecting input from a route parameter you should list your route parameters after your other dependencies. For example, if your route is defined like so:
 
     Route::put('user/{id}', 'UserController@update');
 
-Todavía puedes poner la referencia de la clase `Illuminate\Http\Request` y acceder a tu parámetro de ruta `id` al definir tu método de controlador como sigue:
+You may still type-hint the `Illuminate\Http\Request` and access your route parameter `id` by defining your controller method as follows:
 
     <?php
 
@@ -68,9 +68,9 @@ Todavía puedes poner la referencia de la clase `Illuminate\Http\Request` y acce
         }
     }
 
-#### Accediendo la Solicitud A Través de Closures de Rutas
+#### Accessing The Request Via Route Closures
 
-También puedes poner la referencia de la clase `Illuminate\Http\Request` en una Closure de ruta. El contenedor de servicio automáticamente inyectará la solicitud entrante dentro de la Closure que es ejecutada:
+You may also type-hint the `Illuminate\Http\Request` class on a route Closure. The service container will automatically inject the incoming request into the Closure when it is executed:
 
     use Illuminate\Http\Request;
 
@@ -79,25 +79,25 @@ También puedes poner la referencia de la clase `Illuminate\Http\Request` en una
     });
 
 <a name="request-path-and-method"></a>
-### Ruta de Solicitud & Método
+### Request Path & Method
 
-La instancia `Illuminate\Http\Request` proporciona una variedad de métodos para examinar la solicitud HTTP para tu aplicación y extiende la clase `Symfony\Component\HttpFoundation\Request`. Discutiremos algunos de los métodos más importantes a continuación
+The `Illuminate\Http\Request` instance provides a variety of methods for examining the HTTP request for your application and extends the `Symfony\Component\HttpFoundation\Request` class. We will discuss a few of the most important methods below.
 
-#### Obteniendo la Ruta de la Solicitud
+#### Retrieving The Request Path
 
-El método `path` devuelve la información de ruta de la solicitud. Así, si la solicitud entrante tiene como destino `http://domain.com/foo/bar`, el método `path` devolverá `foo/bar`:
+The `path` method returns the request's path information. So, if the incoming request is targeted at `http://domain.com/foo/bar`, the `path` method will return `foo/bar`:
 
     $uri = $request->path();
 
-El método `is` te permite verificar que la ruta de la solicitud entrante coincide con un patrón dado. Puedes usar el caracter `*` para especificar que cualquier cadena puede coincidir al momento de utilizar este método:
+The `is` method allows you to verify that the incoming request path matches a given pattern. You may use the `*` character as a wildcard when utilizing this method:
 
     if ($request->is('admin/*')) {
         //
     }
 
-#### Obteniendo la URL de la Solicitud
+#### Retrieving The Request URL
 
-Para obtener la URL completa de la solicitud entrante puedes usar los métodos `url` o `fullUrl`. El método `url` devolverá la URL sin la cadena de la consulta, mientras que el método `fullUrl` si la incluye:
+To retrieve the full URL for the incoming request you may use the `url` or `fullUrl` methods. The `url` method will return the URL without the query string, while the `fullUrl` method includes the query string:
 
     // Without Query String...
     $url = $request->url();
@@ -105,9 +105,9 @@ Para obtener la URL completa de la solicitud entrante puedes usar los métodos `
     // With Query String...
     $url = $request->fullUrl();
 
-#### Obteniendo el Método de la Solicitud
+#### Retrieving The Request Method
 
-El método `method` devolverá el verbo HTTP de la solicitud. Puedes usar el método `isMethod` para verificar que el verbo HTTP coincida con una cadena dada:
+The `method` method will return the HTTP verb for the request. You may use the `isMethod` method to verify that the HTTP verb matches a given string:
 
     $method = $request->method();
 
@@ -116,14 +116,14 @@ El método `method` devolverá el verbo HTTP de la solicitud. Puedes usar el mé
     }
 
 <a name="psr7-requests"></a>
-### Solicitudes PSR-7
+### PSR-7 Requests
 
-El [estándar PSR-7](http://www.php-fig.org/psr/psr-7/) especifica interfaces para mensajes HTTP, incluyendo solicitudes y respuestas. Si prefieres obtener una instancia de una solicitud PSR-7 en lugar de una solicitud de Laravel, primero necesitarás instalar unas cuantas librerías. Laravel usa el componente *Symfony HTTP Message Bridge* para convertir solicitudes y respuestas típicas de Laravel en implementaciones compatibles con PSR-7:
+The [PSR-7 standard](http://www.php-fig.org/psr/psr-7/) specifies interfaces for HTTP messages, including requests and responses. If you would like to obtain an instance of a PSR-7 request instead of a Laravel request, you will first need to install a few libraries. Laravel uses the *Symfony HTTP Message Bridge* component to convert typical Laravel requests and responses into PSR-7 compatible implementations:
 
     composer require symfony/psr-http-message-bridge
     composer require zendframework/zend-diactoros
 
-Una vez que has instalado estas librerías, puedes obtener una solicitud PSR-7 al colocar la referencia  de la interface de solicitud en tu Closure de ruta o método de controlador:
+Once you have installed these libraries, you may obtain a PSR-7 request by type-hinting the request interface on your route Closure or controller method:
 
     use Psr\Http\Message\ServerRequestInterface;
 
@@ -131,71 +131,71 @@ Una vez que has instalado estas librerías, puedes obtener una solicitud PSR-7 a
         //
     });
 
-> {tip} Si devuelves una instancia de respuesta PSR-7 desde una ruta o controlador, automáticamente será convertida de vuelta a una instancia de respuesta de Laravel y será mostrada por el framework.
+> {tip} If you return a PSR-7 response instance from a route or controller, it will automatically be converted back to a Laravel response instance and be displayed by the framework.
 
 <a name="input-trimming-and-normalization"></a>
-## Recorte & Normalización de Entrada
+## Input Trimming & Normalization
 
-De forma predeterminada, Laravel incluye los middleware `TrimStrings` y `ConvertEmptyStringsToNull` en la pila de middleware global de tu aplicación. Estos middleware son listados en la pila por la clase `App\Http\Kernel`. Estos middleware automáticamente recortarán todos los campos de cadena entrantes en la solicitud, al igual que convertiran cualquier campo de cadena vacío a `null`. Esto permite que no tengas que preocuparte sobre estos asuntos de normalización en tus rutas y controladores.
+By default, Laravel includes the `TrimStrings` and `ConvertEmptyStringsToNull` middleware in your application's global middleware stack. These middleware are listed in the stack by the `App\Http\Kernel` class. These middleware will automatically trim all incoming string fields on the request, as well as convert any empty string fields to `null`. This allows you to not have to worry about these normalization concerns in your routes and controllers.
 
-Si prefieres deshabilitar este comportamiento, puedes remover los dos middleware de tu pila de middleware de tu aplicación al removerlos de la propiedad `$middleware` de tu clase `App\Http\Kernel`.
+If you would like to disable this behavior, you may remove the two middleware from your application's middleware stack by removing them from the `$middleware` property of your `App\Http\Kernel` class.
 
 <a name="retrieving-input"></a>
-## Obteniendo Datos Ingresados
+## Retrieving Input
 
-#### Obteniendo Todos los Datos Ingresados
+#### Retrieving All Input Data
 
-También puedes obtener todos los datos ingresados en forma de arreglo usando el método `all`:
+You may also retrieve all of the input data as an `array` using the `all` method:
 
     $input = $request->all();
 
-#### Obteniendo el Valor de un Campo
+#### Retrieving An Input Value
 
-Usando unos pocos métodos básicos, puedes acceder a todos los datos ingresados por el usuario desde la instancia `Illuminate\Http\Request` sin preocuparte por cual verbo HTTP fue usado por la solicitud. Sin importar el verbo HTTP, el método `input` puede ser usado para obtener la entrada de usuario:
+Using a few simple methods, you may access all of the user input from your `Illuminate\Http\Request` instance without worrying about which HTTP verb was used for the request. Regardless of the HTTP verb, the `input` method may be used to retrieve user input:
 
     $name = $request->input('name');
 
-Puedes pasar un valor predeterminado como segundo argumento del método `input`. Este valor será devuelto si el valor de entrada solicitado no está presente en la solicitud:
+You may pass a default value as the second argument to the `input` method. This value will be returned if the requested input value is not present on the request:
 
     $name = $request->input('name', 'Sally');
 
-Al momento de trabajar con formularios que contienen arreglos de campos, usa notación de "punto" para acceder a estos arreglos:
+When working with forms that contain array inputs, use "dot" notation to access the arrays:
 
     $name = $request->input('products.0.name');
 
     $names = $request->input('products.*.name');
 
-#### Obteniendo Datos desde la Cadena de Consulta
+#### Retrieving Input From The Query String
 
-Mientras el método `input` obtiene valores de la porción de datos de la solicitud completa (incluyendo la cadena de consulta), el método `query` solamente obtendrá valores de la cadena de consulta:
+While the `input` method retrieves values from entire request payload (including the query string), the `query` method will only retrieve values from the query string:
 
     $name = $request->query('name');
 
-Si los datos de los valores de la cadena de consulta solicitada no están presentes, el segundo argumento de este método será devuelto:
+If the requested query string value data is not present, the second argument to this method will be returned:
 
     $name = $request->query('name', 'Helen');
 
-Puedes ejecutar el método `query` sin ningún argumento con el propósito de obtener todos los valores de la cadena de consulta como un arreglo asociativo:
+You may call the `query` method without any arguments in order to retrieve all of the query string values as an associative array:
 
     $query = $request->query();
 
-#### Recuperando Datos por Medio de Propiedades Dinámicas
+#### Retrieving Input Via Dynamic Properties
 
-También puedes acceder a los datos ingresados por el usuario usando propiedades dinámicas en la instancia `Illuminate\Http\Request`. Por ejemplo, si uno de los formularios de tu aplicación contiene un campo `name`, puedes acceder al valor del campo de la siguiente forma:
+You may also access user input using dynamic properties on the `Illuminate\Http\Request` instance. For example, if one of your application's forms contains a `name` field, you may access the value of the field like so:
 
     $name = $request->name;
 
-Al momento de usar propiedades dinámicas, Laravel primero buscará por el valor del parámetro en la porción de datos de la solicitud. Si no está presente, buscará el campo en los parámetros de ruta.
+When using dynamic properties, Laravel will first look for the parameter's value in the request payload. If it is not present, Laravel will search for the field in the route parameters.
 
-#### Obteniendo Valores JSON
+#### Retrieving JSON Input Values
 
-Al momento de enviar solicitudes JSON a tu aplicación, puedes acceder a los datos JSON por medio del método `input` al tiempo que el encabezado `Content-Type` de la solicitud sea establecido apropiadamente a `application/json`. Incluso puedes usar sintaxis "." para buscar adentro de los arreglos JSON:
+When sending JSON requests to your application, you may access the JSON data via the `input` method as long as the `Content-Type` header of the request is properly set to `application/json`. You may even use "dot" syntax to dig into JSON arrays:
 
     $name = $request->input('user.name');
 
-#### Obteniendo una Porción de los Datos Ingresados
+#### Retrieving A Portion Of The Input Data
 
-Si necesitas obtener un subconjunto de los datos ingresados, puedes usar los métodos `only` y `except`. Ambos métodos aceptan un solo arreglo o una lista dinámica de argumentos:
+If you need to retrieve a subset of the input data, you may use the `only` and `except` methods. Both of these methods accept a single `array` or a dynamic list of arguments:
 
     $input = $request->only(['username', 'password']);
 
@@ -205,48 +205,48 @@ Si necesitas obtener un subconjunto de los datos ingresados, puedes usar los mé
 
     $input = $request->except('credit_card');
 
-> {tip} El método `only` devuelve todos los pares clave / valor que solicites; sin embargo, no devolverá pares clave / valor que no esten presentes en la solicitud.
+> {tip} The `only` method returns all of the key / value pairs that you request; however, it will not return key / value pairs that are not present on the request.
 
-#### Determinando si un Valor Ingresado está presente
+#### Determining If An Input Value Is Present
 
-Deberías usar el método `has` para determinar si un valor está presente en la solicitud. El método `has` devuelve `true` si el valor está presente en la solicitud:
+You should use the `has` method to determine if a value is present on the request. The `has` method returns `true` if the value is present on the request:
 
     if ($request->has('name')) {
         //
     }
 
-Cuando es dado un arreglo, el método `has` determinará si todos los valores especificados están presentes:
+When given an array, the `has` method will determine if all of the specified values are present:
 
     if ($request->has(['name', 'email'])) {
         //
     }
 
-Si prefieres determinar si un valor está presente en la solicitud y no esté vacío, puedes usar el método `filled`:
+If you would like to determine if a value is present on the request and is not empty, you may use the `filled` method:
 
     if ($request->filled('name')) {
         //
     }
 
 <a name="old-input"></a>
-### Entrada Antígua
+### Old Input
 
-Laravel permite que mantengas los datos de una solicitud durante la próxima solicitud. Esta característica es útil particularmente para volver a llenar los formularios después de detectar errores de validación. Sin embargo, si estás usando [características de validación](/docs/{{version}}/validation) incluidas con Laravel, es poco probable que necesites usar manualmente estos métodos, ya que algunas de las facilidades de validación integradas con Laravel las ejecutarán automáticamente.
+Laravel allows you to keep input from one request during the next request. This feature is particularly useful for re-populating forms after detecting validation errors. However, if you are using Laravel's included [validation features](/docs/{{version}}/validation), it is unlikely you will need to manually use these methods, as some of Laravel's built-in validation facilities will call them automatically.
 
-#### Enviando Datos a la Sesión
+#### Flashing Input To The Session
 
-El método `flash` en la clase `Illuminate\Http\Request` enviará los datos ingresados a la [sesión](/docs/{{version}}/session) para que así estén disponibles durante la próxima solicitud realizada por el usuario:
+The `flash` method on the `Illuminate\Http\Request` class will flash the current input to the [session](/docs/{{version}}/session) so that it is available during the user's next request to the application:
 
     $request->flash();
 
-También puedes usar los métodos `flashOnly` y `flashExcept` para enviar un subconjunto de datos de la solicitud a la sesión. Estos métodos son útiles para mantener información sensitiva tales como contraseñas fuera de la sesión:
+You may also use the `flashOnly` and `flashExcept` methods to flash a subset of the request data to the session. These methods are useful for keeping sensitive information such as passwords out of the session:
 
     $request->flashOnly(['username', 'email']);
 
     $request->flashExcept('password');
 
-#### Enviando Datos y Redirigir
+#### Flashing Input Then Redirecting
 
-Ya que con frecuencia querrás enviar datos a la sesión y luego redirigir a la página anterior puedes encadenar datos a una redirección usando el método `withInput`:
+Since you often will want to flash input to the session and then redirect to the previous page, you may easily chain input flashing onto a redirect using the `withInput` method:
 
     return redirect('form')->withInput();
 
@@ -254,120 +254,120 @@ Ya que con frecuencia querrás enviar datos a la sesión y luego redirigir a la 
         $request->except('password')
     );
 
-#### Obteniendo Datos Antiguos
+#### Retrieving Old Input
 
-Para obtener los datos de la sesión anterior, usa el método `old` en la instancia `Request`. El método old extrarerá los datos de la solicitiud y [sesión](/docs/{{version}}/session) anterior:
+To retrieve flashed input from the previous request, use the `old` method on the `Request` instance. The `old` method will pull the previously flashed input data from the [session](/docs/{{version}}/session):
 
     $username = $request->old('username');
 
-Laravel también proporciona un helper global `old`. Si estás mostrando datos antiguos dentro de una [plantilla Blade](/docs/{{version}}/blade), es más conveniente usar el helper `old`. Si no existen datos antiguos para el campo dado, será devuelto `null`:
+Laravel also provides a global `old` helper. If you are displaying old input within a [Blade template](/docs/{{version}}/blade), it is more convenient to use the `old` helper. If no old input exists for the given field, `null` will be returned:
 
     <input type="text" name="username" value="{{ old('username') }}">
 
 <a name="cookies"></a>
 ### Cookies
 
-#### Obteniendo Cookies de las Solicitudes
+#### Retrieving Cookies From Requests
 
-Todos los cookies creados por el framework Laravel son encriptados y firmados con un código de autenticación, significa que serán considerados no válidos si han sido cambiados por el cliente. Para obtener el valor de una cookie de la solicitud, usa el método cookie en una instancia de `Illuminate\Http\Request`:
+All cookies created by the Laravel framework are encrypted and signed with an authentication code, meaning they will be considered invalid if they have been changed by the client. To retrieve a cookie value from the request, use the `cookie` method on a `Illuminate\Http\Request` instance:
 
     $value = $request->cookie('name');
 
-Alternativamente, puedes usar la clase facade `Cookie` para acceder a los valores de las cookies:
+Alternatively, you may use the `Cookie` facade to access cookie values:
 
     $value = Cookie::get('name');
 
-#### Adjuntando Cookies a las Respuestas
+#### Attaching Cookies To Responses
 
-Puedes adjuntar una cookie a una instancia saliente de `Illuminate\Http\Response` usando el método `cookie`. Debes pasar el nombre, valor y el número de minutos en los cuales dicha cookie debería ser valida:
+You may attach a cookie to an outgoing `Illuminate\Http\Response` instance using the `cookie` method. You should pass the name, value, and number of minutes the cookie should be considered valid to this method:
 
     return response('Hello World')->cookie(
         'name', 'value', $minutes
     );
 
-El método `cookie` también acepta unos cuantos argumentos los cuales son usados con menos frecuencia. Generalmente, estos argumentos tienen el mismo propósito y significan lo mismo que los argumentos que deberían ser dados al método [setcookie](https://secure.php.net/manual/en/function.setcookie.php) nativo de PHP:
+The `cookie` method also accepts a few more arguments which are used less frequently. Generally, these arguments have the same purpose and meaning as the arguments that would be given to PHP's native [setcookie](https://secure.php.net/manual/en/function.setcookie.php) method:
 
     return response('Hello World')->cookie(
         'name', 'value', $minutes, $path, $domain, $secure, $httpOnly
     );
 
-Alternativamente, puedes usar la clase facade `Cookie` para "encolar" cookies para adjuntar a la respuesta saliente de tu aplicación. El método `queue` acepta una instancia `Cookie` o los argumentos necesarios para crear una instancia `Cookie`. Estas cookies serán adjuntadas a la respuesta saliente antes de que sea enviada al navegador:
+Alternatively, you can use the `Cookie` facade to "queue" cookies for attachment to the outgoing response from your application. The `queue` method accepts a `Cookie` instance or the arguments needed to create a `Cookie` instance. These cookies will be attached to the outgoing response before it is sent to the browser:
 
     Cookie::queue(Cookie::make('name', 'value', $minutes));
 
     Cookie::queue('name', 'value', $minutes);
 
-#### Generando Instancias Cookie
+#### Generating Cookie Instances
 
-Si prefieres generar una instancia `Symfony\Component\HttpFoundation\Cookie` que pueda ser dada a una instancia de respuesta en un momento posterior, puedes usar el helper global `cookie`. Este cookie no será enviado de regreso al cliente a menos que sea adjuntado a una instancia de respuesta:
+If you would like to generate a `Symfony\Component\HttpFoundation\Cookie` instance that can be given to a response instance at a later time, you may use the global `cookie` helper. This cookie will not be sent back to the client unless it is attached to a response instance:
 
     $cookie = cookie('name', 'value', $minutes);
 
     return response('Hello World')->cookie($cookie);
 
 <a name="files"></a>
-## Archivos
+## Files
 
 <a name="retrieving-uploaded-files"></a>
-### Obteniendo Archivos Cargados
+### Retrieving Uploaded Files
 
-Puedes acceder los archivos cargados de una instancia `Illuminate\Http\Request` usando el método `file` o usando propiedades dinámicas. El método `file` devuelve una instancia de la clase `Illuminate\Http\UploadedFile`, la cual extiende la clase `SplFileInfo` de PHP y proporciona una variedad de métodos para interactuar con el archivo:
+You may access uploaded files from a `Illuminate\Http\Request` instance using the `file` method or using dynamic properties. The `file` method returns an instance of the `Illuminate\Http\UploadedFile` class, which extends the PHP `SplFileInfo` class and provides a variety of methods for interacting with the file:
 
     $file = $request->file('photo');
 
     $file = $request->photo;
 
-Puedes determinar si un archivo está presente en la solicitud usando el método `hasFile`:
+You may determine if a file is present on the request using the `hasFile` method:
 
     if ($request->hasFile('photo')) {
         //
     }
 
-#### Validando Cargas Exitosas
+#### Validating Successful Uploads
 
-Además de chequear si el archivo está presente, puedes verificar que no ocurrieron problemas cargando el archivo por medio del método `isValid`:
+In addition to checking if the file is present, you may verify that there were no problems uploading the file via the `isValid` method:
 
     if ($request->file('photo')->isValid()) {
         //
     }
 
-#### Rutas & Extensiones de Archivo
+#### File Paths & Extensions
 
-La clase `UploadedFile` también contiene métodos para acceder a la ruta completa del archivo y su extensión. El método `extension` intentará adivinar la extensión del archivo en base a su contenido. Esta extensión puede ser diferente de la extensión que fue suministrada por el cliente:
+The `UploadedFile` class also contains methods for accessing the file's fully-qualified path and its extension. The `extension` method will attempt to guess the file's extension based on its contents. This extension may be different from the extension that was supplied by the client:
 
     $path = $request->photo->path();
 
     $extension = $request->photo->extension();
 
-#### Otros Métodos de Archivo
+#### Other File Methods
 
-Hay una variedad de otros métodos disponibles en instancias `UploadedFile`. Revisa la [documentación de la API para la clase](http://api.symfony.com/3.0/Symfony/Component/HttpFoundation/File/UploadedFile.html) para más información concerniente a estos métodos.
+There are a variety of other methods available on `UploadedFile` instances. Check out the [API documentation for the class](http://api.symfony.com/3.0/Symfony/Component/HttpFoundation/File/UploadedFile.html) for more information regarding these methods.
 
 <a name="storing-uploaded-files"></a>
-### Almacenando Archivos Cargados
+### Storing Uploaded Files
 
-Para almacenar un archivo cargado, típicamente usarás uno de tus [sistemas de archivos](/docs/{{version}}/filesystem) configurados. La clase `UploadedFile` tiene un método `store` el cual moverá un archivo cargado a uno de tus discos, el cual puede ser una ubicación de tu sistema de archivo local o incluso una ubicación de almacenamiento en la nube como Amazon S3.
+To store an uploaded file, you will typically use one of your configured [filesystems](/docs/{{version}}/filesystem). The `UploadedFile` class has a `store` method which will move an uploaded file to one of your disks, which may be a location on your local filesystem or even a cloud storage location like Amazon S3.
 
-El método `store` acepta la ruta donde el archivo debería ser almacenado relativa al directorio raíz configurado del sistema de archivo. Esta ruta no debería contener un nombre de archivo, ya que un ID único será generado automáticamente para servir como el nombre del archivo.
+The `store` method accepts the path where the file should be stored relative to the filesystem's configured root directory. This path should not contain a file name, since a unique ID will automatically be generated to serve as the file name.
 
-El método `store acepta un segundo argumento opcional para el nombre del disco que debería ser usado para almacenar el archivo. El método devolverá la ruta relativa del archivoo al directorio raíz del disco:
+The `store` method also accepts an optional second argument for the name of the disk that should be used to store the file. The method will return the path of the file relative to the disk's root:
 
     $path = $request->photo->store('images');
 
     $path = $request->photo->store('images', 's3');
 
-Si no quieres que un nombre de archivo sea generado automáticamente, puedes usar el método `storeAs`, el cual acepta la ruta, el nombre de archivo, y el nombre del disco como sus argumentos:
+If you do not want a file name to be automatically generated, you may use the `storeAs` method, which accepts the path, file name, and disk name as its arguments:
 
     $path = $request->photo->storeAs('images', 'filename.jpg');
 
     $path = $request->photo->storeAs('images', 'filename.jpg', 's3');
 
 <a name="configuring-trusted-proxies"></a>
-## Configurando Proxies de Confianza
+## Configuring Trusted Proxies
 
-Al momento de administrar tus aplicaciones detrás de de un balanceador de carga que termina certificados TLS / SSL, puedes notar que algunas veces tu aplicación no genera enlaces HTTPS. Típicamente esto es debido a que el tráfico de tu aplicación está siendo dirigido desde tu balanceador de carga por el puerto 80 y no sabe que debería generar enlaces seguros.
+When running your applications behind a load balancer that terminates TLS / SSL certificates, you may notice your application sometimes does not generate HTTPS links. Typically this is because your application is being forwarded traffic from your load balancer on port 80 and does not know it should generate secure links.
 
-Para solucionar esto, puedes usar el middleware `App\Http\Middleware\TrustProxies` que es incluido en tu aplicación de Laravel, el cual permite que rápidamente personalices los balanceadores de carga o proxies que deberían ser de confianza en tu aplicación. Tus proxies de confianza deberían ser listados como un arreglo en la propiedad `$proxies` de este middleware. Además de la configuración de los proxies de confianza, puedes configurar los encabezados que están siendo enviados por tu proxy con información sobre la solicitud original:
+To solve this, you may use the `App\Http\Middleware\TrustProxies` middleware that is included in your Laravel application, which allows you to quickly customize the load balancers or proxies that should be trusted by your application. Your trusted proxies should be listed as an array on the `$proxies` property of this middleware. In addition to configuring the trusted proxies, you may configure the proxy `$headers` that should be trusted:
 
     <?php
 
@@ -389,26 +389,22 @@ Para solucionar esto, puedes usar el middleware `App\Http\Middleware\TrustProxie
         ];
 
         /**
-         * The current proxy header mappings.
+         * The headers that should be used to detect proxies.
          *
-         * @var array
+         * @var string
          */
-        protected $headers = [
-            Request::HEADER_FORWARDED => 'FORWARDED',
-            Request::HEADER_X_FORWARDED_FOR => 'X_FORWARDED_FOR',
-            Request::HEADER_X_FORWARDED_HOST => 'X_FORWARDED_HOST',
-            Request::HEADER_X_FORWARDED_PORT => 'X_FORWARDED_PORT',
-            Request::HEADER_X_FORWARDED_PROTO => 'X_FORWARDED_PROTO',
-        ];
+        protected $headers = Request::HEADER_X_FORWARDED_ALL;
     }
+
+> {tip} If you are using AWS Elastic Load Balancing, your `$headers` value should be `Request::HEADER_X_FORWARDED_AWS_ELB`. For more information on the constants that may be used in the `$headers` property, check out Symfony's documentation on [trusting proxies](http://symfony.com/doc/current/deployment/proxies.html).
 
 #### Trusting All Proxies
 
-Si estás usando Amazon AWS u otro proveedor de balanceador de carga de la "nube", no puedes saber las direcciones IP de tus balanceadores reales. En este caso, puedes usar `**` para confiar en todos los proxies:
+If you are using Amazon AWS or another "cloud" load balancer provider, you may not know the IP addresses of your actual balancers. In this case, you may use `*` to trust all proxies:
 
     /**
      * The trusted proxies for this application.
      *
      * @var array
      */
-    protected $proxies = '**';
+    protected $proxies = '*';

@@ -1,170 +1,174 @@
 # Directory Structure
 
-- [Introducción](#introduction)
-- [Directorio Raíz](#the-root-directory)
-    - [Directorio `app`](#the-root-app-directory)
-    - [Directorio `bootstrap`](#the-bootstrap-directory)
-    - [Directorio `config`](#the-config-directory)
-    - [Directorio `database`](#the-database-directory)
-    - [Directorio `public`](#the-public-directory)
-    - [Directorio `resources`](#the-resources-directory)
-    - [Directorio `routes`](#the-routes-directory)
-    - [Directorio `storage`](#the-storage-directory)
-    - [Directorio `tests`](#the-tests-directory)
-    - [Directorio `vendor`](#the-vendor-directory)
-- [Directorio App](#the-app-directory)
-    - [Directorio `Console`](#the-console-directory)
-    - [Directorio `Events`](#the-events-directory)
-    - [Directorio `Exceptions`](#the-exceptions-directory)
-    - [Directorio `Http`](#the-http-directory)
-    - [Directorio `Jobs`](#the-jobs-directory)
-    - [Directorio `Listeners`](#the-listeners-directory)
-    - [Directorio `Mail`](#the-mail-directory)
-    - [Directorio `Notifications`](#the-notifications-directory)
-    - [Directorio `Policies`](#the-policies-directory)
-    - [Directorio `Providers`](#the-providers-directory)
-    - [Directorio `Rules`](#the-rules-directory)
+- [Introduction](#introduction)
+- [The Root Directory](#the-root-directory)
+    - [The `app` Directory](#the-root-app-directory)
+    - [The `bootstrap` Directory](#the-bootstrap-directory)
+    - [The `config` Directory](#the-config-directory)
+    - [The `database` Directory](#the-database-directory)
+    - [The `public` Directory](#the-public-directory)
+    - [The `resources` Directory](#the-resources-directory)
+    - [The `routes` Directory](#the-routes-directory)
+    - [The `storage` Directory](#the-storage-directory)
+    - [The `tests` Directory](#the-tests-directory)
+    - [The `vendor` Directory](#the-vendor-directory)
+- [The App Directory](#the-app-directory)
+    - [The `Broadcasting` Directory](#the-broadcasting-directory)
+    - [The `Console` Directory](#the-console-directory)
+    - [The `Events` Directory](#the-events-directory)
+    - [The `Exceptions` Directory](#the-exceptions-directory)
+    - [The `Http` Directory](#the-http-directory)
+    - [The `Jobs` Directory](#the-jobs-directory)
+    - [The `Listeners` Directory](#the-listeners-directory)
+    - [The `Mail` Directory](#the-mail-directory)
+    - [The `Notifications` Directory](#the-notifications-directory)
+    - [The `Policies` Directory](#the-policies-directory)
+    - [The `Providers` Directory](#the-providers-directory)
+    - [The `Rules` Directory](#the-rules-directory)
 
 <a name="introduction"></a>
-## Introducción
+## Introduction
 
-La estructura por defecto de aplicación de Laravel está pensada para proporcionar un buen punto de inicio tanto para grandes y pequeñas aplicaciones. Por supuesto, eres libre de organizar tu aplicación como quieras. Laravel no impone casi ninguna restricción sobre donde una clase es ubicada - siempre y cuando composer pueda cargar automáticamente la clase.
+The default Laravel application structure is intended to provide a great starting point for both large and small applications. Of course, you are free to organize your application however you like. Laravel imposes almost no restrictions on where any given class is located - as long as Composer can autoload the class.
 
-#### ¿Donde Está el Directorio de Modelos?
+#### Where Is The Models Directory?
 
-Al comenzar con Laravel, muchos desarrolladores son confundidos por la falta de un directorio `models`. Sin embargo, la falta de dicho directorio es intencional. Encontramos la palabra "models" ambigua dado que significa muchas cosas diferentes para muchas personas. Algunos desarrolladores se refieren al "modelo" de una aplicación como la totalidad de toda su lógica de negocio, mientras que otros se refieren a los "modelos" como clases que interactuan con una base de datos relacional.
+When getting started with Laravel, many developers are confused by the lack of a `models` directory. However, the lack of such a directory is intentional. We find the word "models" ambiguous since it means many different things to many different people. Some developers refer to an application's "model" as the totality of all of its business logic, while others refer to "models" as classes that interact with a relational database.
 
-Por esta razón, elegimos ubicar los modelos de Eloquent por defecto en el directorio `app` y permitir al desarrollar ubicarlos en algun otro sitio si así lo eligen.
+For this reason, we choose to place Eloquent models in the `app` directory by default, and allow the developer to place them somewhere else if they choose.
 
 <a name="the-root-directory"></a>
-## Directorio Raíz
+## The Root Directory
 
 <a name="the-root-app-directory"></a>
-#### Directorio App
+#### The App Directory
 
-El directorio `app`, como puedes esperar, contiene el código prinicipal de tu aplicación. Exploraremos este directorio con más detalle pronto; sin embargo, casi todas las clases en tu aplicación estarán en este directorio.
+The `app` directory, as you might expect, contains the core code of your application. We'll explore this directory in more detail soon; however, almost all of the classes in your application will be in this directory.
 
 <a name="the-bootstrap-directory"></a>
-#### Directorio Bootstrap
+#### The Bootstrap Directory
 
-El directorio `bootstrap` contiene el archivo `app.php` que maqueta el framework. Este directorio también almacena un directorio `cache` que contiene archivos generados por el framework para optimización de rendimiento como los archivos de cache de rutas y servicios.
+The `bootstrap` directory contains the `app.php` file which bootstraps the framework. This directory also houses a `cache` directory which contains framework generated files for performance optimization such as the route and services cache files.
 
 <a name="the-config-directory"></a>
-#### Directorio Config
+#### The Config Directory
 
-El directorio `config`, como el nombre implica, contiene todos los archivos de configuración de tu aplicación. Es una buena idea leer todos estos archivos y familiarizarte con todas las opciones disponibles para ti.
+The `config` directory, as the name implies, contains all of your application's configuration files. It's a great idea to read through all of these files and familiarize yourself with all of the options available to you.
 
 <a name="the-database-directory"></a>
-#### Directorio Database
+#### The Database Directory
 
-El directorio `database` contiene las migraciones de tu base de datos, model factories y seeders. Si lo deseas, puedes también usar este directorio para almacenar una base de datos SQLite.
+The `database` directory contains your database migrations, model factories, and seeds. If you wish, you may also use this directory to hold an SQLite database.
 
 <a name="the-public-directory"></a>
-#### Directorio Public
+#### The Public Directory
 
-El directorio `public` contiene el archivo `index.php`, el cual es el punto de acceso para todas las solicitudes llegan a tu aplicación y configura la autocarga. Este directorio también almacena tus assets, tales como imagenes, JavaScript y CSS.
+The `public` directory contains the `index.php` file, which is the entry point for all requests entering your application and configures autoloading. This directory also houses your assets such as images, JavaScript, and CSS.
 
 <a name="the-resources-directory"></a>
-#### Directorio Resources
+#### The Resources Directory
 
-El directorio `resources` contiene tus vistas así como también tus assets sin compilar tales como LESS, SASS o
-JavaScript. Este directorio también almacena todos tus archivos de idioma.
+The `resources` directory contains your views as well as your raw, un-compiled assets such as LESS, SASS, or JavaScript. This directory also houses all of your language files.
 
 <a name="the-routes-directory"></a>
-#### Directorio Routes
+#### The Routes Directory
 
-El directorio `routes` contiene todas las definiciones de rutas para tu aplicación. Por defecto, algunos archivos de rutas son incluidos con Laravel: `web.php`, `api.php`, `console.php` y `channels.php`.
+The `routes` directory contains all of the route definitions for your application. By default, several route files are included with Laravel: `web.php`, `api.php`, `console.php` and `channels.php`.
 
-El archivo `web.php` contiene rutas que `RouteServiceProvider` coloca en el grupo de middleware `web`, que proporciona estado de sesión, protección CSRF y encriptación de cookies. Si tu aplicación no ofrece una API sin estado, todas tus rutas probablemente serán definidas en el archivo `web.php`.
+The `web.php` file contains routes that the `RouteServiceProvider` places in the `web` middleware group, which provides session state, CSRF protection, and cookie encryption. If your application does not offer a stateless, RESTful API, all of your routes will most likely be defined in the `web.php` file.
 
-el archivo `api.php` contiene rutas que `RouteServiceProvider` coloca en el grupo de middleware `api`, que proporcionan limitación de velocidad. Estas rutas están pensadadas para no tener estado, así que las solicitudes que llegan a la aplicación a través de estas rutas están pensadas para ser autenticadas mediante tokens y no tendrán acceso al estado de sesión.
+The `api.php` file contains routes that the `RouteServiceProvider` places in the `api` middleware group, which provides rate limiting. These routes are intended to be stateless, so requests entering the application through these routes are intended to be authenticated via tokens and will not have access to session state.
 
-El archivo `console.php` es donde puedes definir todas los comandos basados en Closures de tu aplicación. Cada Closure está enlazado a una instancia de comando permitiendo una forma simple de interactuar con los métodos de entrada y salida de cada comando. Aunque este archivo no define ninguna ruta HTTP, sí define puntos de entrada en consola (rutas) a tu aplicación.
+The `console.php` file is where you may define all of your Closure based console commands. Each Closure is bound to a command instance allowing a simple approach to interacting with each command's IO methods. Even though this file does not define HTTP routes, it defines console based entry points (routes) into your application.
 
-El archivo `channels.php` es donde puedes registrar todos los canales de transmisión de eventos que tu aplicación soporta.
+The `channels.php` file is where you may register all of the event broadcasting channels that your application supports.
 
 <a name="the-storage-directory"></a>
-#### Directorio Storage
+#### The Storage Directory
 
-El directorio `storage` contiene tus plantillas compiladas de Blade, sesiones basadas en archivos, archivos de caches y otros archivos generados por el framework. Este directorio está segregado en los directorios `app`, `framework` y `logs`. El directorio `app` puede ser usado para almacenar cualquier archivo generado por tu aplicación. El directorio `framework` es usado para almacenar archivos generados por el framework y cache. Finalmente, el directorio `logs` contiene los archivos de log de tu aplicación.
+The `storage` directory contains your compiled Blade templates, file based sessions, file caches, and other files generated by the framework. This directory is segregated into `app`, `framework`, and `logs` directories. The `app` directory may be used to store any files generated by your application. The `framework` directory is used to store framework generated files and caches. Finally, the `logs` directory contains your application's log files.
 
-El directorio `storage/app/public` puede ser usado para almacenar archivos generados por el usario, tales como imagenes de perfil, que deberían ser accesibles publicamente. Debes crear un enlace simbolico en `public/storage` que apunte a este directorio. Puedes crear el enlace usando el comando `php artisan storage:link`.
+The `storage/app/public` directory may be used to store user-generated files, such as profile avatars, that should be publicly accessible. You should create a symbolic link at `public/storage` which points to this directory. You may create the link using the `php artisan storage:link` command.
 
 <a name="the-tests-directory"></a>
-#### El Directorio Tests
+#### The Tests Directory
 
-El directorio `tests` contiene tus pruebas automatizadas. Un ejemplo de [PHPUnit](https://phpunit.de/) es proporcionado. Cada clase de prueba debe estar precedida por la palabra `Test`. Puedes ejecutar tus pruebas usando los comandos `phpunit` o `php vendor/bin/phpunit`.
+The `tests` directory contains your automated tests. An example [PHPUnit](https://phpunit.de/) is provided out of the box. Each test class should be suffixed with the word `Test`. You may run your tests using the `phpunit` or `php vendor/bin/phpunit` commands.
 
 <a name="the-vendor-directory"></a>
-#### Directorio Vendor
+#### The Vendor Directory
 
-El directorio `vendor` contiene tus dependencias de [Composer](https://getcomposer.org).
+The `vendor` directory contains your [Composer](https://getcomposer.org) dependencies.
 
 <a name="the-app-directory"></a>
-## Directorio App
+## The App Directory
 
-La mayoría de tu aplicación está almacenada el directorio `app`. Por defecto, este directorio tiene un nombre de espacio bajo `App` y es cargado automáticamente por composer usando el [estándar de autocarga PSR-4].
+The majority of your application is housed in the `app` directory. By default, this directory is namespaced under `App` and is autoloaded by Composer using the [PSR-4 autoloading standard](http://www.php-fig.org/psr/psr-4/).
 
-El directorio `app` contiene una variedad de directorios adicionales tales como `Console`, `Http` y `Providers`. Piensa en los directorios `Console` y `Http` como si proporcionaran una API al nucleo de tu aplicación, pero no contienen lógica de la aplicación como tal. En otras palabras, son dos formas de emtir comandos a tu aplicación. El directorio `Console` contiene todos tus comandos de Artisan, mientras que el directorio `Http` contiene tus controladores, middleware y solicitudes.
+The `app` directory contains a variety of additional directories such as `Console`, `Http`, and `Providers`. Think of the `Console` and `Http` directories as providing an API into the core of your application. The HTTP protocol and CLI are both mechanisms to interact with your application, but do not actually contain application logic. In other words, they are two ways of issuing commands to your application. The `Console` directory contains all of your Artisan commands, while the `Http` directory contains your controllers, middleware, and requests.
 
-Una variedad de otros directorios serán generados dentro del directorio `app` cuando uses los comandos `make` de Artisan para generar clases. Así que, por ejemplo, el directorio `app/Jobs` no existirá hasta que ejecutes el comando de Artisan `make:job` para generar una clase job.
+A variety of other directories will be generated inside the `app` directory as you use the `make` Artisan commands to generate classes. So, for example, the `app/Jobs` directory will not exist until you execute the `make:job` Artisan command to generate a job class.
 
-> {tip} Muchas de las clases en el directorio `app` pueden ser generadas por Artisan mediante comandos. Para ver los comandos disponibles, ejecuta el comando `php artisan list make` en tu terminal.
+> {tip} Many of the classes in the `app` directory can be generated by Artisan via commands. To review the available commands, run the `php artisan list make` command in your terminal.
+
+<a name="the-broadcasting-directory"></a>
+#### The Broadcasting Directory
+
+The `Broadcasting` directory contains all of the broadcast channel classes for your application. These classes are generated using the `make:channel` command. This directory does not exist by default, but will be created for you when you create your first channel. To learn more about channels, check out the documentation on [event broadcasting](/docs/{{version}}/broadcasting).
 
 <a name="the-console-directory"></a>
-#### El Directorio Console
+#### The Console Directory
 
-El directorio `Console` contiene todos los comandos personalizados de Artisan para tu aplicación. Estos comandos pueden ser generados usando el comando `make:command`. Este directorio también almacena el kernel de tu consola, que es donde tus comandos personalizados de Artisan son registrados y tus [tareas programadas](/docs/{{version}}/scheduling) son definidas.
+The `Console` directory contains all of the custom Artisan commands for your application. These commands may be generated using the `make:command` command. This directory also houses your console kernel, which is where your custom Artisan commands are registered and your [scheduled tasks](/docs/{{version}}/scheduling) are defined.
 
 <a name="the-events-directory"></a>
-#### Directorio Events
+#### The Events Directory
 
-Este directorio no existe por defecto, pero será creado para ti por los comandos de Artisan `event:generate` y `make:event`. El directorio `Events`, como puedes esperar, almacena [clases de eventos](/docs/{{version}}/events). Los eventos pueden ser usados para alertar a otras partes de tu aplicación que una acción dada ha ocurrido, proporcionando una gran cantidad de flexibilidad y desacoplamiento.
+This directory does not exist by default, but will be created for you by the `event:generate` and `make:event` Artisan commands. The `Events` directory, as you might expect, houses [event classes](/docs/{{version}}/events). Events may be used to alert other parts of your application that a given action has occurred, providing a great deal of flexibility and decoupling.
 
 <a name="the-exceptions-directory"></a>
-#### Directorio Exceptions
+#### The Exceptions Directory
 
-El directorio `Exceptions` contiene el manejador de excepciones de tu aplicación y también es un buen lugar para colocar cualquier excepción lanzada por tu aplicación. Si te gustaría personalizar como las excepciones son mostradas o renderizadas, debes modificar la clase `Handler` en este directorio.
+The `Exceptions` directory contains your application's exception handler and is also a good place to place any exceptions thrown by your application. If you would like to customize how your exceptions are logged or rendered, you should modify the `Handler` class in this directory.
 
 <a name="the-http-directory"></a>
-#### Directorio Http
+#### The Http Directory
 
-El directorio `Http` contiene tus controladores, middleware y form requests. Casi toda la lógica para manejar las solicitudes que llegan a tu aplicación serán colocadas en este directorio.
+The `Http` directory contains your controllers, middleware, and form requests. Almost all of the logic to handle requests entering your application will be placed in this directory.
 
 <a name="the-jobs-directory"></a>
-#### Directorio Jobs
+#### The Jobs Directory
 
-Este directorio no existe por defecto, pero será creado para ti si ejecutas el comando de Artisan `make:job`. El directorio `Jobs` almacena las [colas de trabajos](/docs/{{version}}/queues) para tu aplicación. Los trabajos pueden ser encolados por tu aplicación o ejecutados sincrónicamente dentro del ciclo de vida actual de la solicitud. Los trabajos que son ejecutados sincrónicamente durante la solicitud actual son algunas veces referidos como "comandos" dado que son una implementación del [patrón de comandos](https://en.wikipedia.org/wiki/Command_pattern).
+This directory does not exist by default, but will be created for you if you execute the `make:job` Artisan command. The `Jobs` directory houses the [queueable jobs](/docs/{{version}}/queues) for your application. Jobs may be queued by your application or run synchronously within the current request lifecycle. Jobs that run synchronously during the current request are sometimes referred to as "commands" since they are an implementation of the [command pattern](https://en.wikipedia.org/wiki/Command_pattern).
 
 <a name="the-listeners-directory"></a>
-#### Directorio Listeners
+#### The Listeners Directory
 
-Este directorio no existe por defecto, pero será creado para ti si ejecutas los comandos de Artisan `event:generate` o `make:listener`. El directorio `Listeners` contiene las clases que manejan tus [eventos](/docs/{{version}}/events). Los listeners de eventos reciben una instancia de evento y realizan la lógica en respuesta al evento siendo ejecutado. Por ejemplo, un evento `UserRegistered` puede ser manejado por un listener `SendWelcomeEmail`.
+This directory does not exist by default, but will be created for you if you execute the `event:generate` or `make:listener` Artisan commands. The `Listeners` directory contains the classes that handle your [events](/docs/{{version}}/events). Event listeners receive an event instance and perform logic in response to the event being fired. For example, a `UserRegistered` event might be handled by a `SendWelcomeEmail` listener.
 
 <a name="the-mail-directory"></a>
-#### Directorio Mail
+#### The Mail Directory
 
-Este directorio no existe por defecto, pero será creado para ti si ejecutas el comando de artisan `make:mail`. El directorio `Mail` contiene todas tus clases que representan correos electrónicos enviados por tu aplicación. Los objetos de correo te permiten encapsular toda la lógica para construir un correo en una única y sencilla clase y que puede ser enviado usando el método `Mail::send`.
+This directory does not exist by default, but will be created for you if you execute the `make:mail` Artisan command. The `Mail` directory contains all of your classes that represent emails sent by your application. Mail objects allow you to encapsulate all of the logic of building an email in a single, simple class that may be sent using the `Mail::send` method.
 
 <a name="the-notifications-directory"></a>
-#### Directorio Notifications
+#### The Notifications Directory
 
-Este directorio no existe por defecto, pero será creado para ti si ejecutas el comando de Artisan `make:notification`. El directorio `Notifications` contiene todas las notificaciones "transaccionales" que son enviadas por tu aplicación, tales como notificaciones sencillas sobre eventos que ocurren dentro de tu aplicación. Las características de notifcaciones de Laravel abstrae el envio de notificaciones sobre una variedad de drivers como email, Slack, SMS o almacenados en la base de datos.
+This directory does not exist by default, but will be created for you if you execute the `make:notification` Artisan command. The `Notifications` directory contains all of the "transactional" notifications that are sent by your application, such as simple notifications about events that happen within your application. Laravel's notification features abstracts sending notifications over a variety of drivers such as email, Slack, SMS, or stored in a database.
 
 <a name="the-policies-directory"></a>
-#### Directorio Policies
+#### The Policies Directory
 
 This directory does not exist by default, but will be created for you if you execute the `make:policy` Artisan command. The `Policies` directory contains the authorization policy classes for your application. Policies are used to determine if a user can perform a given action against a resource. For more information, check out the [authorization documentation](/docs/{{version}}/authorization).
-Este directorio no existe por defecto, pero será creado para ti si ejecutas el comando de Artisan `make:policy`. El directorio `Policies` contiene las clases de la política de autorización de tu aplicación. Las políticas son usadas para determinar si un usuario puede realizar una acción dada contra un recurso. Para más información, revisa la [documentación sobre autorización][authorization documentation](/docs/{{version}}/authorization).
 
 <a name="the-providers-directory"></a>
-#### Directorio Providers
+#### The Providers Directory
 
-El directorio `Providers` contiene todos los [proveedores de servicios](/docs/{{version}}/providers) para tu aplicación. Los proveedores de servicios maquetan tu aplicación al enlazar servicios en el contenedor de servicios, registrando eventos o realizando cualquier otra tarea para preparar tu aplicación para solicitudes entrantes.
+The `Providers` directory contains all of the [service providers](/docs/{{version}}/providers) for your application. Service providers bootstrap your application by binding services in the service container, registering events, or performing any other tasks to prepare your application for incoming requests.
 
-En una aplicación de Laravel nueva, este directorio ya contendrá algunos proveedores. Eres libre de agregar tus propios proveedores a este directorio según sea necesario.
+In a fresh Laravel application, this directory will already contain several providers. You are free to add your own providers to this directory as needed.
 
 <a name="the-rules-directory"></a>
-#### Directorio Rules
+#### The Rules Directory
 
-Este directorio no existe por defecto, pero será creado para ti si ejecutas el comando de Artisan `make:rule`. El directorio `Rules` contiene los objetos para las reglas de validación personalizadas de tu aplicación. Las reglas son usadas para encapsular lógica de validación complicada en un simple objeto. Para más información, revisa la [documentación sobre validación](/docs/{{version}}/validation).
+This directory does not exist by default, but will be created for you if you execute the `make:rule` Artisan command. The `Rules` directory contains the custom validation rule objects for your application. Rules are used to encapsulate complicated validation logic in a simple object. For more information, check out the [validation documentation](/docs/{{version}}/validation).

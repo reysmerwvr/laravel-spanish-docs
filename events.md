@@ -17,7 +17,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-Laravel's events provides a simple observer implementation, allowing you to subscribe and listen for various events that occur in your application. Event classes are typically stored in the `app/Events` directory, while their listeners are stored in `app/Listeners`. Don't worry if you don't see these directories in your application, since they will be created for you as you generate events and listeners using Artisan console commands.
+Laravel's events provide a simple observer implementation, allowing you to subscribe and listen for various events that occur in your application. Event classes are typically stored in the `app/Events` directory, while their listeners are stored in `app/Listeners`. Don't worry if you don't see these directories in your application, since they will be created for you as you generate events and listeners using Artisan console commands.
 
 Events serve as a great way to decouple various aspects of your application, since a single event can have multiple listeners that do not depend on each other. For example, you may wish to send a Slack notification to your user each time an order has shipped. Instead of coupling your order processing code to your Slack notification code, you can raise an `OrderShipped` event, which a listener can receive and transform into a Slack notification.
 
@@ -92,7 +92,7 @@ An event class is a data container which holds the information related to the ev
         /**
          * Create a new event instance.
          *
-         * @param  Order  $order
+         * @param  \App\Order  $order
          * @return void
          */
         public function __construct(Order $order)
@@ -129,7 +129,7 @@ Next, let's take a look at the listener for our example event. Event listeners r
         /**
          * Handle the event.
          *
-         * @param  OrderShipped  $event
+         * @param  \App\Events\OrderShipped  $event
          * @return void
          */
         public function handle(OrderShipped $event)
@@ -325,7 +325,7 @@ Event subscribers are classes that may subscribe to multiple events from within 
         /**
          * Register the listeners for the subscriber.
          *
-         * @param  Illuminate\Events\Dispatcher  $events
+         * @param  \Illuminate\Events\Dispatcher  $events
          */
         public function subscribe($events)
         {
@@ -339,7 +339,6 @@ Event subscribers are classes that may subscribe to multiple events from within 
                 'App\Listeners\UserEventSubscriber@onUserLogout'
             );
         }
-
     }
 
 <a name="registering-event-subscribers"></a>

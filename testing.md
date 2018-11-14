@@ -1,29 +1,31 @@
-# Pruebas: Primeros Pasos
+# Testing: Getting Started
 
-- [Introducción](#introduction)
-- [Entorno](#environment)
-- [Creando & Ejecutando Pruebas](#creating-and-running-tests)
+- [Introduction](#introduction)
+- [Environment](#environment)
+- [Creating & Running Tests](#creating-and-running-tests)
 
 <a name="introduction"></a>
-## Introducción
+## Introduction
 
-Laravel está construido con las pruebas en mente. De hecho, el soporte para pruebas con PHPUnit es incluido de forma predeterminada y un archivo `phpunit.xml` ya está configurado para tu aplicación. El framework también se envía con métodos helper convenientes que permiten que pruebes tus aplicaciones expresivamente.
+Laravel is built with testing in mind. In fact, support for testing with PHPUnit is included out of the box and a `phpunit.xml` file is already set up for your application. The framework also ships with convenient helper methods that allow you to expressively test your applications.
 
-De forma predeterminada, el directorio `tests` de tu aplicación contiene dos directorios: `Feature` e `Unit`. Las pruebas unitarias son pruebas que se enfocan en una muy pequeña, porción aislada de tu código. De hecho, la mayoría de las pruebas unitarias se enfocan probablemente en un solo método. Las pruebas de características pueden probar una porción más grande de tu código, incluyendo la forma como varios objetos interactúan entre sí e incluso una solicitud HTTP completa para un endpoint de JSON.
+By default, your application's `tests` directory contains two directories: `Feature` and `Unit`. Unit tests are tests that focus on a very small, isolated portion of your code. In fact, most unit tests probably focus on a single method. Feature tests may test a larger portion of your code, including how several objects interact with each other or even a full HTTP request to a JSON endpoint.
 
-Un archivo `ExampleTest.php` es proporcionado en ambos directorios de prueba `Feature` e `Unit`. Después de instalar una nueva aplicacción de Laravel, ejecuta `phpunit` en la línea de comandos para ejecutar tus pruebas.
+An `ExampleTest.php` file is provided in both the `Feature` and `Unit` test directories. After installing a new Laravel application, run `phpunit` on the command line to run your tests.
 
 <a name="environment"></a>
-## Entorno
+## Environment
 
-Al momento de ejecutar las pruebas por medio de `phpunit`, Laravel establecerá automáticamente el entorno de configuración a `testing` debido a las variables de entorno definidas en el archivo `phpunit.xml`. Laravel también configura automáticamente la sesión y cache del manejador `array` al momento de las pruebas, significa que ninguna sesión o cache de datos será conservada mientras se prueba.
+When running tests via `phpunit`, Laravel will automatically set the configuration environment to `testing` because of the environment variables defined in the `phpunit.xml` file. Laravel also automatically configures the session and cache to the `array` driver while testing, meaning no session or cache data will be persisted while testing.
 
-Eres libre de definir otros valores de configuración del entorno de pruebas como sea necesario. Las variables de entorno `testing` pueden ser configuradas en el archivo `phpunit.xml`, pero asegurate de limpiar tu cache de configuración usando el comando Artisan `config:clear` antes de ejcutar tus pruebas!
+You are free to define other testing environment configuration values as necessary. The `testing` environment variables may be configured in the `phpunit.xml` file, but make sure to clear your configuration cache using the `config:clear` Artisan command before running your tests!
+
+In addition, you may create a `.env.testing` file in the root of your project. This file will override the `.env` file when running PHPUnit tests or executing Artisan commands with the `--env=testing` option.
 
 <a name="creating-and-running-tests"></a>
-## Creando & Ejecutando Pruebas
+## Creating & Running Tests
 
-Para crear un nuevo caso de prueba, usa el comando Artisan `make:test`:
+To create a new test case, use the `make:test` Artisan command:
 
     // Create a test in the Feature directory...
     php artisan make:test UserTest
@@ -31,7 +33,7 @@ Para crear un nuevo caso de prueba, usa el comando Artisan `make:test`:
     // Create a test in the Unit directory...
     php artisan make:test UserTest --unit
 
-Una vez que la prueba ha sido generada, puedes definir métodos de pruebas como lo harías normalmente usando PHPUnit. Para ejecutar tus pruebas, ejecuta el comando `phpunit` desde tu terminal:
+Once the test has been generated, you may define test methods as you normally would using PHPUnit. To run your tests, execute the `phpunit` command from your terminal:
 
     <?php
 
@@ -53,4 +55,4 @@ Una vez que la prueba ha sido generada, puedes definir métodos de pruebas como 
         }
     }
 
-> {note} Si defines tu propio método `setUp` dentro de una clase de prueba, asegurate de ejecutar `parent::setUp()`.
+> {note} If you define your own `setUp` method within a test class, be sure to call `parent::setUp()`.

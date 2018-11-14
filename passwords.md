@@ -1,61 +1,61 @@
 # Resetting Passwords
 
-- [Introducción](#introduction)
-- [Consideraciones de la Base de Datos](#resetting-database)
-- [Enrutamiento](#resetting-routing)
-- [Vistas](#resetting-views)
-- [Luego de Resetear Contraseñas](#after-resetting-passwords)
-- [Personalización](#password-customization)
+- [Introduction](#introduction)
+- [Database Considerations](#resetting-database)
+- [Routing](#resetting-routing)
+- [Views](#resetting-views)
+- [After Resetting Passwords](#after-resetting-passwords)
+- [Customization](#password-customization)
 
 <a name="introduction"></a>
-## Introducción
+## Introduction
 
-> {tip} **¿Quieres comenzar rápido?** Simplemente ejecuta `php artisan make:auth` en una aplicación de Laravel nueva y navega hasta `http://your-app.dev/register` o cualquier otra URL asignada a tu aplicación. Este simple comando se encargará de maquetar todo tu sistema de autenticación, ¡incluyendo resetear contraseñas!
+> {tip} **Want to get started fast?** Just run `php artisan make:auth` in a fresh Laravel application and navigate your browser to `http://your-app.test/register` or any other URL that is assigned to your application. This single command will take care of scaffolding your entire authentication system, including resetting passwords!
 
-La mayoría de las aplicaciones web proporciona una forma para que los usuarios resetean sus contraseñas olvidadas. En lugar de forzarte a reimplementar de esto en cada aplicación, Laravel proporciona métodos convenientes para enviar recordatorios de contraseñas y realizar reseteos de contraseñas.
+Most web applications provide a way for users to reset their forgotten passwords. Rather than forcing you to re-implement this on each application, Laravel provides convenient methods for sending password reminders and performing password resets.
 
-> {note} Antes de usar las características de reseteo de contraseñas de Laravel, tu usuario debe usar el trait `Illuminate\Notifications\Notifiable`.
+> {note} Before using the password reset features of Laravel, your user must use the `Illuminate\Notifications\Notifiable` trait.
 
 <a name="resetting-database"></a>
-## Consideraciones de la Base de Datos
+## Database Considerations
 
-Para comenzar, verifica que tu modelo `App\User` implementa el contrato `Illuminate\Contracts\Auth\CanResetPassword`. Por supuesto, el modelo `App\User` incluído con el framework ya implementa esta interfaz y usa el trait `Illuminate\Auth\Passwords\CanResetPassword` para incluir los métodos necesarios para implementar la interfaz.
+To get started, verify that your `App\User` model implements the `Illuminate\Contracts\Auth\CanResetPassword` contract. Of course, the `App\User` model included with the framework already implements this interface, and uses the `Illuminate\Auth\Passwords\CanResetPassword` trait to include the methods needed to implement the interface.
 
-#### Generando La Migración Para La Tabla de Tokens de Reseteo
+#### Generating The Reset Token Table Migration
 
-Luego, una tabla debe ser creada para almacenar los tokens de reseteo de contraseña. La migración para está tabla está incluida con Laravel por defecto y se encuentra en el directorio `database/migrations`. Así que, todo lo que necesitas hacer es ejecutar tus migraciones de la base de datos:
+Next, a table must be created to store the password reset tokens. The migration for this table is included with Laravel out of the box, and resides in the `database/migrations` directory. So, all you need to do is run your database migrations:
 
     php artisan migrate
 
 <a name="resetting-routing"></a>
-## Enrutamiento
+## Routing
 
-Laravel incluye las clases `Auth\ForgotPasswordController` y `Auth\ResetPasswordController` que contienen la lógica necesaria para enviar enlaces de reseteo de contraseña y resetear contraseñas de usuarios mediante correo electrónico. Todas las rutas necesarias para realizar reseteos de contraseñas pueden ser generadas usando el comando de Artisan `make:auth`:
+Laravel includes `Auth\ForgotPasswordController` and `Auth\ResetPasswordController` classes that contains the logic necessary to e-mail password reset links and reset user passwords. All of the routes needed to perform password resets may be generated using the `make:auth` Artisan command:
 
     php artisan make:auth
 
 <a name="resetting-views"></a>
-## Vistas
+## Views
 
-De nuevo, Laravel generará todas las vistas necesarias para el reseteo de contraseña cuando el comando `make:auth` es ejecutado. Estas vistas están ubicadas en `resources/views/auth/passwords`. Eres libre de personalizarlas según sea necesario para tu aplicación.
+Again, Laravel will generate all of the necessary views for password reset when the `make:auth` command is executed. These views are placed in `resources/views/auth/passwords`. You are free to customize them as needed for your application.
 
 <a name="after-resetting-passwords"></a>
-## Luego de Resetear Contraseñas
+## After Resetting Passwords
 
-Una vez que has definido las rutas y vistas para resetear las contraseñas de tus usuarios, puedes acceder a la ruta en tu navegador en `/password/reset`. El `ForgotPasswordController` incluido con el framework ya incluye la lógica para enviar los correos con el enlace de reseteo, mientras que `ResetPasswordController` incluye la lógica para resetear las contraseñas de los usuarios.
+Once you have defined the routes and views to reset your user's passwords, you may access the route in your browser at `/password/reset`. The `ForgotPasswordController` included with the framework already includes the logic to send the password reset link e-mails, while the `ResetPasswordController` includes the logic to reset user passwords.
 
-Luego de que una contraseña es reseteada, la sesión del usuario será automáticamente iniciada y será redirigido a `/home`. Puedes personalizar la ubicación de redirección definiendo una propiedad `redirectTo` en `ResetPasswordController`:
+After a password is reset, the user will automatically be logged into the application and redirected to `/home`. You can customize the post password reset redirect location by defining a `redirectTo` property on the `ResetPasswordController`:
 
     protected $redirectTo = '/dashboard';
 
-> {note} Por defecto, los tokens para resetear contraseñas expiran luego de una hora. Puedes cambiar esto mediante la opción de reseteo de contraseñas `expire` en tu archivo `config/auth.php`.
+> {note} By default, password reset tokens expire after one hour. You may change this via the password reset `expire` option in your `config/auth.php` file.
 
 <a name="password-customization"></a>
-## Personalización
+## Customization
 
-#### Personalización de los Guards de Autenticación
+#### Authentication Guard Customization
 
-En tu archivo de configuración `auth.php`, puedes configurar múltiples "guards", que podrán ser usados para definir el comportamiento de autenticación para múltiples tablas de usuarios. Puedes personalizar el controlador `ResetPasswordController` incluido para usar el guard de tu preferencia sobrescribiendo el método `guard` en el controlador. Este método debe retornar una instancia guard:
+In your `auth.php` configuration file, you may configure multiple "guards", which may be used to define authentication behavior for multiple user tables. You can customize the included `ResetPasswordController` to use the guard of your choice by overriding the `guard` method on the controller. This method should return a guard instance:
 
     use Illuminate\Support\Facades\Auth;
 
@@ -64,9 +64,9 @@ En tu archivo de configuración `auth.php`, puedes configurar múltiples "guards
         return Auth::guard('guard-name');
     }
 
-#### Personalización Del Broker de Contraseña
+#### Password Broker Customization
 
-En tu archivo de configuración `auth.php`, puedes configurar múltiples "brokers" de contraseñas, que pueden ser usados para resetear contraseñas en múltiples tablas de usuarios. Puedes personalizar los controladores `ForgotPasswordController` y `ResetPasswordController` incluidos para usar el broker de tu elección sobrescribiendo el método `broker`:
+In your `auth.php` configuration file, you may configure multiple password "brokers", which may be used to reset passwords on multiple user tables. You can customize the included `ForgotPasswordController` and `ResetPasswordController` to use the broker of your choice by overriding the `broker` method:
 
     use Illuminate\Support\Facades\Password;
 
@@ -80,9 +80,9 @@ En tu archivo de configuración `auth.php`, puedes configurar múltiples "broker
         return Password::broker('name');
     }
 
-#### Personalización Del Correo de Reseteo
+#### Reset Email Customization
 
-Puedes fácilmente modificar la clase de la notificacion usada para enviar el enlace de reseteo de contraseña al usuario. Para comenzar, sobrescribe el método `sendPasswordResetNotification` en tu modelo `User`. Dentro de este método, puedes enviar la notificación usando cualquier clase que selecciones. El `$token` de reseteo de contaseña es el primer argumento recibido por el método:
+You may easily modify the notification class used to send the password reset link to the user. To get started, override the `sendPasswordResetNotification` method on your `User` model. Within this method, you may send the notification using any notification class you choose. The password reset `$token` is the first argument received by the method:
 
     /**
      * Send the password reset notification.

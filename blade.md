@@ -1,40 +1,43 @@
-# Plantillas Blade
+# Blade Templates
 
-- [Introducción](#introduction)
-- [Herencia De Plantillas](#template-inheritance)
-    - [Definir Un Layout](#defining-a-layout)
-    - [Extender Un Layout](#extending-a-layout)
-- [Componentes & Slots](#components-and-slots)
-- [Mostrando Datos](#displaying-data)
-    - [Frameworks De Blade Y JavaScript](#blade-and-javascript-frameworks)
-- [Estructuras De Control](#control-structures)
-    - [Sentencias If](#if-statements)
-    - [Sentencias Switch](#switch-statements)
-    - [Búcles](#loops)
-    - [La Variable Loop](#the-loop-variable)
-    - [Comentarios](#comments)
+- [Introduction](#introduction)
+- [Template Inheritance](#template-inheritance)
+    - [Defining A Layout](#defining-a-layout)
+    - [Extending A Layout](#extending-a-layout)
+- [Components & Slots](#components-and-slots)
+- [Displaying Data](#displaying-data)
+    - [Blade & JavaScript Frameworks](#blade-and-javascript-frameworks)
+- [Control Structures](#control-structures)
+    - [If Statements](#if-statements)
+    - [Switch Statements](#switch-statements)
+    - [Loops](#loops)
+    - [The Loop Variable](#the-loop-variable)
+    - [Comments](#comments)
     - [PHP](#php)
-- [Incluyendo Sub-Vistas](#including-sub-views)
-    - [Renderizar Vistas Para Colecciones](#rendering-views-for-collections)
+- [Forms](#forms)
+    - [CSRF Field](#csrf-field)
+    - [Method Field](#method-field)
+- [Including Sub-Views](#including-sub-views)
+    - [Rendering Views For Collections](#rendering-views-for-collections)
 - [Stacks](#stacks)
-- [Inyeción De Servicios](#service-injection)
-- [Extendiendo Blade](#extending-blade)
-    - [Sentencias If Personalizadas](#custom-if-statements)
+- [Service Injection](#service-injection)
+- [Extending Blade](#extending-blade)
+    - [Custom If Statements](#custom-if-statements)
 
 <a name="introduction"></a>
-## Introducción
+## Introduction
 
-Blade es un motor de plantillas simple y a la vez poderoso proporcionado por Laravel. A diferencia de otros motores de plantillas populares de PHP, Blade no te impide utilizar código PHP plano en sus vistas. De hecho, todas las vistas de Blade son compiladas en código PHP plano y almacenadas en caché hasta que sean modificadas, lo que significa que Blade no añade sobrecarga a tu aplicación. Los archivos de las vistas de Blade tienen la extensión `.blade.php` y son usualmente almacenados en el directorio `resources/views`.
+Blade is the simple, yet powerful templating engine provided with Laravel. Unlike other popular PHP templating engines, Blade does not restrict you from using plain PHP code in your views. In fact, all Blade views are compiled into plain PHP code and cached until they are modified, meaning Blade adds essentially zero overhead to your application. Blade view files use the `.blade.php` file extension and are typically stored in the `resources/views` directory.
 
 <a name="template-inheritance"></a>
-## Herencia De Plantillas
+## Template Inheritance
 
 <a name="defining-a-layout"></a>
-### Definir Un Layout
+### Defining A Layout
 
-Dos de los principales beneficios de usar Blade son _la herencia de plantillas y _secciones_. Para empezar, veamos un ejemplo simple. Primero, vamos a examinar una página de layout "master". Ya que la mayoría de las aplicaciones web mantienen el mismo layout general a través de varias páginas, es conveniente definir este layout como una sola vista de Blade:
+Two of the primary benefits of using Blade are _template inheritance_ and _sections_. To get started, let's take a look at a simple example. First, we will examine a "master" page layout. Since most web applications maintain the same general layout across various pages, it's convenient to define this layout as a single Blade view:
 
-    <!-- Almacenado en resources/views/layouts/app.blade.php -->
+    <!-- Stored in resources/views/layouts/app.blade.php -->
 
     <html>
         <head>
@@ -51,16 +54,16 @@ Dos de los principales beneficios de usar Blade son _la herencia de plantillas y
         </body>
     </html>
 
-Como puedes ver, este archivo contiene el marcado típico de HTML. Sin embargo, toma nota de las directivas `@section` y `@yield`. La directiva `@section`, como su nombre lo indica, define una sección de contenido, mientras que la directiva `@yield` es utilizada para mostrar el contenido en una sección determinada.
+As you can see, this file contains typical HTML mark-up. However, take note of the `@section` and `@yield` directives. The `@section` directive, as the name implies, defines a section of content, while the `@yield` directive is used to display the contents of a given section.
 
-Ahora que hemos definido un layout para nuestra aplicación, vamos a definir una página hija que herede el layout.
+Now that we have defined a layout for our application, let's define a child page that inherits the layout.
 
 <a name="extending-a-layout"></a>
-### Extender Un Layout
+### Extending A Layout
 
-Al definir una vista hija, utiliza la directiva de Blade `@extends` para indicar el layout que deberá "heredarse" en la vista hija. Las vistas que extiendan un layout de Blade pueden inyectar contenido en la sección del layout usando la directiva `@section`. Recuerda, como vimos en el ejemplo anterior, los contenidos de estas secciones se mostrarán en el layout usando `@yield`:
+When defining a child view, use the Blade `@extends` directive to specify which layout the child view should "inherit". Views which extend a Blade layout may inject content into the layout's sections using `@section` directives. Remember, as seen in the example above, the contents of these sections will be displayed in the layout using `@yield`:
 
-    <!-- Almacenado en resources/views/child.blade.php -->
+    <!-- Stored in resources/views/child.blade.php -->
 
     @extends('layouts.app')
 
@@ -76,20 +79,20 @@ Al definir una vista hija, utiliza la directiva de Blade `@extends` para indicar
         <p>This is my body content.</p>
     @endsection
 
-En este ejemplo, la sección `sidebar` está utilizando la directiva `@@parent` para adjuntar (en lugar de sobrescribir) contenido al sidebar del layout. La directiva `@@parent` será reemplazada por el contenido del layout cuando la vista sea renderizada.
+In this example, the `sidebar` section is utilizing the `@@parent` directive to append (rather than overwriting) content to the layout's sidebar. The `@@parent` directive will be replaced by the content of the layout when the view is rendered.
 
-> {tip} Contrario al ejemplo anterior, esta sección `sidebar` termina con `@endsection` en lugar de `@show`. La directiva `@endsection` sólo definirá una sección mientras que `@show` definirá y **automáticamente creará un yield** de la sección.
+> {tip} Contrary to the previous example, this `sidebar` section ends with `@endsection` instead of `@show`. The `@endsection` directive will only define a section while `@show` will define and **immediately yield** the section.
 
-Las vistas de Blade se pueden retornar desde las rutas usando el helper global `view`:
+Blade views may be returned from routes using the global `view` helper:
 
     Route::get('blade', function () {
         return view('child');
     });
 
 <a name="components-and-slots"></a>
-## Componentes & Slots
+## Components & Slots
 
-Los componentes y slots proporcionan beneficios similares a secciones y layouts; sin embargo, algunos encontrarán el modelo mental de componentes y slots más fácil de comprender. Primero, imginemos un componente "alert" reutilizable que queremos que se reutilice en toda nuestra aplicación:
+Components and slots provide similar benefits to sections and layouts; however, some may find the mental model of components and slots easier to understand. First, let's imagine a reusable "alert" component we would like to reuse throughout our application:
 
     <!-- /resources/views/alert.blade.php -->
 
@@ -97,13 +100,13 @@ Los componentes y slots proporcionan beneficios similares a secciones y layouts;
         {{ $slot }}
     </div>
 
-La variable `{{ $slot }}` tendrá el contenido que deseamos inyectar en el componente. Ahora, para construir el componente, podemos usar la directiva de Blade `@component`:
+The `{{ $slot }}` variable will contain the content we wish to inject into the component. Now, to construct this component, we can use the `@component` Blade directive:
 
     @component('alert')
         <strong>Whoops!</strong> Something went wrong!
     @endcomponent
 
-A veces es útil definir múltiples slots para un componente. Vamos a modificar nuestro componente alerta para permitir la inyección de un "título". Los slots nombrados podrán despegarse al hacer "echo" a la variable que coincida con sus nombres:
+Sometimes it is helpful to define multiple slots for a component. Let's modify our alert component to allow for the injection of a "title". Named slots may be displayed by "echoing" the variable that matches their name:
 
     <!-- /resources/views/alert.blade.php -->
 
@@ -113,7 +116,7 @@ A veces es útil definir múltiples slots para un componente. Vamos a modificar 
         {{ $slot }}
     </div>
 
-Ahora, podemos inyectar contenido en el slot nombrado usando la directiva `@slot`. Cualquier contenido que no esté en la directiva `@slot` será pasado al componente en la variable `$slot`:
+Now, we can inject content into the named slot using the `@slot` directive. Any content not within a `@slot` directive will be passed to the component in the `$slot` variable:
 
     @component('alert')
         @slot('title')
@@ -123,69 +126,113 @@ Ahora, podemos inyectar contenido en el slot nombrado usando la directiva `@slot
         You are not allowed to access this resource!
     @endcomponent
 
-#### Pasando Información Adicional A Los Componentes
+#### Passing Additional Data To Components
 
-En ocasiones puedes necesitar pasar información adicional al componente. Por esta razón, puedes pasar un arreglo de información como segundo arumento a la directiva `@component`. Toda la información se hará disponible para la plantilla del componente como variables:
+Sometimes you may need to pass additional data to a component. For this reason, you can pass an array of data as the second argument to the `@component` directive. All of the data will be made available to the component template as variables:
 
     @component('alert', ['foo' => 'bar'])
         ...
     @endcomponent
 
-<a name="displaying-data"></a>
-## Mostrando Datos
+#### Aliasing Components
 
-Puedes mostrar datos pasados a tu vista de Blade al envolver la variable entre llaves. Por ejemplo, dada la siguiente ruta:
+If your Blade components are stored in a sub-directory, you may wish to alias them for easier access. For example, imagine a Blade component that is stored at `resources/views/components/alert.blade.php`. You may use the `component` method to alias the component from `components.alert` to `alert`. Typically, this should be done in the `boot` method of your `AppServiceProvider`:
+
+    use Illuminate\Support\Facades\Blade;
+
+    Blade::component('components.alert', 'alert');
+
+Once the component has been aliased, you may render it using a directive:
+
+    @alert(['type' => 'danger'])
+        You are not allowed to access this resource!
+    @endalert
+
+You may omit the component parameters if it has no additional slots:
+
+    @alert
+        You are not allowed to access this resource!
+    @endalert
+
+<a name="displaying-data"></a>
+## Displaying Data
+
+You may display data passed to your Blade views by wrapping the variable in curly braces. For example, given the following route:
 
     Route::get('greeting', function () {
         return view('welcome', ['name' => 'Samantha']);
     });
 
-Puedes mostrar el contenido de la variable `name` de la siguiente manera:
+You may display the contents of the `name` variable like so:
 
     Hello, {{ $name }}.
 
-Desde luego, no estás limitado a mostrar sólo el contenido de las variables pasadas a la vista. También puedes hacer echo al resultado de cualquier función de PHP. De hecho, puedes poner cualquier código PHP que desees dentro de la declaración echo de Blade:
+Of course, you are not limited to displaying the contents of the variables passed to the view. You may also echo the results of any PHP function. In fact, you can put any PHP code you wish inside of a Blade echo statement:
 
     The current UNIX timestamp is {{ time() }}.
 
-> {tip} Las declaraciones de Blade `{{  }}` son enviadas automáticamente mediante la función `htmlspecialchars` de PHP para prevenir ataques XSS.
+> {tip} Blade `{{ }}` statements are automatically sent through PHP's `htmlspecialchars` function to prevent XSS attacks.
 
-#### Mostrar Datos No Escapados
+#### Displaying Unescaped Data
 
-De manera predeterminada, las declaraciónes `{{  }}` de Blade son enviadas mediante la función `htmlspecialchars` de PHP para prevenir ataques XSS. Si no deseas que tu información sea escapada, puedes utilizar la siguiente sintáxis:
+By default, Blade `{{ }}` statements are automatically sent through PHP's `htmlspecialchars` function to prevent XSS attacks. If you do not want your data to be escaped, you may use the following syntax:
 
     Hello, {!! $name !!}.
 
-> {note} Se muy cuidadoso cuando muestres contenido que sea suministrado por los usuarios de tu aplicación. Usa siempre las sentencias escapadas, ya que estas previenen ataques XSS cuando se muestran datos suministrados por los usuarios.
+> {note} Be very careful when echoing content that is supplied by users of your application. Always use the escaped, double curly brace syntax to prevent XSS attacks when displaying user supplied data.
 
-#### Renderizar JSON
+#### Rendering JSON
 
-En ocasiones puedes pasar un arreglo a tu vista con la intención de renderizarla como JSON para inicializar una variable JavaScript. Por ejemplo:
+Sometimes you may pass an array to your view with the intention of rendering it as JSON in order to initialize a JavaScript variable. For example:
 
     <script>
         var app = <?php echo json_encode($array); ?>;
     </script>
 
-Sin embargo, en lugar de llamar manualmente a `json_encode`, puedes usar la directiva de Blade `@json`:
+However, instead of manually calling `json_encode`, you may use the `@json` Blade directive:
 
     <script>
         var app = @json($array);
     </script>
 
-<a name="blade-and-javascript-frameworks"></a>
-### Frameworks De Blade Y JavaScript
+#### HTML Entity Encoding
 
-Dado que muchos frameworks de JavaScript también usan llaves para indicar que una expresión dada debe mostrarse en el navegador, puedes utilizar el símbolo `@` para informar al motor de renderizado de Blade que una expresión debe permanecer intacta. Por ejemplo:
+By default, Blade (and the Laravel `e` helper) will double encode HTML entities. If you would like to disable double encoding, call the `Blade::withoutDoubleEncoding` method from the `boot` method of your `AppServiceProvider`:
+
+    <?php
+
+    namespace App\Providers;
+
+    use Illuminate\Support\Facades\Blade;
+    use Illuminate\Support\ServiceProvider;
+
+    class AppServiceProvider extends ServiceProvider
+    {
+        /**
+         * Bootstrap any application services.
+         *
+         * @return void
+         */
+        public function boot()
+        {
+            Blade::withoutDoubleEncoding();
+        }
+    }
+
+<a name="blade-and-javascript-frameworks"></a>
+### Blade & JavaScript Frameworks
+
+Since many JavaScript frameworks also use "curly" braces to indicate a given expression should be displayed in the browser, you may use the `@` symbol to inform the Blade rendering engine an expression should remain untouched. For example:
 
     <h1>Laravel</h1>
 
     Hello, @{{ name }}.
 
-En este ejemplo, el símbolo `@` será removido por Blade; sin embargo, la expresión `{{ name }}` permanecerá intacta por el motor de Blade, lo que permitirá que pueda ser procesada por tu framework de JavaScript.
+In this example, the `@` symbol will be removed by Blade; however, `{{ name }}` expression will remain untouched by the Blade engine, allowing it to instead be rendered by your JavaScript framework.
 
-#### La Directiva `@verbatim`
+#### The `@verbatim` Directive
 
-Si estás mostrando variables de JavaScript en una gran parte de tu plantilla, puedes ajustar el HTML en la directiva `@verbatim` para que no tengas que poner un prefijo en cada instrucción echo de Blade con un símbolo `@`:
+If you are displaying JavaScript variables in a large portion of your template, you may wrap the HTML in the `@verbatim` directive so that you do not have to prefix each Blade echo statement with an `@` symbol:
 
     @verbatim
         <div class="container">
@@ -194,14 +241,14 @@ Si estás mostrando variables de JavaScript en una gran parte de tu plantilla, p
     @endverbatim
 
 <a name="control-structures"></a>
-## Estructuras De Control
+## Control Structures
 
-Además de la herencia de plantillas y la visualización de datos, Blade también proporciona accesos directos y convenientes para las estructuras de control comunes de PHP, tales como sentencias condicionales y búcles. Estos accesos directos proporcionan una manera muy limpia y concisa de trabajar con estructuras de control de PHP, al tiempo que permanecen familiares para sus contrapartes de PHP.
+In addition to template inheritance and displaying data, Blade also provides convenient shortcuts for common PHP control structures, such as conditional statements and loops. These shortcuts provide a very clean, terse way of working with PHP control structures, while also remaining familiar to their PHP counterparts.
 
 <a name="if-statements"></a>
-### Sentencias If
+### If Statements
 
-Puede construir sentencias `if` usando las directivas `@if`, `@elseif`, `@else` y `@endif`. Estas directivas funcionan idénticamente a sus contrapartes PHP:
+You may construct `if` statements using the `@if`, `@elseif`, `@else`, and `@endif` directives. These directives function identically to their PHP counterparts:
 
     @if (count($records) === 1)
         I have one record!
@@ -211,13 +258,13 @@ Puede construir sentencias `if` usando las directivas `@if`, `@elseif`, `@else` 
         I don't have any records!
     @endif
 
-Por conveniencia, Blade también proporciona una directiva `@unless`:
+For convenience, Blade also provides an `@unless` directive:
 
     @unless (Auth::check())
         You are not signed in.
     @endunless
 
-Además de las directivas condicionales previamente mencionadas, las directivas `@isset` y `@empty` pueden ser usadas como accesos directos convenientes para sus respectivas funciones PHP:
+In addition to the conditional directives already discussed, the `@isset` and `@empty` directives may be used as convenient shortcuts for their respective PHP functions:
 
     @isset($records)
         // $records is defined and is not null...
@@ -227,9 +274,9 @@ Además de las directivas condicionales previamente mencionadas, las directivas 
         // $records is "empty"...
     @endempty
 
-#### Directivas de Autenticación
+#### Authentication Directives
 
-Las directivas `@auth` y `@guest` pueden ser utilizadas para determinar rápidamente si el usuario actual está autenticado o si es un invitado:
+The `@auth` and `@guest` directives may be used to quickly determine if the current user is authenticated or is a guest:
 
     @auth
         // The user is authenticated...
@@ -239,7 +286,7 @@ Las directivas `@auth` y `@guest` pueden ser utilizadas para determinar rápidam
         // The user is not authenticated...
     @endguest
 
-Si es necesario, puede especificar el [guard de autenticación](/docs/{{version}}/authentication) que debe verificarse al usar las directivas `@auth` y `@guest`:
+If needed, you may specify the [authentication guard](/docs/{{version}}/authentication) that should be checked when using the `@auth` and `@guest` directives:
 
     @auth('admin')
         // The user is authenticated...
@@ -249,9 +296,9 @@ Si es necesario, puede especificar el [guard de autenticación](/docs/{{version}
         // The user is not authenticated...
     @endguest
 
-#### Directivas De Sección
+#### Section Directives
 
-Puede verificar si una sección tiene contenido usando la directiva `@hasSection`:
+You may check if a section has content using the `@hasSection` directive:
 
     @hasSection('navigation')
         <div class="pull-right">
@@ -262,9 +309,9 @@ Puede verificar si una sección tiene contenido usando la directiva `@hasSection
     @endif
 
 <a name="switch-statements"></a>
-### Sentencias Switch
+### Switch Statements
 
-Las sentencias switch pueden ser construidas usando las directivas `@switch`, `@case`, `@break`, `@default` y `@endswitch`:
+Switch statements can be constructed using the `@switch`, `@case`, `@break`, `@default` and `@endswitch` directives:
 
     @switch($i)
         @case(1)
@@ -280,9 +327,9 @@ Las sentencias switch pueden ser construidas usando las directivas `@switch`, `@
     @endswitch
 
 <a name="loops"></a>
-### Búcles
+### Loops
 
-Además de las sentencias condicionales, Blade proporciona directivas simples para trabajar con estructuras en búcle de PHP. De nuevo, cada una de estas directivas funciona idénticamente a sus contrapartes PHP:
+In addition to conditional statements, Blade provides simple directives for working with PHP's loop structures. Again, each of these directives functions identically to their PHP counterparts:
 
     @for ($i = 0; $i < 10; $i++)
         The current value is {{ $i }}
@@ -302,9 +349,9 @@ Además de las sentencias condicionales, Blade proporciona directivas simples pa
         <p>I'm looping forever.</p>
     @endwhile
 
-> {tip} Cuando esté ciclando, puede usar la [variable loop](#the-loop-variable) para obtener información valiosa acerca del ciclo, como puede ser saber si está en la primera o última iteración a través del cíclo.
+> {tip} When looping, you may use the [loop variable](#the-loop-variable) to gain valuable information about the loop, such as whether you are in the first or last iteration through the loop.
 
-Al usar búcles puede finalizar el ciclo u omitir la iteracción actual:
+When using loops you may also end the loop or skip the current iteration:
 
     @foreach ($users as $user)
         @if ($user->type == 1)
@@ -318,7 +365,7 @@ Al usar búcles puede finalizar el ciclo u omitir la iteracción actual:
         @endif
     @endforeach
 
-También puede incluir la condición con la declaración en una línea:
+You may also include the condition with the directive declaration in one line:
 
     @foreach ($users as $user)
         @continue($user->type == 1)
@@ -329,9 +376,9 @@ También puede incluir la condición con la declaración en una línea:
     @endforeach
 
 <a name="the-loop-variable"></a>
-### La Variable Loop
+### The Loop Variable
 
-Al realizar un búcle, una variable `$loop` estará disponible dentro del ciclo. Esta variable proporciona acceso a un poco de información útil, como el índice del ciclo actual y si es la primera o la última iteración del ciclo:
+When looping, a `$loop` variable will be available inside of your loop. This variable provides access to some useful bits of information such as the current loop index and whether this is the first or last iteration through the loop:
 
     @foreach ($users as $user)
         @if ($loop->first)
@@ -345,7 +392,7 @@ Al realizar un búcle, una variable `$loop` estará disponible dentro del ciclo.
         <p>This is user {{ $user->id }}</p>
     @endforeach
 
-Si está en un búcle anidado, puede acceder a la variable `$loop` del bucle padre a través de la propiedad `parent`:
+If you are in a nested loop, you may access the parent loop's `$loop` variable via the `parent` property:
 
     @foreach ($users as $user)
         @foreach ($user->posts as $post)
@@ -355,41 +402,66 @@ Si está en un búcle anidado, puede acceder a la variable `$loop` del bucle pad
         @endforeach
     @endforeach
 
-La variable `$loop` también contiene una variedad de otras propiedades útiles:
+The `$loop` variable also contains a variety of other useful properties:
 
-Propiedad  | Descripción
+Property  | Description
 ------------- | -------------
-`$loop->index`  |  El índice de la iteración del ciclo actual (comienza en 0).
-`$loop->iteration`  |  Iteración del ciclo actual (comienza en 1).
-`$loop->remaining`  |  La iteración restante en el ciclo.
-`$loop->count`  |  La cantidad total de elementos en el arreglo que se itera.
-`$loop->first`  |  Si esta es la primera iteración a través del ciclo.
-`$loop->last`  |  Si esta es la última iteración a través del ciclo.
-`$loop->depth`  |  El nivel de anidamiento del bucle actual.
-`$loop->parent`  |  Cuando está en un bucle anidado, la variable de bucle del padre.
+`$loop->index`  |  The index of the current loop iteration (starts at 0).
+`$loop->iteration`  |  The current loop iteration (starts at 1).
+`$loop->remaining`  |  The iterations remaining in the loop.
+`$loop->count`  |  The total number of items in the array being iterated.
+`$loop->first`  |  Whether this is the first iteration through the loop.
+`$loop->last`  |  Whether this is the last iteration through the loop.
+`$loop->depth`  |  The nesting level of the current loop.
+`$loop->parent`  |  When in a nested loop, the parent's loop variable.
 
 <a name="comments"></a>
-### Comentarios
+### Comments
 
-Blade también le permite definir comentarios en sus vistas. Sin embargo, a diferencia de los comentarios HTML, los comentarios de Blade no son incluidos en el HTML retornado por la aplicación:
+Blade also allows you to define comments in your views. However, unlike HTML comments, Blade comments are not included in the HTML returned by your application:
 
     {{-- This comment will not be present in the rendered HTML --}}
 
 <a name="php"></a>
 ### PHP
 
-En algunas situaciones, es útil insertar código PHP en sus vistas. Puedes usar la directiva de Blade `@php` para ejecutar un bloque de PHP plano en tu plantilla:
+In some situations, it's useful to embed PHP code into your views. You can use the Blade `@php` directive to execute a block of plain PHP within your template:
 
     @php
         //
     @endphp
 
-> {tip} Mientras Blade proporciona esta función, usarla con frecuencia puede ser una señal de que tienes demasiada lógica incrustada dentro de tu plantilla.
+> {tip} While Blade provides this feature, using it frequently may be a signal that you have too much logic embedded within your template.
+
+<a name="forms"></a>
+## Forms
+
+<a name="csrf-field"></a>
+### CSRF Field
+
+Anytime you define a HTML form in your application, you should include a hidden CSRF token field in the form so that [the CSRF protection](https://laravel.com/docs/{{version}}/csrf) middleware can validate the request. You may use the `@csrf` Blade directive to generate the token field:
+
+    <form method="POST" action="/profile">
+        @csrf
+
+        ...
+    </form>
+
+<a name="method-field"></a>
+### Method Field
+
+Since HTML forms can't make `PUT`, `PATCH`, or `DELETE` requests, you will need to add a hidden `_method` field to spoof these HTTP verbs. The `@method` Blade directive can create this field for you:
+
+    <form action="/foo/bar" method="POST">
+        @method('PUT')
+
+        ...
+    </form>
 
 <a name="including-sub-views"></a>
-## Incluyendo Sub-Vistas
+## Including Sub-Views
 
-La directiva `@include` de Blade te permite incluir una vista de Blade desde otra vista. Todas las variables que estén disponibles en la vista padre estarán disponibles para la vista incluida:
+Blade's `@include` directive allows you to include a Blade view from within another view. All variables that are available to the parent view will be made available to the included view:
 
     <div>
         @include('shared.errors')
@@ -399,49 +471,49 @@ La directiva `@include` de Blade te permite incluir una vista de Blade desde otr
         </form>
     </div>
 
-Aunque la vista incluida heredará todos los datos disponibles en la vista principal, también puedes pasar una matriz de datos adicionales a la vista incluida:
+Even though the included view will inherit all data available in the parent view, you may also pass an array of extra data to the included view:
 
     @include('view.name', ['some' => 'data'])
 
-Por supuesto, si utiliza `@include` en una vista que no existe, Laravel lanzará un error. Si desea incluir una vista que puede o no estar presente, deberá utilizar la directiva `@includeIf`:
+Of course, if you attempt to `@include` a view which does not exist, Laravel will throw an error. If you would like to include a view that may or may not be present, you should use the `@includeIf` directive:
 
     @includeIf('view.name', ['some' => 'data'])
 
-Si desea incluir una vista dependiendo de una condición booleana dada, puedes utilizar la directiva `@includeWhen`:
+If you would like to `@include` a view depending on a given boolean condition, you may use the `@includeWhen` directive:
 
     @includeWhen($boolean, 'view.name', ['some' => 'data'])
 
-Para incluir la primera vista que exista para un arreglo dado de vistas, puedes usar la directiva `@includeFirst`:
+To include the first view that exists from a given array of views, you may use the `includeFirst` directive:
 
     @includeFirst(['custom.admin', 'admin'], ['some' => 'data'])
 
-> {note} Debe evitar usar las constantes `__DIR__` y `__FILE__` en sus vistas de Blade, ya que se referirán a la ubicación de la vista compilada en caché.
+> {note} You should avoid using the `__DIR__` and `__FILE__` constants in your Blade views, since they will refer to the location of the cached, compiled view.
 
 <a name="rendering-views-for-collections"></a>
-### Renderizar Vistas Para Colecciones
+### Rendering Views For Collections
 
-Puede combinar bucles e incluirlos en una sola línea con la directiva `@each` de Blade:
+You may combine loops and includes into one line with Blade's `@each` directive:
 
     @each('view.name', $jobs, 'job')
 
-El primer argumento es la vista parcial a renderizar por cada elemento en el arreglo o colección. El segundo argumento es el arreglo o colección en que que desea iterar, mientras que el tercer argumento es el nombre de la variable que será asignada a la iteración actual dentro de la vista. Así que, por ejemplo, si está iterando en un arreglo `jobs`, típicamente querrá tener acceso a cada trabajo como una variable `job` en su vista parcial. La llave de la iteración actual estará disponible como la variable `key` en su vista parcial.
+The first argument is the view partial to render for each element in the array or collection. The second argument is the array or collection you wish to iterate over, while the third argument is the variable name that will be assigned to the current iteration within the view. So, for example, if you are iterating over an array of `jobs`, typically you will want to access each job as a `job` variable within your view partial. The key for the current iteration will be available as the `key` variable within your view partial.
 
-También puede pasar un cuarto argumento a la directiva `@each`. Este argumento determina la vista que se va a renderizar si el arreglo dado está vacío.
+You may also pass a fourth argument to the `@each` directive. This argument determines the view that will be rendered if the given array is empty.
 
     @each('view.name', $jobs, 'job', 'view.empty')
 
-> {note} Las vistas renderizadas via `@each` no heredan las variables de la vista padre. Si la vista hija requiere de estas variables, deberá usar `@foreach` y `@include` en su lugar.
+> {note} Views rendered via `@each` do not inherit the variables from the parent view. If the child view requires these variables, you should use `@foreach` and `@include` instead.
 
 <a name="stacks"></a>
 ## Stacks
 
-Blade le permite empujar a stacks nombrados que pueden ser renderizados en otra parte de otra vista o layout. Esto es particularmente útil para especificar cualquier librería JavaScript requerida por las vistas hijas:
+Blade allows you to push to named stacks which can be rendered somewhere else in another view or layout. This can be particularly useful for specifying any JavaScript libraries required by your child views:
 
     @push('scripts')
         <script src="/example.js"></script>
     @endpush
 
-Puede empujar a un stack tantas veces como lo necesite. Para renderizar el contenido completo del stack, pase el nombre del stack a la directiva `@stack`:
+You may push to a stack as many times as needed. To render the complete stack contents, pass the name of the stack to the `@stack` directive:
 
     <head>
         <!-- Head Contents -->
@@ -449,10 +521,22 @@ Puede empujar a un stack tantas veces como lo necesite. Para renderizar el conte
         @stack('scripts')
     </head>
 
-<a name="service-injection"></a>
-## Inyeción De Servicios
+If you would like to prepend content onto the beginning of a stack, you should use the `@prepend` directive:
 
-La directiva `@inject` puede ser utilizada para recuperar un servicio del [service container](/docs/{{version}}/container) de Laravel. El primer argumento pasado a `@inject` es el nombre de la variable en la que se colocará el servicio, mientras que el segundo argumento es el nombre de la clase o interfaz del servicio que desea resolver:
+    @push('scripts')
+        This will be second...
+    @endpush
+
+    // Later...
+
+    @prepend('scripts')
+        This will be first...
+    @endprepend
+
+<a name="service-injection"></a>
+## Service Injection
+
+The `@inject` directive may be used to retrieve a service from the Laravel [service container](/docs/{{version}}/container). The first argument passed to `@inject` is the name of the variable the service will be placed into, while the second argument is the class or interface name of the service you wish to resolve:
 
     @inject('metrics', 'App\Services\MetricsService')
 
@@ -461,11 +545,11 @@ La directiva `@inject` puede ser utilizada para recuperar un servicio del [servi
     </div>
 
 <a name="extending-blade"></a>
-## Extendiendo Blade
+## Extending Blade
 
-Blade le permite definir sus propias directivas personalizadas utilizando el método `directive`. Cuando el compilador Blade encuentra la directiva personalizada, llamará al callback con la expresión que contiene la directiva.
+Blade allows you to define your own custom directives using the `directive` method. When the Blade compiler encounters the custom directive, it will call the provided callback with the expression that the directive contains.
 
-El siguiente ejemplo crea una directiva `@datetime($var)` que le da formato a la variable `$var`, la cual es una instancia de `DateTime`:
+The following example creates a `@datetime($var)` directive which formats a given `$var`, which should be an instance of `DateTime`:
 
     <?php
 
@@ -499,16 +583,16 @@ El siguiente ejemplo crea una directiva `@datetime($var)` que le da formato a la
         }
     }
 
-Como podrá ver, vamos a encadenar el método `format` en cualquier expresión que se pase a la directiva. Entonces, en este ejemplo, el PHP final generado por esta directiva será:
+As you can see, we will chain the `format` method onto whatever expression is passed into the directive. So, in this example, the final PHP generated by this directive will be:
 
     <?php echo ($var)->format('m/d/Y H:i'); ?>
 
-> {note} Después de actualizar la lógica de la directiva de Blade, va a necesitar eliminar todas las vistas de Blade guardades en caché. Las vistas de Blade en caché pueden ser eliminadas con el comando de Artisan `view:clear`.
+> {note} After updating the logic of a Blade directive, you will need to delete all of the cached Blade views. The cached Blade views may be removed using the `view:clear` Artisan command.
 
 <a name="custom-if-statements"></a>
-### Sentencias If Personalizadas
+### Custom If Statements
 
-Programar una directiva personalizada algunas veces es más complejo de lo necesario al definir sentencias condicionales simples personalizadas. Por esa razón, Blade proporciona un método `Blade:if` que le permitirá rápidamente definir directivas condisionales utilizando Closures. Por ejemplo, vamos a definir una condicional personalizada que verifica el entorno actual de la aplicación. Podemos hacer esto en el méodo `boot` de `AppServiceProvider`:
+Programming a custom directive is sometimes more complex than necessary when defining simple, custom conditional statements. For that reason, Blade provides a `Blade::if` method which allows you to quickly define custom conditional directives using Closures. For example, let's define a custom conditional that checks the current application environment. We may do this in the `boot` method of our `AppServiceProvider`:
 
     use Illuminate\Support\Facades\Blade;
 
@@ -524,7 +608,7 @@ Programar una directiva personalizada algunas veces es más complejo de lo neces
         });
     }
 
-Una vez que el condicional personalizado haya sido definido, podremos usarlo fácilmente en nuestros templates:
+Once the custom conditional has been defined, we can easily use it on our templates:
 
     @env('local')
         // The application is in the local environment...

@@ -4,12 +4,14 @@
 - [Gates](#gates)
     - [Writing Gates](#writing-gates)
     - [Authorizing Actions](#authorizing-actions-via-gates)
+    - [Intercepting Gate Checks](#intercepting-gate-checks)
 - [Creating Policies](#creating-policies)
     - [Generating Policies](#generating-policies)
     - [Registering Policies](#registering-policies)
 - [Writing Policies](#writing-policies)
     - [Policy Methods](#policy-methods)
     - [Methods Without Models](#methods-without-models)
+    - [Guest Users](#guest-users)
     - [Policy Filters](#policy-filters)
 - [Authorizing Actions Using Policies](#authorizing-actions-using-policies)
     - [Via The User Model](#via-the-user-model)
@@ -59,23 +61,23 @@ Gates may also be defined using a `Class@method` style callback string, like con
     {
         $this->registerPolicies();
 
-        Gate::define('update-post', 'PostPolicy@update');
+        Gate::define('update-post', 'App\Policies\PostPolicy@update');
     }
 
 #### Resource Gates
 
 You may also define multiple Gate abilities at once using the `resource` method:
 
-    Gate::resource('posts', 'PostPolicy');
+    Gate::resource('posts', 'App\Policies\PostPolicy');
 
 This is identical to manually defining the following Gate definitions:
 
-    Gate::define('posts.view', 'PostPolicy@view');
-    Gate::define('posts.create', 'PostPolicy@create');
-    Gate::define('posts.update', 'PostPolicy@update');
-    Gate::define('posts.delete', 'PostPolicy@delete');
+    Gate::define('posts.view', 'App\Policies\PostPolicy@view');
+    Gate::define('posts.create', 'App\Policies\PostPolicy@create');
+    Gate::define('posts.update', 'App\Policies\PostPolicy@update');
+    Gate::define('posts.delete', 'App\Policies\PostPolicy@delete');
 
-By default, the `view`, `create`, `update`, and `delete` abilities will be defined. You may override or add to the default abilities by passing an array as a third argument to the `resource` method. The keys of the array define the names of the abilities while the values define the method names. For example, the following code will create two new Gate definitions - `posts.image` and `posts.photo`:
+By default, the `view`, `create`, `update`, and `delete` abilities will be defined. You may override the default abilities by passing an array as a third argument to the `resource` method. The keys of the array define the names of the abilities while the values define the method names. For example, the following code will only create two new Gate definitions - `posts.image` and `posts.photo`:
 
     Gate::resource('posts', 'PostPolicy', [
         'image' => 'updateImage',
@@ -104,6 +106,25 @@ If you would like to determine if a particular user is authorized to perform an 
     if (Gate::forUser($user)->denies('update-post', $post)) {
         // The user can't update the post...
     }
+
+<a name="intercepting-gate-checks"></a>
+#### Intercepting Gate Checks
+
+Sometimes, you may wish to grant all abilities to a specific user. You may use the `before` method to define a callback that is run before all other authorization checks:
+
+    Gate::before(function ($user, $ability) {
+        if ($user->isSuperAdmin()) {
+            return true;
+        }
+    });
+
+If the `before` callback returns a non-null result that result will be considered the result of the check.
+
+You may use the `after` method to define a callback to be executed after every authorization check. However, you may not modify the result of the authorization check from an `after` callback:
+
+    Gate::after(function ($user, $ability, $result, $arguments) {
+        //
+    });
 
 <a name="creating-policies"></a>
 ## Creating Policies
@@ -195,7 +216,7 @@ The `update` method will receive a `User` and a `Post` instance as its arguments
 
 You may continue to define additional methods on the policy as needed for the various actions it authorizes. For example, you might define `view` or `delete` methods to authorize various `Post` actions, but remember you are free to give your policy methods any name you like.
 
-> {tip} If you used the `--model` option when generating your policy via the Artisan console, it will already contain methods for the `view`, `create`, `update`, and `delete` actions.
+> {tip} If you used the `--model` option when generating your policy via the Artisan console, it will already contain methods for the `view`, `create`, `update`, `delete`, `restore`, and `forceDelete` actions.
 
 <a name="methods-without-models"></a>
 ### Methods Without Models
@@ -213,6 +234,33 @@ When defining policy methods that will not receive a model instance, such as a `
     public function create(User $user)
     {
         //
+    }
+
+<a name="guest-users"></a>
+### Guest Users
+
+By default, all gates and policies automatically return `false` if the incoming HTTP request was not initiated by an authenticated user. However, you may allow these authorization checks to pass through to your gates and policies by declaring an "optional" type-hint or supplying a `null` default value for the user argument definition:
+
+    <?php
+
+    namespace App\Policies;
+
+    use App\User;
+    use App\Post;
+
+    class PostPolicy
+    {
+        /**
+         * Determine if the given post can be updated by the user.
+         *
+         * @param  \App\User  $user
+         * @param  \App\Post  $post
+         * @return bool
+         */
+        public function update(?User $user, Post $post)
+        {
+            return $user->id === $post->user_id;
+        }
     }
 
 <a name="policy-filters"></a>
@@ -297,6 +345,7 @@ In addition to helpful methods provided to the `User` model, Laravel provides a 
          * @param  Request  $request
          * @param  Post  $post
          * @return Response
+         * @throws \Illuminate\Auth\Access\AuthorizationException
          */
         public function update(Request $request, Post $post)
         {
@@ -315,6 +364,7 @@ As previously discussed, some actions like `create` may not require a model inst
      *
      * @param  Request  $request
      * @return Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function create(Request $request)
     {

@@ -1,86 +1,91 @@
 # Laravel Horizon
 
-- [Introducción](#introduction)
-- [Instalación](#installation)
-    - [Configuración](#configuration)
-    - [Autenticación Dashboard](#dashboard-authentication)
-- [Ejecutando Horizon](#running-horizon)
-    - [Usando Horizon](#deploying-horizon)
-- [Etiquetas](#tags)
-- [Notificaciones](#notifications)
-- [Métricas](#metrics)
+- [Introduction](#introduction)
+- [Installation](#installation)
+    - [Configuration](#configuration)
+    - [Dashboard Authentication](#dashboard-authentication)
+- [Running Horizon](#running-horizon)
+    - [Deploying Horizon](#deploying-horizon)
+- [Tags](#tags)
+- [Notifications](#notifications)
+- [Metrics](#metrics)
 
 <a name="introduction"></a>
-## Introducción
+## Introduction
 
-Horizon proporciona un bonito panel de control y sistema de configuración controlado por código para Laravel, potenciado por colas de Redis. Horizon te permite monitorear fácilmente métricas claves de tu sistema de colas tales como tasa de rendimiento, tiempo de ejecución y fallas de tareas.
+Horizon provides a beautiful dashboard and code-driven configuration for your Laravel powered Redis queues. Horizon allows you to easily monitor key metrics of your queue system such as job throughput, runtime, and job failures.
 
-Toda la configuración de tu worker es almacenada en un solo archivo de configuración sencillo, permitiendo que tu configuración quede en control de código fuente donde tu equipo completo pueda colaborar.
+All of your worker configuration is stored in a single, simple configuration file, allowing your configuration to stay in source control where your entire team can collaborate.
 
 <a name="installation"></a>
-## Instalación
+## Installation
 
-> {note} Debido a su uso de señales de procesos asincrónicos, Horizon requiere PHP 7.1+.
+> {note} You should ensure that your queue driver is set to `redis` in your `queue` configuration file.
 
-Puedes usar Composer para instalar Horizon en tu proyecto de Laravel:
+You may use Composer to install Horizon into your Laravel project:
 
     composer require laravel/horizon
 
-Después de instalar Horizon, publica sus assets usando el comando Artisan `vendor:publish`:
+After installing Horizon, publish its assets using the `vendor:publish` Artisan command:
 
     php artisan vendor:publish --provider="Laravel\Horizon\HorizonServiceProvider"
 
 <a name="configuration"></a>
-### Configuración
+### Configuration
 
-Después de publicar los assets de Horizon, su archivo de configuración primario será colocado en `config/horizon.php`. Este archivo de configuración permite que configures las opciones del worker y cada opción de configuración incluye una descripción de su propósito, así que asegurate de explorar con gran detalle este archivo.
+After publishing Horizon's assets, its primary configuration file will be located at `config/horizon.php`. This configuration file allows you to configure your worker options and each configuration option includes a description of its purpose, so be sure to thoroughly explore this file.
 
-#### Opciones de Balance
+#### Balance Options
 
-Horizon permite que elijas entre tres estrategias de balance: `simple`, `auto`, y `false`. La estrategia `simple`, la cual es la predeterminada, separa los trabajos entrantes equitativamente entre procesos:
+Horizon allows you to choose from three balancing strategies: `simple`, `auto`, and `false`. The `simple` strategy, which is the default, splits incoming jobs evenly between processes:
 
     'balance' => 'simple',
 
-La estrategia `auto` ajusta el número de procesos trabajadores por cola basado en la carga de trabajo de la cola. Por ejemplo, si tu cola `notifications` tiene 1.000 trabajos esperando mientras tu cola `render` está vacía, Horizon asignará mas trabajadores a tu cola `notifications` hasta que esté vacía. Cuando la opción `balance` esté establecida a `false`, el comportamiento predeterminado de Laravel será usado, el cuál procesa las colas en el orden que son listadas en tu configuración.
+The `auto` strategy adjusts the number of worker processes per queue based on the current workload of the queue. For example, if your `notifications` queue has 1,000 waiting jobs while your `render` queue is empty, Horizon will allocate more workers to your `notifications` queue until it is empty. When the `balance` option is set to `false`, the default Laravel behavior will be used, which processes queues in the order they are listed in your configuration.
+
+#### Job Trimming
+
+The `horizon` configuration file allows you to configure how long recent and failed jobs should be persisted (in minutes). By default, recent jobs are kept for one hour while failed jobs are kept for a week:
+
+    'trim' => [
+        'recent' => 60,
+        'failed' => 10080,
+    ],
 
 <a name="dashboard-authentication"></a>
-### Autenticación del Panel de Control
+### Dashboard Authentication
 
-Horizon revela un panel de control en `/horizon`. De forma predeterminada, solamente serás capaz de acceder a este panel en el entorno `local`. Para definir una política de acceso más específica para el panel, deberías usar el método `Horizon::auth`. El método `auth` acepta una función de retorno la cual debería devolver `true` o `false`, indicando si el usuario debería haber accedido al panel de Horizon:
+Horizon exposes a dashboard at `/horizon`. By default, you will only be able to access this dashboard in the `local` environment. To define a more specific access policy for the dashboard, you should use the `Horizon::auth` method. The `auth` method accepts a callback which should return `true` or `false`, indicating whether the user should have access to the Horizon dashboard. Typically, you should call `Horizon::auth` in the `boot` method of your `AppServiceProvider`:
 
     Horizon::auth(function ($request) {
         // return true / false;
     });
 
 <a name="running-horizon"></a>
-## Ejecutando Horizon
+## Running Horizon
 
-Una vez que has configurado tus workers en el archivo de configuración `config/horizon.php`, puedes ejecutar Horizon usando el comando Artisan `horizon`. Este único comando iniciará todos tus workers configurados:
+Once you have configured your workers in the `config/horizon.php` configuration file, you may start Horizon using the `horizon` Artisan command. This single command will start all of your configured workers:
 
     php artisan horizon
 
-Puedes pausar los procesos de Horizon e instruirlo para continuar procesando trabajos usando los comandos Artisan `horizon:pause` y `horizon:continue`:
+You may pause the Horizon process and instruct it to continue processing jobs using the `horizon:pause` and `horizon:continue` Artisan commands:
 
     php artisan horizon:pause
 
     php artisan horizon:continue
 
-Puedes terminar elegantemente el proceso maestro de Horizon en tu máquina usando el comando Artisan `horizon:terminate`. Cualquiera de los trabajos que Horizon este procesando actualmente será completado y después Horizon saldrá:
+You may gracefully terminate the master Horizon process on your machine using the `horizon:terminate` Artisan command. Any jobs that Horizon is currently processing will be completed and then Horizon will exit:
 
     php artisan horizon:terminate
 
 <a name="deploying-horizon"></a>
-### Usando Horizon
+### Deploying Horizon
 
-Si estás usando Horizon en un servidor activo, deberías configurar un monitor de proceso para monitorear el comando `php artisan horizon` y reiniciarlo si éste sale inesperadamente. Al momento de usar código reciente en tu servidor, necesitarás instruir el proceso maestro de Horizon para que termine así puede ser reiniciado por tu monitor de proceso y recibir tu cambios de código.
+If you are deploying Horizon to a live server, you should configure a process monitor to monitor the `php artisan horizon` command and restart it if it quits unexpectedly. When deploying fresh code to your server, you will need to instruct the master Horizon process to terminate so it can be restarted by your process monitor and receive your code changes.
 
-Puedes terminar elegantemente el proceso maestro de Horizon en tu máquina puedes usar el comando Artisan `horizon:terminate`. Cualquiera de los trabajos que Horizon este procesando actualmente serán completados y después Horizon terminará de ejecutarse:
+#### Supervisor Configuration
 
-    php artisan horizon:terminate
-
-#### Configuración de Supervisor
-
-Si estas usando el monitor de procesos de Supervisor para administrar tu proceso `horizon`, el siguiente archivo de configuración debería ser suficiente:
+If you are using the Supervisor process monitor to manage your `horizon` process, the following configuration file should suffice:
 
     [program:horizon]
     process_name=%(program_name)s
@@ -91,12 +96,12 @@ Si estas usando el monitor de procesos de Supervisor para administrar tu proceso
     redirect_stderr=true
     stdout_logfile=/home/forge/app.com/horizon.log
 
-> {tip} Si no estás cómodo administrando tus propios servidores, considera usar [Laravel Forge](https://forge.laravel.com). Forge aprovisiona tus propios servidores PHP 7+ con todas lo que necesitas para administrar modernas aplicaciones robustas de Laravel con Horizon.
+> {tip} If you are uncomfortable managing your own servers, consider using [Laravel Forge](https://forge.laravel.com). Forge provisions PHP 7+ servers with everything you need to run modern, robust Laravel applications with Horizon.
 
 <a name="tags"></a>
-## Etiquetas
+## Tags
 
-Horizon permite que asignes “etiquetas” a los trabajos, incluyendo correos válidos, difusiones de eventos, notificaciones y listeners de eventos encolados. De hecho, Horizon etiquetará inteligentemente y automáticamente la mayoría de los trabajos dependiendo de los modelos Eloquent que estén adjuntos al trabajo. Por ejemplo, echemos un vistazo al siguiente worker:
+Horizon allows you to assign “tags” to jobs, including mailables, event broadcasts, notifications, and queued event listeners. In fact, Horizon will intelligently and automatically tag most jobs depending on the Eloquent models that are attached to the job. For example, take a look at the following job:
 
     <?php
 
@@ -142,7 +147,7 @@ Horizon permite que asignes “etiquetas” a los trabajos, incluyendo correos v
         }
     }
 
-Si este trabajo es encolado con una instancia `App\Video` que tenga un `id` de `1`, recibirá automáticamente la etiqueta `App\Video:1`. Esto es debido a que Horizon examinará las propiedades del trabajo para cualquier modelo Eloquent. Si los modelos Eloquent son encontrados, Horizon etiquetará inteligentemente el trabajo usando el nombre de la clase y la clave primaria del modelo.
+If this job is queued with an `App\Video` instance that has an `id` of `1`, it will automatically receive the tag `App\Video:1`. This is because Horizon will examine the job's properties for any Eloquent models. If Eloquent models are found, Horizon will intelligently tag the job using the model's class name and primary key:
 
     $video = App\Video::find(1);
 
@@ -150,7 +155,7 @@ Si este trabajo es encolado con una instancia `App\Video` que tenga un `id` de `
 
 #### Manually Tagging
 
-Si prefieres definir manualmente las etiquetas para uno de tus objetos encolables, puedes definir un método `tags` en la clase:
+If you would like to manually define the tags for one of your queueable objects, you may define a `tags` method on the class:
 
     class RenderVideo implements ShouldQueue
     {
@@ -166,28 +171,28 @@ Si prefieres definir manualmente las etiquetas para uno de tus objetos encolable
     }
 
 <a name="notifications"></a>
-## Notificaciones
+## Notifications
 
-> **Note:** Antes de usar las notificaciones, deberías agregar el paquete de Composer `guzzlehttp/guzzle` a tu proyecto. Al momento de configurar Horizon para enviar notificaciones SMS, también deverías revisar los [prerequisitos para el manejador de notificación Nexmo](https://laravel.com/docs/5.5/notifications#sms-notifications).
+> **Note:** Before using notifications, you should add the `guzzlehttp/guzzle` Composer package to your project. When configuring Horizon to send SMS notifications, you should also review the [prerequisites for the Nexmo notification driver](https://laravel.com/docs/{{version}}/notifications#sms-notifications).
 
-Si prefieres ser notificado cuando una de tus colas tenga un largo tiempo de inactividad, puedes usar los métodos `Horizon::routeMailNotificationsTo`, `Horizon::routeSlackNotificationsTo` y `Horizon::routeSmsNotificationsTo`. Puedes ejecutar estos métodos desde el `AppServiceProvider` de tu aplicación:
+If you would like to be notified when one of your queues has a long wait time, you may use the `Horizon::routeMailNotificationsTo`, `Horizon::routeSlackNotificationsTo`, and `Horizon::routeSmsNotificationsTo` methods. You may call these methods from your application's `AppServiceProvider`:
 
     Horizon::routeMailNotificationsTo('example@example.com');
     Horizon::routeSlackNotificationsTo('slack-webhook-url', '#channel');
     Horizon::routeSmsNotificationsTo('15556667777');
 
-#### Configurando las Notificaciones de Umbrales de Tiempo de Inactividad
+#### Configuring Notification Wait Time Thresholds
 
-Puedes configurar cuantos segundos son considerados un "tiempo de inactividad" dentro de tu archivo de configuración `config/horizon.php`. La opción de configuración `waits` dentro de este archivo permite que controles el umbral de tiempo de inactividad para cada combinación conexión / cola:
+You may configure how many seconds are considered a "long wait" within your `config/horizon.php` configuration file. The `waits` configuration option within this file allows you to control the long wait threshold for each connection / queue combination:
 
     'waits' => [
         'redis:default' => 60,
     ],
 
 <a name="metrics"></a>
-## Métricas
+## Metrics
 
-Horizon incluye un panel de métricas el cual proporciona información de tus tiempos de trabajo y de espera en cola y tasa de rendimiento. Con el propósito de popular este panel, deberías configurar el comando Artisan `snapshot` de Horizon para que se ejecute cada 5 minutos por medio del [planificador](/docs/{{version}}/scheduling) de tu aplicación:
+Horizon includes a metrics dashboard which provides information on your job and queue wait times and throughput. In order to populate this dashboard, you should configure Horizon's `snapshot` Artisan command to run every five minutes via your application's [scheduler](/docs/{{version}}/scheduling):
 
     /**
      * Define the application's command schedule.

@@ -1,363 +1,494 @@
 # Upgrade Guide
 
-- [Actualizando A 5.5.0 Desde 5.4](#upgrade-5.5.0)
+- [Upgrading To 5.7.0 From 5.6](#upgrade-5.7.0)
 
-<a name="upgrade-5.5.0"></a>
-## Actualizando A 5.5.0 Desde 5.4
+<a name="upgrade-5.7.0"></a>
+## Upgrading To 5.7.0 From 5.6
 
-#### Tiempo Estimado de Actualización: 1 Hora
+#### Estimated Upgrade Time: 10 - 15 Minutes
 
-> {note} Tratamos de documentar cada posible cambio. Dado que algunos de estos cambios están en partes oscuras del framework sólo una porción de estos cambios podrían afectar tu aplicación.
+> {note} We attempt to document every possible breaking change. Since some of these breaking changes are in obscure parts of the framework only a portion of these changes may actually affect your application.
 
-### PHP
+### Updating Dependencies
 
-Laravel 5.5 requiere PHP 7.0.0 o superior.
+Update your `laravel/framework` dependency to `5.7.*` in your `composer.json` file.
 
-### Actualizando Dependencias
+If you are using Laravel Passport, you should update your `laravel/passport` dependency to `^7.0` in your `composer.json` file.
 
-Actualiza tu dependencia de `laravel/framework` a `5.5.*` en tu archivo `composer.json`. Adicionalmente, debes actualizar tu dependencia `phpunit/phpunit` a `~6.0`. Luego, agrega el paquete `filp/whoops` con la version `~2.0` a la sección`require-dev` de tu archivo `composer.json`. Finalmente, en la sección `scripts` de tu archivo `composer.json`, agrega el comando `package:discover` al evento `post-autoload-dump`:
+Of course, don't forget to examine any 3rd party packages consumed by your application and verify you are using the proper version for Laravel 5.7 support.
 
-    "scripts": {
-        ...
-        "post-autoload-dump": [
-            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-            "@php artisan package:discover"
-        ],
-    }
+### Application
 
-Por supuesto, no olvides examinar cualquier otro paquete de terceros consumido por tu aplicación y verificar que estás usando la versión adecuada para soportar Laravel 5.5
+#### The `register` Method
 
-#### Instalador De Laravel
+**Likelihood Of Impact: Very Low**
 
-> {tip} Si normalmente usas el instalador de Laravel mediante `laravel new`, deberías actualizar el paquete del instalador de Laravel usando el comando `composer global update`.
+The unused `options` argument of the `Illuminate\Foundation\Application` class' `register` method has been removed. If you are overriding this method, you should update your method's signature:
 
-#### Laravel Dusk
-
-Laravel Dusk `2.0.0` ha sido liberado para proporcionar compatibilidad con Laravel 5.5 y pruebas sin encabezado de Chrome.
-
-#### Pusher
-
-El driver para difusión de eventos Pusher ahora requiere la versión `~3.0` del SDK de Pusher.
-
-#### Swift Mailer
-
-Laravel 5.5 requiere la versión `~6.0` de Swift Mailer.
+    /**
+     * Register a service provider with the application.
+     *
+     * @param  \Illuminate\Support\ServiceProvider|string  $provider
+     * @param  bool   $force
+     * @return \Illuminate\Support\ServiceProvider
+     */
+    public function register($provider, $force = false);
 
 ### Artisan
 
-#### Carga Automática de Comandos
+#### Scheduled Job Connection & Queues
 
-En Laravel 5.5, Artisan puede descubrir comandos automáticamente para que así no tengas que registrarlos manualmente en tu kernel. Para tomar ventaja de esta característica, debes agregar la siguiente línea al método `commands` de tu clase `App\Console\Kernel`:
+**Likelihood Of Impact: Low**
 
-    $this->load(__DIR__.'/Commands');
+The `$schedule->job` method now respects the `queue` and `connection` properties on the job class if a connection / job is not explicitly passed into the `job` method.
 
-#### Método `fire`
+Generally, this should be considered a bug fix; however, it is listed as a breaking change out of caution. [Please let us know if you encounter any issues surrounding this change](https://github.com/laravel/framework/pull/25216).
 
-Cualquier método `fire` presente en tus comandos de Artisan deben ser renombrados a `handle`.
+### Assets
 
-#### Comando `optimize`
+#### Asset Directory Flattened
 
-Con mejoras recientes a la cache op-code de PHP, el comando `optimize` de Artisan ya no es necesario. Debes eleminar cualquier referencia a este comando de tus scripts de deployment ya que será removido en versiones futuras de Laravel.
+**Likelihood Of Impact: None**
 
-### Autorización
+For new Laravel 5.7 applications, the assets directory that contains the scripts and styles has been flattened into the `resources` directory. This **will not** affect existing applications and does not require changes to your existing applications.
 
-#### Método De Controlador `authorizeResource`
+However, if you wish to make this change, you should move all files from the `resources/assets/*` directory up one level:
 
-Al pasar un nombre de modelo con múltiples palabras al método `authorizeResource`, el segmento de ruta resultante ahora será de tipo "snake", igualando el comportamiento de los controladores de recursos.
+- From `resources/assets/js/*` to `resources/js/*`
+- From `resources/assets/sass/*` to `resources/sass/*`
 
-#### Método De Política `before`
+Then, update any reference to the old directories in your `webpack.mix.js` file:
 
-El método `before` de una clase de política no será llamado si la clase no contiene un método que iguale el nombre de la habilidad siendo comprobada.
+    mix.js('resources/js/app.js', 'public/js')
+       .sass('resources/sass/app.scss', 'public/css');
+
+### Authentication
+
+#### The `Authenticate` Middleware
+
+**Likelihood Of Impact: Low**
+
+The `authenticate` method of the `Illuminate\Auth\Middleware\Authenticate` middleware has been updated to accept the incoming `$request` as its first argument. If you are overriding this method in your own `Authenticate` middleware, you should update your middleware's signature:
+
+    /**
+     * Determine if the user is logged in to any of the given guards.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  array  $guards
+     * @return void
+     *
+     * @throws \Illuminate\Auth\AuthenticationException
+     */
+    protected function authenticate($request, array $guards)
+
+#### The `ResetsPasswords` Trait
+
+**Likelihood Of Impact: Low**
+
+The protected `sendResetResponse` method of the `ResetsPasswords` trait now accepts the incoming `Illuminate\Http\Request` as its first argument. If you are overriding this method, you should update your method's signature:
+
+    /**
+     * Get the response for a successful password reset.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  string  $response
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
+     */
+    protected function sendResetResponse(Request $request, $response)
+
+#### The `SendsPasswordResetEmails` Trait
+
+**Likelihood Of Impact: Low**
+
+The protected `sendResetLinkResponse` method of the `SendsPasswordResetEmails` trait now accepts the incoming `Illuminate\Http\Request` as its first argument. If you are overriding this method, you should update your method's signature:
+
+    /**
+     * Get the response for a successful password reset link.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  string  $response
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
+     */
+    protected function sendResetLinkResponse(Request $request, $response)
+
+### Authorization
+
+#### The `Gate` Contract
+
+**Likelihood Of Impact: Very Low**
+
+The `raw` method was changed from `protected` to `public` visibility. In addition, it [was added to the `Illuminate\Contracts\Auth\Access\Gate` contract](https://github.com/laravel/framework/pull/25143):
+
+    /**
+     * Get the raw result from the authorization callback.
+     *
+     * @param  string  $ability
+     * @param  array|mixed  $arguments
+     * @return mixed
+     */
+    public function raw($ability, $arguments = []);
+
+If you are implementing this interface, you should add this method to your implementation.
+
+#### The `Login` Event
+
+**Likelihood Of Impact: Very Low**
+
+The `__construct` method of `Illuminate\Auth\Events\Login` event has a new `$guard` argument:
+
+    /**
+     * Create a new event instance.
+     *
+     * @param  string  $guard
+     * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
+     * @param  bool  $remember
+     * @return void
+     */
+    public function __construct($guard, $user, $remember)
+
+If you are dispatching this event manually within your application, you'll need to pass this new argument into the event's constructor. The following example passes the default framework guard to the Login event:
+
+    use Illuminate\Auth\Events\Login;
+
+    event(new Login(config('auth.defaults.guard'), $user, $remember))
+
+### Blade
+
+#### The `or` Operator
+
+**Likelihood Of Impact: High**
+
+The Blade "or" operator has been removed in favor of PHP's built-in `??` "null coalesce" operator, which has the same purpose and functionality:
+
+    // Laravel 5.6...
+    {{ $foo or 'default' }}
+
+    // Laravel 5.7...
+    {{ $foo ?? 'default' }}
 
 ### Cache
 
-#### Driver De Base De Datos
+**Likelihood Of Impact: Very High**
 
-Si estás usando el driver de cache de la base de datos, debes ejecutar `php artisan cache:clear` al desplegar tu aplicación actualizada de Laravel 5.5 por primera vez.
+A new `data` directory has been added to `storage/framework/cache`. You should create this directory in your own application:
+
+    mkdir -p storage/framework/cache/data
+
+Then, add a [.gitignore](https://github.com/laravel/laravel/blob/76369205c8715a4a8d0d73061aa042a74fd402dc/storage/framework/cache/data/.gitignore) file to the newly created `data` directory:
+
+    cp storage/framework/cache/.gitignore storage/framework/cache/data/.gitignore
+
+Finally, ensure that the [storage/framework/cache/.gitignore](https://github.com/laravel/laravel/blob/76369205c8715a4a8d0d73061aa042a74fd402dc/storage/framework/cache/.gitignore) file is updated as follows:
+
+    *
+    !data/
+    !.gitignore
+
+### Carbon
+
+**Likelihood Of Impact: Very Low**
+
+Carbon "macros" are now handled by the Carbon library directly instead of Laravel's extension of the library. We do not expect this to break your code; however, [please make us aware of any problems you encounter related to this change](https://github.com/laravel/framework/pull/23938).
+
+### Collections
+
+#### The `split` Method
+
+**Likelihood Of Impact: Low**
+
+The `split` method [has been updated to always return the requested number of "groups"](https://github.com/laravel/framework/pull/24088), unless the total number of items in the original collection is less than the requested collection count. Generally, this should be considered a bug fix; however, it is listed as a breaking change out of caution.
+
+### Cookie
+
+#### `Factory` Contract Method Signature
+
+**Likelihood Of Impact: Very Low**
+
+The signatures of the `make` and `forever` methods of the `Illuminate\Contracts\Cookie\Factory` interface [have been changed](https://github.com/laravel/framework/pull/23200). If you are implementing this interface, you should update these methods in your implementation.
+
+### Database
+
+#### The `softDeletesTz` Migration Method
+
+**Likelihood Of Impact: Low**
+
+The schema table builder's `softDeletesTz` method now accepts the column name as its first argument, while the `$precision` has been moved to the second argument position:
+
+    /**
+     * Add a "deleted at" timestampTz for the table.
+     *
+     * @param  string  $column
+     * @param  int  $precision
+     * @return \Illuminate\Support\Fluent
+     */
+    public function softDeletesTz($column = 'deleted_at', $precision = 0)
+
+#### The `ConnectionInterface` Contract
+
+**Likelihood Of Impact: Very Low**
+
+The `Illuminate\Contracts\Database\ConnectionInterface` contract's `select` and `selectOne` method signatures have been updated to accommodate the new `$useReadPdo` argument:
+
+    /**
+     * Run a select statement and return a single result.
+     *
+     * @param  string  $query
+     * @param  array   $bindings
+     * @param  bool  $useReadPdo
+     * @return mixed
+     */
+    public function selectOne($query, $bindings = [], $useReadPdo = true);
+
+    /**
+     * Run a select statement against the database.
+     *
+     * @param  string  $query
+     * @param  array   $bindings
+     * @param  bool  $useReadPdo
+     * @return array
+     */
+    public function select($query, $bindings = [], $useReadPdo = true);
+
+In addition, the `cursor` method was added to the contract:
+
+    /**
+     * Run a select statement against the database and returns a generator.
+     *
+     * @param  string  $query
+     * @param  array  $bindings
+     * @param  bool  $useReadPdo
+     * @return \Generator
+     */
+    public function cursor($query, $bindings = [], $useReadPdo = true);
+
+If you are implementing this interface, you should add this method to your implementation.
+
+#### Migration Command Output
+
+**Likelihood Of Impact: Very Low**
+
+The core migration commands have been [updated to set the output instance on the migrator class](https://github.com/laravel/framework/pull/24811). If you were overriding or extending the migration commands, you should remove references to `$this->migrator->getNotes()` and use `$this->migrator->setOutput($this->output)` instead.
+
+#### SQL Server Driver Priority
+
+**Likelihood Of Impact: Low**
+
+Prior to Laravel 5.7, the `PDO_DBLIB` driver was used as the default SQL Server PDO driver. This driver is considered deprecated by Microsoft. As of Laravel 5.7, `PDO_SQLSRV` will be used as the default driver if it is available. Alternatively, you may choose to use the `PDO_ODBC` driver:
+
+    'sqlsrv' => [
+        // ...
+        'odbc' => true,
+        'odbc_datasource_name' => 'your-odbc-dsn',
+    ],
+
+If neither of these drivers are available, Laravel will use the `PDO_DBLIB` driver.
+
+#### SQLite Foreign Keys
+
+**Likelihood Of Impact: Medium**
+
+SQLite does not support dropping foreign keys. For that reason, using the `dropForeign` method on a table now throws an exception. Generally, this should be considered a bug fix; however, it is listed as a breaking change out of caution.
+
+If you run your migrations on multiple types of databases, consider using `DB::getDriverName()` in your migrations to skip unsupported foreign key methods for SQLite.
+
+### Debug
+
+#### Dumper Classes
+
+**Likelihood Of Impact: Very Low**
+
+The `Illuminate\Support\Debug\Dumper` and `Illuminate\Support\Debug\HtmlDumper` classes have been removed in favor of using Symfony's native variable dumpers: `Symfony\Component\VarDumper\VarDumper` and `Symfony\Component\VarDumper\Dumper\HtmlDumper`.
 
 ### Eloquent
 
-#### Método `belongsToMany`
+#### The `latest` / `oldest` Methods
 
-Si estás sobrescribiendo el método `belongsToMany` en tu modelo de Eloquent, debes actualizar la firma de tu método para reflejar la adición de nuevos argumentos:
+**Likelihood Of Impact: Low**
 
-    /**
-     * Define a many-to-many relationship.
-     *
-     * @param  string  $related
-     * @param  string  $table
-     * @param  string  $foreignPivotKey
-     * @param  string  $relatedPivotKey
-     * @param  string  $parentKey
-     * @param  string  $relatedKey
-     * @param  string  $relation
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function belongsToMany($related, $table = null, $foreignPivotKey = null,
-                                  $relatedPivotKey = null, $parentKey = null,
-                                  $relatedKey = null, $relation = null)
+The Eloquent query builder's `latest` and `oldest` methods have been updated to respect custom "created at" timestamp columns that may be specified on your Eloquent models. Generally, this should be considered a bug fix; however, it is listed as a breaking change out of caution.
+
+#### The `wasChanged` Method
+
+**Likelihood Of Impact: Very Low**
+
+An Eloquent model's changes are now available to the `wasChanged` method **before** firing the `updated` model event. Generally, this should be considered a bug fix; however, it is listed as a breaking change out of caution. [Please let us know if you encounter any issues surrounding this change](https://github.com/laravel/framework/pull/25026).
+
+#### PostgreSQL Special Float Values
+
+**Likelihood Of Impact: Low**
+
+PostgreSQL supports the float values `Infinity`, `-Infinity` and `NaN`. Prior to Laravel 5.7, these were cast to `0` when the Eloquent casting type for the column was `float`, `double`, or `real`.
+
+As of Laravel 5.7, these values will be cast to the corresponding PHP constants `INF`, `-INF`, and `NAN`.
+
+### Email Verification
+
+**Likelihood Of Impact: Optional**
+
+If you choose to use Laravel's new [email verification services](/docs/{{version}}/verification), you will need to add additional scaffolding to your application. First, add the `VerificationController` to your application: [App\Http\Controllers\Auth\VerificationController](https://github.com/laravel/laravel/blob/master/app/Http/Controllers/Auth/VerificationController.php).
+
+You will also need to modify your `App\User` model to implement the `MustVerifyEmail` contract:
+
+    <?php
+
+    namespace App;
+
+    use Illuminate\Notifications\Notifiable;
+    use Illuminate\Contracts\Auth\MustVerifyEmail;
+    use Illuminate\Foundation\Auth\User as Authenticatable;
+
+    class User extends Authenticatable implements MustVerifyEmail
     {
-        //
+        use Notifiable;
+
+        // ...
     }
 
-#### BelongsToMany `getQualifiedRelatedKeyName`
+In order to use the `verified` middleware so that only verified users may access a given route, you will need to update the `$routeMiddleware` property of your `app/Http/Kernel.php` file to include the new middleware:
 
-El método `getQualifiedRelatedKeyName` ha sido renombrado a `getQualifiedRelatedPivotKeyName`.
+    // Within App\Http\Kernel Class...
 
-#### BelongsToMany `getQualifiedForeignKeyName`
+    protected $routeMiddleware = [
+        'auth' => \Illuminate\Auth\Middleware\Authenticate::class,
+        'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
+        'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
+        'can' => \Illuminate\Auth\Middleware\Authorize::class,
+        'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
+        'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
+        'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+    ];
 
-El método `getQualifiedForeignKeyName` ha sido renombrado a `getQualifiedForeignPivotKeyName`.
+You will also need the verification view stub. This view should be placed at `resources/views/auth/verify.blade.php`. You may obtain the view's contents [on GitHub](https://github.com/laravel/framework/blob/5.7/src/Illuminate/Auth/Console/stubs/make/views/auth/verify.stub).
 
-#### Método De Modelo `is`
+Next, your user table must contain an `email_verified_at` column to store the date and time that the email address was verified:
 
-Si estás sobrescribiendo el método `is` de tu modelo de Eloquent, debes eliminar la determinación de tipo de `Model` del método. Esto permite que el método is reciba `null` como argumento:
+    $table->timestamp('email_verified_at')->nullable();
+
+In order to send the email when a user is registered, you should register following events and listeners in your [App\Providers\EventServiceProvider](https://github.com/laravel/laravel/blob/master/app/Providers/EventServiceProvider.php) class:
+
+    use Illuminate\Auth\Events\Registered;
+    use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 
     /**
-     * Determine if two models have the same ID and belong to the same table.
+     * The event listener mappings for the application.
      *
-     * @param  \Illuminate\Database\Eloquent\Model|null  $model
-     * @return bool
+     * @var array
      */
-    public function is($model)
-    {
-        //
-    }
+    protected $listen = [
+        Registered::class => [
+            SendEmailVerificationNotification::class,
+        ],
+    ];
 
-#### Propiedad De Modelos `$events`
+Finally, when calling the `Auth::routes` method, you should pass the `verify` option to the method:
 
-La propiedad `$events` en tus modelos debe ser renombrada a `$dispatchesEvents`. Este cambio fue hecho debido a que un gran número de usuarios necesitan definir una relación `events`, que puede causar conflictos con el nombre de propiedad antiguo.
+    Auth::routes(['verify' => true]);
 
-#### Propiedad `$parent` De Pivot
+### Filesystem
 
-La propiedad protegida `$parent` en la clase `Illuminate\Database\Eloquent\Relations\Pivot` ha sido renombrada a `$pivotParent`.
+#### `Filesystem` Contract Methods
 
-#### Métodos `create` De Relaciones
+**Likelihood Of Impact: Low**
 
-Los métodos `create` de las clases `BelongsToMany`, `HasOneOrMany` y `MorphOneOrMany` han sido modificados para proporcionar un valor por defecto para el argumento `$attributes`. Si estás sobrescribiendo estos métodos, debes actualizar tus firmas para que coincidan con la nueva definición:
+The `readStream` and `writeStream` methods [have been added to the `Illuminate\Contracts\Filesystem\Filesystem` contract](https://github.com/laravel/framework/pull/23755). If you are implementing this interface, you should add these methods to your implementation.
 
-    public function create(array $attributes = [])
-    {
-        //
-    }
+### Hashing
 
-#### Eliminación Parcial De Modelos
+#### `Hash::check` Method
 
-Al eliminar un modelo "eliminado parcialmente", la propiedad `exists` en el modelo permanecerá `true`.
+**Likelihood Of Impact: None**
 
-#### Formato De Columna `withCount`
+The `check` method now **optionally** checks if the algorithm of the hash matches the configured algorithm.
 
-Al usar un alias, el método `withCount` ya no agregará automáticamente `_count` al nombre de columna resultante. Por ejemplo, en Laravel 5.4, la siguiente consulta resultaría en una columna `bar_count` siendo agregada a la consulta:
+### Mail
 
-    $users = User::withCount('foo as bar')->get();
+#### Mailable Dynamic Variable Casing
 
-Sin embargo, en Laravel 5.5, el alias será usado exactamente como es dado. Si te gustaría agregar `_count` a la columna resultante, debes especificar dicho sufijo al definir el alias:
+**Likelihood Of Impact: Medium**
 
-    $users = User::withCount('foo as bar_count')->get();
+Variables that are dynamically passed to mailable views [are now automatically "camel cased"](https://github.com/laravel/framework/pull/24232), which makes mailable dynamic variable behavior consistent with dynamic view variables. Dynamic mailable variables are not a documented Laravel feature, so likelihood of impact to your application is low.
 
-#### Métodos & Nombres De Atributos De Modelos
+#### Template Theme
 
-Para prevenir el acceso a las propiedades privadas de un modelo al usar acceso de arreglo, ya no es posible tener un método de modelo con el mismo nombre de un atributo o propiedad. Hacer eso causará que excepciones sean lanzadas al acceder a los atributos del modelo mediante acceso de arreglo (`$user['name']`) o la función helper `data_get`.
+**Likelihood Of Impact: Medium**
 
-### Formato De Excepción
+If you have customized the default theme styles used for Markdown mailable templates, you will need to re-publish and make your customizations again. The button color classes have been renamed from 'blue', 'green', and 'red' to 'primary', 'success', and 'error'.
 
-En Laravel 5.5, todas las excepciones, incluyendo las excepciones de validación, son convertidas en respuestas HTTP por el manejador de excepciones. Adicionalmente, el formato por defecto para los errores de validación de JSON ha cambiado. El nuevo formato se ajusta a la siguiente convención:
+### Queue
 
-    {
-        "message": "The given data was invalid.",
-        "errors": {
-            "field-1": [
-                "Error 1",
-                "Error 2"
-            ],
-            "field-2": [
-                "Error 1",
-                "Error 2"
-            ],
-        }
-    }
+#### `QUEUE_DRIVER` Environment Variable
 
-Sin embargo, si te gustaría mantener el formato de error de JSON de Laravel 5.4, puedes agregar el siguiente método a tu clase `App\Exceptions\Handler`:
+**Likelihood Of Impact: Very Low**
 
-    use Illuminate\Validation\ValidationException;
+The `QUEUE_DRIVER` environment variable has been renamed to `QUEUE_CONNECTION`. This should not affect existing applications that you are upgrading unless you intentionally modify your `config/queue.php` configuration file to match Laravel 5.7's.
 
-    /**
-     * Convert a validation exception into a JSON response.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Illuminate\Validation\ValidationException  $exception
-     * @return \Illuminate\Http\JsonResponse
-     */
-    protected function invalidJson($request, ValidationException $exception)
-    {
-        return response()->json($exception->errors(), $exception->status);
-    }
+### Routing
 
-#### Intentos De Autenticación De JSON
+#### The `Route::redirect` Method
 
-Este cambio también afecta el formato de error de validación para los intentos de autenticación mediante JSON. En Laravel 5.5, los fallos de autenticación de JSON retornarán los mensajes de errores siguiendo la nueva convención de forma descrita arriba.
+**Likelihood Of Impact: High**
 
-#### Una Nota Sobre Form Requests
+The `Route::redirect` method now returns a `302` HTTP status code redirect. The `permanentRedirect` method has been added to allow `301` redirects.
 
-Si estuvierás personalizando el formato de respuesta para un form request individual, ahora debes sobrescribir el método `failedValidation` de dicho form request y lanzar una instancia de `HttpResponseException` que contenga tu respuesta personalizada:
+    // Return a 302 redirect...
+    Route::redirect('/foo', '/bar');
 
-    use Illuminate\Http\Exceptions\HttpResponseException;
+    // Return a 301 redirect...
+    Route::redirect('/foo', '/bar', 301);
 
-    /**
-     * Handle a failed validation attempt.
-     *
-     * @param  \Illuminate\Contracts\Validation\Validator  $validator
-     * @return void
-     *
-     * @throws \Illuminate\Validation\ValidationException
-     */
-    protected function failedValidation(Validator $validator)
-    {
-        throw new HttpResponseException(response()->json(..., 422));
-    }
+    // Return a 301 redirect...
+    Route::permanentRedirect('/foo', '/bar');
 
-### Sistema De Archivos
+#### The `addRoute` Method
 
-#### Método `files`
+**Likelihood Of Impact: Low**
 
-El método `files` de la clase `Illuminate\Filesystem\Filesystem` ha cambiado su firma para agregar el argumento `$hidden` y ahora retorna un arreglo de objetos `SplFileInfo`, similar al método `allFiles`. Previamente, el método `files` retornaba un arreglo de cadenas con nombres de rutas. La nueva firma es la siguiente:
+The `addRoute` method of the `Illuminate\Routing\Router` class has been changed from `protected` to `public`.
 
-    public function files($directory, $hidden = false)
+### Validation
 
-### Correo
+#### Nested Validation Data
 
-#### Parametros Sin Usar
+**Likelihood Of Impact: Medium**
 
-Los argumentos sin usar `$data` y `$callback` fueron removidos de los métodos `queue` y `later` del contrato `Illuminate\Contracts\Mail\MailQueue`:
+In previous versions of Laravel, the `validate` method did not return the correct data for nested validation rules. This has been corrected in Laravel 5.7:
+
+    $data = Validator::make([
+        'person' => [
+            'name' => 'Taylor',
+            'job' => 'Developer'
+        ]
+    ], ['person.name' => 'required'])->validate();
+
+    dump($data);
+
+    // Prior Behavior...
+    ['person' => ['name' => 'Taylor', 'job' => 'Developer']]
+
+    // New Behavior...
+    ['person' => ['name' => 'Taylor']]
+
+#### The `Validator` Contract
+
+**Likelihood Of Impact: Very Low**
+
+The `validate` method [was added to the `Illuminate\Contracts\Validation\Validator` contract](https://github.com/laravel/framework/pull/25128):
 
     /**
-     * Queue a new e-mail message for sending.
+     * Run the validator's rules against its data.
      *
-     * @param  string|array|MailableContract  $view
-     * @param  string  $queue
-     * @return mixed
-     */
-    public function queue($view, $queue = null);
-
-    /**
-     * Queue a new e-mail message for sending after (n) seconds.
-     *
-     * @param  \DateTimeInterface|\DateInterval|int  $delay
-     * @param  string|array|MailableContract  $view
-     * @param  string  $queue
-     * @return mixed
-     */
-    public function later($delay, $view, $queue = null);
-
-### Colas
-
-#### Helper `dispatch`
-
-Si te gustaría despachar un trabajo que se ejecuta inmediatamente y retorna un valor desde el método `handle`, deberías usar los métodos `dispatch_now` o `Bus::dispatchNow` para despachar el trabajo:
-
-    use Illuminate\Support\Facades\Bus;
-
-    $value = dispatch_now(new Job);
-
-    $value = Bus::dispatchNow(new Job);
-
-### Solicitudes
-
-#### Método `all`
-
-Si estás sobrescribiendo el método `all` de la clase `Illuminate\Http\Request`, deberías actualizar la firma de tu método para reflejar el nuevo argumento `$keys`:
-
-    /**
-     * Get all of the input and files for the request.
-     *
-     * @param  array|mixed  $keys
      * @return array
      */
-    public function all($keys = null)
-    {
-        //
-    }
+    public function validate();
 
-#### Método `has`
+If you are implementing this interface, you should add this method to your implementation.
 
-El método `$request->has` ahora retornará `true` incluso si el valor del campo es una cadena vacia o `null`. Un nuevo método `$request->filled` ha sido agregado que proporciona el comportamiento anterior del método `has`.
+### Testing
 
-#### Método `intersect`
+**Likelihood of Impact: Medium**
 
-El método `intersect` ha sido eliminado. Puedes replicar este comportamiento usando `array_filter` en una llamada a `$request->only`:
+Laravel 5.7 introduces improved testing tools for Artisan commands. By default, Artisan command output is now mocked. If you are relying on the `artisan` method to run commands as part of your test, you should use `Artisan::call` or define `public $mockConsoleOutput = false` as a property in your test class.
 
-    return array_filter($request->only('foo'));
+### Miscellaneous
 
-#### Método `only`
-
-El método `only` ahora sólo retornará atributos que estén presentes en la carga de la solicitud. Si te gustaría preservar el comportamiento anterior del método `only`, puedes usar el método `all` en su lugar.
-
-    return $request->all('foo');
-
-#### Helper `request()`
-
-El helper `request` ya no retornará claves anidadas. Si es necesario, puedes usar el método `input` de la solicitud para lograr este comportamiento:
-
-    return request()->input('filters.date');
-
-### Pruebas
-
-#### Aserciones De Autenticación
-
-Algunas aserciones de autenticación fueron renombradas para mejor consistencia con el resto de las aserciones del framework:
-
-<div class="content-list" markdown="1">
-- `seeIsAuthenticated` fue renombrada a `assertAuthenticated`.
-- `dontSeeIsAuthenticated` fue renombrada a `assertGuest`.
-- `seeIsAuthenticatedAs` fue renombrada a `assertAuthenticatedAs`.
-- `seeCredentials` fue renombrada a `assertCredentials`.
-- `dontSeeCredentials` fue renombrada a `assertInvalidCredentials`.
-</div>
-
-#### Mail Fake
-
-Si estás usando el fake `Mail` para determinar si un mailable fue **agregado a la cola** durante una solicitud, ahora debes usar `Mail::assertQueued` en lugar de `Mail::assertSent`. Esta distinción te permite verificar específicamente que correo fue agregado a la cola para envio en segundo plano y que no es enviado durante la solicitud como tal.
-
-#### Tinker
-
-Laravel Tinker ahora soporta omitir nombres de espacio al hacer referencia a las clases de tu aplicación. Esta característica requiere un mapeo de clase optimizado de Composer, así que debes agregar la directiva `optimize-autoloader` a la sección `config` de tu archivo `composer.json`:
-
-    "config": {
-        ...
-        "optimize-autoloader": true
-    }
-
-### Traducción
-
-#### `LoaderInterface`
-
-La interfaz `Illuminate\Translation\LoaderInterface` ha sido movida a `Illuminate\Contracts\Translation\Loader`.
-
-### Validación
-
-#### Métodos Del Validador
-
-Todos los métodos de validación del validador ahora son `publicos` en lugar de `protegidos`.
-
-### Vistas
-
-#### Nombres De Variable Dinámicos "With"
-
-Al permitir que el método dinámico `__call` comporta variables con una vista, estas variables automáticamente usarán "camel case". Por ejemplo, dado lo siguiente:
-
-    return view('pool')->withMaximumVotes(100);
-
-La variable `maximumVotes` será accedida en la plantilla de la siguiente forma:
-
-    {{ $maximumVotes }}
-
-#### Directiva `@php` De Blade
-
-La directiva `@php` de blade ya no acepta etiquetas en línea. En su lugar, usa la forma completa de la directiva:
-
-    @php
-        $teamMember = true;
-    @endphp
-
-### Misceláneo
-
-También te invitamos a ver los cambios en el [repositorio de GitHub](https://github.com/laravel/laravel) `laravel/laravel`. Mientras que muchos de estos cambios no son requeridos, puedes querer mantener estos archivos sincronizados con tu aplicación. Algunos de estos cambios serán cubiertos en esta guía de actualización, pero otros, tales como cambios a archivos de configuración o comentarios, no lo serán. Puedes fácilmente ver los cambios con la [herramienta de comparación de GitHub](https://github.com/laravel/laravel/compare/5.4...master) y elegir que actualizaciones son importantes para ti.
+We also encourage you to view the changes in the `laravel/laravel` [GitHub repository](https://github.com/laravel/laravel). While many of these changes are not required, you may wish to keep these files in sync with your application. Some of these changes will be covered in this upgrade guide, but others, such as changes to configuration files or comments, will not be. You can easily view the changes with the [GitHub comparison tool](https://github.com/laravel/laravel/compare/5.6...master) and choose which updates are important to you.
