@@ -96,8 +96,6 @@ Puedes retornar líneas desde archivos de idioma usando la función helper `__`.
 
     echo __('messages.welcome');
 
-    echo __('I love programming.');
-
 Por supuesto si estás usando el [motor de plantillas Blade](/docs/{{version}}/blade), puedes usar la sintaxis `{{{ }}` para imprimir la cadena de traducción o usar la directiva `@lang`:
 
     {{ __('messages.welcome') }}
