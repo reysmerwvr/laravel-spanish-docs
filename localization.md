@@ -92,11 +92,9 @@ Archivos de traducción que usan cadenas de traducción como claves son almacena
 <a name="retrieving-translation-strings"></a>
 ## Retornando Cadenas de Traducciones
 
-Puedes retornar líneas desde archivos de idioma usando la función helper `__`. El método `__` acepta el archivo y la clave de la cadena de traducción como primer argumento. Por ejemplo, vamos a retornar la cadena de traducción de `welcome` desde el archivo de idioma `resources/lang/messages.php`:
+Puedes retornar líneas desde archivos de idioma usando la función helper `__`. La función `__` acepta el archivo y la clave de la cadena de traducción como primer argumento. Por ejemplo, vamos a retornar la cadena de traducción de `welcome` desde el archivo de idioma `resources/lang/messages.php`:
 
     echo __('messages.welcome');
-
-    echo __('I love programming.');
 
 Por supuesto si estás usando el [motor de plantillas Blade](/docs/{{version}}/blade), puedes usar la sintaxis `{{{ }}` para imprimir la cadena de traducción o usar la directiva `@lang`:
 
