@@ -98,7 +98,8 @@ El método `links` renderizará los enlaces para el resto de las páginas en el 
 
 #### Personalizando la URI del Paginador
 
-El método `withPath` permite personalizar la URI usada por el paginador al momento de generar enlaces. Por ejemplo, si quieres que el paginador genere enlaces como `http://example.com/custom/url?page=N`, deberías pasar `custom/url` al método `withPath`:
+El método `withPath` permite personalizar la URI usada por el paginador al momento de generar enlaces.
+Por ejemplo, si quieres que el paginador genere enlaces como `http://example.com/custom/url?page=N`, deberías pasar `custom/url` al método `withPath`:
 
     Route::get('users', function () {
         $users = App\User::paginate(15);
@@ -117,12 +118,6 @@ Puedes agregar la cadena de consulta de los enlaces de paginación usando el mé
 Si deseas agregar un "fragmento con el símbolo numeral" a las URLs del paginador, puedes usar el método `fragment`. Por ejemplo, para agregar `#foo` al final de cada enlace de paginación, haz la siguiente ejecución del método `fragment`:
 
     {{ $users->fragment('foo')->links() }}
-
-#### Ajustando la ventana de enlace de paginación
-
-You may control how many additional links are displayed on each side of the paginator's URL "window". By default, three links are displayed on each side of the primary paginator links. However, you may control this number using the `onEachSide` method:
-
-    {{ $users->onEachSide(5)->links() }}
 
 <a name="converting-results-to-json"></a>
 ### Convirtiendo Resultados a JSON
@@ -173,17 +168,6 @@ Sin embargo, la forma más fácil de personalizar las vistas de paginación es e
 
 Este comando ubicará las vistas dentro del directorio `resources/views/vendor/pagination`. El archivo `default.blade.php` dentro de este directorio corresponde a la vista de paginación predeterminada. Edita este archivo para modificar el HTML de paginación.
 
-Si quieres designar un archivo distinto como la vista de paginación por defecto, se pueden usar los métodos de paginador `defaultView` y `defaultSimpleView` en tu `AppServiceProvider`:
-
-    use Illuminate\Pagination\Paginator;
-
-    public function boot()
-    {
-        Paginator::defaultView('pagination::view');
-
-        Paginator::defaultSimpleView('pagination::view');
-    }
-
 <a name="paginator-instance-methods"></a>
 ## Métodos de la Instancia Paginadora
 
@@ -194,10 +178,9 @@ Cada instancia paginadora proporciona información de paginación adicional por 
 - `$results->firstItem()`
 - `$results->hasMorePages()`
 - `$results->lastItem()`
-- `$results->lastPage() (Not available when using simplePaginate)`
+- `$results->lastPage() (No disponible al momento de usar simplePaginate)`
 - `$results->nextPageUrl()`
-- `$results->onFirstPage()`
 - `$results->perPage()`
 - `$results->previousPageUrl()`
-- `$results->total() (Not available when using simplePaginate)`
+- `$results->total() (No disponible al momento de usar simplePaginate)`
 - `$results->url($page)`
