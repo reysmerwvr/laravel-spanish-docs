@@ -3,6 +3,7 @@
 - [Introducción](#introduction)
 - [Método Fake de la Clase Facade Bus](#bus-fake)
 - [Método Fake de la Clase Facade Event](#event-fake)
+    - [Método Fake de la Clase Facade Event con Alcance](#scoped-event-fakes)
 - [Método Fake de la Clase Facade Mail](#mail-fake)
 - [Método Fake de la Clase Facade Notification](#notification-fake)
 - [Método Fake de la Clase Facade Queue](#queue-fake)
@@ -20,6 +21,7 @@ Laravel provee helpers para simular eventos, tarea, y clases facades predetermin
 ## El Método Fake de la Clase Facade Bus
 
 Como una alternativa a mocking, puedes usar el método `fake` de la clase facade `Bus` para evitar que determinadas tareas sean despachadas. Al momento de usar fakes, las aserciones serán hechas después de que el código bajo prueba sea ejecutado.
+
 
     <?php
 
@@ -79,7 +81,70 @@ Como una alternativa a mocking, puedes usar el método `fake` de la clase facade
                 return $e->order->id === $order->id;
             });
 
+            // Assert an event was dispatched twice...
+            Event::assertDispatched(OrderShipped::class, 2);
+
+            // Assert an event was not dispatched...
             Event::assertNotDispatched(OrderFailedToShip::class);
+        }
+    }
+
+> {note} Después de llamar a `Event::fake()`, no se ejecutarán escuchas de eventos. ENtonces, si tus pruebas usan model factories que dependen de eventos, como crear una UUID durante el evento de modelo `creating` event, e debe llamar `Event::fake()` **después** de usar tus factories.
+
+#### Haciendo Fake A Un Subconjunto de Eventos
+
+Si sólo se desea hacer fake a escuchas de eventos para un grupo específico de eventos, puedes pasarlas a los métodos `fake` o `fakeFor`:
+
+    /**
+     * Test order process.
+     */
+    public function testOrderProcess()
+    {
+        Event::fake([
+            OrderCreated::class,
+        ]);
+
+        $order = factory(Order::class)->create();
+
+        Event::assertDispatched(OrderCreated::class);
+
+        // Other events are dispatched as normal...
+        $order->update([...]);
+    }
+
+<a name="scoped-event-fakes"></a>
+### El Método Fake de la Clase Facade Event COn Alcance
+
+Si sólo se quiere hacer fake a escuchas de eventos para una porción de la prueba, se puede usar el método `fakeFor`:
+
+    <?php
+
+    namespace Tests\Feature;
+
+    use App\Order;
+    use Tests\TestCase;
+    use App\Events\OrderCreated;
+    use Illuminate\Support\Facades\Event;
+    use Illuminate\Foundation\Testing\RefreshDatabase;
+    use Illuminate\Foundation\Testing\WithoutMiddleware;
+
+    class ExampleTest extends TestCase
+    {
+        /**
+         * Test order process.
+         */
+        public function testOrderProcess()
+        {
+            $order = Event::fakeFor(function () {
+                $order = factory(Order::class)->create();
+
+                Event::assertDispatched(OrderCreated::class);
+
+                return $order;
+            });
+
+            // Events are dispatched as normal and observers will run ...
+            $order->update([...]);
         }
     }
 
@@ -142,6 +207,7 @@ Puedes usar el método `fake` de la clase facade `Notification` para prevenir qu
     use Tests\TestCase;
     use App\Notifications\OrderShipped;
     use Illuminate\Support\Facades\Notification;
+    use Illuminate\Notifications\AnonymousNotifiable;
     use Illuminate\Foundation\Testing\RefreshDatabase;
     use Illuminate\Foundation\Testing\WithoutMiddleware;
 
@@ -170,6 +236,11 @@ Puedes usar el método `fake` de la clase facade `Notification` para prevenir qu
             Notification::assertNotSentTo(
                 [$user], AnotherNotification::class
             );
+
+            // Assert a notification was sent via Notification::route() method...
+            Notification::assertSentTo(
+                new AnonymousNotifiable, OrderShipped::class
+            );            
         }
     }
 
@@ -208,6 +279,12 @@ Como alternativa a mocking, puedes usar el método `fake` de la clase facade `Qu
 
             // Assert a job was not pushed...
             Queue::assertNotPushed(AnotherJob::class);
+
+            // Assert a job was pushed with a specific chain...
+            Queue::assertPushedWithChain(ShipOrder::class, [
+                AnotherJob::class,
+                FinalJob::class
+            ]);
         }
     }
 
@@ -272,7 +349,7 @@ Diferente de las llamadas de métodos estáticos tradicionales, [las clases faca
         }
     }
 
-Podemos imitar la ejecución de la clase facade `Cache` usando el método `shouldReceive`, el cúal devolverá una instancia de imitación de la clase [Mockery](https://github.com/padraic/mockery). Ya que las clases facades realmente son resueltas y administradas por el [contenedor de servicios](/docs/{{version}}/container) de Laravel, tendrán mucho más capacidad de prueba que una clase estática típica. Por ejemplo, vamos a imitar nuestra llamada al método `get` de la clase facade `Cache`: 
+Podemos imitar la ejecución de la clase facade `Cache` usando el método `shouldReceive`, el cúal devolverá una instancia de imitación de la clase [Mockery](https://github.com/padraic/mockery). Ya que las clases facades realmente son resueltas y administradas por el [contenedor de servicios](/docs/{{version}}/container) de Laravel, tendrán mucho más capacidad de prueba que una clase estática típica. Por ejemplo, vamos a imitar nuestra llamada al método `get` de la clase facade `Cache`:
 
     <?php
 
