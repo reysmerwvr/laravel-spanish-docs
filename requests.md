@@ -165,6 +165,10 @@ Al momento de trabajar con formularios que contienen arreglos de campos, usa not
 
     $names = $request->input('products.*.name');
 
+Puedes llamar al método `input` sin ningún argumento para retornar todos los valores como arreglo asociativo:
+	
+    $input = $request->input();    
+
 #### Obteniendo Datos desde la Cadena de Consulta
 
 Mientras el método `input` obtiene valores de la porción de datos de la solicitud completa (incluyendo la cadena de consulta), el método `query` solamente obtendrá valores de la cadena de consulta:
