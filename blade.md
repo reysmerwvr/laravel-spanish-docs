@@ -14,6 +14,9 @@
     - [La Variable Loop](#the-loop-variable)
     - [Comentarios](#comments)
     - [PHP](#php)
+- [Forms](#forms)
+	- [Campo CSRF](#csrf-field)
+    - [Campo Method](#method-field)    
 - [Incluyendo Sub-Vistas](#including-sub-views)
     - [Renderizar Vistas Para Colecciones](#rendering-views-for-collections)
 - [Stacks](#stacks)
@@ -131,6 +134,26 @@ En ocasiones puedes necesitar pasar información adicional al componente. Por es
         ...
     @endcomponent
 
+#### Agregando Alias A Componentes
+
+Si tus componentes de Blade están almacenados en un subdirectorio, puedes querer agregarles un alias para tener un acceso más fácil. Por ejemplo, imagina un componente de Blade que está almacenado en `resources/views/components/alert.blade.php`. Puedes usar el método `component` para agregar un alias al componente de `components.alert` a `alert`. Típicamente, esto debe ser realizado en el método `boot` de tu `AppServiceProvider`:
+
+    use Illuminate\Support\Facades\Blade;
+	
+    Blade::component('components.alert', 'alert');
+
+Una vez que el alias ha sido agregado al componente, puedes renderizarlo usando una directiva:
+	
+	@alert(['type' => 'danger'])
+	    You are not allowed to access this resource!
+	@endalert
+	
+Puedes omitir los parametros del componente si este no tiene slots adicionales:
+	
+	@alert
+	    You are not allowed to access this resource!
+	@endalert    
+
 <a name="displaying-data"></a>
 ## Mostrando Datos
 
@@ -171,6 +194,30 @@ Sin embargo, en lugar de llamar manualmente a `json_encode`, puedes usar la dire
     <script>
         var app = @json($array);
     </script>
+
+#### Codificación De Entidades HTML
+
+Por defecto, Blade (y el helper `e` de Laravel) codificaran doblemente las entidades HTML. Si te gustaría deshabilitar la codificación doble, llama al método `Blade::withoutDoubleEncoding` desde el método `boot` de tu `AppServiceProvider`:
+
+<?php
+	
+    namespace App\Providers;
+
+    use Illuminate\Support\Facades\Blade;
+    use Illuminate\Support\ServiceProvider;
+
+    class AppServiceProvider extends ServiceProvider
+    {
+        /**
+	     * Bootstrap any application services.
+	     *
+	     * @return void
+	     */
+	    public function boot()
+	    {
+	        Blade::withoutDoubleEncoding();
+	    }
+	}    
 
 <a name="blade-and-javascript-frameworks"></a>
 ### Frameworks De Blade Y JavaScript
@@ -361,7 +408,7 @@ Propiedad  | Descripción
 ------------- | -------------
 `$loop->index`  |  El índice de la iteración del ciclo actual (comienza en 0).
 `$loop->iteration`  |  Iteración del ciclo actual (comienza en 1).
-`$loop->remaining`  |  La iteración restante en el ciclo.
+`$loop->remaining`  |  Iteraciones restantes en el ciclo.
 `$loop->count`  |  La cantidad total de elementos en el arreglo que se itera.
 `$loop->first`  |  Si esta es la primera iteración a través del ciclo.
 `$loop->last`  |  Si esta es la última iteración a través del ciclo.
@@ -385,6 +432,31 @@ En algunas situaciones, es útil insertar código PHP en sus vistas. Puedes usar
     @endphp
 
 > {tip} Mientras Blade proporciona esta función, usarla con frecuencia puede ser una señal de que tienes demasiada lógica incrustada dentro de tu plantilla.
+
+<a name="forms"></a>
+## Formularios
+	
+<a name="csrf-field"></a>
+### Campo CSRF
+	
+Cada vez que defines un formulario HTML en tu aplicación, debes incluir un campo de token CSRF oculto en el formulario para que [el middleware de protección CSRF](https://laravel.com/docs/{{version}}/csrf) pueda validar la solicitud. Puedes usar la directiva `@csrf` de Blade para generar el campo de token:
+	
+	<form method="POST" action="/profile">
+	    @csrf
+	
+	     ...
+	</form>
+	
+<a name="method-field"></a>
+### Campo Method
+	
+Dado que los formularios HTML no pueden hacer solicitudes `PUT`, `PATCH` o `DELETE` necesitarás agregar un campo `_method` oculto para suplantar estos verbos HTTP. La directiva `@method` de Blade puede crear este campo por ti:
+	
+	<form action="/foo/bar" method="POST">
+	    @method('PUT')
+	
+	     ...
+	</form>
 
 <a name="including-sub-views"></a>
 ## Incluyendo Sub-Vistas
@@ -448,6 +520,18 @@ Puede empujar a un stack tantas veces como lo necesite. Para renderizar el conte
 
         @stack('scripts')
     </head>
+
+Si te gustaría agregar contenido al inicio de un stack, debes usar la directiva `@prepend`:
+	
+	@push('scripts')
+	    This will be second...
+	@endpush
+	
+	// Luego...
+	
+	@prepend('scripts')
+	    This will be first...
+	@endprepend    
 
 <a name="service-injection"></a>
 ## Inyeción De Servicios
