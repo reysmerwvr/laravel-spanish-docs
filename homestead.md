@@ -7,21 +7,27 @@
     - [Iniciar El Box De Vagrant](#launching-the-vagrant-box)
     - [Instalación Por Proyecto](#per-project-installation)
     - [Instalar MariaDB](#installing-mariadb)
+    - [Instalar MongoDB](#installing-mongodb)
     - [Instalar Elasticsearch](#installing-elasticsearch)
+    - [Instalar Neo4j](#installing-neo4j)
     - [Alias](#aliases)
 - [Uso Diario](#daily-usage)
     - [Acceder A Homestead Globalmente](#accessing-homestead-globally)
     - [Conexión Via SSH](#connecting-via-ssh)
     - [Conectar A Base De Datos](#connecting-to-databases)
+    - [Respaldos de Base de Datos](#database-backups)
     - [Agregar Sitios Adicionales](#adding-additional-sites)
     - [Variables De Entorno](#environment-variables)
     - [Configurar Tareas Programadas](#configuring-cron-schedules)
     - [Configurar Mailhog](#configuring-mailhog)
+    - [Configurar Minio](#configuring-minio)
     - [Puertos](#ports)
     - [Compartir Tu Entorno](#sharing-your-environment)
     - [Múltiples Versiones PHP](#multiple-php-versions)
     - [Servidores Web](#web-servers)
+    - [Correo](#mail)
     - [Interfaces De Red](#network-interfaces)
+- [Extender Homestead](#extending-homestead)
 - [Actualizar Homestead](#updating-homestead)
 - [Configuraciones Específicas De Proveedor](#provider-specific-settings)
     - [VirtualBox](#provider-specific-virtualbox)
@@ -33,7 +39,7 @@ Laravel se ha esforzado en hacer que toda la experiencia del desarrollo de PHP s
 
 Laravel Homestead es el box de Vagrant pre-empaquetado oficial que brinda un maravilloso entorno de desarrollo sin la necesidad de que tengas que instalar PHP, un serivor web, ni ningún otro servidor de software en tu máquina local. ¡Basta de preocuparte por estropear tu sistema operativo! Los boxes de Vagrant son completamente desechables. Si algo sale mal, simplemente puedes destruir y volver a crear el box en cuestión de minutos.
 
-Homestead puede ejecutarse en sistemas Windows, Mac y Linux e incluye el servidor Web Nginx, PHP 7.2, PHP 7.1, PHP 7.0, PHP 5.6, MySQL, PostgreSQL, Redis, Memcached, Node y todas las demás herramientas que necesitas para desarrollar aplicaciones de Laravel sorprendentes.
+Homestead puede ejecutarse en sistemas Windows, Mac y Linux e incluye el servidor Web Nginx, PHP 7.3, PHP 7.2, PHP 7.1, PHP 7.0, PHP 5.6, MySQL, PostgreSQL, Redis, Memcached, Node y todas las demás herramientas que necesitas para desarrollar aplicaciones de Laravel sorprendentes.
 
 > {note} Si estás utilizando Windows, puede que necesites habilitar la virtualización por hardware (VT-x). Usualmente puede habilitarse en el BIOS. Si se está utilizando Hyper-V en un sistema UEFI puede que requieras también deshabilitar Hyper-V para poder acceder a VT-x.
 
@@ -41,8 +47,9 @@ Homestead puede ejecutarse en sistemas Windows, Mac y Linux e incluye el servido
 ### Software Incluido
 
 <div class="content-list" markdown="1">
-- Ubuntu 16.04
+- Ubuntu 18.04
 - Git
+- PHP 7.3
 - PHP 7.2
 - PHP 7.1
 - PHP 7.0
@@ -59,8 +66,14 @@ Homestead puede ejecutarse en sistemas Windows, Mac y Linux e incluye el servido
 - Memcached
 - Beanstalkd
 - Mailhog
+- Neo4j (Opcional)
+- MongoDB (Opcional)
 - Elasticsearch (Opcional)
 - ngrok
+- wp-cli
+- Zend Z-Ray
+- Go
+- Minio
 </div>
 
 <a name="installation-and-setup"></a>
@@ -96,7 +109,7 @@ Deberás hacer checkout a alguna versión etiquetada de Homestead ya que el bran
     cd ~/Homestead
 
     // Clonar al release deseado...
-    git checkout v7.0.1
+    git checkout v7.18.0
 
 Una vez que hayas clonado el repositorio, ejecuta el comando `bash init.sh` desde el directorio Homestead para crear el archivo de configuración `Homestead.yaml`. El archivo `Homestead.yaml` estará situado en el directorio Homestead:
 
@@ -211,10 +224,19 @@ Si prefieres usar MariaDB en lugar de MySQL, deberás agregar la opción `mariad
     provider: virtualbox
     mariadb: true
 
+<a name="installing-mongodb"></a>
+### Installing MongoDB
+
+Para instalar MongoDB Community Edition, actualiza tu archivo `Homestead.yaml` con la siguiente opción de configuración:
+	
+    mongodb: true
+
+La instalación por defecto establecerá el nombre de usuario de base de datos a `homestead` y su contraseña como `secret`.
+
 <a name="installing-elasticsearch"></a>
 ### Instalar Elasticsearch
 
-Para insalar Elasticsearch, añade la opción `elasticsearch` en tu archivo `Homestead.yaml` y especifica una versión soportada. La instalación por defecto creará un cluster llamado 'homestead'. Nunca deberías dar a Elasticsearch más de la mitad de la memoria de tu sistema operativo, por lo que deberás asegurarte de que tu máquina tenga al menos el doble de la memoria asignada a Elasticsearch:
+Para insalar Elasticsearch, añade la opción `elasticsearch` en tu archivo `Homestead.yaml` y especifica una versión soportada, la cual pued ser una versión específica o mayor (mayor.menor.parche). La instalación por defecto creará un cluster llamado 'homestead'. Nunca deberías dar a Elasticsearch más de la mitad de la memoria de tu sistema operativo, por lo que deberás asegurarte de que tu máquina tenga al menos el doble de la memoria asignada a Elasticsearch:
 
     box: laravel/homestead
     ip: "192.168.10.10"
@@ -224,6 +246,15 @@ Para insalar Elasticsearch, añade la opción `elasticsearch` en tu archivo `Hom
     elasticsearch: 6
 
 > {tip} Echa un vistazo a la [documentación de Elasticsearch](https://www.elastic.co/guide/en/elasticsearch/reference/current) para aprender a personalizar tu configuración.
+
+<a name="installing-neo4j"></a>
+### Installing Neo4j
+
+[Neo4j](https://neo4j.com/) es un sistema de manejo de bases de datos gráfico. Para instalar Neo4j Community Edition, actualiza tu archivo `Homestead.yaml` con la siguiente opción de configuración:
+
+    neo4j: true
+
+La instalación por defecto establecerá el nombre de usuario de base de datos como `homestead` y su contraseña como `secret`. Para acceder al navegador Neo4j, visita `http://homestead.test:7474` mediante tu navegador. Los puertos `7687` (Bolt), `7474` (HTTP), y `7473` (HTTPS) están listos para manejar peticiones desde el cliente Neo4j.
 
 <a name="aliases"></a>
 ### Aliases
@@ -284,6 +315,15 @@ Para conectarte a tu base de datos de MySQL o de PostgreSQL desde el cliente de 
 
 > {note} Solo deberías utilizar estos puertos no estandares para conectarte a tus bases de datos desde tu equipo host. Deberás utilizar los puertos por defecto 3306 y 5432 en tu archivo de configuración para la base de datos de Laravel que se encuentra ejecutandose _dentro_ de la máquina virtual.
 
+<a name="database-backups"></a>
+### Respaldos de Base de Datos
+
+Homestead puede hacer respaldos de tu base de datos automáticamnte cuando tu caja Vagrant es destruida. Para utilizar esta característica, debes estar usando Vagrant 2.1.0 o una versión superior. O, si estas usando una versión inferior, debes instalar el plugin `vagrant-triggers`. Para activar los respaldos de base de datos automaticos, agrega la siguiente línea a tu archivo `Homestead.yaml`:
+
+    backup: true
+
+Una vez esté configurado, Homestead exportará tus bases de datos a los directorios `mysql_backup` y `postgres_backup` cuando se ejecute el comando `vagrant destroy`. Estos directorios pueden ser encontrados en la carpeta donde clonaste HOmestead o en el root de tu proyecto si estas usando el método [per project installation](#per-project-installation).
+
 <a name="adding-additional-sites"></a>
 ### Agregar Sitios Adicionales
 
@@ -312,7 +352,7 @@ Homestead soporta varios tipos de sitios permitiendote ejecutar fácilmente proy
           to: /home/vagrant/code/Symfony/web
           type: "symfony2"
 
-Los tipos de sitios disponibles son: `apache`, `laravel` (por defecto), `proxy`, `silverstripe`, `statamic`, `symfony2`, y `symfony4`.
+Los tipos de sitios disponibles son: `apache`, `apigility`, `expressive`, `laravel` (por defecto), `proxy`, `silverstripe`, `statamic`, `symfony2`, `symfony4`y `zf`.
 
 <a name="site-parameters"></a>
 #### Parámetros de los Sitios
@@ -365,18 +405,62 @@ Mailhog te permite capturar fácilmente el correo saliente y examinarlo sin que 
     MAIL_PASSWORD=null
     MAIL_ENCRYPTION=null
 
+Una vez que Mailhog ha sido configurado, puedes acceder al dashboard de Mailhog en `http://localhost:8025`.
+
+<a name="configuring-minio"></a>
+### Configurando Minio
+
+Minio es un servidor de almacenamiento de abjetos de código libre con una API compatible con Amazon S3. Para instalar Minio, actualiza tu archivo `Homestead.yaml` con la siguiente opción de configuración:
+
+    minio: true
+
+Por defecto, Minio está disponible en el puerto 9600- Puedes acceder al panel de control de Minio visitando `http://homestead:9600/`. La llave de acceso por defecto es `homestead`, mientras que la llave secreta por defecto es `secretkey`. Al acceder a Minio, siempre debes usar la región `us-east-1`.
+
+Para usar Minio necesitarás ajustar la configuración de disco S3 en tu archivo `config/filesystems.php` Necesitarás añadir la opción `use_path_style_endpoint` a la configuración del disco, así como cambiar la llave `url` a `endpoint`:
+
+    's3' => [
+        'driver' => 's3',
+        'key' => env('AWS_ACCESS_KEY_ID'),
+        'secret' => env('AWS_SECRET_ACCESS_KEY'),
+        'region' => env('AWS_DEFAULT_REGION'),
+        'bucket' => env('AWS_BUCKET'),
+        'endpoint' => env('AWS_URL'),
+        'use_path_style_endpoint' => true
+    ]
+
+Por ultimo, asegurate de que tu archivo `.env` tenga las siguientes opciones:
+
+    AWS_ACCESS_KEY_ID=homestead
+    AWS_SECRET_ACCESS_KEY=secretkey
+    AWS_DEFAULT_REGION=us-east-1
+    AWS_URL=http://homestead:9600
+
+Para proveer buckets, agrega una directiva `buckets` a tu archivo de configuración Homestead:
+
+    buckets:
+        - name: your-bucket
+          policy: public
+        - name: your-private-bucket
+          policy: none
+
+Los valores soportados por `policy` incluyen: `none`, `download`, `upload`, and `public`.
+
 <a name="ports"></a>
 ### Puertos
 
 Por defecto, los siguientes puertos están redirigidos a tu entorno de Homestead:
 
+<div class="content-list" markdown="1">
 - **SSH:** 2222 &rarr; Forwards To 22
 - **ngrok UI:** 4040 &rarr; Forwards To 4040
 - **HTTP:** 8000 &rarr; Forwards To 80
 - **HTTPS:** 44300 &rarr; Forwards To 443
 - **MySQL:** 33060 &rarr; Forwards To 3306
 - **PostgreSQL:** 54320 &rarr; Forwards To 5432
+- **MongoDB:** 27017 &rarr; Forwards To 27017
 - **Mailhog:** 8025 &rarr; Forwards To 8025
+- **Minio:** 9600 &rarr; Forwards To 9600
+</div>
 
 #### Redirigir Puertos Adicionales
 
@@ -407,9 +491,7 @@ Después de ejecutar este comando, podrás ver que aparece una ventana de Ngrok,
 <a name="multiple-php-versions"></a>
 ### Múltiples Versiones PHP
 
-> {note} Esta característica sólo es compatible con Nginx.
-
-Homestead 6 introduce soporte para múltiples versiones de PHP en una misma máquina virtual. Puedes especificar qué versión de PHP deseas utilizar para un sitio en particular desde tu archivo `Homestead.yaml`. Las versiones disponibles de PHP son "5.6", "7.0", "7.1", y "7.2" (por defecto):
+Homestead 6 introduce soporte para múltiples versiones de PHP en una misma máquina virtual. Puedes especificar qué versión de PHP deseas utilizar para un sitio en particular desde tu archivo `Homestead.yaml`. Las versiones disponibles de PHP son "5.6", "7.0", "7.1", "7.2" y "7.3" (por defecto):
 
     sites:
         - map: homestead.test
@@ -422,6 +504,7 @@ Además, puedes utilizar cualquiera de las versiones soportadas de PHP desde el 
     php7.0 artisan list
     php7.1 artisan list
     php7.2 artisan list
+    php7.3 artisan list
 
 <a name="web-servers"></a>
 ### Servidores Web
@@ -429,6 +512,11 @@ Además, puedes utilizar cualquiera de las versiones soportadas de PHP desde el 
 Homestead utiliza por defecto el servidor web Nginx. Sin embargo, también se puede instalar Apache si se especifica el tipo de sitio como `apache`. Ambos servidores pueden instalarse al mismo tiempo, pero no pueden *ejecutarse* al mismo tiempo. El comando `flip` está disponible en el shell para facilitar el proceso de cambiar entre servidores web. El comando `flip` automáticamente va a determinar cuál servidor web está en ejecución, después lo va a detener y por último va a iniciar el otro servidor. Para utilizar este comando, primero deberás conectarte a la máquina virtual de Homestead por medio de SSH y ejecutar el comando en la terminal:
 
     flip
+
+<a name="mail"></a>
+### Correo
+
+Homestead incluye el agente de transferencia de correo Postfix, que está escuchando por defecto en el puerto `1025`. Así que se le puede instruir a tu aplicación para que use el controlador de correo `smtp` en el puerto `localhost` `1025`.Entonces, todos los correos enviados serán manejados por Postfix y atrapados por Mailhog. Para ver tus correos enviados, abre en tu navegador [http://localhost:8025](http://localhost:8025).
 
 <a name="network-interfaces"></a>
 ## Interfaces De Red
@@ -451,6 +539,18 @@ Para habilitar [DHCP](https://www.vagrantup.com/docs/networking/public_network.h
     networks:
         - type: "public_network"
           bridge: "en1: Wi-Fi (AirPort)"
+
+<a name="extending-homestead"></a>
+## Extender Homestead
+
+Puedes extender Homestead usando el script `after.sh` en la raíz de tu directorio Homestead. Dentro de este archivo, puedes agregar cualquier comando shell que sea necesario para configurar y personalizar apropiadamente tu máquina virtual.
+
+Al personalizar Homestead, Ubuntu puede preguntar si se desea conservar la configuración original de un paquete o sobreescribirla con un nuevo archivo de configuración. Para evitar esto, debes usar el siguiente comando al instalar paquetes para evitar sobreescribir cualquier configuración escrita previamente por HOmestead:
+
+    sudo apt-get -y \
+        -o Dpkg::Options::="--force-confdef" \
+        -o pkg::Options::="--force-confold" \
+        install your-package
 
 <a name="updating-homestead"></a>
 ## Actualizar Homestead
