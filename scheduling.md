@@ -38,7 +38,7 @@ Puedes definir todas tus tareas programadas en el método `schedule` de la clase
 
     namespace App\Console;
 
-    use DB;
+    use Illuminate\Support\Facades\DB;
     use Illuminate\Console\Scheduling\Schedule;
     use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
