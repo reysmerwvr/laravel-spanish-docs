@@ -164,6 +164,14 @@ En este ejemplo, nótese que somos capaces de pasar un [Eloquent model](/docs/{{
 
 El método `handle` es llamado cuando el trabajo es procesado por la cola. Nótese que somos capaces de sugerir dependencias en el método `handle` del trabajo. El [service container](/docs/{{version}}/container) de Laravel automáticamente inyecta estas dependencias.
 
+Si te gustaría tomar control sobre como el contenedor inyecta dependencias en el método `handle`, puedes usar el método `bindMethod` del contenedor. El método `bindMethod` acepta un callback que recibe el trabajo y el contenedor. Dentro del callback, eres libre de invocar al método `handle` de la forma que desees. Típicamente, deberías llamar a este método desde un [proveedor de servicios](/docs/{{version}}/providers):
+	
+    use App\Jobs\ProcessPodcast;
+
+    $this->app->bindMethod(ProcessPodcast::class.'@handle', function ($job, $app) {
+        return $job->handle($app->make(AudioProcessor::class));
+    });
+
 > {note} Los datos binarios, como los contenidos de imagen, deben ser pasados a través de la función `base64_encode` antes de ser pasados a un trabajo en cola. De otra forma, el trabajo podría no serializar correctamente a JSON cuando es colocado en la cola.
 
 <a name="dispatching-jobs"></a>
@@ -393,6 +401,8 @@ Si tu aplicación interactúa con Redis, se pueden regular los trabajos en cola 
     });
 
 > {tip} EN el ejemplo anterior, `key` puede ser cualquier hilo que identifique únicamente el tipo de trabajo que se quiere limitar. Por ejemplo, se puede desear construir key basado en el nombre de clase del trabajo y las IDS de los modelos Eloquent en los cuales opera.
+
+> {note}  Liberar un trabajo limitado de vuelta a la cola seguirá incrementando el número total de `intentos` del trabajo.
 
 De forma alterna, se puede especificar el número máximo de workers que pueden procesar simultáneamente cierto trabajo. Esto puede ser útil cuando un trabajo en cola está modificando un recurso que sólo debe ser modificado por un trabajo a la vez. Por ejemplo, usando el método `funnel` se pueden limitar trabajos de cierto tipo para que sean procesados por un worker a la vez:
 
