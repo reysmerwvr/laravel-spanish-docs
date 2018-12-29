@@ -120,41 +120,6 @@ Si tu modelo padre no usa `id` como su clave primaria, o deseas hacer join al mo
         return $this->belongsTo('App\User', 'foreign_key', 'other_key');
     }
 
-<a name="default-models"></a>
-#### Modelos Predeterminados
-
-La relación `belongsTo` permite que definas un modelo predeterminado que será devuelto si la relación dada es `null`. Este patrón es referido con frecuencia como el [Patrón de Objeto Nulo](https://en.wikipedia.org/wiki/Null_Object_pattern) y puede ayudar a remover verificaciones condicionales en tu código. En el siguiente ejemplo, la relación `user` devolverá un modelo `App\User` vacío si ningún `user` está conectado al post:
-
-    /**
-     * Get the author of the post.
-     */
-    public function user()
-    {
-        return $this->belongsTo('App\User')->withDefault();
-    }
-
-Para llenar el modelo predeterminado con atributos, puedes pasar un arreglo o Closure al método `withDefault`:
-
-    /**
-     * Get the author of the post.
-     */
-    public function user()
-    {
-        return $this->belongsTo('App\User')->withDefault([
-            'name' => 'Guest Author',
-        ]);
-    }
-
-    /**
-     * Get the author of the post.
-     */
-    public function user()
-    {
-        return $this->belongsTo('App\User')->withDefault(function ($user) {
-            $user->name = 'Guest Author';
-        });
-    }
-
 <a name="one-to-many"></a>
 ### Una a Muchos
 
@@ -189,7 +154,7 @@ Una vez que la relación ha sido definida, podemos acceder a la colección de co
 
 Ciertamente, ya que todas las relaciones también sirven como constructores de consultas, puedes agregar restricciones adicionales a cuyos comentarios sean obtenidos ejecutando el método `comments` y encadenando condiciones en la consulta:
 
-    $comments = App\Post::find(1)->comments()->where('title', 'foo')->first();
+    $comment = App\Post::find(1)->comments()->where('title', 'foo')->first();
 
 Igual que el método `hasOne`, también puedes sobrescribir las claves foráneas y locales al pasar argumentos adicionales al método `hasMany`:
 
@@ -225,7 +190,7 @@ Una vez que la relación ha sido definida, podemos obtener el modelo `Post` para
 
     echo $comment->post->title;
 
-En el ejemplo anterior, Eloquent tratará de hacer coincidir el `post_id` del modelo `Comment` con un `id` en el modelo `Post`. Eloquent determina el nombre de la clave foránea predeterminado examinando el nombre del método de la relación y agregando un sufijo `_id` al nombre del método. Sin embargo, si la clave foránea en el modelo `Comment` no es `post_id`, puedes pasar un nombre de clave personalizado como segundo argumento al método `belongsTo`:
+En el ejemplo anterior, Eloquent tratará de hacer coincidir el `post_id` del modelo `Comment` con un `id` en el modelo `Post`. Eloquent determina el nombre de la clave foránea predeterminado examinando el nombre del método de la relación y agregando un sufijo `_` al nombre del método, seguido del nombre de la coluna principal de la llave. Sin embargo, si la clave foránea en el modelo `Comment` no es `post_id`, puedes pasar un nombre de clave personalizado como segundo argumento al método `belongsTo`:
 
     /**
      * Get the post that owns the comment.
@@ -360,7 +325,7 @@ También puedes filtrar los resultados devueltos por `belongsToMany` usando los 
 
 #### Definiendo Modelos de Tablas Intermedias Personalizadas
 
-Si prefieres definir un modelo personalizado para representar la tabla intermedia de tu relación, puedes ejecutar el método `using` al momento de definir la relación. Todos los modelos personalizados usados para representar tablas intermedias de relaciones deben extender la clase `Illuminate\Database\Eloquent\Relations\Pivot`. Por ejemplo, podemos definir un `Role` que use un modelo pivote `UserRole` personalizado:
+Si prefieres definir un modelo personalizado para representar la tabla intermedia de tu relación, puedes ejecutar el método `using` al momento de definir la relación. Los modelos pivot muchos-a-muchos personalizados deben extender la clase `Illuminate\Database\Eloquent\Relations\Pivot` mientras que los modelos polimórficos muchos-a-muchos deben extender la clase `Illuminate\Database\Eloquent\Relations\MorphPivot`. Por ejemplo, podemos definir un `Role` que use un modelo pivote `UserRole` personalizado:
 
     <?php
 
@@ -698,17 +663,17 @@ Cuando accedes a los registros de un modelo, puedes desear limitar sus resultado
 También puedes especificar un operador y la cuenta para optimizar más la consulta:
 
     // Retrieve all posts that have three or more comments...
-    $posts = Post::has('comments', '>=', 3)->get();
+    $App/posts = Post::has('comments', '>=', 3)->get();
 
 Las instrucciones `has` anidadas también pueden ser construidas usando la notación de "punto". Por ejemplo, puedes obtener todos los posts que tienen al menos un comentario con votos:
 
     // Retrieve all posts that have at least one comment with votes...
-    $posts = Post::has('comments.votes')->get();
+    $App/posts = Post::has('comments.votes')->get();
 
 Incluso si necesitas más potencia, puedes usar los métodos `whereHas` y `orWhereHas` para poner condiciones "where" en tus consultas `has`. Estos métodos permiten que agregues restricciones personalizadas a una restricción de relación, tal como verificar el contenido de un comentario:
 
     // Retrieve all posts with at least one comment containing words like foo%
-    $posts = Post::whereHas('comments', function ($query) {
+    $App/posts = Post::whereHas('comments', function ($query) {
         $query->where('content', 'like', 'foo%');
     })->get();
 
@@ -723,6 +688,12 @@ Incluso si necesitas más potencia, puedes usar los métodos `whereDoesntHave` y
 
     $posts = Post::whereDoesntHave('comments', function ($query) {
         $query->where('content', 'like', 'foo%');
+    })->get();
+
+Puedes usar notación "de puntos" para ejecutar una consulta contra una relación anidada. Por ejemplo, la siguiente consulta entregará todos los posts con comentarios de autores que no están vetados:
+
+    $posts = App\Post::whereDoesntHave('comments.author', function ($query) {
+        $query->where('banned', 1);
     })->get();
 
 <a name="counting-related-models"></a>
@@ -747,7 +718,7 @@ Puedes agregar las "cuentas" para múltiples relaciones así como también agreg
 
 También puedes poner alias al resultado de la cuenta de la relación, permitiendo múltiples cuentas en la misma relación:
 
-    $posts = Post::withCount([
+    $posts = App/post::withCount([
         'comments',
         'comments as pending_comments_count' => function ($query) {
             $query->where('approved', false);
@@ -893,6 +864,18 @@ Si necesitas guardar múltiples modelos relacionados, puedes usar el método `sa
         new App\Comment(['message' => 'Another comment.']),
     ]);
 
+<a name="the-push-method"></a>
+#### Guardando Modelos y Relaciones Recursivamente
+
+SI quieres hacer `save` a tu modelo y a todas sus relaciones asociadas, puedes usar el método `push`:
+
+    $post = App\Post::find(1);
+
+    $post->comments[0]->message = 'Message';
+    $post->comments[0]->author->name = 'Author Name';
+
+    $post->push();
+
 <a name="the-create-method"></a>
 ### El Método Create
 
@@ -919,6 +902,8 @@ Puedes usar el método `createMany` para crear múltiples modelos relacionados:
         ],
     ]);
 
+También puedes usar los métodos `findOrNew`, `firstOrNew`, `firstOrCreate` y `updateOrCreate` para [crear y actualizar modelos en relaciones](https://laravel.com/docs/{{version}}/eloquent#other-creation-methods).
+
 <a name="updating-belongs-to-relationships"></a>
 ### Actualizar Relación Pertenece A
 
@@ -935,6 +920,41 @@ Al momento de remover una relación `belongsTo`, puedes usar el método `dissoci
     $user->account()->dissociate();
 
     $user->save();
+
+<a name="default-models"></a>
+#### Modelos Predeterminados
+
+La relación `belongsTo` te permite definir un modelo predeterminado que será regresado si la relación dada es `null`. A este patrón se le refiere comúnmente como  [Null Object pattern](https://en.wikipedia.org/wiki/Null_Object_pattern) y puede ayudar a remover chequeos condicionales en tu código. EN el ejemplo siguiente, la relación `user` devolverá un modelo `App\User` vacío si no hay un `user` adjunto a la publicación:
+
+    /**
+     * Get the author of the post.
+     */
+    public function user()
+    {
+        return $this->belongsTo('App\User')->withDefault();
+    }
+
+Para poblar el modelo predeterminado con atributos, puedes pasar un arreglo o Closure al método `withDefault`:
+
+    /**
+     * Get the author of the post.
+     */
+    public function user()
+    {
+        return $this->belongsTo('App\User')->withDefault([
+            'name' => 'Guest Author',
+        ]);
+    }
+
+    /**
+     * Get the author of the post.
+     */
+    public function user()
+    {
+        return $this->belongsTo('App\User')->withDefault(function ($user) {
+            $user->name = 'Guest Author';
+        });
+    }
 
 <a name="updating-many-to-many-relationships"></a>
 ### Relaciones Muchos a Muchos
