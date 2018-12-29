@@ -76,7 +76,15 @@ Cualquiera de los formularios HTML que apunten a rutas `POST`, `PUT`, or `DELETE
 
 Si estás definiendo una ruta que redirecciona a otra URI, puedes usar el método `Route::redirect`. Este método proporciona una forma abreviada conveniente de modo que no tengas que definir una ruta completa o de controlador para ejecutar una redirección básica:
 
+    Route::redirect('/here', '/there');
+
+Por defecto, `Route::redirect` retorna un código de estado `302`. Puedes personalizar el código de estado usando el tercer parametro opcional:
+
     Route::redirect('/here', '/there', 301);
+	
+Puedes usar el método `Route::permananentRedirect` para retornar un código de estado `301`:
+
+    Route::permanentRedirect('/here', '/there');
 
 <a name="view-routes"></a>
 ### Rutas de Vista
@@ -160,6 +168,17 @@ Una vez que el patrón ha sido definido, es aplicado automáticamente a todas la
         // Only executed if {id} is numeric...
     });
 
+<a name="parameters-encoded-forward-slashes"></a>
+#### Slashes Codificados
+	
+El componente de rutas de Laravel permite todos los caracteres excepto `/`. Debes explicitamente permitir que `/` sea parte de tu placeholder usando una expresión regular de la condición `where`:
+
+    Route::get('search/{search}', function ($search) {
+        return $search;
+    })->where('search', '.*');
+
+{note} Los slashes codificados sólo están soportados dentro del último segmento de la ruta.
+
 <a name="named-routes"></a>
 ## Rutas Nombradas
 
@@ -215,6 +234,8 @@ Si requieres determinar si la solicitud actual fue enrutada por una ruta nombrad
 ## Los Grupos de Ruta
 
 Los grupos de ruta permiten que tu compartas atributos de ruta, tales como los middleware o los espacios de nombres, a través de un número grande de rutas sin necesidad de definir esos atributos en cada ruta individual. Los atributos compartidos son especificados en un formato de arreglo como el primer parámetro al método `Route::group`.
+
+Los grupos anidados intentan "fusionar" de forma inteligente los atributos al grupo de sus padres. Los middlewares y condiciones `where` son fusionados mientras que los nombres, nombres de espacio y prefijos son agregados. Las delimitaciones de nombres de espacio y los slashes en los prefijos de URLs son automáticamente agregados cuando es apropiado.
 
 <a name="route-group-middleware"></a>
 ### Los Middleware
@@ -348,6 +369,8 @@ Usando el método `Route::fallback`, puedes definirr una ruta que será ejecutad
     Route::fallback(function () {
         //
     });
+
+> {note} La ruta alternativa siempre debe ser la última ruta registrada por tu aplicación.
 
 <a name="rate-limiting"></a>
 ## Limite de Rango
