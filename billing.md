@@ -462,6 +462,21 @@ Una vez que estés listo para crear una suscripción real para el usuario, puede
 
     $user->newSubscription('main', 'monthly')->create($stripeToken);
 
+<a name="customers"></a>
+## Clientes
+
+<a name="creating-customers"></a>
+### Creando Clientes
+	
+Ocasionalmente, puedes desear crear un cliente de Stripe sin iniciar una suscripción. Puedes lograr esto usando
+el método `createAsStripeCustomer`:
+
+$user->createAsStripeCustomer($stripeToken);
+
+Por supuesto, una vez el cliente ha sido creado en Stripe, puedes iniciar una suscripción en una fecha posterior.
+
+{tip} El equivalente de Braintree para este método es el método `createAsBraintreeCustomer`.
+
 <a name="handling-stripe-webhooks"></a>
 ## Manejando Webhooks de Stripe
 
@@ -474,7 +489,7 @@ Tanto Stripe como Braintree pueden notificar tu aplicación de una variedad de e
 
 > {note} Una vez que hayas resgistrado tu ruta, asegúrate de configurar la URL de webhook en tus opciones de configuración de panel de control de Stripe.
 
-De forma predeterminada, este controlador manejará automáticamente la cancelación de suscripciones que tengan demasiados cargos fallidos (como sean definidos por tus opciones de configuración de Stripe); sin embargo, tan pronto como descubramos, puedes entender este controlador para manejar cualquier evento de webhook que quieras.
+De forma predeterminada, este controlador manejará automáticamente la cancelación de suscripciones que tengan demasiados cargos fallidos (como sean definidos por tus opciones de configuración de Stripe), actualizaciones de clientes, eliminaciones de clientes, actualizaciones de suscripciones y cambios de tarjetas de crédito; sin embargo, como vamos a descubrir pronto, puedes extender este controlador para manejar cualquier evento de webhook que quieras.
 
 #### Webhooks & Protección CSRF
 
@@ -509,6 +524,13 @@ Cashier maneja automáticamente la cancelación de suscripción por cargos falli
         }
     }
 
+Luego, define una ruta a tu controlador de Cashier dentro de tu archivo `routes/web.php`:
+
+	Route::post(
+	    'stripe/webhook',
+        '\App\Http\Controllers\WebhookController@handleWebhook'
+	);
+
 <a name="handling-failed-subscriptions"></a>
 ### Suscripciones Fallidas
 
@@ -520,6 +542,20 @@ Cashier maneja automáticamente la cancelación de suscripción por cargos falli
     );
 
 ¡Y eso es todo! Los pagos fallidos serán capturados y manejados por el controlador. El controlador cancelará la suscripción del cliente cuando Stripe determina que la suscripción ha fallado (normalmente después de tres intentos de pagos fallidos).
+
+<a name="verifying-webhook-signatures"></a>
+### Verificando Firmas De Webhooks
+
+Para asegurar tus webhooks, puedes usar [las firmas de webhook de Stripe](https://stripe.com/docs/webhooks/signatures). Por conveniencia, Cashier incluye un middleware que valida que la solicitud entrante del webhook de Stripe sea valida.
+	
+Para comenzar, asegurar de que el valor de configuración `stripe.webhook.secret` está establecido en tu archivo de configuración `services`. Una vez que haz configurado la clave secreta de tu webhook, puedes agregar el middleware `VerifyWebhookSignature` a la ruta:
+
+    use Laravel\Cashier\Http\Middleware\VerifyWebhookSignature;
+
+    Route::post(
+        'stripe/webhook',
+        '\App\Http\Controllers\WebhookController@handleWebhook'
+    )->middleware(VerifyWebhookSignature::class);
 
 <a name="handling-braintree-webhooks"></a>
 ## Manejando los Webhooks de Braintree
@@ -591,7 +627,7 @@ Cashier maneja automáticamente la cancelación de suscripción por cargos falli
 Si prefieres hacer un cargo de "un solo pago" contra una tarjeta de crédito de cliente suscrita, puedes usar el método `charge` en una instancia de modelo facturable.
 
     // Stripe Accepts Charges In Cents...
-    $user->charge(100);
+    $stripeCharge = $user->charge(100);
 
     // Braintree Accepts Charges In Dollars...
     $user->charge(1);
@@ -610,6 +646,7 @@ El método `charge` arrojará una excepción si el cargo falla. Si el cargo es e
         //
     }
 
+<a name="charge-with-invoice"></a>
 ### Cargo con Factura
 
 Algunas veces puedes necesitar hacer un cargo único pero también generar una factura por el cargo de modo que puedas ofrecer un recibo PDF a tu cliente. El método `invoiceFor` permite que hagas justamente eso. Por ejemplo, vamos a facturar al cliente $5.00 por una "cuota única":
@@ -626,7 +663,22 @@ La factura será cargada inmediatamente contra la tarjeta de crédito del usuari
         'custom-option' => $value,
     ]);
 
+Si estás usando Braintree como tu proveedor de facturación, debes incluir una opción `description` al llamar al método `invoiceFor`:
+
+$user->invoiceFor('One Time Fee', 500, [
+    'description' => 'your invoice description here',
+]);
+
 > {note} El método `invoiceFor` creará una factura de Stripe la cual reintentará intentos de facturación fallidos. Si no quieres que las facturas reintenten cargos fallidos, necesitarás cerrarlas usando la API de Stripe después del primer cargo fallido.
+
+<a name="refunding-charges"></a>
+### Reembolsando Cargos
+
+Si necesitas reembolsar un cargo de Stripe, puedes usar el método `refund`. Este método acepta el id del cargo de Stripe como su único argumento:
+
+$stripeCharge = $user->charge(100);
+
+$user->refund($stripeCharge->id);
 
 <a name="invoices"></a>
 ## Facturas
