@@ -60,6 +60,8 @@ Laravel proporciona una manera rápida de generar todas las rutas y vistas que n
 
 Este comando debe ser utilizado en aplicaciones nuevas e instalará vistas de diseño, registro e inicio de sesión, así como todas las rutas necesarias para la autenticación. También será generado un `HomeController` que se encargará de manejar las peticiones posteriores al login, como mostrar el dashboard de la aplicación.
 
+> {tip} If your application doesn’t need registration, you may disable it by removing the newly created `RegisterController` and modifying your route declaration: `Auth::routes(['register' => false]);`.
+
 <a name="included-views"></a>
 ### Vistas
 
