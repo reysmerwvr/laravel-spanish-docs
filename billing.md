@@ -477,6 +477,57 @@ Por supuesto, una vez el cliente ha sido creado en Stripe, puedes iniciar una su
 
 {tip} El equivalente de Braintree para este método es el método `createAsBraintreeCustomer`.
 
+<a name="cards"></a>
+## Tarjetas
+
+<a name="retrieving-credit-cards"></a>
+### Retornando Tarjetas De Crédito
+
+El método `card` en la instancia de modelo billable retorna una colección de instancias `Laravel\Cashier\Card`:
+
+    $cards = $user->cards();
+
+Para retornar la tarjeta por defecto, el método `defaultCard` puede ser usado:
+
+    $card = $user->defaultCard();
+
+<a name="determining-if-a-card-is-on-file"></a>
+### Determinando Si Una Tarjeta Están En El Archivo
+
+Puedes comprobar si un cliente tiene una tarjeta de credito agregada a su cuenta usando el método `hasCardOnFile`:
+
+    if ($user->hasCardOnFile()) {
+        //
+    }
+
+<a name="updating-credit-cards"></a>
+### Actualizando Tarjetas De Crédito
+
+El método `updateCard` puede ser usado para acutualizar la información de tarjeta de crédito de un cliente. Este método acepta un token de Stripe y asignará la nueva tarjeta de crédito como el método de pago por defecto:
+
+    $user->updateCard($stripeToken);
+
+Para sincronizar tu información de tarjeta con la información de la tarjeta por defecto del cliente en Stripe, puedes usar el método `updateCardFromStripe`:
+
+    $user->updateCardFromStripe();
+
+<a name="deleting-credit-cards"></a>
+### Eliminando Tarjetas De Crédito
+
+Para eliminar una tarjeta, debes primero retornar las tarjetas del cliente con el método `cards`. Luego, puedes llamar al método `delete` en la instancia de la tarjeta que deseas eliminar:
+
+    foreach ($user->cards() as $card) {
+        $card->delete();
+    }
+
+> {note} Si eliminas la tarjeta por defecto, por favor asegurate de que sincronizas la nueva tarjeta por defecto con tu base de datos usando método `updateCardFromStripe`.
+
+El método `deleteCards` eliminará toda la información de la tarjeta almacenada por tu aplicación:
+
+    $user->deleteCards();
+
+> {note} Si el usuario tiene una suscripción activa, debes considerar evitar que eliminen la última forma de pago restante.
+
 <a name="handling-stripe-webhooks"></a>
 ## Manejando Webhooks de Stripe
 
@@ -490,6 +541,8 @@ Tanto Stripe como Braintree pueden notificar tu aplicación de una variedad de e
 > {note} Una vez que hayas resgistrado tu ruta, asegúrate de configurar la URL de webhook en tus opciones de configuración de panel de control de Stripe.
 
 De forma predeterminada, este controlador manejará automáticamente la cancelación de suscripciones que tengan demasiados cargos fallidos (como sean definidos por tus opciones de configuración de Stripe), actualizaciones de clientes, eliminaciones de clientes, actualizaciones de suscripciones y cambios de tarjetas de crédito; sin embargo, como vamos a descubrir pronto, puedes extender este controlador para manejar cualquier evento de webhook que quieras.
+
+> {note} Asegurate de proteger las peticiones entrantes con el middleware [webhook de verificación de firma][(/docs/{{version}}/billing#verifying-webhook-signatures] incluido en Cashier.
 
 #### Webhooks & Protección CSRF
 
@@ -544,18 +597,11 @@ Luego, define una ruta a tu controlador de Cashier dentro de tu archivo `routes/
 ¡Y eso es todo! Los pagos fallidos serán capturados y manejados por el controlador. El controlador cancelará la suscripción del cliente cuando Stripe determina que la suscripción ha fallado (normalmente después de tres intentos de pagos fallidos).
 
 <a name="verifying-webhook-signatures"></a>
-### Verificando Firmas De Webhooks
+### Verificando Las Firmas De Los Webhook
 
-Para asegurar tus webhooks, puedes usar [las firmas de webhook de Stripe](https://stripe.com/docs/webhooks/signatures). Por conveniencia, Cashier incluye un middleware que valida que la solicitud entrante del webhook de Stripe sea valida.
-	
-Para comenzar, asegurar de que el valor de configuración `stripe.webhook.secret` está establecido en tu archivo de configuración `services`. Una vez que haz configurado la clave secreta de tu webhook, puedes agregar el middleware `VerifyWebhookSignature` a la ruta:
+Para asegurar tus webhooks, puedes usar [las firmas de webhook de Stripe](https://stripe.com/docs/webhooks/signatures). Por conveniencia, Cashier automáticamente incluye un middleware que valida que la petición de webook de Stripe entrante es valida.
 
-    use Laravel\Cashier\Http\Middleware\VerifyWebhookSignature;
-
-    Route::post(
-        'stripe/webhook',
-        '\App\Http\Controllers\WebhookController@handleWebhook'
-    )->middleware(VerifyWebhookSignature::class);
+Para habilitar la verificación de webhook, asegurate de que el valor de configuración `stripe.webhook.secret` está establecido en tu archivo archivo de configuración `services`. El valor `secret` del webhook puede ser retornado desde el dashboard de tu cuenta de Stripe.
 
 <a name="handling-braintree-webhooks"></a>
 ## Manejando los Webhooks de Braintree
@@ -620,6 +666,7 @@ Cashier maneja automáticamente la cancelación de suscripción por cargos falli
 <a name="single-charges"></a>
 ## Cargos Únicos
 
+<a name="simple-charge"></a>
 ### Cargo Simple
 
 > {note} Al momento de usar Stripe, el método `charge` acepta la cantidad que prefieras cargar en el **denominador más bajo de la moneda usada por tu aplicación**. Sin embargo, al momento de usar Braintree, deberías pasar la cantidad de dólares completa al método `charge`:
