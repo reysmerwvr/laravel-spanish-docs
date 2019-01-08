@@ -120,7 +120,7 @@ Si deseas agregar un "fragmento con el símbolo numeral" a las URLs del paginado
 
 #### Ajustando la ventana de enlace de paginación
 
-You may control how many additional links are displayed on each side of the paginator's URL "window". By default, three links are displayed on each side of the primary paginator links. However, you may control this number using the `onEachSide` method:
+Puedes controlar cuantos enlaces adicionales son mostrados en cada lado de la "ventana" de la URL del paginador. Por defecto, tres enlaces son mostrados en cada lado de los enlaces primarios del paginador. Sin embargo, puedes controlar este número usando el método `onEachSide`:
 
     {{ $users->onEachSide(5)->links() }}
 
