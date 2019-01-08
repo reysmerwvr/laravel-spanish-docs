@@ -359,7 +359,7 @@ Como alternativa a definir cuántas veces un trabajo puede ser intentado antes d
         return now()->addSeconds(5);
     }
 
-> {tip} Tmbién se puede definir un método `retryUntil`en los listeners de eventos en cola.
+> {tip} También se puede definir un método `retryUntil` en los listeners de eventos en cola.
 
 #### Timeout
 
@@ -390,7 +390,9 @@ Sin embargo, es posible querer definir el número máximo de segundos para ejecu
 
 > {note} Esta característica requiere que la aplicación pueda interactuar con un [Redis server](/docs/{{version}}/redis).
 
-Si tu aplicación interactúa con Redis, se pueden regular los trabajos en cola por tiempo o concurrencia. Esta característica pued ser de ayuda cuando los trabajos en cola interactúan con APIs que también poseen límite de frecuencia. Por ejemplo, usando el método `throttle` method, se puede regular cierto tipo de trabajo para que se ejecute sólo diez veces por minuto. Si un lock no puede ser obtenido, se puede generalmente liberar el trabajo de vuelta a la cola para que pueda ser reintentado luego:
+Si tu aplicación interactúa con Redis, se pueden regular los trabajos en cola por tiempo o concurrencia. Esta característica pued ser de ayuda cuando los trabajos en cola interactúan con APIs que también poseen límite de frecuencia. 
+
+Por ejemplo, usando el método `throttle`, se puede regular cierto tipo de trabajo para que se ejecute sólo diez veces por minuto. Si un lock no puede ser obtenido, se puede generalmente liberar el trabajo de vuelta a la cola para que pueda ser reintentado luego:
 
     Redis::throttle('key')->allow(10)->every(60)->then(function () {
         // Job logic...
@@ -431,6 +433,16 @@ Laravel incluye un worker de cola que procesará trabajos nuevos a medida que é
 > {tip} Para mantener el proceso `queue:work` ejecutado permanentemente en segundo plano, se debe usar un monitor de procesos como [Supervisor](#supervisor-configuration) to ensure that the queue worker does not stop running.
 
 Hay que recordar que los workers de cola son procesos de vida útil larga y almacenan el estado de la aplicación iniciada en la memoria. COmo resultado, no notarán cambios en el código una vez sean iniciados. Así que durante el proceso de implementación, asegúrate de [restart your queue workers](#queue-workers-and-deployment).
+
+#### Especificando La Conexión & Cola
+
+También puedes especificar que cola de conexión el worker debería utilizar. El nombre de conexión pasado al comando `work` debería corresponder a una de las conexiones definidas en tu archivo de configuración `config/queue.php`:
+
+    php artisan queue:work redis
+
+Puedes personalizar tu worker de colas más allá al solo procesar colas particulares para una conexión dada. Por ejemplo, si todos tus correos electrónicos son procesados en una cola `emails` en tu cola de conexión `redis`, puedes emitir el siguiente comando para iniciar un worker que solo procesa dicha cola:
+
+    php artisan queue:work redis --queue=emails
 
 #### Procesar Un Sólo Trabajo
 
@@ -477,11 +489,11 @@ Este comando instruirá a todos los workers de cola que "mueran" luego de termin
 
 En tu archivo de configuración `config/queue.php`, cada conexión de cola define una opción `retry_after`. ESta opción especifica cuántos segundos debe esperar la conexión de cola antes de reintentar un trabajo que está siendo procesado. Por ejempo, si el valor de `retry_after` es establecido en `90`, el trabajo será liberado de nuevo a la cola si se ha estado procesando por 90 segundos sin haber sido eliminado. Generalmente, se debería fijar el valor de `retry_after` al número máximo de segundos que le toma razonablemente a tus trabajos ser completamente procesados.
 
-> {note} La única conexión de cola que no contiene un valor `retry_after` es Amazon SQS. SQS reintentará el trabajo basándose en el [Default Visibility Timeout](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/AboutVT.html) which is managed within the AWS console.
+> {note} La única conexión de cola que no contiene un valor `retry_after` es Amazon SQS. SQS reintentará el trabajo basándose en el [Default Visibility Timeout](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/AboutVT.html) que es administrado dentro de la consola de AWS.
 
 #### Worker Timeouts
 
-EL comando Artisan `queue:work` expone una opción `--timeout`. `--timeout` especifica qué tánto el proceso maestro de cola de Laravel esperará antes de detener un worker de cola child que está procesando un trabajo. A veces un proceso de cola child puede "congelarse" por varias razones, como una llamada HTTP externa que no responde. La opción `--timeout` remueve procesos congelados que han excedido el tiempo límite especificado:
+El comando Artisan `queue:work` expone una opción `--timeout`. `--timeout` especifica qué tánto el proceso maestro de cola de Laravel esperará antes de detener un worker de cola child que está procesando un trabajo. A veces un proceso de cola child puede "congelarse" por varias razones, como una llamada HTTP externa que no responde. La opción `--timeout` remueve procesos congelados que han excedido el tiempo límite especificado:
 
     php artisan queue:work --timeout=60
 
