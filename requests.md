@@ -400,7 +400,7 @@ Para solucionar esto, puedes usar el middleware `App\Http\Middleware\TrustProxie
         protected $headers = Request::HEADER_X_FORWARDED_ALL;
     }
 
-> {tip} Si estás usando Balanceo de Carga Elástico AWS, tu valor `$headers` debe ser `Request::HEADER_X_FORWARDED_AWS_ELB`. Para más información de las constantes que pueden ser usadas For more information on the constants that may be used in the `$headers` property, check out Symfony's documentation on [trusting proxies](http://symfony.com/doc/current/deployment/proxies.html).
+> {tip} Si estás usando Balanceo de Carga Elástico AWS, tu valor `$headers` debe ser `Request::HEADER_X_FORWARDED_AWS_ELB`. Para más información de las constantes que pueden ser usadas en la propiedad `$headers`, revisa la documentación de Symfony sobre [trusting proxies](http://symfony.com/doc/current/deployment/proxies.html).
 
 #### Trusting All Proxies
 
