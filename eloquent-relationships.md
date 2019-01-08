@@ -357,6 +357,30 @@ Al momento de definir el modelo `UserRole`, extenderemos la clase `Pivot`:
         //
     }
 
+Por supuesto, puedes combinar `using` y `withPivot` para retornar columnas de la tabla intermedia. Por ejemplo, puedes retornar las columnas `created_by` y `updated_by` desde la tabla pivot `userRole` pasando los nombres de las columnas al método `withPivot`:
+
+    <?php
+
+    namespace App;
+
+    use Illuminate\Database\Eloquent\Model;
+
+    class Role extends Model
+    {
+        /**
+         * The users that belong to the role.
+         */
+        public function users()
+        {
+            return $this->belongsToMany('App\User')
+                            ->using('App\UserRole')
+                            ->withPivot([
+                                'created_by',
+                                'updated_by'
+                            ]);
+        }
+    }    
+
 <a name="has-many-through"></a>
 ### Tiene Muchos a Través de
 
@@ -416,12 +440,98 @@ Las convenciones de clave foránea típicas de Eloquent serán usadas al momento
         }
     }
 
-<a name="polymorphic-relations"></a>
-### Relaciones Polimórficas
+<a name="polymorphic-relationships"></a>
+## Relaciones Polimorficas
 
-#### Estructura de Tabla
+Una relación polimorfica permite que el modelo objetivo pertenezca a más de un tipo de modelo usando una sóla asociación.
 
-Las relaciones polimórficas permiten que un modelo pertenezca a más de un modelo distinto en una sola asociación. Por ejemplo, imagina que los usuarios de tu aplicación pueden "comentar" posts y videos. Usando relaciones polimórficas, puedes usar una sola tabla `comments` para ambos escenarios. Primero, vamos a examinar la estructura de la tabla requerida para construir esta relación:
+<a name="one-to-one-polymorphic-relations"></a>
+### Una A Una (Polimorfica)
+
+#### Estructura De Tabla
+Una relación polimorfica una-a-una es similar a una relación una-a-una simple; sin embargo, el modelo objetivo puede pertenecer a más de un tipo de modelo en una sola asociación. Por ejemplo, un `Post` de un blog y un `User` pueden compartir una relación polimorfica con un modelo `Image`. Usando una relación polimorfica una-a-una te permite tener una sola lista de imagenes únicas que son usadas tanto los posts del blog como por las cuentas de los usuarios. Primero, vamos a examinar la estructura de la tabla:
+
+    posts
+        id - integer
+        name - string
+
+    users
+        id - integer
+        name - string
+
+    images
+        id - integer
+        url - string
+        imageable_id - integer
+        imageable_type - string
+
+Observa las columnas `imageable_id` y `imageable_type` en la tabla `images`. La columna `imageable_id` contendrá el valor del ID del post o el usuario, mientras que la columna `imageable_type` contendrá el nombre de clase del modelo padre. La columna `imageable_type` es usada por Eloquent para determinar que "tipo" de modelo padre retornar al acceder a la relación `imageable`.
+
+#### Estructura Del Modelo
+
+Luego, vamos a examinar las definiciones de modelo necesarias para construir esta relación:
+
+    <?php
+
+    namespace App;
+
+    use Illuminate\Database\Eloquent\Model;
+
+    class Image extends Model
+    {
+        /**
+         * Get all of the owning imageable models.
+         */
+        public function imageable()
+        {
+            return $this->morphTo();
+        }
+    }
+
+    class Post extends Model
+    {
+        /**
+         * Get the post's image.
+         */
+        public function image()
+        {
+            return $this->morphOne('App\Image', 'imageable');
+        }
+    }
+
+    class User extends Model
+    {
+        /**
+         * Get the user's image.
+         */
+        public function image()
+        {
+            return $this->morphOne('App\Image', 'imageable');
+        }
+    }
+
+#### Retornando La Relación
+
+Una vez que tu base de datos y modelos son definidos, puedes acceder a las relaciones mediante tus modelos. Por ejemplo, para retornar la imagen para un post, podemos usar la propiedad dinámica `image`:
+
+    $post = App\Post::find(1);
+
+    $image = $post->image;
+
+Puedes también retornar el padre del modelo polimorfico accediendo al nombre del método que realiza la llamada a `morphTo`. En nuestro caso, este es el método `imageable` en el modelo `Image`. Entonces, accederemos al método como una propiedad dinámica:
+
+    $image = App\Image::find(1);
+
+    $imageable = $image->imageable;
+
+La relación `imageable` en el modelo `Image` retornar ya sea una instancia de `Post` o `User`, dependiendo del tipo de modelo que posea la imagen.
+
+<a name="one-to-many-polymorphic-relations"></a>
+### Una A Muchas (Polimorfica)
+
+#### Estructura De Tabla
+
+Una relación polimorfica una-a-muchas es similar a una relación sencilla una-a-muchas; sin embargo, el modelo objetivo puede pertenecer a más de un tipo de modelo en una sola asociación. Por ejemplo, imagina que usuarios de tu aplicación pueden comentar tanto en posts como en videos. Usando relaciones polimorficas, puedes usar una sola tabla `comments` para ambos escenarios. Primero, vamos a examinar la estructura de tabla requerida para esta relación:
 
     posts
         id - integer
@@ -439,7 +549,91 @@ Las relaciones polimórficas permiten que un modelo pertenezca a más de un mode
         commentable_id - integer
         commentable_type - string
 
-Dos columnas importantes a notar son las columnas `commentable_id` y `commentable_type` en la tabla `comments`. La columna `commentable_id` contendrá el valor ID del post o video, mientras la columna `commentable_type` contendrá el nombre de la clase del modelo dueño. La columna `commentable_type` es la forma como el ORM determina cual "tipo" de modelo dueño devolver al momento de acceder la relación `commentable`.
+#### Estructura De Modelo
+
+Luego, vamos a examinar las definiciones de modelos necesarias para construir esta relación:
+
+    <?php
+
+    namespace App;
+
+    use Illuminate\Database\Eloquent\Model;
+
+    class Comment extends Model
+    {
+        /**
+         * Get all of the owning commentable models.
+         */
+        public function commentable()
+        {
+            return $this->morphTo();
+        }
+    }
+
+    class Post extends Model
+    {
+        /**
+         * Get all of the post's comments.
+         */
+        public function comments()
+        {
+            return $this->morphMany('App\Comment', 'commentable');
+        }
+    }
+
+    class Video extends Model
+    {
+        /**
+         * Get all of the video's comments.
+         */
+        public function comments()
+        {
+            return $this->morphMany('App\Comment', 'commentable');
+        }
+    }
+
+#### Retornando La Relación
+
+Una vez que tu base de datos y modelos son definidos, puedes acceder a las relaciones mediante tus modelos. Por ejemplo, para acceder a todos los comentarios de un post, podemos usar la propiedad dinámica `comments`:
+
+    $post = App\Post::find(1);
+
+    foreach ($post->comments as $comment) {
+        //
+    }
+
+También puedes retornar al propietario de una relación polimorfica desde un modelo polimorfico accediendo al nombre del método que realiza la llamada a `morphTo`. En nuestro caso, este es el método `commentable` en el modelo `Comment`. Así que, accederemos a dicho método como una propiedad dinámica:
+
+    $comment = App\Comment::find(1);
+
+    $commentable = $comment->commentable;
+
+La relación `commentable` en el modelo `Comment` retornará ya sea una instancia `Post` o `Video`, dependiendo de a que tipo de modelo pertenezca el comentario.
+
+<a name="many-to-many-polymorphic-relations"></a>
+### Muchas A Muchas (Polimorfica)
+
+#### Estructura De Tabla
+
+Las relaciones polimorficas Muchas-A-Muchas son un poco más complicadas que las relaciones `morphOne` y `morphMany`. Por ejemplo, un modelo `Post` de un blog y un modelo `Video` pueden compartir una relación polimorfica con un modelo `Tag`. Usando una relación polimorfica muchas-a-muchas te permite tener una única lista de etiquetas que son compartidas a través de posts y videos. Primero, vamos a examinar la estructura de tabla:
+
+    posts
+        id - integer
+        name - string
+
+    videos
+        id - integer
+        name - string
+
+    tags
+        id - integer
+        name - string
+
+    taggables
+        tag_id - integer
+        taggable_id - integer
+        taggable_type - string
+
 
 #### Estructura del Modelo
 
@@ -499,45 +693,6 @@ También puedes obtener el propietario de una relación polimórfica desde el mo
     $comment = App\Comment::find(1);
 
     $commentable = $comment->commentable;
-
-La relación `commentable` en el modelo `Comment` devolverá o una instancia de `Post` o `Video`, dependiendo de cual tipo de modelo posea el comentario.
-
-#### Tipos Polimórficos Personalizados
-
-De forma predeterminada, Laravel usará el nombre de la clase totalmente cualificada para almacenar el tipo de modelo relacionado. Por ejemplo, en el ejemplo dado anteriormente donde un `Comment` puede pertenecer a un `Post` o a un `Video`, el `commentable_type` predeterminado sería o `App\Post` o `App\Video`, respectivamente. Sin embargo, puedes desear desacoplar tu base de datos de la estructura interna de tu aplicación. En ese caso, puedes definir una relación de "morph map" para instruir a Eloquent para que use un nombre personalizado para cada modelo en lugar del nombre de la clase:
-
-    use Illuminate\Database\Eloquent\Relations\Relation;
-
-    Relation::morphMap([
-        'posts' => 'App\Post',
-        'videos' => 'App\Video',
-    ]);
-
-Puedes registrar `morphMap` en la función `boot` de tu `AppServiceProvider` o crear un proveedor de servicio separado si lo deseas.
-
-<a name="many-to-many-polymorphic-relations"></a>
-### Relaciones Polimórficas Muchas a Muchas
-
-#### Estructura de Tabla
-
-En adición a las relaciones polimórficas tradicionales, también puedes definir relaciones polimórficas "muchos a muchos". Por ejemplo, un modelo `Post` y `Video` de un blog podría compartir una relación polimórfica con un modelo `Tag`. Usando una relación polimórfica muchos-a-muchos permitirá que tengas una lista de etiquetas únicas que son compartidas a través de posts y videos de blog. Primero, vamos a examinar la estructura de la tabla:
-
-    posts
-        id - integer
-        name - string
-
-    videos
-        id - integer
-        name - string
-
-    tags
-        id - integer
-        name - string
-
-    taggables
-        tag_id - integer
-        taggable_id - integer
-        taggable_type - string
 
 #### Estructura del Modelo
 
@@ -607,6 +762,20 @@ También puedes obtener el propietario de una relación polimórfica desde el mo
         //
     }
 
+<a name="custom-polymorphic-types"></a>
+### Tipos Polimorficos Personalizados
+
+Por defecto, Laravel usará el nombre completo de clase para almacenar el tipo del modelo relacionado. Por ejemplo, dado el ejemplo uno-a-muchos de arriba donde un `Comment` puede pertenecer a una un `Post` o un `Video`, el `commentable_type` por defecto será `App\Post` o `App\Video`, respectivamente. Sin embargo, puedes querer desacoplar tu base de datos de la estructura interna de tu aplicación. En dicho caso, puedes definir un "mapa de morfología" para instruir a Eloquent a usar un nombre personalizado para cada modelo en lugar del nombre de la clase:
+
+    use Illuminate\Database\Eloquent\Relations\Relation;
+
+    Relation::morphMap([
+        'posts' => 'App\Post',
+        'videos' => 'App\Video',
+    ]);
+
+Puedes registar el `morphMap` en la función `boot` de tu `AppServiceProvider` o crear un proveedor de servicios separado si lo deseas.   
+
 <a name="querying-relations"></a>
 ## Consultando Relaciones
 
@@ -672,10 +841,15 @@ Las instrucciones `has` anidadas también pueden ser construidas usando la notac
 
 Incluso si necesitas más potencia, puedes usar los métodos `whereHas` y `orWhereHas` para poner condiciones "where" en tus consultas `has`. Estos métodos permiten que agregues restricciones personalizadas a una restricción de relación, tal como verificar el contenido de un comentario:
 
-    // Retrieve all posts with at least one comment containing words like foo%
-    $App/posts = Post::whereHas('comments', function ($query) {
+    // Retrieve posts with at least one comment containing words like foo%
+    $posts = App\Post::whereHas('comments', function ($query) {
         $query->where('content', 'like', 'foo%');
     })->get();
+
+    // Retrieve posts with at least ten comments containing words like foo%
+    $posts = App\Post::whereHas('comments', function ($query) {
+        $query->where('content', 'like', 'foo%');
+    }, '>=', 10)->get();
 
 <a name="querying-relationship-absence"></a>
 ### Consultando la Ausencia de una Relación
