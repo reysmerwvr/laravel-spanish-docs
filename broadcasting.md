@@ -511,7 +511,11 @@ If you would like to listen for events on a private channel, use the `private` m
 <a name="leaving-a-channel"></a>
 ### Leaving A Channel
 
-To leave a channel, you may call the `leave` method on your Echo instance:
+To leave a channel, you may call the `leaveChannel` method on your Echo instance:
+
+    Echo.leaveChannel('orders');
+
+If you would like to leave a channel and also its associated private and presence channels, you may call the `leave` method:
 
     Echo.leave('orders');
 
@@ -529,7 +533,7 @@ You may have noticed in the examples above that we did not specify the full name
 Alternatively, you may prefix event classes with a `.` when subscribing to them using Echo. This will allow you to always specify the fully-qualified class name:
 
     Echo.channel('orders')
-        .listen('.Namespace.Event.Class', (e) => {
+        .listen('.Namespace\\Event\\Class', (e) => {
             //
         });
 
