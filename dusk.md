@@ -1,76 +1,79 @@
-# Browser Tests (Laravel Dusk)
+# Pruebas de navegador (Laravel Dusk)
 
-- [Introduction](#introduction)
-- [Installation](#installation)
-    - [Using Other Browsers](#using-other-browsers)
-- [Getting Started](#getting-started)
-    - [Generating Tests](#generating-tests)
-    - [Running Tests](#running-tests)
-    - [Environment Handling](#environment-handling)
-    - [Creating Browsers](#creating-browsers)
-    - [Authentication](#authentication)
-    - [Database Migrations](#migrations)
-- [Interacting With Elements](#interacting-with-elements)
-    - [Dusk Selectors](#dusk-selectors)
-    - [Clicking Links](#clicking-links)
-    - [Text, Values, & Attributes](#text-values-and-attributes)
-    - [Using Forms](#using-forms)
-    - [Attaching Files](#attaching-files)
-    - [Using The Keyboard](#using-the-keyboard)
-    - [Using The Mouse](#using-the-mouse)
-    - [Scoping Selectors](#scoping-selectors)
-    - [Waiting For Elements](#waiting-for-elements)
-    - [Making Vue Assertions](#making-vue-assertions)
-- [Available Assertions](#available-assertions)
-- [Pages](#pages)
-    - [Generating Pages](#generating-pages)
-    - [Configuring Pages](#configuring-pages)
-    - [Navigating To Pages](#navigating-to-pages)
-    - [Shorthand Selectors](#shorthand-selectors)
-    - [Page Methods](#page-methods)
-- [Components](#components)
-    - [Generating Components](#generating-components)
-    - [Using Components](#using-components)
-- [Continuous Integration](#continuous-integration)
+- [Introducción](#introduction)
+- [Instalación](#installation)
+    - [Usando Otros Navegadores](#using-other-browsers)
+- [Primeros Pasos](#getting-started)
+    - [Generando Pruebas](#generating-tests)
+    - [Ejecutar Pruebas](#running-tests)
+    - [Manejo de Entorno](#environment-handling)
+    - [Creando Navegadores](#creating-browsers)
+    - [Macros de navegador](#browser-macros)
+    - [Autenticación](#authentication)
+    - [Migraciones de Base de Datos](#migrations)
+- [Interactuando con Elementos](#interacting-with-elements)
+    - [Selectores de Dusk](#dusk-selectors)
+    - [Clickeando Enlaces](#clicking-links)
+    - [Texto, Valores y Atributos](#text-values-and-attributes)
+    - [Usando Formularios](#using-forms)
+    - [Adjuntando Archivos](#attaching-files)
+    - [Usando el Teclado](#using-the-keyboard)
+    - [Usando el Ratón](#using-the-mouse)
+    - [Estableciendo el Alcance de los Selectores](#scoping-selectors)
+    - [Esperando por Elementos](#waiting-for-elements)
+    - [Haciendo Aserciones de Vue](#making-vue-assertions)
+- [Aserciones Disponibles](#available-assertions)
+- [Páginas](#pages)
+    - [Generando Páginas](#generating-pages)
+    - [Configurando Páginas](#configuring-pages)
+    - [Visitando Páginas](#navigating-to-pages)
+    - [Selectores Abreviados](#shorthand-selectors)
+    - [Métodos de Página](#page-methods)
+- [Componentes](#components)
+    - [Generando Componentes](#generating-components)
+    - [Usando Componentes](#using-components)
+- [Integración Continua](#continuous-integration)
     - [CircleCI](#running-tests-on-circle-ci)
     - [Codeship](#running-tests-on-codeship)
     - [Heroku CI](#running-tests-on-heroku-ci)
     - [Travis CI](#running-tests-on-travis-ci)
 
 <a name="introduction"></a>
-## Introduction
+## Introducción
 
-Laravel Dusk provides an expressive, easy-to-use browser automation and testing API. By default, Dusk does not require you to install JDK or Selenium on your machine. Instead, Dusk uses a standalone [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/home) installation. However, you are free to utilize any other Selenium compatible driver you wish.
+Laravel Dusk proporciona una API de automatización y prueba para navegador, expresiva y fácil de usar. De forma predeterminada, Dusk no requiere que instales JDK o Selenium en tu máquina. En su lugar, Dusk usa una instalación de [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/home) independiente. Sin embargo, siéntete libre de utilizar cualquier otro driver compatible con Selenium que desees.
 
 <a name="installation"></a>
-## Installation
+## Instalación
 
-To get started, you should add the `laravel/dusk` Composer dependency to your project:
+Para empezar, debes agregar la dependencia de Composer `laravel/dusk` a tu proyecto:
 
     composer require --dev laravel/dusk
 
-> {note} If you are manually registering Dusk's service provider, you should **never** register it in your production environment, as doing so could lead to arbitrary users being able to authenticate with your application.
+> {note} Si estás registrando manualmente el proveedor de servicio de Dusk, **nunca** deberías registrarlo en tu entorno de producción, ya que hacerlo así podría conducir a que usuarios arbitrarios sean capaces de autenticarse en tu aplicación.
 
-After installing the Dusk package, run the `dusk:install` Artisan command:
+Después de la instalación del paquete Dusk, ejecuta el comando Artisan `dusk:install`:
 
     php artisan dusk:install
 
-A `Browser` directory will be created within your `tests` directory and will contain an example test. Next, set the `APP_URL` environment variable in your `.env` file. This value should match the URL you use to access your application in a browser.
+Un directorio `Browser` será creado dentro de tu directorio `tests` y contendrá una prueba de ejemplo. Seguido, establece la variable de entorno `APP_URL` en tu archivo `.env`. Este valor debería coincidir con la URL que uses para acceder a tu aplicación en un navegador.
 
-To run your tests, use the `dusk` Artisan command. The `dusk` command accepts any argument that is also accepted by the `phpunit` command:
+Para ejecutar tus pruebas, usa el comando de Artisan `dusk`. El comando `dusk` acepta cualquier argumento que también sea aceptado por el comando `phpunit`:
 
     php artisan dusk
 
-If you had test failures the last time you ran the `dusk` command, you may save time by re-running the failing tests first using the `dusk:fails` command:
+Si tuviste fallos en las pruebas la última vez que se ejecutó el comando `dusk`, puede ahorrar tiempo volviendo a ejecutar las pruebas fallidas usando el comando `dusk: fail`:
 
     php artisan dusk:fails
 
+> {note} Dusk requiere que sus binarios de `chromedriver` sean ejecutables. Si tiene problemas para ejecutar Dusk, puede asegurarse de que los binarios sean ejecutables con el siguiente comando: `chmod -R 0755 vendor/laravel/dusk/bin`.
+
 <a name="using-other-browsers"></a>
-### Using Other Browsers
+### Usando Otros Navegadores
 
-By default, Dusk uses Google Chrome and a standalone [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/home) installation to run your browser tests. However, you may start your own Selenium server and run your tests against any browser you wish.
+De forma predeterminada, Dusk usa Google Chrome y una instalación de [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/home) independiente para ejecutar tus pruebas de navegador. Sin embargo, puedes iniciar tu propio servidor Selenium y ejecutar tus pruebas en cualquier navegador que desees.
 
-To get started, open your `tests/DuskTestCase.php` file, which is the base Dusk test case for your application. Within this file, you can remove the call to the `startChromeDriver` method. This will stop Dusk from automatically starting the ChromeDriver:
+Para empezar, abre tu archivo `tests/DuskTestCase.php`, el cual es el caso de prueba de Dusk básico para tu aplicación. Dentro de este archivo, puedes remover la ejecución del método `startChromeDriver`. Esto evitará que Dusk inicie automáticamente ChromeDriver:
 
     /**
      * Prepare for Dusk test execution.
@@ -83,7 +86,7 @@ To get started, open your `tests/DuskTestCase.php` file, which is the base Dusk 
         // static::startChromeDriver();
     }
 
-Next, you may modify the `driver` method to connect to the URL and port of your choice. In addition, you may modify the "desired capabilities" that should be passed to the WebDriver:
+Luego de esto, puedes modificar el método `driver` para conectar a la URL y puerto de tu preferencia. Además, puedes modificar las "capacidades deseadas" que deberían ser pasadas al WebDriver:
 
     /**
      * Create the RemoteWebDriver instance.
@@ -98,33 +101,33 @@ Next, you may modify the `driver` method to connect to the URL and port of your 
     }
 
 <a name="getting-started"></a>
-## Getting Started
+## Primeros Pasos
 
 <a name="generating-tests"></a>
-### Generating Tests
+### Generando Pruebas
 
-To generate a Dusk test, use the `dusk:make` Artisan command. The generated test will be placed in the `tests/Browser` directory:
+Para generar una prueba de Dusk, usa el comando de Artisan `dusk:make`. La prueba generada será colocada en el directorio `tests/Browser`:
 
     php artisan dusk:make LoginTest
 
 <a name="running-tests"></a>
-### Running Tests
+### Ejecutando Pruebas
 
-To run your browser tests, use the `dusk` Artisan command:
+Para ejecutar tus pruebas de navegador, usa el comando Artisan `dusk`:
 
     php artisan dusk
 
-If you had test failures the last time you ran the `dusk` command, you may save time by re-running the failing tests first using the `dusk:fails` command:
+Si tuviste fallos en las pruebas la última vez que se ejecutó el comando `dusk`, puede ahorrar tiempo volviendo a ejecutar las pruebas fallidas usando el comando `dusk: fail`:
 
     php artisan dusk:fails
 
-The `dusk` command accepts any argument that is normally accepted by the PHPUnit test runner, allowing you to only run the tests for a given [group](https://phpunit.de/manual/current/en/appendixes.annotations.html#appendixes.annotations.group), etc:
+El comando `dusk` acepta cualquier argumento que sea aceptado normalmente por el administrador de pruebas de PHPUnit, permitiendo que ejecutes solamente las pruebas para un [grupo](https://phpunit.de/manual/current/en/appendixes.annotations.html#appendixes.annotations.group) dado, etc:
 
     php artisan dusk --group=foo
 
-#### Manually Starting ChromeDriver
+#### Iniciando Manualmente ChromeDriver
 
-By default, Dusk will automatically attempt to start ChromeDriver. If this does not work for your particular system, you may manually start ChromeDriver before running the `dusk` command. If you choose to start ChromeDriver manually, you should comment out the following line of your `tests/DuskTestCase.php` file:
+De forma predeterminada, Dusk intentará automáticamente iniciar ChromeDriver. Si esto no funciona para tu sistema en particular, puedes iniciar manualmente ChromeDriver antes de ejecutar el comando `dusk`. Si eliges iniciar manualmente ChromeDriver, debes comentar la siguiente línea de tu archivo `tests/DuskTestCase.php`:
 
     /**
      * Prepare for Dusk test execution.
@@ -137,7 +140,7 @@ By default, Dusk will automatically attempt to start ChromeDriver. If this does 
         // static::startChromeDriver();
     }
 
-In addition, if you start ChromeDriver on a port other than 9515, you should modify the `driver` method of the same class:
+Además, si inicias ChromeDriver en un puerto diferente a 9515, deberías modificar el método `driver` de la misma clase:
 
     /**
      * Create the RemoteWebDriver instance.
@@ -152,16 +155,16 @@ In addition, if you start ChromeDriver on a port other than 9515, you should mod
     }
 
 <a name="environment-handling"></a>
-### Environment Handling
+### Manejo de Entorno
 
-To force Dusk to use its own environment file when running tests, create a `.env.dusk.{environment}` file in the root of your project. For example, if you will be initiating the `dusk` command from your `local` environment, you should create a `.env.dusk.local` file.
+Para forzar que Dusk use su propio archivo de entorno al momento de ejecutar las pruebas, crea un archivo `.env.dusk.{environment}` en el directorio raíz de tu proyecto. Por ejemplo, si estás iniciando el comando `dusk` desde tu entorno `local`, deberías crear un archivo `.env.dusk.local`.
 
-When running tests, Dusk will back-up your `.env` file and rename your Dusk environment to `.env`. Once the tests have completed, your `.env` file will be restored.
+Al momento de ejecutar pruebas, Dusk respaldará tu archivo `.env` y renombrará tu entorno Dusk a `.env`. Una vez que las pruebas han sido completadas, tu archivo `.env` será restaurado.
 
 <a name="creating-browsers"></a>
-### Creating Browsers
+### Creando Navegadores
 
-To get started, let's write a test that verifies we can log into our application. After generating a test, we can modify it to navigate to the login page, enter some credentials, and click the "Login" button. To create a browser instance, call the `browse` method:
+Para empezar, vamos a escribir una prueba que verifica que podemos entrar a nuestra aplicación. Después de generar una prueba, podemos modificarla para visitar la página de login, introducir algunas credenciales y presionar el botón "Login". Para crear una instancia del navegador, ejecuta el método `browse`:
 
     <?php
 
@@ -197,13 +200,13 @@ To get started, let's write a test that verifies we can log into our application
         }
     }
 
-As you can see in the example above, the `browse` method accepts a callback. A browser instance will automatically be passed to this callback by Dusk and is the main object used to interact with and make assertions against your application.
+Como puedes ver en el ejemplo anterior, el método `browse` acepta una función callback. Una instancia de navegador será pasada automáticamente a esta función de retorno por Dusk y es el objeto principal usado para interactuar con y hacer aserciones contra tu aplicación.
 
-> {tip} This test can be used to test the login screen generated by the `make:auth` Artisan command.
+> {tip} Esta prueba puede ser usada para probar la pantalla login generada por el comando Artisan `make:auth`.
 
-#### Creating Multiple Browsers
+#### Creando Múltiples Navegadores
 
-Sometimes you may need multiple browsers in order to properly carry out a test. For example, multiple browsers may be needed to test a chat screen that interacts with websockets. To create multiple browsers, "ask" for more than one browser in the signature of the callback given to the `browse` method:
+Algunas veces puedes necesitar múltiples navegadores con el propósito de llevar apropiadamente una prueba. Por ejemplo, múltiples navegadores pueden ser necesitados para probar una pantalla de conversaciones que interactúa con websockets. Para crear múltiples navegadores, "pregunta" por más de un navegador en la firma de la función de retorno dada al método `browse`:
 
     $this->browse(function ($first, $second) {
         $first->loginAs(User::find(1))
@@ -220,32 +223,69 @@ Sometimes you may need multiple browsers in order to properly carry out a test. 
               ->assertSee('Jeffrey Way');
     });
 
-#### Resizing Browser Windows
+#### Redimensionando las Ventanas del Navegador
 
-You may use the `resize` method to adjust the size of the browser window:
+Puedes usar el método `resize` para ajustar el tamaño de la ventana del navegador:
 
     $browser->resize(1920, 1080);
 
-The `maximize` method may be used to maximize the browser window:
+El método `maximize` puede ser usado para maximizar la ventana del navegador:
 
     $browser->maximize();
 
-<a name="authentication"></a>
-### Authentication
+<a name="browser-macros"></a>
+### Macros de navegador
 
-Often, you will be testing pages that require authentication. You can use Dusk's `loginAs` method in order to avoid interacting with the login screen during every test. The `loginAs` method accepts a user ID or user model instance:
+Si desea definir un método de navegador personalizado que puedas reutilizar en una variedad de tus pruebas, puedes usar el método `macro` en la clase` Browser`. Normalmente, deberías llamar a este método desde el método `boot` del [proveedor de servicios](/docs/{{version}}/providers):
+
+    <?php
+
+    namespace App\Providers;
+
+    use Laravel\Dusk\Browser;
+    use Illuminate\Support\ServiceProvider;
+
+    class DuskServiceProvider extends ServiceProvider
+    {
+        /**
+         * Register the Dusk's browser macros.
+         *
+         * @return void
+         */
+        public function boot()
+        {
+            Browser::macro('scrollToElement', function ($element = null) {
+                $this->script("$('html, body').animate({ scrollTop: $('$element').offset().top }, 0);");
+
+                return $this;
+            });
+        }
+    }
+
+La función `macro` acepta un nombre como primer argumento y un Closure como segundo. El Closure del macro se ejecutará cuando se llame al macro como un método en una implementación del `Browser`:
+
+    $this->browse(function ($browser) use ($user) {
+        $browser->visit('/pay')
+                ->scrollToElement('#credit-card-details')
+                ->assertSee('Enter Credit Card Details');
+    });
+
+<a name="authentication"></a>
+### Autenticación
+
+Frecuentemente, estarás probando páginas que requieren autenticación. Puedes usar el método `loginAs` de Dusk con el propósito de evitar interactuar con la pantalla de login durante cada prueba. El método `loginAs` acepta un ID de usuario o una instancia de modelo de usuario:
 
     $this->browse(function ($first, $second) {
         $first->loginAs(User::find(1))
               ->visit('/home');
     });
 
-> {note} After using the `loginAs` method, the user session will be maintained for all tests within the file.
+> {note} Después de usar el método `loginAs`, la sesión de usuario será mantenida para todas las pruebas dentro del archivo.
 
 <a name="migrations"></a>
-### Database Migrations
+### Migraciones de Bases de Datos
 
-When your test requires migrations, like the authentication example above, you should never use the `RefreshDatabase` trait. The `RefreshDatabase` trait leverages database transactions which will not be applicable across HTTP requests. Instead, use the `DatabaseMigrations` trait:
+Cuando tu prueba requiere migraciones, como el ejemplo de autenticación visto antes, nunca deberías usar el trait `RefreshDatabase`. El trait `RefreshDatabase` influye sobre las transacciones de base de datos las cuales no serán aplicables a traves de las solicitudes HTTP. En su lugar, usa el trait `DatabaseMigrations`:
 
     <?php
 
@@ -262,12 +302,12 @@ When your test requires migrations, like the authentication example above, you s
     }
 
 <a name="interacting-with-elements"></a>
-## Interacting With Elements
+## Interactuando con Elementos
 
 <a name="dusk-selectors"></a>
-### Dusk Selectors
+### Selectores de Dusk
 
-Choosing good CSS selectors for interacting with elements is one of the hardest parts of writing Dusk tests. Over time, frontend changes can cause CSS selectors like the following to break your tests:
+Elegir buenos selectores CSS para interactuar con elementos es una de las partes más difíciles de escribir las pruebas de Dusk. Con el tiempo, los cambios del diseño frontend pueden causar que los selectores CSS como los siguientes dañen tus pruebas:
 
     // HTML...
 
@@ -277,7 +317,7 @@ Choosing good CSS selectors for interacting with elements is one of the hardest 
 
     $browser->click('.login-page .container div > button');
 
-Dusk selectors allow you to focus on writing effective tests rather than remembering CSS selectors. To define a selector, add a `dusk` attribute to your HTML element. Then, prefix the selector with `@` to manipulate the attached element within a Dusk test:
+Los selectores de Dusk permiten que te enfoques en la escritura de pruebas efectivas en vez de recordar selectores CSS. Para definir un selector, agrega un atributo `dusk` a tu elemento HTML. Después, agrega un prefijo al selector con `@` para manipular el elemento conectado dentro de una prueba de Dusk:
 
     // HTML...
 
@@ -288,20 +328,20 @@ Dusk selectors allow you to focus on writing effective tests rather than remembe
     $browser->click('@login-button');
 
 <a name="clicking-links"></a>
-### Clicking Links
+### Clickeando Enlaces
 
-To click a link, you may use the `clickLink` method on the browser instance. The `clickLink` method will click the link that has the given display text:
+Para hacer clic sobre un enlace, puedes usar el método `clickLink` en la instancia del navegador. El método `clickLink` hará clic en el enlace que tiene el texto dado en la pantalla:
 
     $browser->clickLink($linkText);
 
-> {note} This method interacts with jQuery. If jQuery is not available on the page, Dusk will automatically inject it into the page so it is available for the test's duration.
+> {note} Este método interactúa con jQuery. Si jQuery no está disponible en la página, Dusk lo inyectará automáticamente de modo que esté disponible por la duración de la prueba.
 
 <a name="text-values-and-attributes"></a>
-### Text, Values, & Attributes
+### Texto, Valores, y Atributos
 
-#### Retrieving & Setting Values
+#### Obteniendo y Estableciendo Valores
 
-Dusk provides several methods for interacting with the current display text, value, and attributes of elements on the page. For example, to get the "value" of an element that matches a given selector, use the `value` method:
+Dusk proporciona varios métodos para interactuar con el texto de pantalla, valor y atributos de elementos en la página actual. Por ejemplo, para obtener el "valor" de un elemento que coincida con un selector dado, usa el método `value`:
 
     // Retrieve the value...
     $value = $browser->value('selector');
@@ -309,106 +349,106 @@ Dusk provides several methods for interacting with the current display text, val
     // Set the value...
     $browser->value('selector', 'value');
 
-#### Retrieving Text
+#### Obteniendo Texto
 
-The `text` method may be used to retrieve the display text of an element that matches the given selector:
+El método `text` puede ser usado para obtener el texto de pantalla de un elemento que coincida con el selector dado:
 
     $text = $browser->text('selector');
 
-#### Retrieving Attributes
+#### Obteniendo Atributos
 
-Finally, the `attribute` method may be used to retrieve an attribute of an element matching the given selector:
+Finalmente, el método `attribute` puede ser usado para obtener un atributo de un elemento que coincida con el selector dado:
 
     $attribute = $browser->attribute('selector', 'value');
 
 <a name="using-forms"></a>
-### Using Forms
+### Usando Formularios
 
-#### Typing Values
+#### Escribiendo Valores
 
-Dusk provides a variety of methods for interacting with forms and input elements. First, let's take a look at an example of typing text into an input field:
+Dusk proporciona una variedad de métodos para interactuar con formularios y elementos de entrada. Primero, vamos a echar un vistazo a un ejemplo de escribir texto dentro de un campo de entrada:
 
     $browser->type('email', 'taylor@laravel.com');
 
-Note that, although the method accepts one if necessary, we are not required to pass a CSS selector into the `type` method. If a CSS selector is not provided, Dusk will search for an input field with the given `name` attribute. Finally, Dusk will attempt to find a `textarea` with the given `name` attribute.
+Nota que, aunque el método acepta uno si es necesario, no estamos obligados a pasar un selector CSS dentro del método `type`. Si un selector CSS no es proporcionado, Dusk buscará un campo de entrada con el atributo `name` dado. Finalmente, Dusk intentará encontrar una `textarea` con el atributo `name` dado.
 
-To append text to a field without clearing its content, you may use the `append` method:
+Para agregar texto a un campo sin limpiar su contenido, puedes usar el método `append`:
 
     $browser->type('tags', 'foo')
             ->append('tags', ', bar, baz');
 
-You may clear the value of an input using the `clear` method:
+Puedes limpiar el valor de un campo usando el método `clear`:
 
     $browser->clear('email');
 
-#### Dropdowns
+#### Listas Desplegables
 
-To select a value in a dropdown selection box, you may use the `select` method. Like the `type` method, the `select` method does not require a full CSS selector. When passing a value to the `select` method, you should pass the underlying option value instead of the display text:
+Para seleccionar un valor en un cuadro de selección de lista desplegable, puedes usar el método `select`. Al momento de pasar un valor al método `select`, deberías pasar el valor de opción a resaltar en lugar del texto en pantalla:
 
     $browser->select('size', 'Large');
 
-You may select a random option by omitting the second parameter:
+Puedes seleccionar una opción aleatoria al omitir el segundo parámetro:
 
     $browser->select('size');
 
-#### Checkboxes
+#### Casillas de Verificación
 
-To "check" a checkbox field, you may use the `check` method. Like many other input related methods, a full CSS selector is not required. If an exact selector match can't be found, Dusk will search for a checkbox with a matching `name` attribute:
+Para "marcar" un campo de casilla de verificación, puedes usar el método `check`. Al igual que muchos otros métodos relacionados con entradas, un selector CSS completo no es obligatorio. Si un selector que coincida exactamente no puede ser encontrado, Dusk buscará una casilla de verificación con un atributo `name` coincidente.
 
     $browser->check('terms');
 
     $browser->uncheck('terms');
 
-#### Radio Buttons
+#### Botones de Radio
 
-To "select" a radio button option, you may use the `radio` method. Like many other input related methods, a full CSS selector is not required. If an exact selector match can't be found, Dusk will search for a radio with matching `name` and `value` attributes:
+Para "seleccionar" una opción de botón de radio, puedes usar el método `radio`. Al igual que muchos otros métodos relacionados con campos, un selector CSS completo no es obligatorio. Si un selector que coincida exactamente no puede ser encontrado, Dusk buscará un radio con atributos `name` y `value` coincidentes:
 
     $browser->radio('version', 'php7');
 
 <a name="attaching-files"></a>
-### Attaching Files
+### Adjuntando Archivos
 
-The `attach` method may be used to attach a file to a `file` input element. Like many other input related methods, a full CSS selector is not required. If an exact selector match can't be found, Dusk will search for a file input with matching `name` attribute:
+El método `attach` puede ser usado para adjuntar un archivo a un elemento `file`. Al igual que muchos otros métodos relacionados con campos, un selector CSS completo no es obligatorio. Si un selector que coincida exactamente no puede ser encontrado, Dusk buscará un campo de archivo con atributo `name` coincidente:
 
     $browser->attach('photo', __DIR__.'/photos/me.png');
 
-> {note} The attach function requires the `Zip` PHP extension to be installed and enabled on your server.
+> {note} La función `attach` requiere que la extensión de PHP `Zip` esté instalada y habilitada en tu servidor.
 
 <a name="using-the-keyboard"></a>
-### Using The Keyboard
+### Usando el Teclado
 
-The `keys` method allows you to provide more complex input sequences to a given element than normally allowed by the `type` method. For example, you may hold modifier keys entering values. In this example, the `shift` key will be held while `taylor` is entered into the element matching the given selector. After `taylor` is typed, `otwell` will be typed without any modifier keys:
+El método `keys` permite que proporciones secuencias de entrada más complejas para un elemento dado que lo permitido normalmente por el método `type`. Por ejemplo, puedes mantener presionada las teclas modificadoras al introducir valores. En este ejemplo, la tecla `shift` será mantenida presionada mientras la palabra `taylor` es introducida dentro del elemento que coincida con el selector dado. Después de que la palabra `taylor` sea tipeada, la palabra `otwell` será tipeada sin alguna tecla modificadora:
 
     $browser->keys('selector', ['{shift}', 'taylor'], 'otwell');
 
-You may even send a "hot key" to the primary CSS selector that contains your application:
+Incluso puedes enviar una "tecla de función" al selector CSS principal que contiene tu aplicación:
 
     $browser->keys('.app', ['{command}', 'j']);
 
-> {tip} All modifier keys are wrapped in `{}` characters, and match the constants defined in the `Facebook\WebDriver\WebDriverKeys` class, which can be [found on GitHub](https://github.com/facebook/php-webdriver/blob/community/lib/WebDriverKeys.php).
+> {tip} Todas las teclas modificadoras se envuelven entre corchetes `{}` y coinciden con las constantes definidas en la clase `Facebook\WebDriver\WebDriverKeys`, la cual puede ser [encontrada en GitHub](https://github.com/facebook/php-webdriver/blob/community/lib/WebDriverKeys.php).
 
 <a name="using-the-mouse"></a>
-### Using The Mouse
+### Usando el Ratón
 
-#### Clicking On Elements
+#### Clickeando sobre Elementos
 
-The `click` method may be used to "click" on an element matching the given selector:
+El método `click` puede ser usado para "clickear" sobre un elemento que coincida con el selector dado:
 
     $browser->click('.selector');
 
 #### Mouseover
 
-The `mouseover` method may be used when you need to move the mouse over an element matching the given selector:
+El método `mouseover` puede ser usado cuando necesitas mover el ratón sobre un elemento que coincida con el selector dado:
 
     $browser->mouseover('.selector');
 
-#### Drag & Drop
+#### Arrastrar & Soltar
 
-The `drag` method may be used to drag an element matching the given selector to another element:
+El método `drag` puede ser usado para arrastrar un elemento que coincida con el selector dado hasta otro elemento:
 
     $browser->drag('.from-selector', '.to-selector');
 
-Or, you may drag an element in a single direction:
+O, puedes arrastrar un elemento en una única dirección:
 
     $browser->dragLeft('.selector', 10);
     $browser->dragRight('.selector', 10);
@@ -416,9 +456,9 @@ Or, you may drag an element in a single direction:
     $browser->dragDown('.selector', 10);
 
 <a name="scoping-selectors"></a>
-### Scoping Selectors
+### Estableciendo el Alcance de Selectores
 
-Sometimes you may wish to perform several operations while scoping all of the operations within a given selector. For example, you may wish to assert that some text exists only within a table and then click a button within that table. You may use the `with` method to accomplish this. All operations performed within the callback given to the `with` method will be scoped to the original selector:
+Algunas veces puedes querer ejecutar varias operaciones al momento de establecer el alcance de todas las operaciones dentro de un selector dado. Por ejemplo, puedes querer comprobar que algunos textos existen unicamente dentro de una tabla y después presionar un botón dentro de la tabla. Puedes usar el método `with` para completar esta tarea. Todas las operaciones ejecutadas dentro de la función de retorno dada al método `with` serán establecidas con alcance al selector original:
 
     $browser->with('.table', function ($table) {
         $table->assertSee('Hello World')
@@ -426,19 +466,19 @@ Sometimes you may wish to perform several operations while scoping all of the op
     });
 
 <a name="waiting-for-elements"></a>
-### Waiting For Elements
+### Esperando por Elementos
 
-When testing applications that use JavaScript extensively, it often becomes necessary to "wait" for certain elements or data to be available before proceeding with a test. Dusk makes this a cinch. Using a variety of methods, you may wait for elements to be visible on the page or even wait until a given JavaScript expression evaluates to `true`.
+Al momento de probar aplicaciones que usan extensivamente JavaScript, frecuentemente se vuelve necesario "esperar" por que ciertos elementos o datos estén disponibles antes de proceder con una prueba. Dusk hace esto fácilmente. Usando una variedad de métodos, puedes esperar que los elementos estén visibles en la página e incluso esperar hasta que una expresión de JavaScript dada se evalúe como `true`.
 
-#### Waiting
+#### Esperando
 
-If you need to pause the test for a given number of milliseconds, use the `pause` method:
+Si necesitas pausar la prueba por un número de milisegundos dado, usa el método `pause`:
 
     $browser->pause(1000);
 
-#### Waiting For Selectors
+#### Esperando por Selectores
 
-The `waitFor` method may be used to pause the execution of the test until the element matching the given CSS selector is displayed on the page. By default, this will pause the test for a maximum of five seconds before throwing an exception. If necessary, you may pass a custom timeout threshold as the second argument to the method:
+El método `waitFor` puede ser usado para pausar la ejecución de la prueba hasta que el elemento que coincida con el selector CSS dado sea mostrado en la página. De forma predeterminada, esto pausará la prueba por un máximo de cinco segundos antes de arrojar una excepción. Si es necesario, puedes pasar un umbral de tiempo de expiración personalizado como segundo argumento del método:
 
     // Wait a maximum of five seconds for the selector...
     $browser->waitFor('.selector');
@@ -446,24 +486,24 @@ The `waitFor` method may be used to pause the execution of the test until the el
     // Wait a maximum of one second for the selector...
     $browser->waitFor('.selector', 1);
 
-You may also wait until the given selector is missing from the page:
+También puedes esperar todo el tiempo que el selector dado esté faltando en la página:
 
     $browser->waitUntilMissing('.selector');
 
     $browser->waitUntilMissing('.selector', 1);
 
-#### Scoping Selectors When Available
+#### Estableciendo el Alcance de Selectores Cuando Estén Disponibles
 
-Occasionally, you may wish to wait for a given selector and then interact with the element matching the selector. For example, you may wish to wait until a modal window is available and then press the "OK" button within the modal. The `whenAvailable` method may be used in this case. All element operations performed within the given callback will be scoped to the original selector:
+Ocasionalmente, puedes querer esperar por un selector dado y después interactuar con el elemento que coincida con el selector. Por ejemplo, puedes querer esperar hasta que una ventana modal esté disponible y después presionar el botón "OK" dentro de esa ventana. El método `whenAvailable` puede ser usado en este caso. Todas las operaciones de elementos ejecutadas dentro de la función de retorno dada serán establecidas con alcance al selector original:
 
     $browser->whenAvailable('.modal', function ($modal) {
         $modal->assertSee('Hello World')
               ->press('OK');
     });
 
-#### Waiting For Text
+#### Esperando por Texto
 
-The `waitForText` method may be used to wait until the given text is displayed on the page:
+El método `waitForText` puede ser usado para esperar hasta que el texto dado sea mostrado en la página:
 
     // Wait a maximum of five seconds for the text...
     $browser->waitForText('Hello World');
@@ -471,9 +511,9 @@ The `waitForText` method may be used to wait until the given text is displayed o
     // Wait a maximum of one second for the text...
     $browser->waitForText('Hello World', 1);
 
-#### Waiting For Links
+#### Esperando por Enlaces
 
-The `waitForLink` method may be used to wait until the given link text is displayed on the page:
+El método `waitForLink` puede ser usado para esperar hasta que un enlace dado sea mostrada en la página:
 
     // Wait a maximum of five seconds for the link...
     $browser->waitForLink('Create');
@@ -481,27 +521,27 @@ The `waitForLink` method may be used to wait until the given link text is displa
     // Wait a maximum of one second for the link...
     $browser->waitForLink('Create', 1);
 
-#### Waiting On The Page Location
+#### Esperando por la Localización de la Página
 
-When making a path assertion such as `$browser->assertPathIs('/home')`, the assertion can fail if `window.location.pathname` is being updated asynchronously. You may use the `waitForLocation` method to wait for the location to be a given value:
+Al momento de hacer una comprobación de ruta tal como `$browser->assertPathIs('/home')`, la comprobación puede fallar si `window.location.pathname` está siendo actualizada asincrónicamente. Puedes usar el método `waitForLocation` para esperar por la localización que tenga un valor dado:
 
     $browser->waitForLocation('/secret');
 
-You may also wait for a named route's location:
+También puede esperar la localización de una ruta con nombre:
 
     $browser->waitForRoute($routeName, $parameters);
 
-#### Waiting for Page Reloads
+#### Esperando por Recargas de Página
 
-If you need to make assertions after a page has been reloaded, use the `waitForReload` method:
+Si necesitas hacer aserciones después de que una página ha sido recargada, usa el método `waitForReload`:
 
     $browser->click('.some-action')
             ->waitForReload()
             ->assertSee('something');
 
-#### Waiting On JavaScript Expressions
+#### Esperando por Expresiones de JavaScript
 
-Sometimes you may wish to pause the execution of a test until a given JavaScript expression evaluates to `true`. You may easily accomplish this using the `waitUntil` method. When passing an expression to this method, you do not need to include the `return` keyword or an ending semi-colon:
+Algunas veces puedes querer pausar la ejecución de una prueba hasta que una expresión de JavaScript dada se evalúe a `true`. Puedes completar fácilmente esto usando el método `waitUntil`. Al momento de pasar una expresión a este método, no necesitas incluir al final la palabra clave `return` o un punto y coma `;`:
 
     // Wait a maximum of five seconds for the expression to be true...
     $browser->waitUntil('App.dataLoaded');
@@ -511,18 +551,28 @@ Sometimes you may wish to pause the execution of a test until a given JavaScript
     // Wait a maximum of one second for the expression to be true...
     $browser->waitUntil('App.data.servers.length > 0', 1);
 
-#### Waiting With A Callback
+#### Esperando por Expresiones de Vue
 
-Many of the "wait" methods in Dusk rely on the underlying `waitUsing` method. You may use this method directly to wait for a given callback to return `true`. The `waitUsing` method accepts the maximum number of seconds to wait, the interval at which the Closure should be evaluated, the Closure, and an optional failure message:
+El siguientes métodos puedes ser usados para esperar hasta que un atributo de componente de Vue dado tenga un valor dado:
+
+    // Wait until the component attribute contains the given value...
+    $browser->waitUntilVueIs('user.name', 'Taylor', '@user');
+
+    // Wait until the component attribute doesn't contain the given value...
+    $browser->waitUntilVueIsNot('user.name', null, '@user');
+
+#### Esperando por una Función de Retorno
+
+Muchos de los métodos de "espera" en Dusk confían en el método `waitUsing` subyacente. Puedes usar este método directamente para esperar por una función de retorno dada que devuelva `true`. El método `waitUsing` acepta el máximo número de segundos para esperar la Closure, el intervalo en el cual la Closure debería ser evaluada y un mensaje opcional de falla:
 
     $browser->waitUsing(10, 1, function () use ($something) {
         return $something->isReady();
     }, "Something wasn't ready in time.");
 
 <a name="making-vue-assertions"></a>
-### Making Vue Assertions
+### Haciendo Aserciones de Vue
 
-Dusk even allows you to make assertions on the state of [Vue](https://vuejs.org) component data. For example, imagine your application contains the following Vue component:
+Inclusive Dusk permite que hagas comprobaciones en el estado de componente de datos de [Vue](https://vuejs.org). Por ejemplo, imagina que tu aplicación contiene el siguiente componente de Vue:
 
     // HTML...
 
@@ -542,7 +592,7 @@ Dusk even allows you to make assertions on the state of [Vue](https://vuejs.org)
         }
     });
 
-You may assert on the state of the Vue component like so:
+Puedes comprobar el estado del componente de Vue de esta manera:
 
     /**
      * A basic Vue test example.
@@ -558,9 +608,9 @@ You may assert on the state of the Vue component like so:
     }
 
 <a name="available-assertions"></a>
-## Available Assertions
+## Aserciones Disponibles
 
-Dusk provides a variety of assertions that you may make against your application. All of the available assertions are documented in the list below:
+Dusk proporciona una variedad de aserciones que puedes hacer en tu apliación. Todas las aserciones disponibles están documentadas en la tabla de abajo:
 
 <style>
     .collection-method-list > p {
@@ -633,405 +683,405 @@ Dusk provides a variety of assertions that you may make against your application
 <a name="assert-title"></a>
 #### assertTitle
 
-Assert that the page title matches the given text:
+Comprueba que el título de la página coincida con el texto dado:
 
     $browser->assertTitle($title);
 
 <a name="assert-title-contains"></a>
 #### assertTitleContains
 
-Assert that the page title contains the given text:
+Comprueba que el título de página contenga el texto dado:
 
     $browser->assertTitleContains($title);
 
 <a name="assert-url-is"></a>
 #### assertUrlIs
 
-Assert that the current URL (without the query string) matches the given string:
+Comprueba que la URL actual (sin la cadena de consulta) coincida con la cadena dada:
 
     $browser->assertUrlIs($url);
 
 <a name="assert-scheme-is"></a>
 #### assertSchemeIs
 
-Assert that the current URL scheme matches the given scheme:
+Comprueba que el esquema de la URL actual coincide con el esquema dado:
 
     $browser->assertSchemeIs($scheme);
 
 <a name="assert-scheme-is-not"></a>
 #### assertSchemeIsNot
 
-Assert that the current URL scheme does not match the given scheme:
+Comprueba que el esquema de la URL actual no coincide con el esquema dado:
 
     $browser->assertSchemeIsNot($scheme);
 
 <a name="assert-host-is"></a>
 #### assertHostIs
 
-Assert that the current URL host matches the given host:
+Comprueba que el Host de la URL actual coincide con el Host dado:
 
     $browser->assertHostIs($host);
 
 <a name="assert-host-is-not"></a>
 #### assertHostIsNot
 
-Assert that the current URL host does not match the given host:
+Comprueba que el Host de la URL actual no coincide con el Host dado:
 
     $browser->assertHostIsNot($host);
 
 <a name="assert-port-is"></a>
 #### assertPortIs
 
-Assert that the current URL port matches the given port:
+Comprueba que el puerto de la URL actual coincide con el puerto dado:
 
     $browser->assertPortIs($port);
 
 <a name="assert-port-is-not"></a>
 #### assertPortIsNot
 
-Assert that the current URL port does not match the given port:
+Comprueba que el puerto de la URL actual no coincide con el puerto dado:
 
     $browser->assertPortIsNot($port);
 
 <a name="assert-path-begins-with"></a>
 #### assertPathBeginsWith
 
-Assert that the current URL path begins with the given path:
+Comprueba que la ruta de la URL actual comience con la ruta dada:
 
     $browser->assertPathBeginsWith($path);
 
 <a name="assert-path-is"></a>
 #### assertPathIs
 
-Assert that the current path matches the given path:
+Comprueba que la ruta actual coincida con la ruta dada:
 
     $browser->assertPathIs('/home');
 
 <a name="assert-path-is-not"></a>
 #### assertPathIsNot
 
-Assert that the current path does not match the given path:
+Comprueba que la ruta actual no coincida con la ruta dada:
 
     $browser->assertPathIsNot('/home');
 
 <a name="assert-route-is"></a>
 #### assertRouteIs
 
-Assert that the current URL matches the given named route's URL:
+Comprueba que la URL actual coincida con la URL de ruta nombrada dada:
 
     $browser->assertRouteIs($name, $parameters);
 
 <a name="assert-query-string-has"></a>
 #### assertQueryStringHas
 
-Assert that the given query string parameter is present:
+Comprueba que el parámetro de cadena para una consulta dada está presente:
 
     $browser->assertQueryStringHas($name);
 
-Assert that the given query string parameter is present and has a given value:
+Comprueba que el parámetro de cadena para una consulta dada está presente y tiene un valor dado:
 
     $browser->assertQueryStringHas($name, $value);
 
 <a name="assert-query-string-missing"></a>
 #### assertQueryStringMissing
 
-Assert that the given query string parameter is missing:
+Comprueba que el parámetro de cadena para una consulta dada está ausente:
 
     $browser->assertQueryStringMissing($name);
 
 <a name="assert-fragment-is"></a>
 #### assertFragmentIs
 
-Assert that the current fragment matches the given fragment:
+Comprueba que el fragmento actual coincide con el fragmento dado:
 
     $browser->assertFragmentIs('anchor');
 
 <a name="assert-fragment-begins-with"></a>
 #### assertFragmentBeginsWith
 
-Assert that the current fragment begins with the given fragment:
+Comprueba que el fragmento actual comienza con el fragmento dado:
 
     $browser->assertFragmentBeginsWith('anchor');
 
 <a name="assert-fragment-is-not"></a>
 #### assertFragmentIsNot
 
-Assert that the current fragment does not match the given fragment:
+AComprueba que el fragmento actual no coincide con el fragmento dado:
 
     $browser->assertFragmentIsNot('anchor');
 
 <a name="assert-has-cookie"></a>
 #### assertHasCookie
 
-Assert that the given cookie is present:
+Comprueba que el cookie dado está presente:
 
     $browser->assertHasCookie($name);
 
 <a name="assert-cookie-missing"></a>
 #### assertCookieMissing
 
-Assert that the given cookie is not present:
+Comprueba que el cookie dado no está presente:
 
     $browser->assertCookieMissing($name);
 
 <a name="assert-cookie-value"></a>
 #### assertCookieValue
 
-Assert that a cookie has a given value:
+Comprueba que un cookie tenga un valor dado:
 
     $browser->assertCookieValue($name, $value);
 
 <a name="assert-plain-cookie-value"></a>
 #### assertPlainCookieValue
 
-Assert that an unencrypted cookie has a given value:
+Comprueba que un cookie desencriptado tenga un valor dado:
 
     $browser->assertPlainCookieValue($name, $value);
 
 <a name="assert-see"></a>
 #### assertSee
 
-Assert that the given text is present on the page:
+Comprueba que el texto dado está presente en la página:
 
     $browser->assertSee($text);
 
 <a name="assert-dont-see"></a>
 #### assertDontSee
 
-Assert that the given text is not present on the page:
+Comprueba que el texto dado no está presente en la página:
 
     $browser->assertDontSee($text);
 
 <a name="assert-see-in"></a>
 #### assertSeeIn
 
-Assert that the given text is present within the selector:
+Comprueba que el texto dado está presente dentro del selector:
 
     $browser->assertSeeIn($selector, $text);
 
 <a name="assert-dont-see-in"></a>
 #### assertDontSeeIn
 
-Assert that the given text is not present within the selector:
+Comprueba que el texto dado no está presente dentro del selector:
 
     $browser->assertDontSeeIn($selector, $text);
 
 <a name="assert-source-has"></a>
 #### assertSourceHas
 
-Assert that the given source code is present on the page:
+Comprueba que el código fuente dado está presente en la página:
 
     $browser->assertSourceHas($code);
 
 <a name="assert-source-missing"></a>
 #### assertSourceMissing
 
-Assert that the given source code is not present on the page:
+Comprueba que el código fuente dado no está presente en la página:
 
     $browser->assertSourceMissing($code);
 
 <a name="assert-see-link"></a>
 #### assertSeeLink
 
-Assert that the given link is present on the page:
+Comprueba que el enlace dado está presente en la página:
 
     $browser->assertSeeLink($linkText);
 
 <a name="assert-dont-see-link"></a>
 #### assertDontSeeLink
 
-Assert that the given link is not present on the page:
+Comprueba que el enlace dado está no presente en la página:
 
     $browser->assertDontSeeLink($linkText);
 
 <a name="assert-input-value"></a>
 #### assertInputValue
 
-Assert that the given input field has the given value:
+Comprueba que el campo de entrada dado tiene el valor dado:
 
     $browser->assertInputValue($field, $value);
 
 <a name="assert-input-value-is-not"></a>
 #### assertInputValueIsNot
 
-Assert that the given input field does not have the given value:
+Comprueba que el campo de entrada dado no tiene el valor dado:
 
     $browser->assertInputValueIsNot($field, $value);
 
 <a name="assert-checked"></a>
 #### assertChecked
 
-Assert that the given checkbox is checked:
+Comprueba que la casilla de verificación está marcada:
 
     $browser->assertChecked($field);
 
 <a name="assert-not-checked"></a>
 #### assertNotChecked
 
-Assert that the given checkbox is not checked:
+Comprueba que la casilla de verificación no está marcada:
 
     $browser->assertNotChecked($field);
 
 <a name="assert-radio-selected"></a>
 #### assertRadioSelected
 
-Assert that the given radio field is selected:
+Comprueba que el campo de radio está seleccionado:
 
     $browser->assertRadioSelected($field, $value);
 
 <a name="assert-radio-not-selected"></a>
 #### assertRadioNotSelected
 
-Assert that the given radio field is not selected:
+Comprueba que el campo de radio no está seleccionado:
 
     $browser->assertRadioNotSelected($field, $value);
 
 <a name="assert-selected"></a>
 #### assertSelected
 
-Assert that the given dropdown has the given value selected:
+Comprueba que la lista desplegable tiene seleccionado el valor dado:
 
     $browser->assertSelected($field, $value);
 
 <a name="assert-not-selected"></a>
 #### assertNotSelected
 
-Assert that the given dropdown does not have the given value selected:
+Comprueba que la lista desplegable no tiene seleccionado el valor dado:
 
     $browser->assertNotSelected($field, $value);
 
 <a name="assert-select-has-options"></a>
 #### assertSelectHasOptions
 
-Assert that the given array of values are available to be selected:
+Comprueba que el arreglo dado de valores están disponibles para ser seleccionados:
 
     $browser->assertSelectHasOptions($field, $values);
 
 <a name="assert-select-missing-options"></a>
 #### assertSelectMissingOptions
 
-Assert that the given array of values are not available to be selected:
+Comprueba que el arreglo dado de valores no están disponibles para ser seleccionados:
 
     $browser->assertSelectMissingOptions($field, $values);
 
 <a name="assert-select-has-option"></a>
 #### assertSelectHasOption
 
-Assert that the given value is available to be selected on the given field:
+Comprueba que el valor dado está disponible para ser seleccionado en el campo dado:
 
     $browser->assertSelectHasOption($field, $value);
 
 <a name="assert-value"></a>
 #### assertValue
 
-Assert that the element matching the given selector has the given value:
+Comprueba que el elemento que coincida con el selector dado tenga el valor dado:
 
     $browser->assertValue($selector, $value);
 
 <a name="assert-visible"></a>
 #### assertVisible
 
-Assert that the element matching the given selector is visible:
+Comprueba que el elemento que coincida con el selector dado sea visible:
 
     $browser->assertVisible($selector);
 
 <a name="assert-present"></a>
 #### assertPresent
 
-Assert that the element matching the given selector is present:
+Comprueba que el elemento que coincida con el selector dado está presente:
 
     $browser->assertPresent($selector);
 
 <a name="assert-missing"></a>
 #### assertMissing
 
-Assert that the element matching the given selector is not visible:
+Comprueba que el elemento que coincida con el selector dado no sea visible:
 
     $browser->assertMissing($selector);
 
 <a name="assert-dialog-opened"></a>
 #### assertDialogOpened
 
-Assert that a JavaScript dialog with the given message has been opened:
+Comprueba que un diálogo JavaScript con un mensaje dado ha sido abierto:
 
     $browser->assertDialogOpened($message);
 
 <a name="assert-enabled"></a>
 #### assertEnabled
 
-Assert that the given field is enabled:
+Comprueba que el campo dado está activado:
 
     $browser->assertEnabled($field);
 
 <a name="assert-disabled"></a>
 #### assertDisabled
 
-Assert that the given field is disabled:
+Comprueba que el campo dado está desactivado:
 
     $browser->assertDisabled($field);
 
 <a name="assert-focused"></a>
 #### assertFocused
 
-Assert that the given field is focused:
+Comprueba que el campo dado está enfocado:
 
     $browser->assertFocused($field);
 
 <a name="assert-not-focused"></a>
 #### assertNotFocused
 
-Assert that the given field is not focused:
+Comprueba que el campo dado no está enfocado:
 
     $browser->assertNotFocused($field);
 
 <a name="assert-vue"></a>
 #### assertVue
 
-Assert that a given Vue component data property matches the given value:
+Comprueba que una propiedad de datos de un componente de Vue dado coincida con el valor dado:
 
     $browser->assertVue($property, $value, $componentSelector = null);
 
 <a name="assert-vue-is-not"></a>
 #### assertVueIsNot
 
-Assert that a given Vue component data property does not match the given value:
+Comprueba que una propiedad de datos de un componente de Vue dado no coincida con el valor dado:
 
     $browser->assertVueIsNot($property, $value, $componentSelector = null);
 
 <a name="assert-vue-contains"></a>
 #### assertVueContains
 
-Assert that a given Vue component data property is an array and contains the given value:
+Comprueba que una propiedad de datos de un componente de Vue dado es un arreglo y contiene el valor dado:
 
     $browser->assertVueContains($property, $value, $componentSelector = null);
 
 <a name="assert-vue-does-not-contain"></a>
 #### assertVueDoesNotContain
 
-Assert that a given Vue component data property is an array and does not contain the given value:
+Comprueba que una propiedad de datos de un componente de Vue dado es un arreglo y no contiene el valor dado:
 
     $browser->assertVueDoesNotContain($property, $value, $componentSelector = null);
 
 <a name="pages"></a>
-## Pages
+## Páginas
 
-Sometimes, tests require several complicated actions to be performed in sequence. This can make your tests harder to read and understand. Pages allow you to define expressive actions that may then be performed on a given page using a single method. Pages also allow you to define short-cuts to common selectors for your application or a single page.
+Alguna veces, las pruebas requieren que varias acciones complicadas sean ejecutadas en secuencia. Esto puede hacer tus pruebas más difíciles de leer y entender. Las páginas permiten que definas acciones expresivas que entonces pueden ser ejecutadas en una página dada usando un solo método. Las páginas también permiten que definas abreviaturas para selectores comunes para tu aplicación o una página única.
 
 <a name="generating-pages"></a>
-### Generating Pages
+### Generando Páginas
 
-To generate a page object, use the `dusk:page` Artisan command. All page objects will be placed in the `tests/Browser/Pages` directory:
+Para generar un objeto de página, usa el comando Artisan `dusk:page`. Todos los objetos de página serán colocados en el directorio `tests/Browser/Pages`:
 
     php artisan dusk:page Login
 
 <a name="configuring-pages"></a>
-### Configuring Pages
+### Configurando Páginas
 
-By default, pages have three methods: `url`, `assert`, and `elements`. We will discuss the `url` and `assert` methods now. The `elements` method will be [discussed in more detail below](#shorthand-selectors).
+De forma predeterminada, las páginas tienen tres métodos: `url`, `assert`, y `elements`. Discutiremos los métodos `url` y `assert` ahora. El método `elements` será [discutido con más detalle debajo](#shorthand-selectors).
 
-#### The `url` Method
+#### El método `url`
 
-The `url` method should return the path of the URL that represents the page. Dusk will use this URL when navigating to the page in the browser:
+El método `url` debería devolver la ruta de la URL que representa la página. Dusk usará esta URL al momento de navegar a la página en el navegador:
 
     /**
      * Get the URL for the page.
@@ -1043,9 +1093,9 @@ The `url` method should return the path of the URL that represents the page. Dus
         return '/login';
     }
 
-#### The `assert` Method
+#### El método `assert`
 
-The `assert` method may make any assertions necessary to verify that the browser is actually on the given page. Completing this method is not necessary; however, you are free to make these assertions if you wish. These assertions will be run automatically when navigating to the page:
+El método `assert` puede hacer algunas aserciones necesarias para verificar que el navegador en realidad está en la página dada. Completar este método no es necesario; sin embargo, eres libre de hacer estas aserciones si lo deseas. Estas aserciones serán ejecutadas automáticamente al momento de navegar hacia la página:
 
     /**
      * Assert that the browser is on the page.
@@ -1058,15 +1108,15 @@ The `assert` method may make any assertions necessary to verify that the browser
     }
 
 <a name="navigating-to-pages"></a>
-### Navigating To Pages
+### Navegando hacia las Páginas
 
-Once a page has been configured, you may navigate to it using the `visit` method:
+Una vez que una página ha sido configurada, puedes navegar hacia ésta usando el método `visit`:
 
     use Tests\Browser\Pages\Login;
 
     $browser->visit(new Login);
 
-Sometimes you may already be on a given page and need to "load" the page's selectors and methods into the current test context. This is common when pressing a button and being redirected to a given page without explicitly navigating to it. In this situation, you may use the `on` method to load the page:
+Algunas veces puedes estar ya en una página dada y necesitas "cargar" los selectores y métodos dentro del contexto de prueba actual. Esto es común al momento de presionar un botón y ser redireccionado a una página dada sin navegar explícitamente a esta. En esta situación, puedes usar el método `on` para cargar la página.
 
     use Tests\Browser\Pages\CreatePlaylist;
 
@@ -1076,9 +1126,9 @@ Sometimes you may already be on a given page and need to "load" the page's selec
             ->assertSee('@create');
 
 <a name="shorthand-selectors"></a>
-### Shorthand Selectors
+### Selectores Abreviados
 
-The `elements` method of pages allows you to define quick, easy-to-remember shortcuts for any CSS selector on your page. For example, let's define a shortcut for the "email" input field of the application's login page:
+El método `elements` de páginas permite que definas abreviaturas rápidas, fáciles de recordar para cualquier selector CSS en tu página. Por ejemplo, vamos a definir una abreviación para el campo "email" de la página login de la aplicación:
 
     /**
      * Get the element shortcuts for the page.
@@ -1092,13 +1142,13 @@ The `elements` method of pages allows you to define quick, easy-to-remember shor
         ];
     }
 
-Now, you may use this shorthand selector anywhere you would use a full CSS selector:
+Ahora, puedes usar este selector de abreviación en cualquier lugar que usarías un selector de CSS completo:
 
     $browser->type('@email', 'taylor@laravel.com');
 
-#### Global Shorthand Selectors
+#### Selectores de Abreviaturas Globales
 
-After installing Dusk, a base `Page` class will be placed in your `tests/Browser/Pages` directory. This class contains a `siteElements` method which may be used to define global shorthand selectors that should be available on every page throughout your application:
+Después de instalar Dusk, una clase `Page` básica será colocada en tu directorio `tests/Browser/Pages`. Esta clase contiene un método `siteElements` el cual puede ser usado para definir selectores de abreviaturas globales que deberían estar disponibles en cada página en cada parte de tu aplicación:
 
     /**
      * Get the global element shortcuts for the site.
@@ -1113,9 +1163,9 @@ After installing Dusk, a base `Page` class will be placed in your `tests/Browser
     }
 
 <a name="page-methods"></a>
-### Page Methods
+### Métodos de Página
 
-In addition to the default methods defined on pages, you may define additional methods which may be used throughout your tests. For example, let's imagine we are building a music management application. A common action for one page of the application might be to create a playlist. Instead of re-writing the logic to create a playlist in each test, you may define a `createPlaylist` method on a page class:
+Además de los métodos predeterminados definidos en páginas, puedes definir métodos adicionales, los cuales pueden ser usados en cualquier parte de tus pruebas. Por ejemplo, vamos a imaginar que estamos construyendo una aplicación para administración de música. Una acción común para una página de la aplicación podría ser crear una lista de reproducción. En lugar de volver a escribir la lógica para crear una lista de reproducción en cada prueba, puedes definir un método `createPlaylist` en una clase página:
 
     <?php
 
@@ -1142,7 +1192,7 @@ In addition to the default methods defined on pages, you may define additional m
         }
     }
 
-Once the method has been defined, you may use it within any test that utilizes the page. The browser instance will automatically be passed to the page method:
+Una vez que el método ha sido definido, puedes usarlo dentro de cualquier prueba que utilice la página. La instancia de navegador será pasada automáticamente al método de la página:
 
     use Tests\Browser\Pages\Dashboard;
 
@@ -1151,18 +1201,18 @@ Once the method has been defined, you may use it within any test that utilizes t
             ->assertSee('My Playlist');
 
 <a name="components"></a>
-## Components
+## Componentes
 
-Components are similar to Dusk’s “page objects”, but are intended for pieces of UI and functionality that are re-used throughout your application, such as a navigation bar or notification window. As such, components are not bound to specific URLs.
+Los componentes son similares a “los objetos de página” de Dusk, pero son planeados para partes de UI y funcionalidades que sean reusadas en otras partes de tu aplicación, tal como una barra de navegación o ventana de notificación. Como tal, los componentes no son enlazados a URLs específicas.
 
 <a name="generating-components"></a>
-### Generating Components
+### Generando Componentes
 
-To generate a component, use the `dusk:component` Artisan command. New components are placed in the `test/Browser/Components` directory:
+Para generar un componente, usa el comando Artisan `dusk:component`. Los nuevos componentes son colocados en el directorio `test/Browser/Components`:
 
     php artisan dusk:component DatePicker
 
-As shown above, a "date picker" is an example of a component that might exist throughout your application on a variety of pages. It can become cumbersome to manually write the browser automation logic to select a date in dozens of tests throughout your test suite. Instead, we can define a Dusk component to represent the date picker, allowing us to encapsulate that logic within the component:
+Como se muestra antes, un "calendario" es un ejemplo de un componente que puede existir en cualquier parte de tu aplicación en una variedad de páginas. Puede volverse complejo escribir manualmente lógica de automatización de navegador para seleccionar una fecha entre docenas de pruebas en cualquier parte de tu software de prueba. En lugar de esto, podemos definir un componente de Dusk para representar el calendario, permitiendo encapsular esa lógica dentro del componente:
 
     <?php
 
@@ -1213,10 +1263,10 @@ As shown above, a "date picker" is an example of a component that might exist th
          *
          * @param  \Laravel\Dusk\Browser  $browser
          * @param  int  $month
-         * @param  int  $year
+         * @param  int  $day
          * @return void
          */
-        public function selectDate($browser, $month, $year)
+        public function selectDate($browser, $month, $day)
         {
             $browser->click('@date-field')
                     ->within('@month-list', function ($browser) use ($month) {
@@ -1229,9 +1279,9 @@ As shown above, a "date picker" is an example of a component that might exist th
     }
 
 <a name="using-components"></a>
-### Using Components
+### Usando Componentes
 
-Once the component has been defined, we can easily select a date within the date picker from any test. And, if the logic necessary to select a date changes, we only need to update the component:
+Una vez que el componente ha sido definido, fácilmente podemos seleccionar una fecha dentro del calendario desde cualquier prueba. Y, si la lógica necesaria para seleccionar una fecha cambia, solamente necesitaremos actualizar el componente:
 
     <?php
 
@@ -1262,12 +1312,12 @@ Once the component has been defined, we can easily select a date within the date
     }
 
 <a name="continuous-integration"></a>
-## Continuous Integration
+## Integración Continua
 
 <a name="running-tests-on-circle-ci"></a>
 ### CircleCI
 
-If you are using CircleCI to run your Dusk tests, you may use this configuration file as a starting point. Like TravisCI, we will use the `php artisan serve` command to launch PHP's built-in web server:
+Si estás usando CircleCI para ejecutar tus pruebas de Dusk, ypuedes usar este archivo de configuración como punto de partida. Al igual que con TravisCI, usaremos el comando `php artisan serve` para ejecutar el servidor web integrado de PHP:
 
      version: 2
      jobs:
@@ -1297,19 +1347,20 @@ If you are using CircleCI to run your Dusk tests, you may use this configuration
 <a name="running-tests-on-codeship"></a>
 ### Codeship
 
-To run Dusk tests on [Codeship](https://codeship.com), add the following commands to your Codeship project. Of course, these commands are a starting point and you are free to add additional commands as needed:
+Para ejecutar pruebas de Dusk en [Codeship](https://codeship.com), agrega los siguientes comandos a tu proyecto Codeship. Ciertamente, estos comandos son un punto de partida y eres libre de agregar los comandos adicionales que necesites:
 
-    phpenv local 7.1
+    phpenv local 7.2
     cp .env.testing .env
-    composer install --no-interaction
-    nohup bash -c "./vendor/laravel/dusk/bin/chromedriver-linux 2>&1 &"
+    mkdir -p ./bootstrap/cache
+    composer install --no-interaction --prefer-dist
+    php artisan key:generate
     nohup bash -c "php artisan serve 2>&1 &" && sleep 5
     php artisan dusk
 
 <a name="running-tests-on-heroku-ci"></a>
 ### Heroku CI
 
-To run Dusk tests on [Heroku CI](https://www.heroku.com/continuous-integration), add the following Google Chrome buildpack and scripts to your Heroku `app.json` file:
+Para ejecutar tus pruebas de Dusk en [Heroku CI](https://www.heroku.com/continuous-integration), agregar el siguiente buildpack de Google Chrome y scripts a tu archivo `app.json` de Heroku:
 
     {
       "environments": {
@@ -1329,14 +1380,12 @@ To run Dusk tests on [Heroku CI](https://www.heroku.com/continuous-integration),
 <a name="running-tests-on-travis-ci"></a>
 ### Travis CI
 
-To run your Dusk tests on [Travis CI](https://travis-ci.org), we will need to use the "sudo-enabled" Ubuntu 14.04 (Trusty) environment. Since Travis CI is not a graphical environment, we will need to take some extra steps in order to launch a Chrome browser. In addition, we will use `php artisan serve` to launch PHP's built-in web server:
+Para ejecutar tus pruebas de Dusk en [Travis CI](https://travis-ci.org), usa la siguiente configuración en el archivo `.travis.yml`. Ya que Travis CI no es un entorno gráfico, necesitaremos tomar algunos pasos extras con el propósito de ejecutar un navegador Chrome. En adición a esto, usaremos `php artisan serve` para ejecutar el servidor web integrado de PHP:
 
     language: php
-    sudo: required
-    dist: trusty
 
     php:
-      - 7.2
+      - 7.3
 
     addons:
       chrome: stable
@@ -1353,6 +1402,6 @@ To run your Dusk tests on [Travis CI](https://travis-ci.org), we will need to us
     script:
       - php artisan dusk
 
-In your `.env.testing` file, adjust the value of `APP_URL`:
+En tu archivo `.env.testing`, ajusta el valor de `APP_URL`:
 
     APP_URL=http://127.0.0.1:8000
