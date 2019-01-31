@@ -10,13 +10,13 @@
     - [Opciones](#options)
     - [Arreglos como entradas](#input-arrays)
     - [Descripciones de Entrada ](#input-descriptions)
-- [Entrada/Salida de Comando](#command-io)
-    - [Recuperación de Entrada](#retrieving-input)
-    - [Solicitud de Entrada](#prompting-for-input)
-    - [Escritura Salida](#writing-output)
+- [Entrada/Salida de Comandos](#command-io)
+    - [Recuperación de Entradas](#retrieving-input)
+    - [Solicitud de Entradas](#prompting-for-input)
+    - [Escritura de Salida](#writing-output)
 - [Registro de Comandos](#registering-commands)
-- [Ejecución de Comandos por medio de programación](#programmatically-executing-commands)
-    - [Llamado de Comandos Desde Otros Comandos](#calling-commands-from-other-commands)
+- [Ejecución de Comandos de Forma Programática](#programmatically-executing-commands)
+    - [Llamando Comandos Desde Otros Comandos](#calling-commands-from-other-commands)
 
 <a name="introduction"></a>
 ## Introducción
@@ -31,14 +31,14 @@ También cada comando incluye una "ayuda" en pantalla, la cual muestra y describ
 
 #### Laravel REPL
 
-Todas las aplicaciones de Laravel incluyen Tinker, un REPL desarrollado usando el paquete [PsySH](https://github.com/bobthecow/psysh). Tinker te permite interactuar con toda tu aplicación de Laravel en la línea de comando, incluyendo el ORM Eloquent, colas de trabajo, eventos, entre otros. Para entrar en el entorno de Tinker, ejecuta el comando Artisan `tinker`:
+Todas las aplicaciones de Laravel incluyen Tinker, un REPL desarrollado usando el paquete [PsySH](https://github.com/bobthecow/psysh). Tinker te permite interactuar con toda tu aplicación de Laravel en la línea de comando, incluyendo el ORM Eloquent, colas de trabajo, eventos, entre otros. Para entrar en el entorno de Tinker, ejecuta el comando de Artisan `tinker`:
 
     php artisan tinker
 
 <a name="writing-commands"></a>
 ## Escritura de Comandos
 
-Además de los comandos proporcionados por Artisan, puedes también crear tus propios comandos personalizados. Los comandos son típicamente almacenados en el directorio `app/Console/Commands`; sin embargo, eres libre de escoger tu propia ubicación de almacenamiento siempre y cuando tus comandos puedan ser cargados por Composer.
+Además de los comandos proporcionados por Artisan, también puedes crear tus propios comandos personalizados. Los comandos son típicamente almacenados en el directorio `app/Console/Commands`; sin embargo, eres libre de escoger tu propia ubicación de almacenamiento, siempre y cuando tus comandos puedan ser cargados por Composer.
 
 <a name="generating-commands"></a>
 ### Generación de Comandos
@@ -50,7 +50,7 @@ Para crear un nuevo comando, usa el comando Artisan `make:command`. Este comando
 <a name="command-structure"></a>
 ### Estructura de un Comando
 
-Después de generar tu comando, deberías rellenar las propiedades `signature` y `description` de la clase, las cuales serán usadas cuando se muestra tu comando en la pantalla `list`. El método `handle` será llamado cuando tu comando es ejecutado. Puedes colocar tu lógica del comando en este método.
+Después de generar tu comando, debes rellenar las propiedades `signature` y `description` de la clase, las cuales serán usadas cuando se muestra tu comando en la pantalla `list`. El método `handle` será llamado cuando tu comando es ejecutado. Puedes colocar tu lógica del comando en este método.
 
 > {tip} Para una mayor reutilización del código, es una buena práctica mantener ligeros tus comandos de consola y dejar que se remitan a los servicios de aplicaciones para llevar a cabo sus tareas. En el siguiente ejemplo, toma en cuenta que inyectamos una clase de servicio para hacer el "trabajo pesado" de enviar los correos electrónicos.
 
@@ -114,7 +114,7 @@ Echemos un vistazo a un comando de ejemplo. Observa que podemos inyectar cualqui
 <a name="closure-commands"></a>
 ### Comandos usando una función anónima (Closure)
 
-Los comandos basados en Closure proporcionan una alternativa para definir comandos de consola como clases.  De la misma manera que los Closures de rutas son una alternativa para los controladores, piensa en los Closures de comandos como una alternativa a las clases de comandos.  Dentro del método `commands` de tu archivo `app/Console/Kernel.php`, Laravel carga el archivo `routes/console.php`:
+Los comandos basados en Closure proporcionan una alternativa para definir comandos de consola como clases. De la misma manera que los Closures de rutas son una alternativa para los controladores, piensa en los Closures de comandos como una alternativa a las clases de comandos. Dentro del método `commands` de tu archivo `app/Console/Kernel.php`, Laravel carga el archivo `routes/console.php`:
 
     /**
      * Register the Closure based commands for the application.
@@ -126,13 +126,13 @@ Los comandos basados en Closure proporcionan una alternativa para definir comand
         require base_path('routes/console.php');
     }
 
-Aunque este archivo no define rutas HTTP, define los puntos de entrada (rutas) a tu aplicación basados en consola. Dentro de este archivo, puedes definir todos sus rutas basadas en Closure usando el método `Artisan::command`. El método `command` acepta dos argumentos: la [firma del comando](#defining-input-expectations) y un Closure, el cual recibe los argumentos y opciones de los comandos:
+Aunque este archivo no define rutas HTTP, define los puntos de entrada (rutas) a tu aplicación basados en consola. Dentro de este archivo, puedes definir todas sus rutas basadas en Closure usando el método `Artisan::command`. El método `command` acepta dos argumentos: la [firma del comando](#defining-input-expectations) y un Closure, el cual recibe los argumentos y opciones de los comandos:
 
     Artisan::command('build {project}', function ($project) {
         $this->info("Building {$project}!");
     });
 
-El Closure está vinculado a la instancia del comando subyacente, así tienes acceso completo a todos los métodos helper que normalmente podrías acceder en una clase de comando completa.
+El Closure está vinculado a la instancia del comando subyacente, así tienes acceso completo a todos los métodos helper a los que normalmente podrías acceder en una clase de comando completa.
 
 #### Determinación de tipos (Type-Hinting) de Dependencias
 
@@ -161,7 +161,7 @@ Al escribir comandos de consola, es común recopilar información del usuario a 
 <a name="arguments"></a>
 ### Argumentos
 
-Todos los argumentos y opciones suministrados por el usuario están envueltos en llaves. En el siguiente ejemplo, el comando define un argumento **obligatorio**: `user`:
+Todos los argumentos y opciones suministrados por el usuario están envueltos en llaves. En el siguiente ejemplo, el comando define un argumento **obligatorio** `user`:
 
     /**
      * The name and signature of the console command.
@@ -253,12 +253,12 @@ Puedes asignar descripciones para los argumentos y opciones de entrada separando
                             {--queue= : Whether the job should be queued}';
 
 <a name="command-io"></a>
-## Entrada y salida (E/S) de Comando
+## Entrada y salida (E/S) de Comandos
 
 <a name="retrieving-input"></a>
 ### Recuperación de Entrada
 
-Cuando tu comando es ejecutado, obviamente necesitarás acceder a los valores para los argumentos y opciones aceptados por tu comando. Para ello, puedes usar los métodos `argument` y `option`:
+Cuando tu comando es ejecutado, obviamente necesitarás acceder a los valores de los argumentos y opciones aceptados por tu comando. Para ello, puedes usar los métodos `argument` y `option`:
 
     /**
      * Execute the console command.
@@ -328,7 +328,7 @@ Si necesitas darle al usuario un conjunto de opciones predefinadas, puedes usar 
 <a name="writing-output"></a>
 ### Escritura de Salida
 
-Para enviar salida a la consola, usa los métodos `line`, `info`, `comment`, `question` y `error`. Cada uno de estos métodos usará colores ANSI apropiados para su propósito. Por ejemplo, vamos a mostrar alguna información general al usuario.  Normalmente, el método `info` se mostrará en la consola como texto verde:
+Para enviar datos de salida a la consola, usa los métodos `line`, `info`, `comment`, `question` y `error`. Cada uno de estos métodos usará colores ANSI apropiados para su propósito. Por ejemplo, vamos a mostrar alguna información general al usuario. Normalmente, el método `info` se mostrará en la consola como texto verde:
 
     /**
      * Execute the console command.
@@ -340,17 +340,17 @@ Para enviar salida a la consola, usa los métodos `line`, `info`, `comment`, `qu
         $this->info('Display this on the screen');
     }
 
-Para mostrar un mensaje de error, usa el método `error`. El texto del mensaje de error es típicamente mostrardo en rojo:
+Para mostrar un mensaje de error, usa el método `error`. El texto del mensaje de error es típicamente mostrado en rojo:
 
     $this->error('Something went wrong!');
 
-Si desea mostrar la salida de consola sin color, utilice el método `line`:
+Si desea mostrar la salida de consola sin color, usa el método `line`:
 
     $this->line('Display this on the screen');
 
 #### Diseños de tabla
 
-El método `table` hace que sea fácil formatear correctamente varias filas / columnas de datos. Simplemente pase los encabezados y filas al método. El ancho y la altura se calcularán dinámicamente en función de los datos dados:
+El método `table` hace que sea fácil formatear correctamente varias filas / columnas de datos. Simplemente pasa los encabezados y filas al método. El ancho y la altura se calcularán dinámicamente en función de los datos dados:
 
     $headers = ['Name', 'Email'];
 
@@ -360,7 +360,7 @@ El método `table` hace que sea fácil formatear correctamente varias filas / co
 
 #### Barras de progreso
 
-Para tareas de larga ejecución, podría ser útil mostrar un indicador de progreso. Usando el objeto de salida, podemos iniciar, avanzar y detener la Barra de Progreso. Primero, define el número total de pasos por los que el proceso se pasará. Luego, avance la barra de progreso después de procesar cada elemento:
+Para tareas de larga ejecución, podría ser útil mostrar un indicador de progreso. Usando el objeto de salida, podemos iniciar, avanzar y detener la Barra de Progreso. Primero, define el número total de pasos por los que el proceso pasará. Luego, avanza la barra de progreso después de procesar cada elemento:
 
     $users = App\User::all();
 
@@ -374,12 +374,12 @@ Para tareas de larga ejecución, podría ser útil mostrar un indicador de progr
 
     $bar->finish();
 
-Para opciones más avanzadas, verifica la [documentación del componente Symfony Progress Bar](https://symfony.com/doc/current/components/console/helpers/progressbar.html).
+Para opciones más avanzadas, verifica la [documentación del componente Progress Bar de Symfony](https://symfony.com/doc/current/components/console/helpers/progressbar.html).
 
 <a name="registering-commands"></a>
 ## Registro de Comandos
 
-Debido a la llamada al método `load` en el método `commands` del kernel de tu consola, todos los comandos dentro del directorio `app/Console/Commands` se registrarán automáticamente con Artisan.  De hecho, puedes realizar llamadas adicionales al método `load` para escanear otros directorios en busca de comandos Artisan:
+Debido a la llamada al método `load` en el método `commands` del kernel de tu consola, todos los comandos dentro del directorio `app/Console/Commands` se registrarán automáticamente con Artisan. De hecho, puedes realizar llamadas adicionales al método `load` para escanear otros directorios en busca de comandos Artisan:
 
     /**
      * Register the commands for the application.
@@ -394,16 +394,16 @@ Debido a la llamada al método `load` en el método `commands` del kernel de tu 
         // ...
     }
 
-También puedes registrar comandos manualmente agregando su nombre de clase en la propiedad `$commands` de tu archivo `app/Console/Kernel.php`. Cuando Artisan arranca, todos los comandos listados en esta propiedad se resolverán por el [contenedor de servicios](/docs/{{version}}/container) y serán registrados con Artisan:
+También puedes registrar comandos manualmente agregando su nombre de clase en la propiedad `$commands` de tu archivo `app/Console/Kernel.php`. Cuando Artisan arranca, todos los comandos listados en esta propiedad serán resueltos por el [contenedor de servicios](/docs/{{version}}/container) y serán registrados con Artisan:
 
     protected $commands = [
         Commands\SendEmails::class
     ];
 
 <a name="programmatically-executing-commands"></a>
-## Ejecución de Comandos por medio de programación
+## Ejecución de Comandos de Forma Programática
 
-En ocasiones, es posible que desees ejecutar un comando de Artisan fuera de la interfaz de línea de comandos (CLI). Por ejemplo, puedes desear disparar un comando Artisan de una ruta o controlador. Puedes usar el método `call` en el facade `Artisan` para lograr esto. El método `call` acepta el nombre o la clase del comando como primer argumento y un arreglo de parámetros del comando como segundo argumento. El código de salida será devuelto:
+En ocasiones, es posible que desees ejecutar un comando de Artisan fuera de la interfaz de línea de comandos (CLI). Por ejemplo, puedes desear ejecutar un comando Artisan de una ruta o controlador. Puedes usar el método `call` en el facade `Artisan` para lograr esto. El método `call` acepta el nombre o la clase del comando como primer argumento y un arreglo de parámetros del comando como segundo argumento. El código de salida será devuelto:
 
     Route::get('/foo', function () {
         $exitCode = Artisan::call('email:send', [
@@ -441,7 +441,7 @@ Si tu comando define una opción que acepta un arreglo, puedes pasar un arreglo 
 
 #### Pasando valores Booleanos
 
-Si necesitas especificar el valor de una opción que no acepta valores de tipo cadena, tal como la opción`--force` en el comando `migrate:refresh`, debes pasar `true` o `false`:
+Si necesitas especificar el valor de una opción que no acepta valores de tipo cadena, tal como la opción `--force` en el comando `migrate:refresh`, debes pasar `true` o `false`:
 
     $exitCode = Artisan::call('migrate:refresh', [
         '--force' => true,
