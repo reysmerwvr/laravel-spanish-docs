@@ -39,14 +39,14 @@ Para crear un factory, usa el [comando Artisan](/docs/{{version}}/artisan) `make
 
 El nueva factory será colocado en tu directorio `database/factories`.
 
-La opción `--model` puede ser usada para indicar el nombre del modelo creado por el factory. Esta opción pre-rellenará el archivo de factory generada con el modelo dado:
+La opción `--model` puede ser usada para indicar el nombre del modelo creado por el factory. Esta opción pre-rellenará el archivo de factory generado con el modelo dado:
 
     php artisan make:factory PostFactory --model=Post
 
 <a name="resetting-the-database-after-each-test"></a>
 ## Reinicializando la Base de Datos Después de Cada Prueba
 
-Con frecuencia es útil reinicializar tu base de datos después de cada prueba de modo que los datos de una prueba previa no interfieran con las pruebas subsecuentes. El trait `RefreshDatabase` toma el enfoque más óptimo para migrar tu base de datos de pruebas, dependiendo de si estás usando una base de datos en-memoria o una base de datos tradicional. Usa el trait en tu clase de prueba y todo será manejados por ti:
+Con frecuencia es útil reinicializar tu base de datos después de cada prueba de modo que los datos de una prueba previa no interfieran con las pruebas subsecuentes. El trait `RefreshDatabase` toma el enfoque más óptimo para migrar tu base de datos de pruebas, dependiendo de si estás usando una base de datos en memoria o una base de datos tradicional. Usa el trait en tu clase de prueba y todo será manejado por ti:
 
     <?php
 
@@ -98,7 +98,7 @@ También puedes crear archivos de factories adicionales para cada modelo para un
 <a name="factory-states"></a>
 ### Estados de un Factory
 
-Los estados te permiten definir modificaciones discretas que pueden ser aplicadas a tus factories de modelos en cualquier combinación. Por ejemplo, tu modelo `User` podría tener un estado `delinquent` que modifique uno de sus valores de atributo predeterminados. Puedes definir tus transformaciones de estado usando el método `state`. Para estados simples, puede pasar un arreglo de modificaciones de atributos:
+Los estados te permiten definir modificaciones discretas que pueden ser aplicadas a tus factories de modelos en cualquier combinación. Por ejemplo, tu modelo `User` podría tener un estado `delinquent` que modifique uno de sus valores de atributo predeterminados. Puedes definir tus transformaciones de estado usando el método `state`. Para estados simples, puedes pasar un arreglo de modificaciones de atributos:
 
     $factory->state(App\User::class, 'delinquent', [
         'account_status' => 'delinquent',
@@ -150,7 +150,7 @@ Una vez que has definido tus factories, puedes usar la función global `factory`
         // Use model in tests...
     }
 
-También puedes crear una Colección de muchos modelos o crear modelos de un tipo dado:
+También puedes crear una colección de muchos modelos o crear modelos de un tipo dado:
 
     // Create three App\User instances...
     $users = factory(App\User::class, 3)->make();
@@ -163,7 +163,7 @@ También puedes aplicar cualquiera de tus [estados](#factory-states) a los model
 
     $users = factory(App\User::class, 5)->states('premium', 'delinquent')->make();
 
-#### Sobreescribiendo Atributos
+#### Sobrescribiendo Atributos
 
 Si prefieres sobreescribir algunos de los valores predeterminados de tus modelos, puedes pasar un arreglo de valores al método `make`. Solamente, los valores especificados serán reemplazados mientras que el resto de los valores permanecerán con sus valores predeterminados cómo se especificó en el factory:
 
@@ -187,7 +187,7 @@ El método `create` no solamente crea las instancias de un modelo sino que tambi
         // Use model in tests...
     }
 
-Puedes sobreescribir atributos en el modelo al pasar un arreglo al método `create`:
+Puedes sobrescribir atributos en el modelo al pasar un arreglo al método `create`:
 
     $user = factory(App\User::class)->create([
         'name' => 'Abigail',
