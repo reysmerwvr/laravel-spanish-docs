@@ -62,12 +62,12 @@ Ciertamente, también puedes usar accesadores para retornar nuevos valores compu
         return "{$this->first_name} {$this->last_name}";
     }
 
-> {tip} Si deseas que estos valores computados sean agregados a las representaciones de arreglo / JSON de tu modelo, y [necesitarás adjuntarlos](https://laravel.com/docs/{{version}}/eloquent-serialization#appending-values-to-json).
+> {tip} Si deseas que estos valores computados sean agregados a las representaciones de arreglo / JSON de tu modelo, [necesitarás adjuntarlos](https://laravel.com/docs/{{version}}/eloquent-serialization#appending-values-to-json).
 
 <a name="defining-a-mutator"></a>
 ### Definiendo un Mutador
 
-Para definir un mutador, define un método `setFooAttribute` en tu modelo donde `Foo` es el nombre de la columna que deseas acceder en el formato Studly Case (Primera letra de cada palabra en mayúscula). Así, otra vez, vamos a definir un mutador para el atributo `first_name`. Este mutador será ejecutado automáticamente cuando intentamos establecer el valor del atributo `first_name` en el modelo:
+Para definir un mutador, define un método `setFooAttribute` en tu modelo, donde `Foo` es el nombre de la columna que deseas acceder en el formato Studly Case (Primera letra de cada palabra en mayúscula). Así, otra vez, vamos a definir un mutador para el atributo `first_name`. Este mutador será ejecutado automáticamente cuando intentamos establecer el valor del atributo `first_name` en el modelo:
 
     <?php
 
@@ -100,7 +100,7 @@ En este ejemplo, la función `setFirstNameAttribute` será ejecutada con el valo
 <a name="date-mutators"></a>
 ## Mutadores de Fecha
 
-De forma predeterminada, Eloquent convierte las columnas `created_at` y `updated_at` a instancias de [Carbon](https://github.com/briannesbitt/Carbon), la cual extiende la clase `DateTime` de PHP para proporcionar una mezcla de métodos útiles. Puedes personalizar cuáles fechas serán automáticamente mutadas e incluso deshabilitar completamente esta mutación, al sobreescribir la propiedad `$dates` de tu modelo:
+De forma predeterminada, Eloquent convierte las columnas `created_at` y `updated_at` a instancias de [Carbon](https://github.com/briannesbitt/Carbon), la cual extiende la clase `DateTime` de PHP para proporcionar una mezcla de métodos útiles. Puedes personalizar cuáles fechas serán automáticamente mutadas e incluso deshabilitar completamente esta mutación, al sobrescribir la propiedad `$dates` de tu modelo:
 
     <?php
 
@@ -120,7 +120,7 @@ De forma predeterminada, Eloquent convierte las columnas `created_at` y `updated
         ];
     }
 
-> {tip} Puedes desactivar las marcas de tiempo (timestamps) predeterminadas `created_at` y` updated_at` configurando la propiedad pública `$timestamps` de su modelo en `false`.
+> {tip} Puedes desactivar las marcas de tiempo (timestamps) predeterminadas `created_at` y` updated_at` configurando la propiedad pública `$timestamps` de tu modelo en `false`.
 
 Cuando una columna es considerada una fecha, puedes establecer su valor a una marca de tiempo UNIX, cadena de fecha (`Y-m-d`), cadena fecha-hora y por supuesto, una instancia `DateTime` / `Carbon`. El valor de la fecha será convertido y almacenado correctamente en tu base de datos:
 
@@ -227,7 +227,7 @@ Una vez que la conversión es definida, puedes acceder al atributo `options` y s
 <a name="date-casting"></a>
 ### Conversión de fechas
 
-Al usar el tipo de conversión `date` o` datetime`, puede especificar el formato de la fecha. Este formato se utilizará cuando el [modelo se serializa a un arreglo o JSON](/docs/{{version}}/eloquent-serialization):
+Al usar el tipo de conversión `date` o` datetime`, puedes especificar el formato de la fecha. Este formato se utilizará cuando el [modelo se serializa a un arreglo o JSON](/docs/{{version}}/eloquent-serialization):
 
     /**
      * The attributes that should be cast to native types.
