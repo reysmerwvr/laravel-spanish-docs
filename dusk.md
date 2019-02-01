@@ -41,7 +41,7 @@
 <a name="introduction"></a>
 ## Introducción
 
-Laravel Dusk proporciona una API de automatización y prueba para navegador, expresiva y fácil de usar. De forma predeterminada, Dusk no requiere que instales JDK o Selenium en tu máquina. En su lugar, Dusk usa una instalación de [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/home) independiente. Sin embargo, siéntete libre de utilizar cualquier otro driver compatible con Selenium que desees.
+Laravel Dusk proporciona una API de automatización y prueba para navegador, expresiva y fácil de usar. De forma predeterminada, Dusk no requiere que instales JDK o Selenium en tu computador. En su lugar, Dusk usa una instalación de [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/home) independiente. Sin embargo, siéntete libre de utilizar cualquier otro driver compatible con Selenium que desees.
 
 <a name="installation"></a>
 ## Instalación
@@ -62,11 +62,11 @@ Para ejecutar tus pruebas, usa el comando de Artisan `dusk`. El comando `dusk` a
 
     php artisan dusk
 
-Si tuviste fallos en las pruebas la última vez que se ejecutó el comando `dusk`, puede ahorrar tiempo volviendo a ejecutar las pruebas fallidas usando el comando `dusk: fail`:
+Si tuviste fallos en las pruebas la última vez que se ejecutó el comando `dusk`, puedes ahorrar tiempo volviendo a ejecutar las pruebas fallidas usando el comando `dusk: fail`:
 
     php artisan dusk:fails
 
-> {note} Dusk requiere que sus binarios de `chromedriver` sean ejecutables. Si tiene problemas para ejecutar Dusk, puede asegurarse de que los binarios sean ejecutables con el siguiente comando: `chmod -R 0755 vendor/laravel/dusk/bin`.
+> {note} Dusk requiere que los binarios de `chromedriver` sean ejecutables. Si tienes problemas para ejecutar Dusk, asegurate de que los binarios sean ejecutables con el siguiente comando: `chmod -R 0755 vendor/laravel/dusk/bin`.
 
 <a name="using-other-browsers"></a>
 ### Usando Otros Navegadores
@@ -117,7 +117,7 @@ Para ejecutar tus pruebas de navegador, usa el comando Artisan `dusk`:
 
     php artisan dusk
 
-Si tuviste fallos en las pruebas la última vez que se ejecutó el comando `dusk`, puede ahorrar tiempo volviendo a ejecutar las pruebas fallidas usando el comando `dusk: fail`:
+Si tuviste fallos en las pruebas la última vez que se ejecutó el comando `dusk`, puedes ahorrar tiempo volviendo a ejecutar las pruebas fallidas usando el comando `dusk: fail`:
 
     php artisan dusk:fails
 
@@ -206,7 +206,7 @@ Como puedes ver en el ejemplo anterior, el método `browse` acepta una función 
 
 #### Creando Múltiples Navegadores
 
-Algunas veces puedes necesitar múltiples navegadores con el propósito de llevar apropiadamente una prueba. Por ejemplo, múltiples navegadores pueden ser necesitados para probar una pantalla de conversaciones que interactúa con websockets. Para crear múltiples navegadores, "pregunta" por más de un navegador en la firma de la función de retorno dada al método `browse`:
+Algunas veces puedes necesitar múltiples navegadores con el propósito de ejecutar apropiadamente una prueba. Por ejemplo, múltiples navegadores pueden ser necesitados para probar una pantalla de conversaciones que interactúa con websockets. Para crear múltiples navegadores, "pregunta" por más de un navegador en la firma de la función de retorno dada al método `browse`:
 
     $this->browse(function ($first, $second) {
         $first->loginAs(User::find(1))
@@ -262,7 +262,7 @@ Si desea definir un método de navegador personalizado que puedas reutilizar en 
         }
     }
 
-La función `macro` acepta un nombre como primer argumento y un Closure como segundo. El Closure del macro se ejecutará cuando se llame al macro como un método en una implementación del `Browser`:
+La función `macro` acepta un nombre como primer argumento y un Closure como segundo. El Closure del macro se ejecutará cuando se llame al macro como un método en una implementación de `Browser`:
 
     $this->browse(function ($browser) use ($user) {
         $browser->visit('/pay')
@@ -285,7 +285,7 @@ Frecuentemente, estarás probando páginas que requieren autenticación. Puedes 
 <a name="migrations"></a>
 ### Migraciones de Bases de Datos
 
-Cuando tu prueba requiere migraciones, como el ejemplo de autenticación visto antes, nunca deberías usar el trait `RefreshDatabase`. El trait `RefreshDatabase` influye sobre las transacciones de base de datos las cuales no serán aplicables a traves de las solicitudes HTTP. En su lugar, usa el trait `DatabaseMigrations`:
+Cuando tu prueba requiere migraciones, como el ejemplo de autenticación visto antes, nunca deberías usar el trait `RefreshDatabase`. El trait `RefreshDatabase` influye sobre las transacciones de base de datos, las cuales no serán aplicables a traves de las solicitudes HTTP. En su lugar, usa el trait `DatabaseMigrations`:
 
     <?php
 
@@ -370,7 +370,7 @@ Dusk proporciona una variedad de métodos para interactuar con formularios y ele
 
     $browser->type('email', 'taylor@laravel.com');
 
-Nota que, aunque el método acepta uno si es necesario, no estamos obligados a pasar un selector CSS dentro del método `type`. Si un selector CSS no es proporcionado, Dusk buscará un campo de entrada con el atributo `name` dado. Finalmente, Dusk intentará encontrar una `textarea` con el atributo `name` dado.
+Nota que, aunque el método acepta uno si es necesario, no estamos obligados a pasar un selector CSS dentro del método `type`. Si un selector CSS no es proporcionado, Dusk buscará un campo de entrada con el atributo `name` dado. Finalmente, Dusk intentará encontrar un `textarea` con el atributo `name` dado.
 
 Para agregar texto a un campo sin limpiar su contenido, puedes usar el método `append`:
 
@@ -468,7 +468,7 @@ Algunas veces puedes querer ejecutar varias operaciones al momento de establecer
 <a name="waiting-for-elements"></a>
 ### Esperando por Elementos
 
-Al momento de probar aplicaciones que usan extensivamente JavaScript, frecuentemente se vuelve necesario "esperar" por que ciertos elementos o datos estén disponibles antes de proceder con una prueba. Dusk hace esto fácilmente. Usando una variedad de métodos, puedes esperar que los elementos estén visibles en la página e incluso esperar hasta que una expresión de JavaScript dada se evalúe como `true`.
+Al momento de probar aplicaciones que usan JavaScript de forma extensiva, frecuentemente se vuelve necesario "esperar" por que ciertos elementos o datos estén disponibles antes de proceder con una prueba. Dusk hace esto fácilmente. Usando una variedad de métodos, puedes esperar que los elementos estén visibles en la página e incluso esperar hasta que una expresión de JavaScript dada se evalúe como `true`.
 
 #### Esperando
 
@@ -553,7 +553,7 @@ Algunas veces puedes querer pausar la ejecución de una prueba hasta que una exp
 
 #### Esperando por Expresiones de Vue
 
-El siguientes métodos puedes ser usados para esperar hasta que un atributo de componente de Vue dado tenga un valor dado:
+Los siguientes métodos puedes ser usados para esperar hasta que un atributo de componente de Vue dado tenga un determinado valor:
 
     // Wait until the component attribute contains the given value...
     $browser->waitUntilVueIs('user.name', 'Taylor', '@user');
@@ -1110,7 +1110,7 @@ El método `assert` puede hacer algunas aserciones necesarias para verificar que
 <a name="navigating-to-pages"></a>
 ### Navegando hacia las Páginas
 
-Una vez que una página ha sido configurada, puedes navegar hacia ésta usando el método `visit`:
+Una vez que una página ha sido configurada, puedes navegar hacia esta usando el método `visit`:
 
     use Tests\Browser\Pages\Login;
 
@@ -1165,7 +1165,7 @@ Después de instalar Dusk, una clase `Page` básica será colocada en tu directo
 <a name="page-methods"></a>
 ### Métodos de Página
 
-Además de los métodos predeterminados definidos en páginas, puedes definir métodos adicionales, los cuales pueden ser usados en cualquier parte de tus pruebas. Por ejemplo, vamos a imaginar que estamos construyendo una aplicación para administración de música. Una acción común para una página de la aplicación podría ser crear una lista de reproducción. En lugar de volver a escribir la lógica para crear una lista de reproducción en cada prueba, puedes definir un método `createPlaylist` en una clase página:
+Además de los métodos predeterminados definidos en páginas, puedes definir métodos adicionales, los cuales pueden ser usados en cualquier parte de tus pruebas. Por ejemplo, vamos a imaginar que estamos construyendo una aplicación para administración de música. Una acción común para una página de la aplicación podría ser crear una lista de reproducción. En lugar de volver a escribir la lógica para crear una lista de reproducción en cada prueba, puedes definir un método `createPlaylist` en una clase de página:
 
     <?php
 
@@ -1317,7 +1317,7 @@ Una vez que el componente ha sido definido, fácilmente podemos seleccionar una 
 <a name="running-tests-on-circle-ci"></a>
 ### CircleCI
 
-Si estás usando CircleCI para ejecutar tus pruebas de Dusk, ypuedes usar este archivo de configuración como punto de partida. Al igual que con TravisCI, usaremos el comando `php artisan serve` para ejecutar el servidor web integrado de PHP:
+Si estás usando CircleCI para ejecutar tus pruebas de Dusk, puedes usar este archivo de configuración como punto de partida. Al igual que con TravisCI, usaremos el comando `php artisan serve` para ejecutar el servidor web integrado de PHP:
 
      version: 2
      jobs:
@@ -1360,7 +1360,7 @@ Para ejecutar pruebas de Dusk en [Codeship](https://codeship.com), agrega los si
 <a name="running-tests-on-heroku-ci"></a>
 ### Heroku CI
 
-Para ejecutar tus pruebas de Dusk en [Heroku CI](https://www.heroku.com/continuous-integration), agregar el siguiente buildpack de Google Chrome y scripts a tu archivo `app.json` de Heroku:
+Para ejecutar tus pruebas de Dusk en [Heroku CI](https://www.heroku.com/continuous-integration), agrega el siguiente buildpack de Google Chrome y scripts a tu archivo `app.json` de Heroku:
 
     {
       "environments": {
