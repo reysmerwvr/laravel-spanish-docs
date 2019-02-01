@@ -19,7 +19,7 @@ Al momento de construir APIs JSON, con frecuencia necesitas convertir tus modelo
 <a name="serializing-to-arrays"></a>
 ### Serializando a Arreglos
 
-Para convertir un modelo y sus [relaciones](/docs/{{version}}/eloquent-relationships) cargadas a un arreglo, deberías usar el método `toArray`. Este método es recursivo, ya que todos los atributos y todas las relaciones (incluyendo las relaciones de relaciones) serán convertidas a arreglos:
+Para convertir un modelo y sus [relaciones](/docs/{{version}}/eloquent-relationships) cargadas a un arreglo, debes usar el método `toArray`. Este método es recursivo, ya que todos los atributos y todas las relaciones (incluyendo las relaciones de relaciones) serán convertidas a arreglos:
 
     $user = App\User::with('roles')->first();
 
@@ -42,7 +42,7 @@ Para convertir un modelo a JSON, deberías usar el método `toJson`. Igual que `
 
     return $user->toJson(JSON_PRETTY_PRINT);
 
-Alternativamente, puedes convertir un modelo o colección en una cadena, la cual ejecutará  automáticamente el método `toJson` sobre el modelo o colección:
+Alternativamente, puedes convertir un modelo o colección en una cadena, la cual ejecutará automáticamente el método `toJson` sobre el modelo o colección:
 
     $user = App\User::find(1);
 
@@ -151,7 +151,7 @@ Una vez que el atributo ha sido agregado a la lista `appends`, será incluido en
 
 #### Añadiendo en tiempo de ejecución
 
-Puedes indicar a solo una instancia de un modelo que agregue atributos utilizando el método `append`. O, puede usar el método `setAppends` para sobreescribir el arreglo completo de propiedades adjuntadas para una instancia de un modelo dada:
+Puedes indicar una única instancia de modelo que agregue atributos utilizando el método `append`. También usar el método `setAppends` para sobrescribir el arreglo completo de propiedades adjuntadas para una instancia de un modelo dado:
 
     return $user->append('is_admin')->toArray();
 
@@ -171,7 +171,7 @@ Puedes personalizar el formato de serialización de atributos de fecha de Eloque
 
 #### Personalización Global Mediante Carbon
 
-Laravel extiende la librería de fecha [Carbon](https://github.com/briannesbitt/Carbon) con el propósito de proporcionar la personalización conveniente del formato de serialización de Carbon. Para personalizar la forma en que todas las fechas Carbon a través de tu aplicación sean serializadas, usa el método `Carbon::serializeUsing`. El método `serializeUsing` acepta una Closure la cual devuelve una representación cadena de la fecha para la serialización JSON:
+Laravel extiende la librería de fecha [Carbon](https://github.com/briannesbitt/Carbon) con el propósito de proporcionar la personalización conveniente del formato de serialización de Carbon. Para personalizar la forma en que todas las fechas Carbon a través de tu aplicación sean serializadas, usa el método `Carbon::serializeUsing`. El método `serializeUsing` acepta una Closure la cual devuelve una representación en forma de cadena de la fecha para la serialización JSON:
 
     <?php
 
