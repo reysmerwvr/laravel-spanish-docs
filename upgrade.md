@@ -1,29 +1,29 @@
-# Upgrade Guide
+# Guía de Actualización
 
-- [Upgrading To 5.7.0 From 5.6](#upgrade-5.7.0)
+- [Actualizando de 5.7.0 desde 5.6](#upgrade-5.7.0)
 
 <a name="upgrade-5.7.0"></a>
-## Upgrading To 5.7.0 From 5.6
+## Actualizando de 5.7.0 desde 5.6
 
-#### Estimated Upgrade Time: 10 - 15 Minutes
+#### Tiempo Estimado de Actualización: 10 - 15 Minutos
 
-> {note} We attempt to document every possible breaking change. Since some of these breaking changes are in obscure parts of the framework only a portion of these changes may actually affect your application.
+> {note} Intentamos documentar cada posible cambio de ruptura. Dado que algunos de estos cambios de ruptura se encuentran en partes oscuras del framework, solo una parte de estos cambios puede afectar tu aplicación.
 
-### Updating Dependencies
+### Actualizando Dependencias
 
-Update your `laravel/framework` dependency to `5.7.*` in your `composer.json` file.
+Actualiza tu dependencia `laravel/framework` a `5.7.*` en tu archivo `composer.json`.
 
-If you are using Laravel Passport, you should update your `laravel/passport` dependency to `^7.0` in your `composer.json` file.
+Si estás utilizando Laravel Passport, debes actualizar tu dependencia, `laravel/passport` a `^7.0` en tu archivo `composer.json`.
 
-Of course, don't forget to examine any 3rd party packages consumed by your application and verify you are using the proper version for Laravel 5.7 support.
+Por supuesto, no olvides examinar los paquetes de terceros consumidos por tu aplicación y verificar que estés utilizando la versión adecuada para soportar Laravel 5.7.
 
-### Application
+### Aplicación
 
-#### The `register` Method
+#### El método `register`
 
-**Likelihood Of Impact: Very Low**
+**Probabilidad de impacto: Muy Bajo**
 
-The unused `options` argument of the `Illuminate\Foundation\Application` class' `register` method has been removed. If you are overriding this method, you should update your method's signature:
+El argumento no utilizado `options` de la clase `Illuminate\Foundation\Application` se ha eliminado. Si estás sobreescribiendo este método, debes actualizar la firma de su método:
 
     /**
      * Register a service provider with the application.
@@ -36,39 +36,47 @@ The unused `options` argument of the `Illuminate\Foundation\Application` class' 
 
 ### Artisan
 
-#### Scheduled Job Connection & Queues
+#### Conexión de Trabajo Programada y Colas
 
-**Likelihood Of Impact: Low**
+**Probabilidad de impacto: Bajo**
 
-The `$schedule->job` method now respects the `queue` and `connection` properties on the job class if a connection / job is not explicitly passed into the `job` method.
+El método `$schedule->job` ahora respeta las propiedades `queue` y `connection` en la clase de trabajo si una conexión / trabajo no se pasa explícitamente al método `job`.
 
-Generally, this should be considered a bug fix; however, it is listed as a breaking change out of caution. [Please let us know if you encounter any issues surrounding this change](https://github.com/laravel/framework/pull/25216).
+En general, esto debería considerarse una corrección de error; sin embargo, se muestra como un cambio importante de precaución. [Por favor, háganos saber si tienes algún problema relacionado con este cambio](https://github.com/laravel/framework/pull/25216)
 
-### Assets
+### Archivos Assets
 
-#### Asset Directory Flattened
+#### Directorio Asset aplanado
 
-**Likelihood Of Impact: None**
+**Probabilidad de impacto: Ninguna**
 
-For new Laravel 5.7 applications, the assets directory that contains the scripts and styles has been flattened into the `resources` directory. This **will not** affect existing applications and does not require changes to your existing applications.
+Para nuevas aplicaciones con Laravel 5.7, el diretorio assets que contiene los scripts y estilos ha sido aplanado dentro del directorio `resources`. Esto **NO** afectará las aplicaciones existentes y no es requerido que lo cambies en tus aplicaciones existentes.
 
-However, if you wish to make this change, you should move all files from the `resources/assets/*` directory up one level:
+Sin embargo, si deseas hacer este cambio, debes mover todos los archivos desde el directorio`resources/assets/*` al directorio superior:
 
-- From `resources/assets/js/*` to `resources/js/*`
-- From `resources/assets/sass/*` to `resources/sass/*`
+- De `resources/assets/js/*` a `resources/js/*`
+- De `resources/assets/sass/*` a `resources/sass/*`
 
-Then, update any reference to the old directories in your `webpack.mix.js` file:
+Luego, actualizar cualquier referencia a los viejos directorios en tu archivo `webpack.mix.js`:
 
     mix.js('resources/js/app.js', 'public/js')
        .sass('resources/sass/app.scss', 'public/css');
 
-### Authentication
+#### Directorio `svg` Agregado
 
-#### The `Authenticate` Middleware
+**Probabilidad de impacto: Muy Alto**
 
-**Likelihood Of Impact: Low**
+Se agregó el nuevo directorio, `svg`, al directorio `public`. Este contiene cuatro archivos svg: `403.svg`, `404.svg`, `500.svg` y `503.svg`, los cuales son mostrados en sus respectivas páginas de error.
 
-The `authenticate` method of the `Illuminate\Auth\Middleware\Authenticate` middleware has been updated to accept the incoming `$request` as its first argument. If you are overriding this method in your own `Authenticate` middleware, you should update your middleware's signature:
+Puedes obtener los archivos [de GitHub](https://github.com/laravel/laravel/tree/master/public/svg).
+
+### Autenticación
+
+#### El Middleware `Authenticate`
+
+**Probabilidad de impacto: Bajo**
+
+El método `authenticate` del middleware `Illuminate\Auth\Middleware\Authenticate` ha sido actualizado para aceptar el `$request` entrante como su primer argumento. Si estás sobreescribiendo este método en tu propio middleware `Authenticate`, debes actualizar la firma de tu middleware:
 
     /**
      * Determine if the user is logged in to any of the given guards.
@@ -81,11 +89,11 @@ The `authenticate` method of the `Illuminate\Auth\Middleware\Authenticate` middl
      */
     protected function authenticate($request, array $guards)
 
-#### The `ResetsPasswords` Trait
+#### El trait `ResetsPasswords`
 
-**Likelihood Of Impact: Low**
+**Probabilidad de impacto: Bajo**
 
-The protected `sendResetResponse` method of the `ResetsPasswords` trait now accepts the incoming `Illuminate\Http\Request` as its first argument. If you are overriding this method, you should update your method's signature:
+El método protected `sendResetResponse` del trait `ResetsPasswords` ahora acepta la `Illuminate\Http\Request` entrante como su primer argumento. Si estás sobreescribiendo este método, debes actualizar la firma de tu método:
 
     /**
      * Get the response for a successful password reset.
@@ -96,11 +104,11 @@ The protected `sendResetResponse` method of the `ResetsPasswords` trait now acce
      */
     protected function sendResetResponse(Request $request, $response)
 
-#### The `SendsPasswordResetEmails` Trait
+#### El trait `SendsPasswordResetEmails`
 
-**Likelihood Of Impact: Low**
+**Probabilidad de impacto: Bajo**
 
-The protected `sendResetLinkResponse` method of the `SendsPasswordResetEmails` trait now accepts the incoming `Illuminate\Http\Request` as its first argument. If you are overriding this method, you should update your method's signature:
+El método protected `sendResetLinkResponse` del trait `SendsPasswordResetEmails` ahora acepta la `Illuminate\Http\Request` entrante como su primer argumento. Si estás sobreescribiendo este método, debes actualizar la firma de tu método:
 
     /**
      * Get the response for a successful password reset link.
@@ -111,13 +119,13 @@ The protected `sendResetLinkResponse` method of the `SendsPasswordResetEmails` t
      */
     protected function sendResetLinkResponse(Request $request, $response)
 
-### Authorization
+### Autorización
 
-#### The `Gate` Contract
+#### El Contrato `Gate`
 
-**Likelihood Of Impact: Very Low**
+**Probabilidad de impacto: Muy Bajo**
 
-The `raw` method was changed from `protected` to `public` visibility. In addition, it [was added to the `Illuminate\Contracts\Auth\Access\Gate` contract](https://github.com/laravel/framework/pull/25143):
+La visibilidad del método `raw` ha sido cambiada de `protected` a `public`. Además, [fue agregado al contrato `Illuminate\Contracts\Auth\Access\Gate`](https://github.com/laravel/framework/pull/25143):
 
     /**
      * Get the raw result from the authorization callback.
@@ -128,13 +136,13 @@ The `raw` method was changed from `protected` to `public` visibility. In additio
      */
     public function raw($ability, $arguments = []);
 
-If you are implementing this interface, you should add this method to your implementation.
+Si estás implementando esta interfaz, debes agregar este método a tu implementación.
 
-#### The `Login` Event
+#### El Evento `Login`
 
-**Likelihood Of Impact: Very Low**
+**Probabilidad de impacto: Muy Bajo**
 
-The `__construct` method of `Illuminate\Auth\Events\Login` event has a new `$guard` argument:
+El método `__construct` del evento `Illuminate\Auth\Events\Login` tiene un nuevo argumento `$guard`:
 
     /**
      * Create a new event instance.
@@ -146,7 +154,7 @@ The `__construct` method of `Illuminate\Auth\Events\Login` event has a new `$gua
      */
     public function __construct($guard, $user, $remember)
 
-If you are dispatching this event manually within your application, you'll need to pass this new argument into the event's constructor. The following example passes the default framework guard to the Login event:
+Si estás despachando este evento manualmente dentro de tu aplicación, deberás pasar este nuevo argumento al constructor del evento. El siguiente ejemplo pasa el guard por defecto del framework al evento de inicio de sesión:
 
     use Illuminate\Auth\Events\Login;
 
@@ -154,11 +162,11 @@ If you are dispatching this event manually within your application, you'll need 
 
 ### Blade
 
-#### The `or` Operator
+#### El Operador `or`
 
-**Likelihood Of Impact: High**
+**Probabilidad de impacto: Alto**
 
-The Blade "or" operator has been removed in favor of PHP's built-in `??` "null coalesce" operator, which has the same purpose and functionality:
+El operador de Blade "or" ha sido eliminado en favor del operador incorporado de PHP `??` (null coalesce), el cual tiene el mismo propósito y funcionalidad:
 
     // Laravel 5.6...
     {{ $foo or 'default' }}
@@ -168,17 +176,17 @@ The Blade "or" operator has been removed in favor of PHP's built-in `??` "null c
 
 ### Cache
 
-**Likelihood Of Impact: Very High**
+**Probabilidad de impacto: Muy Alto**
 
-A new `data` directory has been added to `storage/framework/cache`. You should create this directory in your own application:
+Se ha agregado un nuevo directorio `data` a `storage/framework/cache`. Debes crear este directorio en tu propia aplicación:
 
     mkdir -p storage/framework/cache/data
 
-Then, add a [.gitignore](https://github.com/laravel/laravel/blob/76369205c8715a4a8d0d73061aa042a74fd402dc/storage/framework/cache/data/.gitignore) file to the newly created `data` directory:
+Luego, añadirle un archivo [.gitignore](https://github.com/laravel/laravel/blob/76369205c8715a4a8d0d73061aa042a74fd402dc/storage/framework/cache/data/.gitignore) en el nuevo directorio creado `data`:
 
     cp storage/framework/cache/.gitignore storage/framework/cache/data/.gitignore
 
-Finally, ensure that the [storage/framework/cache/.gitignore](https://github.com/laravel/laravel/blob/76369205c8715a4a8d0d73061aa042a74fd402dc/storage/framework/cache/.gitignore) file is updated as follows:
+Finalmente, garantizar que el archivo [storage/framework/cache/.gitignore](https://github.com/laravel/laravel/blob/76369205c8715a4a8d0d73061aa042a74fd402dc/storage/framework/cache/.gitignore) esté actualizado de la siguiente manera:
 
     *
     !data/
@@ -186,33 +194,33 @@ Finally, ensure that the [storage/framework/cache/.gitignore](https://github.com
 
 ### Carbon
 
-**Likelihood Of Impact: Very Low**
+**Probabilidad de impacto: Muy Bajo**
 
-Carbon "macros" are now handled by the Carbon library directly instead of Laravel's extension of the library. We do not expect this to break your code; however, [please make us aware of any problems you encounter related to this change](https://github.com/laravel/framework/pull/23938).
+Las "macros" de Carbon ahora son manejadas por la biblioteca de Carbon directamente en lugar de la extensión de Laravel de la biblioteca. No esperamos que esto rompa tu código; sin embargo, [háganos saber de cualquier problema que encuentres relacionado con este cambio](https://github.com/laravel/framework/pull/23938).
 
-### Collections
+### Colecciones
 
 #### The `split` Method
 
-**Likelihood Of Impact: Low**
+**Probabilidad de impacto: Bajo**
 
-The `split` method [has been updated to always return the requested number of "groups"](https://github.com/laravel/framework/pull/24088), unless the total number of items in the original collection is less than the requested collection count. Generally, this should be considered a bug fix; however, it is listed as a breaking change out of caution.
+El método `split` [se ha actualizado para devolver siempre el número solicitado de "grupos"](https://github.com/laravel/framework/pull/24088), a menos que el número total de artículos en la colección original sea menor que el recuento de colección solicitado. En general, esto debería considerarse una corrección de errores; sin embargo, está listado como un cambio de ruptura por precaución.
 
 ### Cookie
 
-#### `Factory` Contract Method Signature
+#### Firma del Método en el Contrato `Factory`
 
-**Likelihood Of Impact: Very Low**
+**Probabilidad de impacto: Muy Bajo**
 
-The signatures of the `make` and `forever` methods of the `Illuminate\Contracts\Cookie\Factory` interface [have been changed](https://github.com/laravel/framework/pull/23200). If you are implementing this interface, you should update these methods in your implementation.
+Las firmas de los métodos `make` y `forever`de la interfaz `Illuminate\Contracts\Cookie\Factory` [han sido cambiadas](https://github.com/laravel/framework/pull/23200). Si estás implementando esta interfaz, debes actualizar estos métodos en su implementación.
 
-### Database
+### Base de Datos
 
-#### The `softDeletesTz` Migration Method
+#### El método de Migración `softDeletesTz`
 
-**Likelihood Of Impact: Low**
+**Probabilidad de impacto: Bajo**
 
-The schema table builder's `softDeletesTz` method now accepts the column name as its first argument, while the `$precision` has been moved to the second argument position:
+El método del constructor de la tabla de esquemas `softDeletesTz` ahora acepta el nombre de la columna como su primer argumento, mientras que la `$precision` se ha movido a la posición del segundo argumento:
 
     /**
      * Add a "deleted at" timestampTz for the table.
@@ -223,11 +231,11 @@ The schema table builder's `softDeletesTz` method now accepts the column name as
      */
     public function softDeletesTz($column = 'deleted_at', $precision = 0)
 
-#### The `ConnectionInterface` Contract
+#### El Contracto `ConnectionInterface`
 
-**Likelihood Of Impact: Very Low**
+**Probabilidad de impacto: Muy Bajo**
 
-The `Illuminate\Contracts\Database\ConnectionInterface` contract's `select` and `selectOne` method signatures have been updated to accommodate the new `$useReadPdo` argument:
+Las firmas de los métodos `select` y` selectOne` del contrato `Illuminate\Contracts\Database\ConnectionInterface` se han actualizado para adaptarse al nuevo argumento `$useReadPdo`:
 
     /**
      * Run a select statement and return a single result.
@@ -249,7 +257,7 @@ The `Illuminate\Contracts\Database\ConnectionInterface` contract's `select` and 
      */
     public function select($query, $bindings = [], $useReadPdo = true);
 
-In addition, the `cursor` method was added to the contract:
+Además, se agregó el método `cursor` al contrato:
 
     /**
      * Run a select statement against the database and returns a generator.
@@ -261,19 +269,19 @@ In addition, the `cursor` method was added to the contract:
      */
     public function cursor($query, $bindings = [], $useReadPdo = true);
 
-If you are implementing this interface, you should add this method to your implementation.
+Si estás implementando esta interfaz, debes agregar este método a tu implementación.
 
-#### Migration Command Output
+#### Salida del Comando de Migración
 
-**Likelihood Of Impact: Very Low**
+**Probabilidad de impacto: Muy Bajo**
 
-The core migration commands have been [updated to set the output instance on the migrator class](https://github.com/laravel/framework/pull/24811). If you were overriding or extending the migration commands, you should remove references to `$this->migrator->getNotes()` and use `$this->migrator->setOutput($this->output)` instead.
+Los comandos de migración principales se han [actualizado para establecer la instancia de salida de la clase migrator](https://github.com/laravel/framework/pull/24811). Si estás sobreescribiendo o extendiendo los comandos de migración, deberías eliminar las referencias a`$this->migrator->getNotes()` y usar `$this->migrator->setOutput($this->output)` en su lugar.
 
-#### SQL Server Driver Priority
+#### Prioridad del controlador de SQL Server
 
-**Likelihood Of Impact: Low**
+**Probabilidad de impacto: Bajo**
 
-Prior to Laravel 5.7, the `PDO_DBLIB` driver was used as the default SQL Server PDO driver. This driver is considered deprecated by Microsoft. As of Laravel 5.7, `PDO_SQLSRV` will be used as the default driver if it is available. Alternatively, you may choose to use the `PDO_ODBC` driver:
+Antes de Laravel 5.7, el controlador `PDO_DBLIB` se usaba como el controlador predeterminado de SQL Server PDO. Este controlador es considerado obsoleto por Microsoft. A partir de Laravel 5.7, `PDO_SQLSRV` se usará como el controlador por defecto, si está disponible. Alternativamente, puedes elegir usar el controlador `PDO_ODBC`:
 
     'sqlsrv' => [
         // ...
@@ -281,53 +289,54 @@ Prior to Laravel 5.7, the `PDO_DBLIB` driver was used as the default SQL Server 
         'odbc_datasource_name' => 'your-odbc-dsn',
     ],
 
-If neither of these drivers are available, Laravel will use the `PDO_DBLIB` driver.
+Si ninguno de estos controladores está disponible, Laravel usará el controlador `PDO_DBLIB`.
 
-#### SQLite Foreign Keys
+#### Claves foráneas de SQLite
 
-**Likelihood Of Impact: Medium**
+**Probabilidad de impacto: Medio**
 
-SQLite does not support dropping foreign keys. For that reason, using the `dropForeign` method on a table now throws an exception. Generally, this should be considered a bug fix; however, it is listed as a breaking change out of caution.
+SQLite no soporta la eliminación de claves foráneas. Por esa razón, el uso del método `dropForeign` en una tabla ahora lanza una excepción. En general, esto debería considerarse una corrección de errores; sin embargo, está listado como un cambio de ruptura por precaución.
 
-If you run your migrations on multiple types of databases, consider using `DB::getDriverName()` in your migrations to skip unsupported foreign key methods for SQLite.
+Si ejecutas tus migraciones en múltiples tipos de bases de datos, considera usar `DB::getDriverName()` en tus migraciones para omitir los métodos para clave foráneas no compatibles para SQLite.
 
-### Debug
 
-#### Dumper Classes
+### Depuración
 
-**Likelihood Of Impact: Very Low**
+#### Clases Dumper
 
-The `Illuminate\Support\Debug\Dumper` and `Illuminate\Support\Debug\HtmlDumper` classes have been removed in favor of using Symfony's native variable dumpers: `Symfony\Component\VarDumper\VarDumper` and `Symfony\Component\VarDumper\Dumper\HtmlDumper`.
+**Probabilidad de impacto: Muy Bajo**
+
+Las clases `Illuminate\Support\Debug\Dumper` y `Illuminate\Support\Debug\HtmlDumper` se han eliminado para utilizar los dumpers de variables nativas de Symfony: `Symfony\Component\VarDumper\VarDumper` y `Symfony\Component\VarDumper\Dumper\HtmlDumper`.
 
 ### Eloquent
 
-#### The `latest` / `oldest` Methods
+#### Los Métodos `latest` / `oldest`
 
-**Likelihood Of Impact: Low**
+**Probabilidad de impacto: Bajo**
 
-The Eloquent query builder's `latest` and `oldest` methods have been updated to respect custom "created at" timestamp columns that may be specified on your Eloquent models. Generally, this should be considered a bug fix; however, it is listed as a breaking change out of caution.
+Los métodos `latest` y `oldest` del constructor de consultas de Eloquent se han actualizado para respetar las columnas de marca de tiempo personalizadas "created at" que se pueden especificar en tus modelos de Eloquent. En general, esto debería considerarse una corrección de errores; sin embargo, está listado como un cambio de ruptura por precaución.
 
-#### The `wasChanged` Method
+#### El Método `wasChanged`
 
-**Likelihood Of Impact: Very Low**
+**Probabilidad de impacto: Muy Bajo**
 
-An Eloquent model's changes are now available to the `wasChanged` method **before** firing the `updated` model event. Generally, this should be considered a bug fix; however, it is listed as a breaking change out of caution. [Please let us know if you encounter any issues surrounding this change](https://github.com/laravel/framework/pull/25026).
+Los cambios de un modelo Eloquent ahora están disponibles para el método `wasChanged` **antes** de activar el evento del modelo` updated`. En general, esto debería considerarse una corrección de errores; sin embargo, está listado como un cambio de ruptura por precaución. [Por favor, haznos saber si encuentras algún problema relacionado con este cambio.](https://github.com/laravel/framework/pull/25026).
 
-#### PostgreSQL Special Float Values
+#### Valores especiales flotantes de PostgreSQL
 
-**Likelihood Of Impact: Low**
+**Probabilidad de impacto: Bajo**
 
-PostgreSQL supports the float values `Infinity`, `-Infinity` and `NaN`. Prior to Laravel 5.7, these were cast to `0` when the Eloquent casting type for the column was `float`, `double`, or `real`.
+PostgreSQL soporta los valores flotantes `Infinity`, `-Infinity` y `NaN`. Antes de Laravel 5.7, estos se convertían a `0` cuando el tipo de conversión de Eloquent para la columna era` float`, `double` o` real`.
 
-As of Laravel 5.7, these values will be cast to the corresponding PHP constants `INF`, `-INF`, and `NAN`.
+A partir de Laravel 5.7, estos valores se convertirán a las constantes de PHP `INF`, `-INF` y `NAN` correspondientes.
 
 ### Email Verification
 
-**Likelihood Of Impact: Optional**
+**Probabilidad de impacto: Opcional**
 
-If you choose to use Laravel's new [email verification services](/docs/{{version}}/verification), you will need to add additional scaffolding to your application. First, add the `VerificationController` to your application: [App\Http\Controllers\Auth\VerificationController](https://github.com/laravel/laravel/blob/master/app/Http/Controllers/Auth/VerificationController.php).
+Si eliges utilizar los nuevos [servicios de verificación de correo electrónico de Laravel](/docs/{{version}}/verification), necesitarás agregar scaffolding adicionales a tu aplicación. Primero, agrega el `VerificationController` a tu aplicación: [App\Http\Controllers\Auth\VerificationController](https://github.com/laravel/laravel/blob/master/app/Http/Controllers/Auth/VerificationController.php).
 
-You will also need to modify your `App\User` model to implement the `MustVerifyEmail` contract:
+También deberás modificar tu modelo `App\User` para implementar el contrato` MustVerifyEmail`:
 
     <?php
 
@@ -344,7 +353,7 @@ You will also need to modify your `App\User` model to implement the `MustVerifyE
         // ...
     }
 
-In order to use the `verified` middleware so that only verified users may access a given route, you will need to update the `$routeMiddleware` property of your `app/Http/Kernel.php` file to include the new middleware:
+Para utilizar el middleware `verified` de modo que solo los usuarios verificados puedan acceder a una ruta determinada, deberás actualizar la propiedad `$routeMiddleware` de tu archivo `app/Http/Kernel.php` para incluir el nuevo middleware:
 
     // Within App\Http\Kernel Class...
 
@@ -358,13 +367,13 @@ In order to use the `verified` middleware so that only verified users may access
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
     ];
 
-You will also need the verification view stub. This view should be placed at `resources/views/auth/verify.blade.php`. You may obtain the view's contents [on GitHub](https://github.com/laravel/framework/blob/5.7/src/Illuminate/Auth/Console/stubs/make/views/auth/verify.stub).
+También necesitarás la vista de verificación. Esta vista debe colocarse en `resources/views/auth/verify.blade.php`. Puedes obtener el contenido de la vista [en GitHub](https://github.com/laravel/framework/blob/5.7/src/Illuminate/Auth/Console/stubs/make/views/auth/verify.stub).
 
-Next, your user table must contain an `email_verified_at` column to store the date and time that the email address was verified:
+Después, tu tabla de usuario debe contener una columna `email_verified_at` para almacenar la fecha y la hora en que se verificó la dirección de correo electrónico:
 
     $table->timestamp('email_verified_at')->nullable();
 
-In order to send the email when a user is registered, you should register following events and listeners in your [App\Providers\EventServiceProvider](https://github.com/laravel/laravel/blob/master/app/Providers/EventServiceProvider.php) class:
+Para enviar el correo electrónico cuando un usuario es registrado, debes registrar los siguientes eventos y oyentes en tu clase [App\Providers\EventServiceProvider](https://github.com/laravel/laravel/blob/master/app/Providers/EventServiceProvider.php):
 
     use Illuminate\Auth\Events\Registered;
     use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -380,55 +389,61 @@ In order to send the email when a user is registered, you should register follow
         ],
     ];
 
-Finally, when calling the `Auth::routes` method, you should pass the `verify` option to the method:
+Finalmente, al llamar al método `Auth::routes`, debes pasar la opción `verify` al método:
 
     Auth::routes(['verify' => true]);
 
-### Filesystem
+### Sistema de archivos
 
-#### `Filesystem` Contract Methods
+#### Métodos del Contrato `Filesystem`
 
-**Likelihood Of Impact: Low**
+**Probabilidad de impacto: Bajo**
 
-The `readStream` and `writeStream` methods [have been added to the `Illuminate\Contracts\Filesystem\Filesystem` contract](https://github.com/laravel/framework/pull/23755). If you are implementing this interface, you should add these methods to your implementation.
+Los métodos `readStream` y` writeStream` [se han agregado al contrato `Illuminate\Contracts\Filesystem\Filesystem`](https://github.com/laravel/framework/pull/23755). Si estás implementando esta interfaz, debes agregar estos métodos a tu implementación.
 
 ### Hashing
 
-#### `Hash::check` Method
+#### Método `Hash::check`
 
-**Likelihood Of Impact: None**
+**Probabilidad de impacto: Ninguno**
 
-The `check` method now **optionally** checks if the algorithm of the hash matches the configured algorithm.
+El método `check` ahora **opcionalmente** verifica si el algoritmo del hash coincide con el algoritmo configurado.
 
 ### Mail
 
-#### Mailable Dynamic Variable Casing
+#### Conversión de Variables Dinámicas de Mailable
 
-**Likelihood Of Impact: Medium**
+**Probabilidad de impacto: Medio**
 
-Variables that are dynamically passed to mailable views [are now automatically "camel cased"](https://github.com/laravel/framework/pull/24232), which makes mailable dynamic variable behavior consistent with dynamic view variables. Dynamic mailable variables are not a documented Laravel feature, so likelihood of impact to your application is low.
+Las variables que se pasan dinámicamente a vistas mailables [ahora son automáticamente convertidas a camel case](https://github.com/laravel/framework/pull/24232), lo que hace que las variables dinámicas de Mailable tengan un comportamiento compatible con las variables dinámicas de la vista. Las variables dinámicas de Mailable no son una función documentada de Laravel, por lo que la probabilidad de impacto en tu aplicación es baja.
 
-#### Template Theme
+#### Tema de la Plantilla
 
-**Likelihood Of Impact: Medium**
+**Probabilidad de impacto: Medio**
 
-If you have customized the default theme styles used for Markdown mailable templates, you will need to re-publish and make your customizations again. The button color classes have been renamed from 'blue', 'green', and 'red' to 'primary', 'success', and 'error'.
+Si has personalizado los estilos de tema por defecto que se utilizan para las plantillas Markdown de las mailable, deberás volver a publicar y nuevamente realizar las personalizaciones. Las clases de colores de los botones han sido renombradas de 'blue', 'green', y 'red' a 'primary', 'success' y 'error'.
 
-### Queue
+### Colas
 
-#### `QUEUE_DRIVER` Environment Variable
+#### Variable de Entorno `QUEUE_DRIVER`
 
-**Likelihood Of Impact: Very Low**
+**Probabilidad de impacto: Muy Bajo**
 
-The `QUEUE_DRIVER` environment variable has been renamed to `QUEUE_CONNECTION`. This should not affect existing applications that you are upgrading unless you intentionally modify your `config/queue.php` configuration file to match Laravel 5.7's.
+La variable de entorno `QUEUE_DRIVER` ha sido renombrada a `QUEUE_CONNECTION`. Esto no debería afectar a las aplicaciones existentes que estás actualizando, a menos que modifiques intencionalmente tu archivo de configuración `config/queue.php` para que coincida con el de Laravel 5.7.
 
-### Routing
+#### Opciones de `WorkCommand`
 
-#### The `Route::redirect` Method
+**Probabilidad de impacto: Muy Bajo**
 
-**Likelihood Of Impact: High**
+La opción `stop-when-empty` se agregó a `WorkCommand`. Si extiendes este comando, debes agregar `stop-when-empty` a la propiedad `$signature` de tu clase.
 
-The `Route::redirect` method now returns a `302` HTTP status code redirect. The `permanentRedirect` method has been added to allow `301` redirects.
+### Rutas
+
+#### El Método `Route::redirect`
+
+**Probabilidad de impacto: Alto**
+
+El método `Route::redirect` ahora devuelve una redirección de código de estado HTTP `302`. El método `permanentRedirect` se ha agregado para permitir redirecciones `301`.
 
     // Return a 302 redirect...
     Route::redirect('/foo', '/bar');
@@ -439,19 +454,19 @@ The `Route::redirect` method now returns a `302` HTTP status code redirect. The 
     // Return a 301 redirect...
     Route::permanentRedirect('/foo', '/bar');
 
-#### The `addRoute` Method
+#### El Método `addRoute`
 
-**Likelihood Of Impact: Low**
+**Probabilidad de impacto: Bajo**
 
-The `addRoute` method of the `Illuminate\Routing\Router` class has been changed from `protected` to `public`.
+El método `addRoute` de la clase `Illuminate\Routing\Router` se ha cambiado de `protected` a` public`.
 
-### Validation
+### Validación
 
-#### Nested Validation Data
+#### Datos de Validación Anidados
 
-**Likelihood Of Impact: Medium**
+**Probabilidad de impacto: Medio**
 
-In previous versions of Laravel, the `validate` method did not return the correct data for nested validation rules. This has been corrected in Laravel 5.7:
+En versiones anteriores de Laravel, el método `validate` no devolvía los datos correctos para las reglas de validación anidadas. Esto se ha corregido en Laravel 5.7:
 
     $data = Validator::make([
         'person' => [
@@ -470,9 +485,9 @@ In previous versions of Laravel, the `validate` method did not return the correc
 
 #### The `Validator` Contract
 
-**Likelihood Of Impact: Very Low**
+**Probabilidad de impacto: Muy Bajo**
 
-The `validate` method [was added to the `Illuminate\Contracts\Validation\Validator` contract](https://github.com/laravel/framework/pull/25128):
+El método `validate` [se agregó al contrato `Illuminate\Contracts\Validation\Validator`](https://github.com/laravel/framework/pull/25128):
 
     /**
      * Run the validator's rules against its data.
@@ -481,14 +496,14 @@ The `validate` method [was added to the `Illuminate\Contracts\Validation\Validat
      */
     public function validate();
 
-If you are implementing this interface, you should add this method to your implementation.
+Si estás implementando esta interfaz, debes agregar este método a tu implementación.
 
-### Testing
+### Pruebas
 
-**Likelihood of Impact: Medium**
+**Likelihood of Impact: Medio**
 
-Laravel 5.7 introduces improved testing tools for Artisan commands. By default, Artisan command output is now mocked. If you are relying on the `artisan` method to run commands as part of your test, you should use `Artisan::call` or define `public $mockConsoleOutput = false` as a property in your test class.
+Laravel 5.7 introduce herramientas de prueba mejoradas para los comandos de Artisan. Por defecto, la salida del comando de Artisan ahora se simula (mock). Si dependes del método `artisan` para ejecutar comandos como parte de tu prueba, debes usar `Artisan::call` o definir `public $mockConsoleOutput = false` como una propiedad en tu clase de prueba.
 
-### Miscellaneous
+### Misceláneo
 
-We also encourage you to view the changes in the `laravel/laravel` [GitHub repository](https://github.com/laravel/laravel). While many of these changes are not required, you may wish to keep these files in sync with your application. Some of these changes will be covered in this upgrade guide, but others, such as changes to configuration files or comments, will not be. You can easily view the changes with the [GitHub comparison tool](https://github.com/laravel/laravel/compare/5.6...master) and choose which updates are important to you.
+También te animamos a ver los cambios en el `laravel/laravel` [repositorio de GitHub](https://github.com/laravel/laravel). Si bien muchos de estos cambios no son necesarios, es posible que desees mantener estos archivos sincronizados con tu aplicación. Algunos de estos cambios se tratarán en esta guía de actualización, pero otros, como los cambios en los archivos de configuración o los comentarios, no lo estarán. Puede ver fácilmente los cambios con la [herramienta de comparación GitHub](https://github.com/laravel/laravel/compare/5.6...master) y eligir qué actualizaciones son importantes para ti.
