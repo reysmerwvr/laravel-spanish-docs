@@ -1,6 +1,7 @@
 # Consola Artisan
 
 - [Introducción](#introduction)
+    - [Tinker (REPL)](#tinker)
 - [Escritura de Comandos](#writing-commands)
     - [Generación de Comandos](#generating-commands)
     - [Estructura de un Comando](#command-structure)
@@ -29,11 +30,31 @@ También cada comando incluye una "ayuda" en pantalla, la cual muestra y describ
 
     php artisan help migrate
 
-#### Laravel REPL
+### Tinker REPL
 
 Todas las aplicaciones de Laravel incluyen Tinker, un REPL desarrollado usando el paquete [PsySH](https://github.com/bobthecow/psysh). Tinker te permite interactuar con toda tu aplicación de Laravel en la línea de comando, incluyendo el ORM Eloquent, colas de trabajo, eventos, entre otros. Para entrar en el entorno de Tinker, ejecuta el comando de Artisan `tinker`:
 
     php artisan tinker
+
+Puedes publicar el archivo de configuración de Tinker usando el comando vendor:publish:
+
+    php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
+
+#### Lista Blanca de Comandos
+
+Tinker utiliza una lista blanca para determinar qué comandos de Artisan pueden ejecutarse dentro de su shell. Por defecto, puedes ejecutar los comandos `clear-compiled`, `down`, `env`, `inspire`, `migrate`, `optimize` y `up`. Si deseas hacer una lista blanca de más comandos, puede agregarlos al arreglo `command` en tu archivo de configuración `tinker.php`:
+
+    'commands' => [
+        // App\Console\Commands\ExampleCommand::class,
+    ],
+
+#### Lista Negra de Alias
+
+Por lo general, Tinker automáticamente asigna alias a las clases según las necesites en Tinker. Sin embargo, es posible que desees que nunca se agreguen alias a algunas clases. Puedes lograr esto listando las clases en el arreglo `dont_alias` de tu archivo de configuración `tinker.php`:
+
+    'dont_alias' => [
+        App\User::class,
+    ],
 
 <a name="writing-commands"></a>
 ## Escritura de Comandos
@@ -54,7 +75,7 @@ Después de generar tu comando, debes rellenar las propiedades `signature` y `de
 
 > {tip} Para una mayor reutilización del código, es una buena práctica mantener ligeros tus comandos de consola y dejar que se remitan a los servicios de aplicaciones para llevar a cabo sus tareas. En el siguiente ejemplo, toma en cuenta que inyectamos una clase de servicio para hacer el "trabajo pesado" de enviar los correos electrónicos.
 
-Echemos un vistazo a un comando de ejemplo. Observa que podemos inyectar cualquier dependencia que necesitemos en el constructor del comando. El [contenedor de servicios](/docs/{{version}}/container) de Laravel automáticamente inyectará todas las dependencias cuyos tipos (interfaces y/o clases) estén asignados en los parámetros del constructor (type-hinting):
+Echemos un vistazo a un comando de ejemplo. Observa que podemos inyectar cualquier dependencia que necesitemos en el método `handle()` del comando. El [contenedor de servicios](/docs/{{version}}/container) de Laravel automáticamente inyectará todas las dependencias cuyos tipos (interfaces y/o clases) estén asignados en los parámetros del constructor (type-hinting):
 
     <?php
 
@@ -81,33 +102,24 @@ Echemos un vistazo a un comando de ejemplo. Observa que podemos inyectar cualqui
         protected $description = 'Send drip e-mails to a user';
 
         /**
-         * The drip e-mail service.
-         *
-         * @var DripEmailer
-         */
-        protected $drip;
-
-        /**
          * Create a new command instance.
          *
-         * @param  DripEmailer  $drip
          * @return void
          */
-        public function __construct(DripEmailer $drip)
+        public function __construct()
         {
             parent::__construct();
-
-            $this->drip = $drip;
         }
 
         /**
          * Execute the console command.
          *
+         * @param  \App\DripEmailer  $drip
          * @return mixed
          */
-        public function handle()
+        public function handle(DripEmailer $drip)
         {
-            $this->drip->send(User::find($this->argument('user')));
+            $drip->send(User::find($this->argument('user')));
         }
     }
 
@@ -365,6 +377,8 @@ Para tareas de larga ejecución, podría ser útil mostrar un indicador de progr
     $users = App\User::all();
 
     $bar = $this->output->createProgressBar(count($users));
+
+    $bar->start();
 
     foreach ($users as $user) {
         $this->performTask($user);
