@@ -1,6 +1,7 @@
 # Consola Artisan
 
 - [Introducción](#introduction)
+    - [Tinker (REPL)](#tinker)
 - [Escritura de Comandos](#writing-commands)
     - [Generación de Comandos](#generating-commands)
     - [Estructura de un Comando](#command-structure)
@@ -29,11 +30,31 @@ También cada comando incluye una "ayuda" en pantalla, la cual muestra y describ
 
     php artisan help migrate
 
-#### Laravel REPL
+### Tinker REPL
 
 Todas las aplicaciones de Laravel incluyen Tinker, un REPL desarrollado usando el paquete [PsySH](https://github.com/bobthecow/psysh). Tinker te permite interactuar con toda tu aplicación de Laravel en la línea de comando, incluyendo el ORM Eloquent, colas de trabajo, eventos, entre otros. Para entrar en el entorno de Tinker, ejecuta el comando de Artisan `tinker`:
 
     php artisan tinker
+
+Puedes publicar el archivo de configuración de Tinker usando el comando vendor:publish:
+
+    php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
+
+#### Lista Blanca de Comandos
+
+Tinker utiliza una lista blanca para determinar qué comandos de Artisan pueden ejecutarse dentro de su shell. Por defecto, puedes ejecutar los comandos `clear-compiled`, `down`, `env`, `inspire`, `migrate`, `optimize` y `up`. Si deseas hacer una lista blanca de más comandos, puede agregarlos al arreglo `command` en tu archivo de configuración `tinker.php`:
+
+    'commands' => [
+        // App\Console\Commands\ExampleCommand::class,
+    ],
+
+#### Lista Negra de Alias
+
+Por lo general, Tinker automáticamente asigna alias a las clases según las necesites en Tinker. Sin embargo, es posible que desees que nunca se agreguen alias a algunas clases. Puedes lograr esto listando las clases en el arreglo `dont_alias` de tu archivo de configuración `tinker.php`:
+
+    'dont_alias' => [
+        App\User::class,
+    ],
 
 <a name="writing-commands"></a>
 ## Escritura de Comandos
