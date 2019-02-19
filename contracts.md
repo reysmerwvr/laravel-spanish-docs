@@ -1,42 +1,42 @@
-# Contracts
+# Contratos
 
-- [Introduction](#introduction)
-    - [Contracts Vs. Facades](#contracts-vs-facades)
-- [When To Use Contracts](#when-to-use-contracts)
-    - [Loose Coupling](#loose-coupling)
-    - [Simplicity](#simplicity)
-- [How To Use Contracts](#how-to-use-contracts)
-- [Contract Reference](#contract-reference)
+- [Introducción](#introduction)
+    - [Contratos Vs. Facades](#contracts-vs-facades)
+- [Cuando Usar Contratos](#when-to-use-contracts)
+    - [Bajo Acoplamiento](#loose-coupling)
+    - [Simplicidad](#simplicity)
+- [Cómo Usar Contratos](#how-to-use-contracts)
+- [Referencia de Contratos](#contract-reference)
 
 <a name="introduction"></a>
-## Introduction
+## Introducción
 
-Laravel's Contracts are a set of interfaces that define the core services provided by the framework. For example, a `Illuminate\Contracts\Queue\Queue` contract defines the methods needed for queueing jobs, while the `Illuminate\Contracts\Mail\Mailer` contract defines the methods needed for sending e-mail.
+Los Contratos de Laravel son un conjunto de interfaces que definen los servicios principales proporcionados por el framework. Por ejemplo, un contrato `Illuminate\Contracts\Queue\Queue` define los métodos necesarios para las colas de trabajo, mientras que el contrato `Illuminate\Contracts\Mail\Mailer` define los métodos necesarios para el envío de correos electrónicos.
 
-Each contract has a corresponding implementation provided by the framework. For example, Laravel provides a queue implementation with a variety of drivers, and a mailer implementation that is powered by [SwiftMailer](https://swiftmailer.symfony.com/).
+Cada contrato tiene una implementación correspondiente provista por el framework. For example, Por ejemplo, laravel proporciona una implementación de cola con una variedad de conductores (drivers), y una implementación de envío de correo electrónico que funciona con [SwiftMailer](https://swiftmailer.symfony.com/).
 
-All of the Laravel contracts live in [their own GitHub repository](https://github.com/illuminate/contracts). This provides a quick reference point for all available contracts, as well as a single, decoupled package that may be utilized by package developers.
+Todos los contratos de Laravel viven en [su repositorio de GitHub propio](https://github.com/illuminate/contracts). Esto proporciona un punto de referencia rápido para todos los contratos disponibles, así como un paquete único y desacoplado que puede ser utilizado por los desarrolladores de paquetes.
 
 <a name="contracts-vs-facades"></a>
-### Contracts Vs. Facades
+### Contratos Vs. Facades
 
-Laravel's [facades](/docs/{{version}}/facades) and helper functions provide a simple way of utilizing Laravel's services without needing to type-hint and resolve contracts out of the service container. In most cases, each facade has an equivalent contract.
+Los [facades](/docs/{{version}}/facades) de Laravel y las funciones de ayuda (helpers) proporcionan una forma sencilla de utilizar los servicios de Laravel sin necesidad de determinar el tipo y resolver contratos fuera del contenedor de servicios. En la mayoría de los casos, cada facade tiene un contrato equivalente.
 
-Unlike facades, which do not require you to require them in your class' constructor, contracts allow you to define explicit dependencies for your classes. Some developers prefer to explicitly define their dependencies in this way and therefore prefer to use contracts, while other developers enjoy the convenience of facades.
+A diferencia de las facades, que no necesitan que las requieras en el constructor de su clase, los contratos le permiten definir dependencias explícitas para sus clases. Algunos desarrolladores prefieren definir explícitamente sus dependencias de esta manera y, por lo tanto, prefieren usar contratos, mientras que otros desarrolladores disfrutan de la conveniencia de las facades.
 
-> {tip} Most applications will be fine regardless of whether you prefer facades or contracts. However, if you are building a package, you should strongly consider using contracts since they will be easier to test in a package context.
+> {tip} La mayoría de las aplicaciones funcionarán bien sin importar si prefieres facades o contratos. Sin embargo, si estás construyendo un paquete, debes considerar seriamente el uso de contratos, ya que será más fáciles de probar en un contexto paquete.
 
 <a name="when-to-use-contracts"></a>
-## When To Use Contracts
+## Cuando Usar Contratos
 
-As discussed elsewhere, much of the decision to use contracts or facades will come down to personal taste and the tastes of your development team. Both contracts and facades can be used to create robust, well-tested Laravel applications. As long as you are keeping your class' responsibilities focused, you will notice very few practical differences between using contracts and facades.
+Como se discutió en otro lugar, gran parte de la decisión de usar contratos o facades se reducirá a los gustos personales y los gustos de su equipo de desarrollo. Tanto los contratos como las facades se pueden utilizar para crear aplicaciones Laravel robustas y bien probadas. Mientras mantengas enfocadas las responsabilidades de tu clase, notarás muy pocas diferencias prácticas entre el uso de contratos y facades.
 
-However, you may still have several questions regarding contracts. For example, why use interfaces at all? Isn't using interfaces more complicated? Let's distill the reasons for using interfaces to the following headings: loose coupling and simplicity.
+Sin embargo, todavía puede tener varias preguntas con respecto a los contratos. Por ejemplo, ¿por qué usar interfaces? ¿No es más complicado usar interfaces? Detallemos las razones para utilizar interfaces en los siguientes encabezados: bajo acoplamiento y simplicidad.
 
 <a name="loose-coupling"></a>
-### Loose Coupling
+### Bajo Acoplamiento
 
-First, let's review some code that is tightly coupled to a cache implementation. Consider the following:
+Primero, revisemos algunos códigos que están estrechamente acoplado a una implementación de caché. Considera lo siguiente:
 
     <?php
 
@@ -74,11 +74,11 @@ First, let's review some code that is tightly coupled to a cache implementation.
         }
     }
 
-In this class, the code is tightly coupled to a given cache implementation. It is tightly coupled because we are depending on a concrete Cache class from a package vendor. If the API of that package changes our code must change as well.
+En esta clase, el código está estrechamente acoplado a una implementación de caché determinada. Está estrechamente acoplado porque dependemos de una clase de caché concreta de un proveedor de paquetes. Si la API de ese paquete cambia, nuestro código también debe cambiar.
 
-Likewise, if we want to replace our underlying cache technology (Memcached) with another technology (Redis), we again will have to modify our repository. Our repository should not have so much knowledge regarding who is providing them data or how they are providing it.
+Del mismo modo, si queremos reemplazar nuestra tecnología de caché subyacente (Memcached) con otra tecnología (Redis), nuevamente tendremos que modificar nuestro repositorio. Nuestro repositorio no debe tener tanto conocimiento sobre quién les proporciona los datos o cómo los proporcionan.
 
-**Instead of this approach, we can improve our code by depending on a simple, vendor agnostic interface:**
+**En lugar de este enfoque, podemos mejorar nuestro código dependiendo de una interfaz simple e independiente del proveedor:**
 
     <?php
 
@@ -105,21 +105,21 @@ Likewise, if we want to replace our underlying cache technology (Memcached) with
         }
     }
 
-Now the code is not coupled to any specific vendor, or even Laravel. Since the contracts package contains no implementation and no dependencies, you may easily write an alternative implementation of any given contract, allowing you to replace your cache implementation without modifying any of your cache consuming code.
+Ahora el código no está acoplado a ningún proveedor específico, ni siquiera a Laravel. Dado que el paquete de contratos no contiene implementación ni dependencias, puede escribir fácilmente una implementación alternativa de cualquier contrato dado, lo que le permite reemplazar su implementación de caché sin modificar ninguno de los códigos que consumen caché.
 
 <a name="simplicity"></a>
-### Simplicity
+### Simplicidad
 
-When all of Laravel's services are neatly defined within simple interfaces, it is very easy to determine the functionality offered by a given service. **The contracts serve as succinct documentation to the framework's features.**
+Cuando todos los servicios de Laravel están claramente definidos dentro de interfaces simples, es muy fácil determinar la funcionalidad ofrecida por un servicio dado. **Los contratos sirven como documentación sucinta de las características del framework.**
 
-In addition, when you depend on simple interfaces, your code is easier to understand and maintain. Rather than tracking down which methods are available to you within a large, complicated class, you can refer to a simple, clean interface.
+Además, cuando dependes de interfaces simples, tu código es más fácil de entender y mantener. En lugar de rastrear qué métodos están disponibles dentro de una clase grande y complicada, puedes hacer referencia a una interfaz sencilla y limpia.
 
 <a name="how-to-use-contracts"></a>
-## How To Use Contracts
+## Cómo Usar Contratos
 
-So, how do you get an implementation of a contract? It's actually quite simple.
+Entonces, ¿Cómo se obtiene una implementación de un contrato? En realidad es bastante simple.
 
-Many types of classes in Laravel are resolved through the [service container](/docs/{{version}}/container), including controllers, event listeners, middleware, queued jobs, and even route Closures. So, to get an implementation of a contract, you can just "type-hint" the interface in the constructor of the class being resolved.
+Muchos tipos de clases en Laravel se resuelven a través del [contenedor de servicio](/docs/{{version}}/container), incluyendo controladores, los escuchadores de eventos, middleware, trabajos de cola e incluso Closure de ruta. Por lo tanto, para obtener una implementación de un contrato, puede simplemente "declarar el tipo" de la interfaz en el constructor de la clase que se está resolviendo.
 
 For example, take a look at this event listener:
 
@@ -161,18 +161,18 @@ For example, take a look at this event listener:
         }
     }
 
-When the event listener is resolved, the service container will read the type-hints on the constructor of the class, and inject the appropriate value. To learn more about registering things in the service container, check out [its documentation](/docs/{{version}}/container).
+Cuando se resuelve el escuchador de evento, el contenedor de servicios leerá las declaraciones de tipo en el constructor de la clase e inyectará el valor apropiado. Para obtener más información sobre cómo registrar cosas en el contenedor de servicios, consulte [su documentación](/docs/{{version}}/container).
 
 <a name="contract-reference"></a>
-## Contract Reference
+## Referencia de Contratos
 
-This table provides a quick reference to all of the Laravel contracts and their equivalent facades:
+Esta tabla proporciona una referencia rápida a todos los contratos de Laravel y sus facades equivalentes:
 
-Contract  |  References Facade
+Contrato  |  Referencias de la Facade
 ------------- | -------------
-[Illuminate\Contracts\Auth\Access\Authorizable](https://github.com/illuminate/contracts/blob/{{version}}/Auth/Access/Authorizable.php) | &nbsp;
+[Illuminate\Contracts\Auth\Access\Authorizable](https://github.com/illuminate/contracts/blob/{{version}}/Auth/Access/Authorizable.php) | &nbsp;
 [Illuminate\Contracts\Auth\Access\Gate](https://github.com/illuminate/contracts/blob/{{version}}/Auth/Access/Gate.php) | `Gate`
-[Illuminate\Contracts\Auth\Authenticatable](https://github.com/illuminate/contracts/blob/{{version}}/Auth/Authenticatable.php) | &nbsp;
+[Illuminate\Contracts\Auth\Authenticatable](https://github.com/illuminate/contracts/blob/{{version}}/Auth/Authenticatable.php) | &nbsp;
 [Illuminate\Contracts\Auth\CanResetPassword](https://github.com/illuminate/contracts/blob/{{version}}/Auth/CanResetPassword.php) | &nbsp;
 [Illuminate\Contracts\Auth\Factory](https://github.com/illuminate/contracts/blob/{{version}}/Auth/Factory.php) | `Auth`
 [Illuminate\Contracts\Auth\Guard](https://github.com/illuminate/contracts/blob/{{version}}/Auth/Guard.php) | `Auth::guard()`
