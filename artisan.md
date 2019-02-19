@@ -366,6 +366,8 @@ Para tareas de larga ejecución, podría ser útil mostrar un indicador de progr
 
     $bar = $this->output->createProgressBar(count($users));
 
+    $bar->start();
+
     foreach ($users as $user) {
         $this->performTask($user);
 
