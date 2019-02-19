@@ -75,7 +75,7 @@ Después de generar tu comando, debes rellenar las propiedades `signature` y `de
 
 > {tip} Para una mayor reutilización del código, es una buena práctica mantener ligeros tus comandos de consola y dejar que se remitan a los servicios de aplicaciones para llevar a cabo sus tareas. En el siguiente ejemplo, toma en cuenta que inyectamos una clase de servicio para hacer el "trabajo pesado" de enviar los correos electrónicos.
 
-Echemos un vistazo a un comando de ejemplo. Observa que podemos inyectar cualquier dependencia que necesitemos en el constructor del comando. El [contenedor de servicios](/docs/{{version}}/container) de Laravel automáticamente inyectará todas las dependencias cuyos tipos (interfaces y/o clases) estén asignados en los parámetros del constructor (type-hinting):
+Echemos un vistazo a un comando de ejemplo. Observa que podemos inyectar cualquier dependencia que necesitemos en el método `handle()` del comando. El [contenedor de servicios](/docs/{{version}}/container) de Laravel automáticamente inyectará todas las dependencias cuyos tipos (interfaces y/o clases) estén asignados en los parámetros del constructor (type-hinting):
 
     <?php
 
@@ -102,33 +102,24 @@ Echemos un vistazo a un comando de ejemplo. Observa que podemos inyectar cualqui
         protected $description = 'Send drip e-mails to a user';
 
         /**
-         * The drip e-mail service.
-         *
-         * @var DripEmailer
-         */
-        protected $drip;
-
-        /**
          * Create a new command instance.
          *
-         * @param  DripEmailer  $drip
          * @return void
          */
-        public function __construct(DripEmailer $drip)
+        public function __construct()
         {
             parent::__construct();
-
-            $this->drip = $drip;
         }
 
         /**
          * Execute the console command.
          *
+         * @param  \App\DripEmailer  $drip
          * @return mixed
          */
-        public function handle()
+        public function handle(DripEmailer $drip)
         {
-            $this->drip->send(User::find($this->argument('user')));
+            $drip->send(User::find($this->argument('user')));
         }
     }
 
