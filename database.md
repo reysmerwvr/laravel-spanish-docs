@@ -1,17 +1,17 @@
-# Database: Getting Started
+# Bases de Datos: Primeros Pasos
 
-- [Introduction](#introduction)
-    - [Configuration](#configuration)
-    - [Read & Write Connections](#read-and-write-connections)
-    - [Using Multiple Database Connections](#using-multiple-database-connections)
-- [Running Raw SQL Queries](#running-queries)
-    - [Listening For Query Events](#listening-for-query-events)
-- [Database Transactions](#database-transactions)
+- [Introducción](#introduction)
+    - [Configuración](#configuration)
+    - [Conexiones de Lectura & Escritura](#read-and-write-connections)
+    - [Usando Múltiples Conexiones de Bases de Datos](#using-multiple-database-connections)
+- [Ejecutando Consultas SQL Nativas](#running-queries)
+    - [Listeners de Eventos de Consultas](#listening-for-query-events)
+- [Transacciones de Bases de Datos](#database-transactions)
 
 <a name="introduction"></a>
-## Introduction
+## Introducción
 
-Laravel makes interacting with databases extremely simple across a variety of database backends using either raw SQL, the [fluent query builder](/docs/{{version}}/queries), and the [Eloquent ORM](/docs/{{version}}/eloquent). Currently, Laravel supports four databases:
+Laravel hace que la interacción con las bases de datos sea extremadamente fácil a través de una variedad de backends de bases de datos usando SQL nativo, el constructor de consultas[fluent query builder](/docs/{{version}}/queries), y el [ORM Eloquent](/docs/{{version}}/eloquent). Actualmente, Laravel soporta cuatro bases de datos.
 
 <div class="content-list" markdown="1">
 - MySQL
@@ -21,32 +21,32 @@ Laravel makes interacting with databases extremely simple across a variety of da
 </div>
 
 <a name="configuration"></a>
-### Configuration
+### Configuración
 
-The database configuration for your application is located at `config/database.php`. In this file you may define all of your database connections, as well as specify which connection should be used by default. Examples for most of the supported database systems are provided in this file.
+La configuración de base de datos para tu aplicación esta localizada en `config/database.php`. Puedes definir todo lo concerniente a tus conexiones de bases de datos, y también especificar que conexión debería ser usada por defecto. Ejemplos para la mayoría de los sistemas de bases de datos soportados son proporcionados en este archivo.
 
-By default, Laravel's sample [environment configuration](/docs/{{version}}/configuration#environment-configuration) is ready to use with [Laravel Homestead](/docs/{{version}}/homestead), which is a convenient virtual machine for doing Laravel development on your local machine. Of course, you are free to modify this configuration as needed for your local database.
+Por defecto, la [configuración de entorno](/docs/{{version}}/configuration#environment-configuration) de muestra de Laravel está lista para usar con [Laravel Homestead](/docs/{{version}}/homestead), la cual es una máquina virtual conveniente para el desarrollo con Laravel en tu máquina local. Eres libre de modificar esta configuración de acuerdo a tus necesidades de tu base de datos local.
 
-#### SQLite Configuration
+#### Configuración SQLite
 
-After creating a new SQLite database using a command such as `touch database/database.sqlite`, you can easily configure your environment variables to point to this newly created database by using the database's absolute path:
+Después de la creación de una nueva base de datos SQLite usando un comando tal como `touch database/database.sqlite`, puedes configurar fácilmente tus variables de entorno para apuntar a esta base de datos creada recientemente al usar la ruta absoluta a la base de datos.
 
     DB_CONNECTION=sqlite
     DB_DATABASE=/absolute/path/to/database.sqlite
 
-To enable foreign key constraints for SQLite connections, you should add the `foreign_key_constraints` option to your `config/database.php` configuration file:
+Para habilitar las claves foráneas en conexiones de SQLite, debes agregar la opción `foreign_key_constraints` en tu archivo de configuración `config/database.php`:
 
-    'sqlite' => [
-        // ...
-        'foreign_key_constraints' => true,
-    ],
+	'sqlite' => [
+		// ...
+		'foreign_key_constraints' => true,
+	],
 
 <a name="read-and-write-connections"></a>
-### Read & Write Connections
+### Conexiones de Lectura & Escritura
 
-Sometimes you may wish to use one database connection for SELECT statements, and another for INSERT, UPDATE, and DELETE statements. Laravel makes this a breeze, and the proper connections will always be used whether you are using raw queries, the query builder, or the Eloquent ORM.
+Algunas veces puedes desear contar con una conexión de base de datos para los comandos SELECT y otra para los comandos UPDATE y DELETE. Laravel hace esto una tarea fácil, y las conexiones propias siempre serán usadas si estás usando consultas nativas, el constructor de consultas Query Builder o el ORM Eloquent.
 
-To see how read / write connections should be configured, let's look at this example:
+Para ver como las conexiones de lectura / escritura deberían ser configuradas, vamos a mirar este ejemplo:
 
     'mysql' => [
         'read' => [
@@ -65,33 +65,33 @@ To see how read / write connections should be configured, let's look at this exa
         'prefix'    => '',
     ],
 
-Note that three keys have been added to the configuration array: `read`, `write` and `sticky`. The `read` and `write` keys have array values containing a single key: `host`. The rest of the database options for the `read` and `write` connections will be merged from the main `mysql` array.
+Observa que tres claves han sido agregadas al arreglo de configuración: `read`, `write` y `sticky`. Las claves `read` y `write` tienen valores de arreglo conteniendo una sola clave: la dirección ip del`host`. El resto de las opciones de la base de datos para las conexiones `read` y `write` serán tomadas del arreglo principal `mysql`.
 
-You only need to place items in the `read` and `write` arrays if you wish to override the values from the main array. So, in this case, `192.168.1.1` will be used as the host for the "read" connection, while `192.168.1.2` will be used for the "write" connection. The database credentials, prefix, character set, and all other options in the main `mysql` array will be shared across both connections.
+Únicamente necesitas colocar elementos en los arreglos `read` y `write`  si deseas sobreescribir los valores del arreglo principal. Así, en este caso,  `192.168.1.1` será usado como la máquina para la conexión de "lectura", mientras que `192.168.1.2` será usada para la conexión de "escritura".  Las credenciales de bases de datos, prefijo, conjunto de caracteres, y todas las demás opciones en el arreglo principal `mysql` serán compartidas a través de ambas conexiones.
 
-#### The `sticky` Option
+#### La Opción `sticky`
 
-The `sticky` option is an *optional* value that can be used to allow the immediate reading of records that have been written to the database during the current request cycle. If the `sticky` option is enabled and a "write" operation has been performed against the database during the current request cycle, any further "read" operations will use the "write" connection. This ensures that any data written during the request cycle can be immediately read back from the database during that same request. It is up to you to decide if this is the desired behavior for your application.
+La opción `sticky` es un valor *opcional* que puede ser usado para permitir la lectura inmediata de registros que han sido escritos a la base de datos durante el ciclo de solicitudes actual. Si la opción `sticky` está habilitada y una operación de "escritura" ha sido ejecutada contra la base de datos durante el ciclo de solicitudes actual, cualquiera de las operaciones de "lectura" hasta aquí usarán la conexión "write". Esto asegura que cualquier dato escrito durante el ciclo de solicitud pueda ser leído inmediatamente de la base de datos durante la misma solicitud. Es posible para ti decidir si este es el comportamiento deseado para tu aplicación.
 
 <a name="using-multiple-database-connections"></a>
-### Using Multiple Database Connections
+### Usando Conexiones de Bases de Datos Múltiples
 
-When using multiple connections, you may access each connection via the `connection` method on the `DB` facade. The `name` passed to the `connection` method should correspond to one of the connections listed in your `config/database.php` configuration file:
+Cuando estamos usando conexiones múltiples, puedes accesar cada conexión por medio del método `connection` en el Facade `DB`.  El nombre `name` pasado al método de conexión `connection` debería corresponder a una de las conexiones listadas en tu archivo de configuración `config/database.php`:
 
     $users = DB::connection('foo')->select(...);
 
-You may also access the raw, underlying PDO instance using the `getPdo` method on a connection instance:
+También puedes accesar los datos nativos de la instancia PDO subyacente que usa el método `getPdo` en una instancia de conexión:
 
     $pdo = DB::connection()->getPdo();
 
 <a name="running-queries"></a>
-## Running Raw SQL Queries
+## Ejecutando Consultas SQL Nativas
 
-Once you have configured your database connection, you may run queries using the `DB` facade. The `DB` facade provides methods for each type of query: `select`, `update`, `insert`, `delete`, and `statement`.
+Una vez que has configurado tu conexión de base de datos, puedes ejecutar consultas usando el Facade `DB`. La clase facade `DB` proporciona métodos para cada tipo de consulta: `select`, `update`, `insert`, `delete` y `statement`.
 
-#### Running A Select Query
+#### Ejecutando una consulta Select
 
-To run a basic query, you may use the `select` method on the `DB` facade:
+Para ejecutar una consulta básica, puedes usar el método `select` en el facade `DB`:
 
     <?php
 
@@ -103,7 +103,7 @@ To run a basic query, you may use the `select` method on the `DB` facade:
     class UserController extends Controller
     {
         /**
-         * Show a list of all of the application's users.
+         * Muestra una lista de todos los usuarios de la aplicación.
          *
          * @return Response
          */
@@ -115,48 +115,48 @@ To run a basic query, you may use the `select` method on the `DB` facade:
         }
     }
 
-The first argument passed to the `select` method is the raw SQL query, while the second argument is any parameter bindings that need to be bound to the query. Typically, these are the values of the `where` clause constraints. Parameter binding provides protection against SQL injection.
+El primer argumento pasado al método `select` es la consulta SQL nativa; en este caso está parametrizada, mientras el segundo argumento es cualquier parámetro a enlazar que necesita estar conectado a la consulta. Típicamente, estos son los valores de las restricciones de cláusula `where`. El enlazamiento de parámetro proporciona protección contra ataques de inyección SQL.
 
-The `select` method will always return an `array` of results. Each result within the array will be a PHP `stdClass` object, allowing you to access the values of the results:
+El método `select` siempre devolverá un arreglo de resultados. Cada resultado dentro del arreglo será un objeto `stdClass` de PHP, permitiendo que accedas a los valores de los resultados:
 
     foreach ($users as $user) {
         echo $user->name;
     }
 
-#### Using Named Bindings
+#### Usando Enlaces Nombrados
 
-Instead of using `?` to represent your parameter bindings, you may execute a query using named bindings:
+En lugar de usar `?` para representar tus enláces de parámetros, puedes ejecutar una consulta usando enlaces nombrados:
 
     $results = DB::select('select * from users where id = :id', ['id' => 1]);
 
-#### Running An Insert Statement
+#### Ejecutando una Instrucción Insert
 
-To execute an `insert` statement, you may use the `insert` method on the `DB` facade. Like `select`, this method takes the raw SQL query as its first argument and bindings as its second argument:
+Para ejecutar una instrucción `insert`, puedes usar el método `insert` en la clase facade `DB`. Igual que `select`, este método toma la consulta SQL nativa como su argumento inicial y lo enlaza con su argumento secundario:
 
     DB::insert('insert into users (id, name) values (?, ?)', [1, 'Dayle']);
 
-#### Running An Update Statement
+#### Ejecutando una Instrucción Update
 
-The `update` method should be used to update existing records in the database. The number of rows affected by the statement will be returned:
+El método `update` debería ser usado para actualizar los registros existentes en la base de datos. El número de filas afectadas por la instrucción serán devueltas:
 
     $affected = DB::update('update users set votes = 100 where name = ?', ['John']);
 
-#### Running A Delete Statement
+#### Ejecutando una Instrucción Delete
 
-The `delete` method should be used to delete records from the database. Like `update`, the number of rows affected will be returned:
+El método `delete` debería ser usado para eliminar registros de la base de datos. Al igual que `update`, el número de filas afectadas será devuelto:
 
     $deleted = DB::delete('delete from users');
 
-#### Running A General Statement
+#### Ejecutando una Instrucción General
 
-Some database statements do not return any value. For these types of operations, you may use the `statement` method on the `DB` facade:
+Algunas instrucciones de bases de datos no devuelven algún valor. Para estos tipos de operaciones, puedes usar el método `statement` en la clase facade `DB`:
 
     DB::statement('drop table users');
 
 <a name="listening-for-query-events"></a>
-### Listening For Query Events
+### Listeners de Eventos de Consultas
 
-If you would like to receive each SQL query executed by your application, you may use the `listen` method. This method is useful for logging queries or debugging. You may register your query listener in a [service provider](/docs/{{version}}/providers):
+Si prefieres recibir cada consulta SQL ejecutada por tu aplicación, puedes usar el método `listen`. Este método es útil para registrar consultas o depurar. Puedes registrar tus listeners de consultas en un [proveedor de servicio](/docs/{{version}}/providers):
 
     <?php
 
@@ -168,7 +168,7 @@ If you would like to receive each SQL query executed by your application, you ma
     class AppServiceProvider extends ServiceProvider
     {
         /**
-         * Bootstrap any application services.
+         * Inicializa cualquiera de los servicios de la aplicación.
          *
          * @return void
          */
@@ -182,7 +182,7 @@ If you would like to receive each SQL query executed by your application, you ma
         }
 
         /**
-         * Register the service provider.
+         * Registra el proveedor de servicio.
          *
          * @return void
          */
@@ -193,9 +193,9 @@ If you would like to receive each SQL query executed by your application, you ma
     }
 
 <a name="database-transactions"></a>
-## Database Transactions
+## Transacciones de Bases de Datos
 
-You may use the `transaction` method on the `DB` facade to run a set of operations within a database transaction. If an exception is thrown within the transaction `Closure`, the transaction will automatically be rolled back. If the `Closure` executes successfully, the transaction will automatically be committed. You don't need to worry about manually rolling back or committing while using the `transaction` method:
+Puedes usar el método `transaction` en la clase facade `DB` para ejecutar un conjunto de operaciones dentro de una transacción de base de datos. Si un error de excepción es arrojado dentro del código `Closure` de la transacción, la transacción automáticamente terminará con un rollback. Si el código `Closure` se ejecuta correctamente, la transacción terminará automáticamente con un commit. No necesitas preocuparte por hacer rollback o commit manualmente mientras estés usando el método `transaction`:
 
     DB::transaction(function () {
         DB::table('users')->update(['votes' => 1]);
@@ -203,9 +203,9 @@ You may use the `transaction` method on the `DB` facade to run a set of operatio
         DB::table('posts')->delete();
     });
 
-#### Handling Deadlocks
+#### Manejando Deadlocks (Bloqueo mutuo)
 
-The `transaction` method accepts an optional second argument which defines the number of times a transaction should be reattempted when a deadlock occurs. Once these attempts have been exhausted, an exception will be thrown:
+El método `transaction` acepta un segundo argumento opcional el cual define el número de veces que la ejecución de una transacción debería ser reintentada cuando un ocurra un deadlock. Una vez que estos intentos hayan sido completados sin éxito, un error de excepción será arrojado:
 
     DB::transaction(function () {
         DB::table('users')->update(['votes' => 1]);
@@ -213,18 +213,18 @@ The `transaction` method accepts an optional second argument which defines the n
         DB::table('posts')->delete();
     }, 5);
 
-#### Manually Using Transactions
+#### Usando Transacciones Manualmente
 
-If you would like to begin a transaction manually and have complete control over rollbacks and commits, you may use the `beginTransaction` method on the `DB` facade:
+Si prefieres empezar una transacción manualmente y tener control total sobre rollbacks y commits, podrías usar el método `beginTransaction`de la clase facade `DB`:
 
     DB::beginTransaction();
 
-You can rollback the transaction via the `rollBack` method:
+Puedes hacer rollback de la transacción por medio del método `rollback`:
 
     DB::rollBack();
 
-Lastly, you can commit a transaction via the `commit` method:
+Finalmente, puedes confirmar una transacción por medio del método `commit`:
 
     DB::commit();
 
-> {tip} The `DB` facade's transaction methods control the transactions for both the [query builder](/docs/{{version}}/queries) and [Eloquent ORM](/docs/{{version}}/eloquent).
+> {tip} Los métodos de transacción del Facade `DB` controlan las transacciones para ambos backends de bases de datos del constructor de consultas [query builder](/docs/{{version}}/queries) y el [ORM Eloquent](/docs/{{version}}/eloquent).
