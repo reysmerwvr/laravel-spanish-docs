@@ -26,7 +26,7 @@ Laravel proporciona una podera abstracción del sistema de archivos gracias al g
 <a name="configuration"></a>
 ## Configuración
 
-La configuración del sistema de archivos está ubicada en `config/filesystems.php`. Dentro de este archivo puedes confiugar todos tus "discos". Cada disco representa un driver de almacenamiento y una ubicación de almacenamiento en particular. Configuraciones de ejemplo para cada driver soportado están incluídas en el archivo de configuración. Así que, modifica la configuración para reflejar tus preferencias de almacenamiento y credenciales.
+La configuración del sistema de archivos está ubicada en `config/filesystems.php`. Dentro de este archivo puedes configurar todos tus "discos". Cada disco representa un driver de almacenamiento y una ubicación de almacenamiento en particular. Configuraciones de ejemplo para cada driver soportado están incluídas en el archivo de configuración. Así que, modifica la configuración para reflejar tus preferencias de almacenamiento y credenciales.
 
 Puedes configurar tantos discos como quieras e incluso tener múltiples discos que usen el mismo driver.
 
@@ -61,7 +61,7 @@ Antes de usar los drivers de SFTP, S3 o Rackspace, necesitarás instalar el paqu
 - Amazon S3: `league/flysystem-aws-s3-v3 ~1.0`
 - Rackspace: `league/flysystem-rackspace ~1.0`
 
-Algo sumamente recomendable para mejorar el rendimiento es usar un adaptor cacheado. Necesitarás un paquete adicional para esto:
+Algo sumamente recomendable para mejorar el rendimiento es usar un adaptador de caché. Necesitarás un paquete adicional para esto:
 
 - CachedAdapter: `league/flysystem-cached-adapter ~1.0`
 
@@ -122,9 +122,9 @@ Las integraciones de Flysystem de Laravel funcionan bien con Rackspace; sin emba
     ],
 
 <a name="caching"></a>
-### Caching
+### Cache
 
-Para habilitar la cache para un disco dado, puedes agregar una directiva `cache` a las opciones de configuración del disco. La opción `cache` debe ser un arreglo de opciones de cache que contiene un nombre de `disco`, el tiempo de `expiración` en segundos, y el `prefijo` de la cache:
+Para habilitar la cache para un disco dado, puedes agregar una directiva `cache` a las opciones de configuración del disco. La opción `cache` debe ser un arreglo de opciones de cache que contiene un nombre de disco `disk`, el tiempo de expiración en segundos `expire`, y el prefijo `prefix` de la cache:
 
     's3' => [
         'driver' => 's3',
@@ -154,7 +154,7 @@ Si tus aplicaciones interactuan con múltiples discos, puedes usar el método `d
 <a name="retrieving-files"></a>
 ## Retornando Archivos
 
-El método `get` puede ser usado para retornar el contenido de un archivo. Las cadenas del archivo serán retornadas por el método. Recuerda, todas las rutas del archivo deben ser especificadas relativas a la ubicación "raiz" configurada por el disco:
+El método `get` puede ser usado para retornar el contenido de un archivo. Las cadenas del archivo serán retornadas por el método. Recuerda, todas las rutas del archivo deben ser especificadas relativas a la ubicación "raíz" configurada por el disco:
 
     $contents = Storage::get('file.jpg');
 
@@ -244,15 +244,15 @@ Los métodos `putFile` y `putFileAs` también aceptan un argumento para especifi
 
     Storage::putFile('photos', new File('/path/to/photo'), 'public');
 
-#### Preceder & Adjuntar A Archivos
+#### Añadir Al Inicio o Al Final De Un Archivo
 
-Los métodos `prepend` y `append` te permiten escribir al inicio o final de un texto:
+Los métodos `prepend` y `append` te permiten escribir al inicio o final de un archivo:
 
     Storage::prepend('file.log', 'Prepended Text');
 
     Storage::append('file.log', 'Appended Text');
 
-#### Copiando & Moviendo Archivos
+#### Copiando y Moviendo Archivos
 
 El método `copy` puede ser usado para copiar un archivo existente a una nueva ubicación en el disco, mientras que el método `move` puede ser usado para renombrar o mover un archivo existente a una nueva ubicación:
 
@@ -263,7 +263,7 @@ El método `copy` puede ser usado para copiar un archivo existente a una nueva u
 <a name="file-uploads"></a>
 ### Carga De Archivos
 
-En las aplicaciones web, una de los casos de uso más comunes para almacenar archivos es almacenar archivos cargados por los usuarios como fotos de perfil, fotos y documentos. Laravel hace que sea muy fácil almacenar archivos cargados usando el método `store` en la instancia de un archivo cargado. Llama al método `store` con la ruta en la quieres almacenar el archivo:
+En las aplicaciones web, una de los casos de uso más comunes para almacenar archivos es almacenar archivos cargados por los usuarios como imagenes de perfil, fotos y documentos. Laravel hace que sea muy fácil almacenar archivos cargados usando el método `store` en la instancia de un archivo cargado. Llama al método `store` con la ruta en la quieres almacenar el archivo:
 
     <?php
 
@@ -302,7 +302,7 @@ Si no te gustaría que un nombre de archivo sea automáticamente asignado a tu a
         'avatars', $request->user()->id
     );
 
-Puedes usar el método `putFileAs` en el facade `Storage`, que realizará las mismas manipulaciones de archivos del ejemplo superior:
+Puedes usar el método `putFileAs` en el facade `Storage`, que realizará las mismas manipulaciones de archivos del ejemplo de arriba:
 
     $path = Storage::putFileAs(
         'avatars', $request->file('avatar'), $request->user()->id
@@ -327,7 +327,7 @@ Puedes establecer la visibilidad al establecer el archivo mediante el método `p
 
     Storage::put('file.jpg', $contents, 'public');
 
-Si el archivo ya ha sido almacenado, su visibilidad puede ser retornada y establecidad mediante los métodos `getVisibility` y `setVisibility`:
+Si el archivo ya ha sido almacenado, su visibilidad puede ser retornada y establecida mediante los métodos `getVisibility` y `setVisibility`:
 
     $visibility = Storage::getVisibility('file.jpg');
 
@@ -336,7 +336,7 @@ Si el archivo ya ha sido almacenado, su visibilidad puede ser retornada y establ
 <a name="deleting-files"></a>
 ## Eliminando Archivos
 
-El método `delete` acepta un sólo nombre de archivo o un arreglo de archivos a eliminar del disco:
+El método `delete` acepta un solo nombre de archivo o un arreglo de archivos a eliminar del disco:
 
     use Illuminate\Support\Facades\Storage;
 
@@ -344,7 +344,7 @@ El método `delete` acepta un sólo nombre de archivo o un arreglo de archivos a
 
     Storage::delete(['file.jpg', 'file2.jpg']);
 
-If necessary, you may specify the disk that the file should be deleted from:
+Si es necesario, puedes especificar el disco en el que se debe eliminar el archivo:
 
     use Illuminate\Support\Facades\Storage;
 
@@ -393,7 +393,7 @@ Para configurar el sistema de archivos personalizado necesitarás un adaptador d
 
     composer require spatie/flysystem-dropbox
 
-Luego, debes crear un [service provider](/docs/{{version}}/providers) como `DropboxServiceProvider`. En el método `boot` del proveedor, puedes usar el método `extend` del facade `Storage` para definir el driver personalizado:
+Luego, debes crear un [proveedor de servicios](/docs/{{version}}/providers) como `DropboxServiceProvider`. En el método `boot` del proveedor, puedes usar el método `extend` del facade `Storage` para definir el driver personalizado:
 
     <?php
 
