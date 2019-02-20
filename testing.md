@@ -20,6 +20,8 @@ Al momento de ejecutar las pruebas por medio de `phpunit`, Laravel establecerá 
 
 Eres libre de definir otros valores de configuración del entorno de pruebas cuando sea necesario. Las variables de entorno `testing` pueden ser configuradas en el archivo `phpunit.xml`, pero ¡asegurate de limpiar tu cache de configuración usando el comando Artisan `config:clear` antes de ejecutar tus pruebas!
 
+Además, puedes crear un archivo `.env.testing` en la raíz de tu proyecto. Este archivo anulará el archivo `.env` cuando ejecute las pruebas PHPUnit o cuando ejecute los comandos de Artisan con la opción `--env = testing`.
+
 <a name="creating-and-running-tests"></a>
 ## Creando y Ejecutando Pruebas
 
