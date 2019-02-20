@@ -20,7 +20,7 @@ Una vez que estés listo para hacer deploy de tu aplicación de Laravel a produc
 <a name="nginx"></a>
 ### Nginx
 
-Si estás haciendo deploy de tu aplicación hacia un servidor que está ejecutando Nginx, puedes utilizar el siguiente archivo de configuración como punto de inicio para configurar tu servidor web. Principalmente, este archivo tendrá que ser personalizado dependiendo de la configuración de tu servidor. Si deseas asistenca en la administración de tu servidor, considera utilizar un servicio como [Laravel Forge](https://forge.laravel.com):
+Si estás haciendo deploy de tu aplicación hacia un servidor que está ejecutando Nginx, puedes utilizar el siguiente archivo de configuración como punto de inicio para configurar tu servidor web. Principalmente, este archivo tendrá que ser personalizado dependiendo de la configuración de tu servidor. Si deseas asistencia en la administración de tu servidor, considera utilizar un servicio como [Laravel Forge](https://forge.laravel.com):
 
     server {
         listen 80;
@@ -47,7 +47,7 @@ Si estás haciendo deploy de tu aplicación hacia un servidor que está ejecutan
         location ~ \.php$ {
             fastcgi_pass unix:/var/run/php/php7.2-fpm.sock;
             fastcgi_index index.php;
-			fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+            fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
             include fastcgi_params;
         }
 
@@ -62,7 +62,7 @@ Si estás haciendo deploy de tu aplicación hacia un servidor que está ejecutan
 <a name="autoloader-optimization"></a>
 ### Optimizar Autoloader
 
-Al hacer deploy a producción, debes asegurarte de optimizar el autoloader de composer, para que este pueda localizar rápidamente el archivo apropiado para cargar una clase dada:
+Al hacer deploy a producción, debes asegurarte de optimizar el autoloader de Composer, para que éste pueda localizar rápidamente el archivo apropiado para cargar una clase dada:
 
     composer install --optimize-autoloader --no-dev
 
