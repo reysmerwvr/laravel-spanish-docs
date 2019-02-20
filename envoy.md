@@ -15,7 +15,7 @@
 <a name="introduction"></a>
 ## Introducción
 
-[Laravel Envoy](https://github.com/laravel/envoy) proporciona una sintaxis limpia y minima para definir las tareas comunes que ejecutas en tus servidores remotos. Utilizando el estilo de sintaxis de Blade, puedes configurar fácilmente tareas para deploy, comandos de Artisan y más. Envoy solamente es compatible con sistemas operativos Mac y Linux.
+[Laravel Envoy](https://github.com/laravel/envoy) proporciona una sintaxis limpia y mínima para definir las tareas comunes que ejecutas en tus servidores remotos. Utilizando el estilo de sintaxis de Blade, puedes configurar fácilmente tareas para deploy, comandos de Artisan y más. Envoy solamente es compatible con sistemas operativos Mac y Linux.
 
 <a name="installation"></a>
 ### Instalación
@@ -24,7 +24,7 @@ Primero, instala Envoy utilizando el comando de composer `global require`:
 
     composer global require laravel/envoy
 
-Dado que las librerías globales de Composer ocasionalmente pueden causar conflictos en la versión del paquete, puedes considerar utilizar `cgr`, el cuál es un reemplazo directo para el comando `composer global require`. Las instrucciones de instalación de la librería `gcr` pueden ser [encontradas en GitHub](https://github.com/consolidation-org/cgr).
+Dado que las librerías globales de Composer ocasionalmente pueden causar conflictos en la versión del paquete, puedes considerar utilizar `cgr`, el cual es un reemplazo directo para el comando `composer global require`. Las instrucciones de instalación de la librería `gcr` pueden ser [encontradas en GitHub](https://github.com/consolidation-org/cgr).
 
 > {note} Asegurate de colocar el directorio `~/.composer/vendor/bin` en tu PATH para que el ejecutable `envoy` pueda ser localizado cuando se ejecute el comando `envoy` en tu terminal.
 
@@ -45,7 +45,7 @@ Todas tus tareas de Envoy deberán definirse en un archivo `Envoy.blade.php` en 
         ls -la
     @endtask
 
-Como puedes ver, un arreglo `@servers` es definido en la parte superior del archivo, permitiendote hacer referencia a estos servidores en la opción `on` en la declaración de tus tareas. Dentro de tus declaraciones `@task`, deberás colocar el código Bash que se deberá ejecutar en tu servidor una vez que la tarea sea ejecutada.
+Como puedes ver, un arreglo `@servers` es definido en la parte superior del archivo, permitiéndote hacer referencia a estos servidores en la opción `on` en la declaración de tus tareas. Dentro de tus declaraciones `@task`, deberás colocar el código Bash que se deberá ejecutar en tu servidor una vez que la tarea sea ejecutada.
 
 Puedes forzar que un script se ejecute localmente especificando la dirección IP del servidor como `127.0.0.1`:
 
@@ -118,7 +118,7 @@ Una vez que hayas finalizado de escribir tu historia, puedes ejecutarla como una
 <a name="multiple-servers"></a>
 ### Múltiples Servidores
 
-Envoy te permite fácilemnte ejecutar tareas a través de múltiples servidores. Primero, agrega servidores adicionales a tu declaración `@servers`. A cada servidor se le debe asignar un nombre único. Una vez definidos los servidores adicionales, deberás indicar en cuáles servidores se van a ejecutar las tareas, esto puede hacerse en el arreglo `on` de cada tarea:
+Envoy te permite fácilmente ejecutar tareas a través de múltiples servidores. Primero, agrega servidores adicionales a tu declaración `@servers`. A cada servidor se le debe asignar un nombre único. Una vez definidos los servidores adicionales, deberás indicar en cuáles servidores se van a ejecutar las tareas, esto puede hacerse en el arreglo `on` de cada tarea:
 
     @servers(['web-1' => '192.168.1.1', 'web-2' => '192.168.1.2'])
 
