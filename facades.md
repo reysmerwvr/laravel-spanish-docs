@@ -3,7 +3,7 @@
 - [Introducción](#introduction)
 - [Cuándo Usar Facades](#when-to-use-facades)
     - [Facades Vs. Inyección De Dependencias](#facades-vs-dependency-injection)
-    - [Facades Vs. Funciones del Helper](#facades-vs-helper-functions)
+    - [Facades Vs. Funciones Helper](#facades-vs-helper-functions)
 - [Cómo Funcionan Las Facades](#how-facades-work)
 - [Facades En Tiempo Real](#real-time-facades)
 - [Referencia De Clases de Facades](#facade-class-reference)
@@ -11,7 +11,7 @@
 <a name="introduction"></a>
 ## Introducción
 
-Las Facades proveen una interfaz "estática" a las clases disponibles en el [service container] de la aplicación (/docs/{{version}}/container). Laravel viene con numerosas facades, las cuales brindan acceso a casi todas las características de Laravel. Las facades de Laravel sirven como "proxies estáticas" a las clases subyacentes en el service container, brindando el beneficio de una sintaxis tersa y expresiva, mantieniendo mayor verificabilidad y flexibilidad que los métodos estáticos tradicionales.
+Las Facades proveen una interfaz "estática" a las clases disponibles en el [contenedor de servicios](/docs/{{version}}/container) de la aplicación. Laravel viene con numerosas facades, las cuales brindan acceso a casi todas las características de Laravel. Las facades de Laravel sirven como "proxies estáticas" a las clases subyacentes en el contenedor de servicios, brindando el beneficio de una sintaxis tersa y expresiva, mantieniendo mayor verificabilidad y flexibilidad que los métodos estáticos tradicionales.
 
 Todas las facades de Laravel se definen en el namespace `Illuminate\Support\Facades` . Entonces, podemos fácilmente acceder a una facade de esta forma:
 
@@ -28,16 +28,16 @@ A través de la documentación de Laravel, muchos de los ejemplos usarán facade
 
 Las Facades tienen múltiples beneficios. Brindan una sintaxis tersa y memorizable que permite utilizar las características de Laravel sin tener que recordar nombres de clase largos que deben ser inyectados o configurados manualmente. Además, debido a su uso único de los métodos dinámicos PHP, son fáciles de probar.
 
-Sin embargo, deben guardarse ciertas precauciones al hacer uso de facades. El peligro principal de las facades es la corrupción de alcance de clases. Como las facades son tan fáciles de usar y no requieren inyección, pued resultar fácil dejar que tus clases sigan creciendo y usar muchas facades en una sola clase. Usando inyección de dependencias, este potencial es mitigado por la retroalimentación visual que un constructor grande te da cuando tu clase está creciendo demasiado. Entonces, al usar facades, pon especial atención al tamaño de tu clase para que su alcance de responsabilidades permanezca limitado.
+Sin embargo, deben guardarse ciertas precauciones al hacer uso de facades. El peligro principal de las facades es la corrupción de alcance de clases. Como las facades son tan fáciles de usar y no requieren inyección, puede resultar fácil dejar que tus clases sigan creciendo y usar muchas facades en una sola clase. Usando inyección de dependencias, este potencial es mitigado por la retroalimentación visual que un constructor grande te da cuando tu clase está creciendo demasiado. Entonces, al usar facades, pon especial atención al tamaño de tu clase para que su alcance de responsabilidades permanezca limitado.
 
-> {tip} CUando se construye un paquete de tercera partes que interactúa con Laravel, es mejor inyectar [Laravel contracts](/docs/{{version}}/contracts) en vez de usar facades. Como los paquetes son construidos fuera de Laravel, no tendrás acceso a los testing helpers para facades de Laravel.
+> {tip} Cuando se construye un paquete de terceros que interactúa con Laravel, es mejor inyectar [contratos de Laravel](/docs/{{version}}/contracts) en vez de usar facades. Como los paquetes son construidos fuera de Laravel, no tendrás acceso a las funciones (helpers) de testing para facades de Laravel.
 
 <a name="facades-vs-dependency-injection"></a>
 ### Facades Vs. Inyección De Dependencias
 
-Uno de los principales beneficios de la inyección de dependencias es la habilidad de intercambiar implementaciones de la clase inyectada. is the ability to swap implementations of the injected class. This is useful during testing since you can inject a mock or stub and assert that various methods were called on the stub.
+Uno de los principales beneficios de la inyección de dependencias es la habilidad de intercambiar implementaciones de la clase inyectada. Esto es útil durante las pruebas debido a que puedes inyectar un mock o un stub y comprobar que esos métodos son llamados en el stub.
 
-Típicamente, no sería posible imitar o sustituir un método de clase verdaderamente estático. Sin embargo, como las facades utilizan métodos dinámicos para hacer proxy de llamadas de método a objetos resueltos desde el service container, podemos de hecho probar las facades exactamente como probaríamos una instancia de clase inyectada. Por ejemplo, dada la siguiente ruta:
+Típicamente, no sería posible imitar (mock) o sustituir (stub) un método de clase verdaderamente estático. Sin embargo, como las facades utilizan métodos dinámicos para hacer proxy de llamadas de método a objetos resueltos desde el contenedor de servicios, podemos de hecho probar las facades exactamente cómo probaríamos una instancia de clase inyectada. Por ejemplo, dada la siguiente ruta:
 
     use Illuminate\Support\Facades\Cache;
 
@@ -67,7 +67,7 @@ Podemos escribir la siguiene prueba para verificar que el método `Cache::get` f
 <a name="facades-vs-helper-functions"></a>
 ### Facades Vs. Funciones Helper
 
-Además de las facades, Laravel incluye una variedad de funciones "helper", las cuales pueden realizar tareas comunes como generar vistas, disparar eventos, despachar trabajos, o mandar respuestas HTTP. Muchas de estas funciones helper realizan la misma función que su facade correspondiente. For example, estas llamadas facade y helper son equivalentes:
+Además de las facades, Laravel incluye una variedad de funciones "helper", las cuales pueden realizar tareas comunes como generar vistas, disparar eventos, despachar trabajos, o mandar respuestas HTTP. Muchas de estas funciones helper realizan la misma función que su facade correspondiente. Por ejemplo, éstas llamadas facade y helper son equivalentes:
 
     return View::make('profile');
 
@@ -79,7 +79,7 @@ No hay diferencia práctica en lo absoluto entre facades y funciones helper. Al 
         return cache('key');
     });
 
-Bajo la superficie, el helper `cache` llamará al método `get` en la clase subyacente a la facade `Cache`. Entonces, aúncuando estamos usando la función helper, podemos escribir la siguiente prueba para verificar que el método fue llamado con el argumento esperado:
+Bajo la superficie, el helper `cache` llamará al método `get` en la clase subyacente a la facade `Cache`. Entonces, aún cuando estamos usando la función helper, podemos escribir la siguiente prueba para verificar que el método fue llamado con el argumento esperado:
 
     use Illuminate\Support\Facades\Cache;
 
@@ -101,9 +101,9 @@ Bajo la superficie, el helper `cache` llamará al método `get` en la clase suby
 <a name="how-facades-work"></a>
 ## Cómo Funcionan Las Facades
 
-En una aplicación Laravel, una facade es una clase que provee acceso a un objeto desde el container. The machinery that makes this work is in the `Facade` class. Laravel's facades, and any custom facades you create, will extend the base `Illuminate\Support\Facades\Facade` class.
+En una aplicación Laravel, una facade es una clase que provee acceso a un objeto desde el contenedor. La maquinaria que hace este trabajo está en la clase `Facade`. Las facades de Laravel y cualquier facade personalizada que crees, extenderá la clase base `Illuminate\Support\Facades\Facade`.
 
-The `Facade` base class makes use of the `__callStatic()` magic-method to defer calls from your facade to an object resolved from the container. In the example below, a call is made to the Laravel cache system. By glancing at this code, one might assume that the static method `get` is being called on the `Cache` class:
+La clase base `Facade` hace uso del método mágico `__callStatic()` para aplazar las llamadas desde tu facade a un objeto resuelto desde el contenedor. En el ejemplo siguiente, se realiza una llamada al sistema de caché de Laravel. Al mirar este código, se puede suponer que se llama al método estático `get` en la clase `Cache`:
 
     <?php
 
@@ -142,12 +142,12 @@ Si observamos la clase `Illuminate\Support\Facades\Cache` verás que no hay mét
         protected static function getFacadeAccessor() { return 'cache'; }
     }
 
-En su lugar, la facade `Cache` extiende la clase `Facade`y define el método `getFacadeAccessor()`. El trabajo de este método es devolver el nombre de un enlace de service container. Cuando un ususrio referencia cualquier método estático en la facade `Cache`, Laravel resuelve el enlace `cache` desde el [service container](/docs/{{version}}/container) y ejecuta el método solicitado (en este caso, `get`) contra ese objeto.
+En su lugar, la facade `Cache` extiende la clase `Facade` y define el método `getFacadeAccessor()`. El trabajo de este método es devolver el nombre de un enlace de contenedor de servicios. Cuando un usuario referencia cualquier método estático en la facade `Cache`, Laravel resuelve el enlace `cache` desde el [contenedor de servicios](/docs/{{version}}/container) y ejecuta el método solicitado (en este caso, `get`) contra ese objeto.
 
 <a name="real-time-facades"></a>
 ## Facades En Tiempo Real
 
-Usando facades en tiempo real, puedes tratar cualquier clase en tu aplicación como si fuera una facade. Para ilustrar cómo ésto puede ser utilizado, examinemos una alternativa. Por ejemplo, asumamos que nuestro modelo `Podcast` tiene un método `publish`. Sin embargo, para publicar el podcast, necesitamos inyectar una instancia `Publisher`:
+Usando facades en tiempo real, puedes tratar cualquier clase en tu aplicación como si fuera una facade. Para ilustrar cómo esto puede ser utilizado, examinemos una alternativa. Por ejemplo, asumamos que nuestro modelo `Podcast` tiene un método `publish`. Sin embargo, para publicar el podcast, necesitamos inyectar una instancia `Publisher`:
 
     <?php
 
@@ -172,7 +172,7 @@ Usando facades en tiempo real, puedes tratar cualquier clase en tu aplicación c
         }
     }
 
-Inyectar una implementación publisher dentro del método nos permite probar fácilmente el método aislado porque podemos imitar el publisher inyectado. Sin embargo, requiere que pasemos una instancia publisher instance cada vez que llamamos al método `publish`. Usando facades en tiempo real, podemos mantener la misma verificabilidad sin que se requiera pasar explícitamente una instancia `Publisher`. Para generar una facade en tiempo real, se añade el prefijo `Facades` al namespace de la clase importada:
+Inyectar una implementación de publisher dentro del método nos permite probar fácilmente el método aislado porque podemos imitar (mock) el publisher inyectado. Sin embargo, requiere que pasemos una instancia publisher cada vez que llamamos al método `publish`. Usando facades en tiempo real, podemos mantener la misma verificabilidad sin que se requiera pasar explícitamente una instancia `Publisher`. Para generar una facade en tiempo real, se añade el prefijo `Facades` al namespace de la clase importada:
 
     <?php
 
@@ -196,7 +196,7 @@ Inyectar una implementación publisher dentro del método nos permite probar fá
         }
     }
 
-Cuando la facade en tiempo real es utilizada, la implementación publisher será resuelta en el service container usando la porción de la interfaz o nombre de clase que aparece después del prefijo `Facades`. Al probar, podemos usar los testing helpers para facades integrados en Laravel para imitar esta llamada de método:
+Cuando la facade en tiempo real es utilizada, la implementación publisher será resuelta en el contenedor de servicios usando la porción de la interfaz o nombre de clase que aparece después del prefijo `Facades`. Al probar, podemos usar las funciones helpers de testing para facades integradas en Laravel para imitar (mock) esta llamada de método:
 
     <?php
 
