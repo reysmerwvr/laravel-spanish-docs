@@ -11,7 +11,7 @@
 <a name="introduction"></a>
 ## Introducción
 
-Laravel hace que la interacción con las bases de datos sea extremadamente fácil a través de una variedad de backends de bases de datos usando SQL nativo, el constructor de consultas[fluent query builder](/docs/{{version}}/queries), y el [ORM Eloquent](/docs/{{version}}/eloquent). Actualmente, Laravel soporta cuatro bases de datos.
+Laravel hace que la interacción con las bases de datos sea extremadamente fácil a través de una variedad de backends de bases de datos usando SQL nativo, el constructor de consultas [query builder](/docs/{{version}}/queries) y el [ORM Eloquent](/docs/{{version}}/eloquent). Actualmente, Laravel soporta cuatro bases de datos.
 
 <div class="content-list" markdown="1">
 - MySQL
@@ -23,7 +23,7 @@ Laravel hace que la interacción con las bases de datos sea extremadamente fáci
 <a name="configuration"></a>
 ### Configuración
 
-La configuración de base de datos para tu aplicación esta localizada en `config/database.php`. Puedes definir todo lo concerniente a tus conexiones de bases de datos, y también especificar que conexión debería ser usada por defecto. Ejemplos para la mayoría de los sistemas de bases de datos soportados son proporcionados en este archivo.
+La configuración de base de datos para tu aplicación está localizada en `config/database.php`. Puedes definir todo lo concerniente a tus conexiones de bases de datos, y también especificar qué conexión debería ser usada por defecto. Ejemplos para la mayoría de los sistemas de bases de datos soportados son proporcionados en este archivo.
 
 Por defecto, la [configuración de entorno](/docs/{{version}}/configuration#environment-configuration) de muestra de Laravel está lista para usar con [Laravel Homestead](/docs/{{version}}/homestead), la cual es una máquina virtual conveniente para el desarrollo con Laravel en tu máquina local. Eres libre de modificar esta configuración de acuerdo a tus necesidades de tu base de datos local.
 
@@ -46,7 +46,7 @@ Para habilitar las claves foráneas en conexiones de SQLite, debes agregar la op
 
 Algunas veces puedes desear contar con una conexión de base de datos para los comandos SELECT y otra para los comandos UPDATE y DELETE. Laravel hace esto una tarea fácil, y las conexiones propias siempre serán usadas si estás usando consultas nativas, el constructor de consultas Query Builder o el ORM Eloquent.
 
-Para ver como las conexiones de lectura / escritura deberían ser configuradas, vamos a mirar este ejemplo:
+Para ver cómo las conexiones de lectura / escritura deberían ser configuradas, vamos a mirar este ejemplo:
 
     'mysql' => [
         'read' => [
@@ -65,9 +65,9 @@ Para ver como las conexiones de lectura / escritura deberían ser configuradas, 
         'prefix'    => '',
     ],
 
-Observa que tres claves han sido agregadas al arreglo de configuración: `read`, `write` y `sticky`. Las claves `read` y `write` tienen valores de arreglo conteniendo una sola clave: la dirección ip del`host`. El resto de las opciones de la base de datos para las conexiones `read` y `write` serán tomadas del arreglo principal `mysql`.
+Observa que tres claves han sido agregadas al arreglo de configuración: `read`, `write` y `sticky`. Las claves `read` y `write` tienen valores de arreglo conteniendo una sola clave: la dirección ip del `host`. El resto de las opciones de la base de datos para las conexiones `read` y `write` serán tomadas del arreglo principal `mysql`.
 
-Únicamente necesitas colocar elementos en los arreglos `read` y `write`  si deseas sobreescribir los valores del arreglo principal. Así, en este caso,  `192.168.1.1` será usado como la máquina para la conexión de "lectura", mientras que `192.168.1.2` será usada para la conexión de "escritura".  Las credenciales de bases de datos, prefijo, conjunto de caracteres, y todas las demás opciones en el arreglo principal `mysql` serán compartidas a través de ambas conexiones.
+Únicamente necesitas colocar elementos en los arreglos `read` y `write` si deseas sobreescribir los valores del arreglo principal. Así, en este caso, `192.168.1.1` será usado como la máquina para la conexión de "lectura", mientras que `192.168.1.2` será usada para la conexión de "escritura".  Las credenciales de bases de datos, prefijo, conjunto de caracteres, y todas las demás opciones en el arreglo principal `mysql` serán compartidas a través de ambas conexiones.
 
 #### La Opción `sticky`
 
@@ -76,11 +76,11 @@ La opción `sticky` es un valor *opcional* que puede ser usado para permitir la 
 <a name="using-multiple-database-connections"></a>
 ### Usando Conexiones de Bases de Datos Múltiples
 
-Cuando estamos usando conexiones múltiples, puedes accesar cada conexión por medio del método `connection` en el Facade `DB`.  El nombre `name` pasado al método de conexión `connection` debería corresponder a una de las conexiones listadas en tu archivo de configuración `config/database.php`:
+Cuando estamos usando conexiones múltiples, puedes acceder a cada conexión por medio del método `connection` en el Facade `DB`.  El nombre `name` pasado al método de conexión `connection` debería corresponder a una de las conexiones listadas en tu archivo de configuración `config/database.php`:
 
     $users = DB::connection('foo')->select(...);
 
-También puedes accesar los datos nativos de la instancia PDO subyacente que usa el método `getPdo` en una instancia de conexión:
+También puedes acceder a los datos nativos de la instancia PDO subyacente que usa el método `getPdo` en una instancia de conexión:
 
     $pdo = DB::connection()->getPdo();
 
@@ -125,7 +125,7 @@ El método `select` siempre devolverá un arreglo de resultados. Cada resultado 
 
 #### Usando Enlaces Nombrados
 
-En lugar de usar `?` para representar tus enláces de parámetros, puedes ejecutar una consulta usando enlaces nombrados:
+En lugar de usar `?` para representar tus enlaces (bindings) de parámetros, puedes ejecutar una consulta usando enlaces nombrados:
 
     $results = DB::select('select * from users where id = :id', ['id' => 1]);
 
@@ -215,7 +215,7 @@ El método `transaction` acepta un segundo argumento opcional el cual define el 
 
 #### Usando Transacciones Manualmente
 
-Si prefieres empezar una transacción manualmente y tener control total sobre rollbacks y commits, podrías usar el método `beginTransaction`de la clase facade `DB`:
+Si prefieres empezar una transacción manualmente y tener control total sobre rollbacks y commits, podrías usar el método `beginTransaction` de la clase facade `DB`:
 
     DB::beginTransaction();
 
