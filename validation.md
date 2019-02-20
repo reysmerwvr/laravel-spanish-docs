@@ -45,7 +45,7 @@ Primero, vamos a asumir que tenemos las rutas siguientes definidas en nuestro ar
 
     Route::post('post', 'PostController@store');
 
-Ciertamente, la ruta `GET` mostrará un formulario al usuario para crear un nuevo post de blog, mientras que la ruta `POST` guardará el nuevo post de blog en la base de datos.
+La ruta `GET` mostrará un formulario al usuario para crear un nuevo post de blog, mientras que la ruta `POST` guardará el nuevo post de blog en la base de datos.
 
 <a name="quick-creating-the-controller"></a>
 ### Creando el Controlador
@@ -117,7 +117,7 @@ Algunas veces puede que desees detener la ejecución de las reglas de validació
         'body' => 'required',
     ]);
 
-En este ejemplo, si la regla `unique` del atributo `title` falla, la regla `max` no será chequeada. Las reglas serán validadas en el orden que sean asignadas.
+En este ejemplo, si la regla `unique` del atributo `title` falla, la regla `max` no será verificada. Las reglas serán validadas en el orden que sean asignadas.
 
 #### Una Obsevación Sobre los Atributos Anidados
 
@@ -134,7 +134,7 @@ Si tu solicitud HTTP contiene parámetros "anidados", puedes especificarlos en t
 
 ¿Qué sucede si los parámetros de solicitud entrantes no pasan las reglas de validación dados? Cómo mencionamos anteriormente, Laravel redirigirá al usuario de regreso a su ubicación previa. En adición, todos los errores de validación serán automáticamente [movidos instantáneamente a la sesión](/docs/{{version}}/session#flash-data).
 
-De nuevo, observa que no tuvimos que enlazar explícitamente los mensajes de error con la vista en nuestra ruta `GET`. Esto es porque Laravel revisará los errores en la sesión de datos, y los enlazará automáticamente a la vista si están disponibles. La variable `$errors` será una instancia de `Illuminate\Support\MessageBag`. Para mayor información sobre cómo trabajar con este objeto, [revisa su documentación](#working-with-error-messages).
+De nuevo, observa que no tuvimos que enlazar explícitamente los mensajes de error con la vista en nuestra ruta `GET`. Esto es porque Laravel revisará los errores en la sesión de datos y los enlazará automáticamente a la vista si están disponibles. La variable `$errors` será una instancia de `Illuminate\Support\MessageBag`. Para mayor información sobre cómo trabajar con este objeto, [revisa su documentación](#working-with-error-messages).
 
 > {tip} La variable `$errors` es enlazada a la vista por el middleware `Illuminate\View\Middleware\ShareErrorsFromSession`, el cual es proporcionado por el grupo de middleware `web`. **Cuando este middleware se aplique una variable `$errors` siempre estará disponible en tus vistas**, permitiendo que asumas convenientemente que la variable `$errors` está definida siempre y puede ser usada con seguridad.
 
@@ -199,7 +199,7 @@ La clase generada será colocada en el directorio `app/Http/Requests`. Si este d
         ];
     }
 
-> {tip} Puedes declarar el tipo de cualquier dependencia que necesites dentro de la firma del método `rules`. Se resolverán automáticamente a través de Laravel [contenedor de servicio](/docs/{{version}}/container).
+> {tip} Puedes declarar el tipo de cualquier dependencia que necesites dentro de la firma del método `rules`. Se resolverán automáticamente a través del [contenedor de servicio](/docs/{{version}}/container) de Laravel.
 
 Así que, ¿Cómo son evaluadas las reglas de validación? Todo lo que necesitas hacer es poner la referencia de la solicitud en tu método de controlador. La Form Request entrante es validada antes de que el método de controlador sea ejecutado, significa que no necesitas complicar tu controlador con ninguna lógica de validación:
 
@@ -708,7 +708,6 @@ Una restricción _ratio_ debería ser representada como el ancho dividido por la
 
 Dado que esta regla requiere varios argumentos, puedes usar el método `Rule::dimensions` para construir con fluidez la regla:
 
-
     use Illuminate\Validation\Rule;
 
     Validator::make($data, [
@@ -739,7 +738,7 @@ El campo bajo validación debe existir en una tabla de base de datos dada.
 
     'state' => 'exists:states'
 
-If the `column` option is not specified, the field name will be used.
+Si la opción `column` no está especificada, se usará el nombre del campo.
 
 #### Especificando un Nombre de Columna Personalizado
 
@@ -842,7 +841,7 @@ El campo bajo validación debe ser menor o igual que el _field_ dado. Los dos ca
 <a name="rule-max"></a>
 #### max:_value_
 
-El campo bajo validación debe ser menor que o igual a un _valor_ máximo. Las cadenas, los números, los arreglos, y los archivos son evaluados de la misma forma como la regla [`size`](#rule-size).
+El campo bajo validación debe ser menor que o igual a un _valor_ máximo. Las cadenas, los números, los arreglos y los archivos son evaluados de la misma forma como la regla [`size`](#rule-size).
 
 <a name="rule-mimetypes"></a>
 #### mimetypes:_text/plain_,...
@@ -862,14 +861,14 @@ El archivo bajo validación debe tener un tipo MIME correspondiente a uno con la
 
     'photo' => 'mimes:jpeg,bmp,png'
 
-Incluso aunque solamente necesites especificar las extensiones, esta regla en realidad valida contra el tipo MIME del archivo al leer los contenidos del archivo e imaginar su tipo MIME.
+Incluso aunque solamente necesites especificar las extensiones, en realidad esta regla valida contra el tipo MIME del archivo mediante la lectura de los contenidos del archivo y adivinando su tipo MIME.
 
 Una lista completa de tipos MIME y sus correspondientes extensiones pueden ser encontrados en la siguiente ubicación: [https://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types](https://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types)
 
 <a name="rule-min"></a>
 #### min:_value_
 
-El campo bajo validación deben tener un _valor_ mínimo. Las cadenas, los números, los arreglos, y los archivos son evaluados en la misma forma como la regla [`size`](#rule-size).
+El campo bajo validación deben tener un _valor_ mínimo. Las cadenas, los números, los arreglos y los archivos son evaluados en la misma forma como la regla [`size`](#rule-size).
 
 <a name="rule-not-in"></a>
 #### not_in:_foo_,_bar_,...
@@ -1004,7 +1003,7 @@ Ocasionalmente, puedes necesitar establecer una conexión personalizada para las
 
 **Forzando una Regla Unique para Ignorar un ID Dado:**
 
-Algunas veces, puedes desear ignorar un ID dado durante la verificación de unicidad. Por ejemplo, considera una pantalla "update profile" que incluya el nombre del usuario, dirección de correo electrónico, y ubicación. Ciertamente, querrás verificar que la dirección de correo electrónico es única. Sin embargo, si el usuario solamente cambia el campo nombre y no el campo con el correo electrónico, no quieres que un error de validación sea lanzado porque el usuario ya es el propietario de la dirección de correo electrónico.
+Algunas veces, puedes desear ignorar un ID dado durante la verificación de unicidad. Por ejemplo, considera una pantalla "update profile" que incluya el nombre del usuario, dirección de correo electrónico, y ubicación. Posiblemente, querrás verificar que la dirección de correo electrónico es única. Sin embargo, si el usuario solamente cambia el campo nombre y no el campo con el correo electrónico, no quieres que un error de validación sea lanzado porque el usuario ya es el propietario de la dirección de correo electrónico.
 
 Para instruir al validador para que ignore el ID del usuario, usaremos la clase `Rule` para definir fluidamente la regla. En este ejemplo, también especificaremos las reglas de validación como un arreglo en lugar de usar el carácter `|` para delimitar las reglas:
 
@@ -1111,7 +1110,7 @@ De igual forma, puedes usar el carácter `*` al momento de especificar tus mensa
 <a name="using-rule-objects"></a>
 ### Usando Objetos de Reglas
 
-Laravel proporciona una variedad de reglas de validación útiles; sin embargo, puedes desear especificar algunas propias. Un método para registrar reglas de validación personalizadas es usar objetos de regla. Para generar un nuevo objeto de regla, puedes usar el comando Artisan `make:rule`. Usemos este comando para generar una regla que verifique que una cadena esté en mayuscula. Laravel colocará la nueva regla en el directorio `app/Rules`:
+Laravel proporciona una variedad de reglas de validación útiles; sin embargo, puedes desear especificar algunas propias. Un método para registrar reglas de validación personalizadas es usar objetos de regla. Para generar un nuevo objeto de regla, puedes usar el comando Artisan `make:rule`. Usemos este comando para generar una regla que verifique que una cadena esté en mayúscula. Laravel colocará la nueva regla en el directorio `app/Rules`:
 
     php artisan make:rule Uppercase
 
