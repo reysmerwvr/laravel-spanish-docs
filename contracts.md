@@ -13,7 +13,7 @@
 
 Los Contratos de Laravel son un conjunto de interfaces que definen los servicios principales proporcionados por el framework. Por ejemplo, un contrato `Illuminate\Contracts\Queue\Queue` define los métodos necesarios para las colas de trabajo, mientras que el contrato `Illuminate\Contracts\Mail\Mailer` define los métodos necesarios para el envío de correos electrónicos.
 
-Cada contrato tiene una implementación correspondiente provista por el framework. For example, Por ejemplo, laravel proporciona una implementación de cola con una variedad de conductores (drivers), y una implementación de envío de correo electrónico que funciona con [SwiftMailer](https://swiftmailer.symfony.com/).
+Cada contrato tiene una implementación correspondiente provista por el framework. Por ejemplo, laravel proporciona una implementación de cola con una variedad de conductores (drivers), y una implementación de envío de correo electrónico que funciona con [SwiftMailer](https://swiftmailer.symfony.com/).
 
 Todos los contratos de Laravel viven en [su repositorio de GitHub propio](https://github.com/illuminate/contracts). Esto proporciona un punto de referencia rápido para todos los contratos disponibles, así como un paquete único y desacoplado que puede ser utilizado por los desarrolladores de paquetes.
 
@@ -22,7 +22,7 @@ Todos los contratos de Laravel viven en [su repositorio de GitHub propio](https:
 
 Los [facades](/docs/{{version}}/facades) de Laravel y las funciones de ayuda (helpers) proporcionan una forma sencilla de utilizar los servicios de Laravel sin necesidad de determinar el tipo y resolver contratos fuera del contenedor de servicios. En la mayoría de los casos, cada facade tiene un contrato equivalente.
 
-A diferencia de las facades, que no necesitan que las requieras en el constructor de su clase, los contratos le permiten definir dependencias explícitas para sus clases. Algunos desarrolladores prefieren definir explícitamente sus dependencias de esta manera y, por lo tanto, prefieren usar contratos, mientras que otros desarrolladores disfrutan de la conveniencia de las facades.
+A diferencia de las facades, que no necesitan que las requieras en el constructor de su clase, los contratos te permiten definir dependencias explícitas para tus clases. Algunos desarrolladores prefieren definir explícitamente sus dependencias de esta manera y, por lo tanto, prefieren usar contratos, mientras que otros desarrolladores disfrutan de la conveniencia de las facades.
 
 > {tip} La mayoría de las aplicaciones funcionarán bien sin importar si prefieres facades o contratos. Sin embargo, si estás construyendo un paquete, debes considerar seriamente el uso de contratos, ya que será más fáciles de probar en un contexto paquete.
 
@@ -119,9 +119,9 @@ Además, cuando dependes de interfaces simples, tu código es más fácil de ent
 
 Entonces, ¿Cómo se obtiene una implementación de un contrato? En realidad es bastante simple.
 
-Muchos tipos de clases en Laravel se resuelven a través del [contenedor de servicio](/docs/{{version}}/container), incluyendo controladores, los escuchadores de eventos, middleware, trabajos de cola e incluso Closure de ruta. Por lo tanto, para obtener una implementación de un contrato, puede simplemente "declarar el tipo" de la interfaz en el constructor de la clase que se está resolviendo.
+Muchos tipos de clases en Laravel se resuelven a través del [contenedor de servicio](/docs/{{version}}/container), incluyendo controladores, los escuchadores de eventos, middleware, trabajos de cola e incluso una Closure de ruta. Por lo tanto, para obtener una implementación de un contrato, puede simplemente "declarar el tipo" de la interfaz en el constructor de la clase que se está resolviendo.
 
-For example, take a look at this event listener:
+Por ejemplo, veamos este escuchador (listener) de evento:
 
     <?php
 
@@ -129,22 +129,22 @@ For example, take a look at this event listener:
 
     use App\User;
     use App\Events\OrderWasPlaced;
-    use Illuminate\Contracts\Redis\Database;
+    use Illuminate\Contracts\Redis\Factory;
 
     class CacheOrderInformation
     {
         /**
-         * The Redis database implementation.
+         * The Redis factory implementation.
          */
         protected $redis;
 
         /**
          * Create a new event handler instance.
          *
-         * @param  Database  $redis
+         * @param  Factory  $redis
          * @return void
          */
-        public function __construct(Database $redis)
+        public function __construct(Factory $redis)
         {
             $this->redis = $redis;
         }
@@ -169,7 +169,7 @@ Cuando se resuelve el escuchador de evento, el contenedor de servicios leerá la
 Esta tabla proporciona una referencia rápida a todos los contratos de Laravel y sus facades equivalentes:
 
 Contrato  |  Referencias de la Facade
-------------- | -------------
+--------- | -------------------------
 [Illuminate\Contracts\Auth\Access\Authorizable](https://github.com/illuminate/contracts/blob/{{version}}/Auth/Access/Authorizable.php) | &nbsp;
 [Illuminate\Contracts\Auth\Access\Gate](https://github.com/illuminate/contracts/blob/{{version}}/Auth/Access/Gate.php) | `Gate`
 [Illuminate\Contracts\Auth\Authenticatable](https://github.com/illuminate/contracts/blob/{{version}}/Auth/Authenticatable.php) | &nbsp;
