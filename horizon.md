@@ -15,7 +15,7 @@
 
 Horizon proporciona un bonito panel de control y sistema de configuración controlado por código para Laravel, potenciado por colas de Redis. Horizon te permite monitorear fácilmente métricas claves de tu sistema de colas tales como tasa de rendimiento, tiempo de ejecución y fallas de tareas.
 
-Toda la configuración de tu worker es almacenada en un solo archivo de configuración sencillo, permitiendo que tu configuración quede en control de código fuente donde tu equipo completo pueda colaborar.
+Toda la configuración de tu worker es almacenada en un solo archivo de configuración sencillo, permitiendo que tu configuración quede en el código fuente donde tu equipo completo pueda colaborar.
 
 <p align="center">
 <img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1537195039/photos/Test.png" width="600" height="481">
@@ -24,7 +24,7 @@ Toda la configuración de tu worker es almacenada en un solo archivo de configur
 <a name="installation"></a>
 ## Instalación
 
-> {note} Debes asegurarte de que tu driver de cola está establecido a `redis` in tu archivo de configuración `queue`.
+> {note} Debes asegurarte de que tu driver de cola está establecido a `redis` en tu archivo de configuración `queue`.
 
 Puedes usar Composer para instalar Horizon en tu proyecto de Laravel:
 
@@ -43,7 +43,7 @@ Debes también crear la tabla `failed_jobs` que Laravel usará para almacenar cu
 <a name="configuration"></a>
 ### Configuración
 
-Después de publicar los assets de Horizon, su archivo de configuración primario será colocado en `config/horizon.php`. Este archivo de configuración permite que configures las opciones del worker y cada opción de configuración incluye una descripción de su propósito, así que asegurate de explorar con gran detalle este archivo.
+Después de publicar los assets de Horizon, su principal archivo de configuración será colocado en `config/horizon.php`. Este archivo de configuración permite que configures las opciones del worker y cada opción de configuración incluye una descripción de su propósito, así que asegurate de explorar con gran detalle este archivo.
 
 #### Opciones de Balance
 
@@ -51,11 +51,11 @@ Horizon permite que elijas entre tres estrategias de balance: `simple`, `auto` y
 
     'balance' => 'simple',
 
-La estrategia `auto` ajusta el número de procesos trabajadores por cola basado en la carga de trabajo de la cola. Por ejemplo, si tu cola `notifications` tiene 1.000 trabajos esperando mientras tu cola `render` está vacía, Horizon asignará mas trabajadores a tu cola `notifications` hasta que esté vacía. Cuando la opción `balance` esté establecida a `false`, el comportamiento predeterminado de Laravel será usado, el cuál procesa las colas en el orden que son listadas en tu configuración.
+La estrategia `auto` ajusta el número de procesos trabajadores por cola basado en la carga de trabajo de la cola. Por ejemplo, si tu cola `notifications` tiene 1.000 trabajos esperando mientras tu cola `render` está vacía, Horizon asignará mas trabajadores a tu cola `notifications` hasta que esté vacía. Cuando la opción `balance` esté establecida a `false`, el comportamiento predeterminado de Laravel será usado, el cual procesa las colas en el orden que son listadas en tu configuración.
 
 #### Recorte De Trabajos
 
-El archivo de configuración `horizon` te permite configurar cuanto tiempo los trabajos de recientes y fallidos deben ser persistidos (en minutos). Por defecto, los trabajos recientes son mantenidos por una hora mientras que los trabajos fallidos son mantenidos por una semana:
+El archivo de configuración `horizon` te permite configurar cuánto tiempo los trabajos de recientes y fallidos deben ser persistidos (en minutos). Por defecto, los trabajos recientes son mantenidos por una hora mientras que los trabajos fallidos son mantenidos por una semana:
 
     'trim' => [
         'recent' => 60,
@@ -65,7 +65,7 @@ El archivo de configuración `horizon` te permite configurar cuanto tiempo los t
 <a name="dashboard-authorization"></a>
 ### Autorización Del Dashboard
 
-Horizon expone un dashboard en `/horizon`. Por defecto, sólo serás capaz de acceder a este dashboard en el entorno `local`. Dentro de tu archivo `app/Providers/HorizonServiceProvider.php`, hay un método `gate`. Este gate de autorización controla el acceso a Horizon en entornos **no-locales**. Eres libre de modificar este gate como sea necesario para restringir el acceso a tu instalación de Horizon:
+Horizon muestra un dashboard o panel de control en `/horizon`. Por defecto, sólo serás capaz de acceder a este dashboard en el entorno `local`. Dentro de tu archivo `app/Providers/HorizonServiceProvider.php`, hay un método `gate`. Este gate de autorización controla el acceso a Horizon en entornos **no locales**. Eres libre de modificar este gate como sea necesario para restringir el acceso a tu instalación de Horizon:
 
     /**
      * Register the Horizon gate.
@@ -83,8 +83,6 @@ Horizon expone un dashboard en `/horizon`. Por defecto, sólo serás capaz de ac
         });
     }
 
-
-
 <a name="running-horizon"></a>
 ## Ejecutando Horizon
 
@@ -98,7 +96,7 @@ Puedes pausar los procesos de Horizon e instruirlo para continuar procesando tra
 
     php artisan horizon:continue
 
-Puedes terminar elegantemente el proceso maestro de Horizon en tu máquina usando el comando Artisan `horizon:terminate`. Cualquiera de los trabajos que Horizon este procesando actualmente será completado y después Horizon saldrá:
+Puedes terminar elegantemente el proceso maestro de Horizon en tu máquina usando el comando Artisan `horizon:terminate`. Cualquiera de los trabajos que Horizon esté procesando actualmente será completado y después Horizon parará:
 
     php artisan horizon:terminate
 
@@ -109,7 +107,7 @@ Si estás usando Horizon en un servidor activo, deberías configurar un monitor 
 
 #### Configuración de Supervisor
 
-Si estas usando el monitor de procesos de Supervisor para administrar tu proceso `horizon`, el siguiente archivo de configuración debería ser suficiente:
+Si estás usando el monitor de procesos de Supervisor para administrar tu proceso `horizon`, el siguiente archivo de configuración debería ser suficiente:
 
     [program:horizon]
     process_name=%(program_name)s
@@ -120,12 +118,12 @@ Si estas usando el monitor de procesos de Supervisor para administrar tu proceso
     redirect_stderr=true
     stdout_logfile=/home/forge/app.com/horizon.log
 
-> {tip} Si no estás cómodo administrando tus propios servidores, considera usar [Laravel Forge](https://forge.laravel.com). Forge aprovisiona tus propios servidores PHP 7+ con todas lo que necesitas para administrar modernas aplicaciones robustas de Laravel con Horizon.
+> {tip} Si no estás cómodo administrando tus propios servidores, considera usar [Laravel Forge](https://forge.laravel.com). Forge aprovisiona tus propios servidores PHP 7+ con todo lo que necesitas para administrar modernas aplicaciones robustas de Laravel con Horizon.
 
 <a name="tags"></a>
 ## Etiquetas
 
-Horizon permite que asignes “etiquetas” a los trabajos, incluyendo correos válidos, difusiones de eventos, notificaciones y listeners de eventos encolados. De hecho, Horizon etiquetará inteligentemente y automáticamente la mayoría de los trabajos dependiendo de los modelos Eloquent que estén adjuntos al trabajo. Por ejemplo, echemos un vistazo al siguiente worker:
+Horizon permite que asignes “etiquetas” a los trabajos, incluyendo correos válidos, difusiones de eventos, notificaciones y listeners de eventos encolados. De hecho, Horizon etiquetará inteligente y automáticamente la mayoría de los trabajos dependiendo de los modelos Eloquent que estén adjuntos al trabajo. Por ejemplo, echemos un vistazo al siguiente worker:
 
     <?php
 
@@ -197,7 +195,7 @@ Si prefieres definir manualmente las etiquetas para uno de tus objetos encolable
 <a name="notifications"></a>
 ## Notificaciones
 
-> **Note:** Antes de usar las notificaciones, deberías agregar el paquete de Composer `guzzlehttp/guzzle` a tu proyecto. Al momento de configurar Horizon para enviar notificaciones SMS, también deverías revisar los [prerequisitos para el manejador de notificación Nexmo](https://laravel.com/docs/{{version}}/notifications#sms-notifications).
+> **Note:** Antes de usar las notificaciones, deberías agregar el paquete de Composer `guzzlehttp/guzzle` a tu proyecto. Al momento de configurar Horizon para enviar notificaciones SMS, también deberías revisar los [prerequisitos para el manejador de notificación Nexmo](https://laravel.com/docs/{{version}}/notifications#sms-notifications).
 
 Si prefieres ser notificado cuando una de tus colas tenga un largo tiempo de inactividad, puedes usar los métodos `Horizon::routeMailNotificationsTo`, `Horizon::routeSlackNotificationsTo` y `Horizon::routeSmsNotificationsTo`. Puedes ejecutar estos métodos desde el `HorizonServiceProvider` de tu aplicación:
 
@@ -207,7 +205,7 @@ Si prefieres ser notificado cuando una de tus colas tenga un largo tiempo de ina
 
 #### Configurando las Notificaciones de Umbrales de Tiempo de Inactividad
 
-Puedes configurar cuantos segundos son considerados un "tiempo de inactividad" dentro de tu archivo de configuración `config/horizon.php`. La opción de configuración `waits` dentro de este archivo permite que controles el umbral de tiempo de inactividad para cada combinación conexión / cola:
+Puedes configurar cuántos segundos son considerados un "tiempo de inactividad" dentro de tu archivo de configuración `config/horizon.php`. La opción de configuración `waits` dentro de este archivo permite que controles el umbral de tiempo de inactividad para cada combinación conexión / cola:
 
     'waits' => [
         'redis:default' => 60,
@@ -216,7 +214,7 @@ Puedes configurar cuantos segundos son considerados un "tiempo de inactividad" d
 <a name="metrics"></a>
 ## Métricas
 
-Horizon incluye un panel de métricas el cual proporciona información de tus tiempos de trabajo y de espera en cola y tasa de rendimiento. Con el propósito de popular este panel, deberías configurar el comando Artisan `snapshot` de Horizon para que se ejecute cada 5 minutos por medio del [planificador](/docs/{{version}}/scheduling) de tu aplicación:
+Horizon incluye un panel de métricas, el cual proporciona información de tus tiempos de trabajo y de espera en cola y tasa de rendimiento. Con el propósito de agregar contenido a este panel, deberías configurar el comando Artisan `snapshot` de Horizon para que se ejecute cada 5 minutos por medio del [planificador](/docs/{{version}}/scheduling) de tu aplicación:
 
     /**
      * Define the application's command schedule.
