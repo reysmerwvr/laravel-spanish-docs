@@ -1,27 +1,27 @@
 # Hashing
 
-- [Introduction](#introduction)
-- [Configuration](#configuration)
-- [Basic Usage](#basic-usage)
+- [Introducción](#introduction)
+- [Configuración](#configuration)
+- [Uso Básico](#basic-usage)
 
 <a name="introduction"></a>
-## Introduction
+## Introducción
 
-The Laravel `Hash` [facade](/docs/{{version}}/facades) provides secure Bcrypt and Argon2 hashing for storing user passwords. If you are using the built-in `LoginController` and `RegisterController` classes that are included with your Laravel application, they will use Bcrypt for registration and authentication by default.
+El facade(/docs/{{version}}/facades) `Has` de Laravel proporciona hashing seguro de Bcrypt y Argon2 para almacenar contraseñas de usuarios. Si estás usando las clases integradas `LoginController` y `RegisterController` que están incluidas con tu aplicación de Laravel usarán Bcrypt para registro y autenticación de forma predeterminada.
 
-> {tip} Bcrypt is a great choice for hashing passwords because its "work factor" is adjustable, which means that the time it takes to generate a hash can be increased as hardware power increases.
+> {tip} Bcrypt es una buena opción para el hashing de contraseñas dado que su "factor de trabajo" es ajustable, lo que quiere decir que el tiempo que toma generar un hash puede ser aumentado a medida que la capacidad de hardware incrementa.
 
 <a name="configuration"></a>
-## Configuration
+## Configuración
 
-The default hashing driver for your application is configured in the `config/hashing.php` configuration file. There are currently three supported drivers: [Bcrypt](https://en.wikipedia.org/wiki/Bcrypt) and [Argon2](https://en.wikipedia.org/wiki/Argon2) (Argon2i and Argon2id variants).
+El driver de hashing por defecto para tu aplicación está configurado en el archivo de configuración `config/hashing.php`. Actualmente hay tres drivers soportados: [Bcrypt](https://en.wikipedia.org/wiki/Bcrypt) y [Argon2](https://en.wikipedia.org/wiki/Argon2) (variantes Argon2i y Argon2id).
 
-> {note} The Argon2i driver requires PHP 7.2.0 or greater and the Argon2id driver requires PHP 7.3.0 or greater.
+> {note} El driver Argon2i requiere PHP 7.2.0 o superiory el driver Argon2id requiere PHP 7.3.0 o superior.
 
 <a name="basic-usage"></a>
-## Basic Usage
+## Uso Básico
 
-You may hash a password by calling the `make` method on the `Hash` facade:
+Puedes hacer hash a una contraseña llamando al método `make` en el facade `Hash`:
 
     <?php
 
@@ -49,17 +49,17 @@ You may hash a password by calling the `make` method on the `Hash` facade:
         }
     }
 
-#### Adjusting The Bcrypt Work Factor
+#### Ajustando El Factor De Trabajo De Bcrypt
 
-If you are using the Bcrypt algorithm, the `make` method allows you to manage the work factor of the algorithm using the `rounds` option; however, the default is acceptable for most applications:
+Si estás usando el algoritmo Bcrypt, el método `make` te permite administrar el factor de trabajo del algoritmo usando la opción `rounds`; sin embargo, el valor por defecto es aceptable para la mayoria de aplicaciones:
 
     $hashed = Hash::make('password', [
         'rounds' => 12
     ]);
 
-#### Adjusting The Argon2 Work Factor
+#### Ajustando El Factor De Trabajo De Argon2
 
-If you are using the Argon2 algorithm, the `make` method allows you to manage the work factor of the algorithm using the `memory`, `time`, and `threads` options; however, the defaults are acceptable for most applications:
+Si estás usando el algoritmo de Argon2, el método `make` te permite administrar la carga de trabajo del algoritmo usando las opciones `memory`, `time` y `threads`; sin embargo, los valores por defecto son aceptables para la mayoria de aplicaciones:
 
     $hashed = Hash::make('password', [
         'memory' => 1024,
@@ -67,19 +67,19 @@ If you are using the Argon2 algorithm, the `make` method allows you to manage th
         'threads' => 2,
     ]);
 
-> {tip} For more information on these options, check out the [official PHP documentation](http://php.net/manual/en/function.password-hash.php).
+> {tip} For more information on these options, check out the [official PHP documentation](https://secure.php.net/manual/en/function.password-hash.php).
 
-#### Verifying A Password Against A Hash
+#### Verificando Una Contraseña Contra Un Hash
 
-The `check` method allows you to verify that a given plain-text string corresponds to a given hash. However, if you are using the `LoginController` [included with Laravel](/docs/{{version}}/authentication), you will probably not need to use this directly, as this controller automatically calls this method:
+El método `check` te permite verificar que una cadena de texto plano dada corresponde a un hash dado. Sin embargo, si estás usando el `LoginController` [incluido con Laravel](/docs/{{version}}/authentication), probablemente no necesitarás usar esto directamente, ya que este controlador automáticamente llama a este método:
 
     if (Hash::check('plain-text', $hashedPassword)) {
-        // The passwords match...
+        // Las contraseñas coinciden...
     }
 
-#### Checking If A Password Needs To Be Rehashed
+#### Comprobando Si Una Contraseña Necesita Ser Rehashed
 
-The `needsRehash` function allows you to determine if the work factor used by the hasher has changed since the password was hashed:
+La función `needsRehash` te permite determinar si el factor de trabajo usado por el hasher ha cambiado desde que el hash fue agregado a la contraseña:
 
     if (Hash::needsRehash($hashed)) {
         $hashed = Hash::make('plain-text');
