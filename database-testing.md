@@ -28,7 +28,7 @@ Laravel proporciona una variedad de herramientas útiles para hacer que sea más
 
 También podrías usar el método `assertDatabaseMissing` para comprobar que esos datos no existen en la base de datos.
 
-Ciertamente, el método `assertDatabaseHas` y otros métodos como éste son por conveniencia. Eres libre de usar cualquiera de los métodos de aserción de PHPUnit integrados para complementar tus pruebas.
+El método `assertDatabaseHas` y otros métodos como éste son por conveniencia. Eres libre de usar cualquiera de los métodos de aserción de PHPUnit integrados para complementar tus pruebas.
 
 <a name="generating-factories"></a>
 ## Generando Factories
@@ -37,7 +37,7 @@ Para crear un factory, usa el [comando Artisan](/docs/{{version}}/artisan) `make
 
     php artisan make:factory PostFactory
 
-El nueva factory será colocado en tu directorio `database/factories`.
+El nuevo factory será colocado en tu directorio `database/factories`.
 
 La opción `--model` puede ser usada para indicar el nombre del modelo creado por el factory. Esta opción pre-rellenará el archivo de factory generado con el modelo dado:
 
@@ -78,14 +78,16 @@ Con frecuencia es útil reinicializar tu base de datos después de cada prueba d
 
 Al momento de probar, puedes necesitar insertar unos pocos registros dentro de tu base de datos antes de ejecutar tu prueba. En lugar de especificar manualmente el valor de cada columna cuando crees estos datos de prueba, Laravel permite que definas un conjunto de atributos predeterminados para cada uno de tus [modelos de Eloquent](/docs/{{version}}/eloquent) usando factories de modelos. Para empezar, echemos un vistazo al archivo `database/factories/UserFactory.php` en tu aplicación. De forma predeterminada, este archivo contiene una definición de factory:
 
+    use Illuminate\Support\Str;
     use Faker\Generator as Faker;
 
     $factory->define(App\User::class, function (Faker $faker) {
         return [
             'name' => $faker->name,
             'email' => $faker->unique()->safeEmail,
+            'email_verified_at' => now(),
             'password' => '$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm', // secret
-            'remember_token' => str_random(10),
+            'remember_token' => Str::random(10),
         ];
     });
 
@@ -115,7 +117,7 @@ Si tu estado requiere cálculo o una instancia `$faker`, puedes usar un Closure 
 <a name="factory-callbacks"></a>
 ### LLamadas de retorno de un Factory
 
-Las llamadas de retorno de un Factory son registradas usando los métodos `afterMaking` y `afterCreating`, y te permiten realizar tareas adicionales de hacer o crear un modelo. Por ejemplo, puedes usar llamadas de retorno para relacionar modelos adicionales con el modelo creado:
+Las llamadas de retorno de un Factory son registradas usando los métodos `afterMaking` y `afterCreating` y te permiten realizar tareas adicionales de hacer o crear un modelo. Por ejemplo, puedes usar llamadas de retorno para relacionar modelos adicionales con el modelo creado:
 
     $factory->afterMaking(App\User::class, function ($user, $faker) {
         // ...
@@ -200,8 +202,8 @@ En este ejemplo, adjuntaremos una relación para algunos modelos creados. Al mom
 
     $users = factory(App\User::class, 3)
                ->create()
-               ->each(function ($u) {
-                    $u->posts()->save(factory(App\Post::class)->make());
+               ->each(function ($user) {
+                    $user->posts()->save(factory(App\Post::class)->make());
                 });
 
 #### Relaciones y Closures de Atributos
