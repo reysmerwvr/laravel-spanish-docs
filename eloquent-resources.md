@@ -25,9 +25,9 @@ Para generar un clase recurso, puedes usar el comando de Artisan `make:resource`
 
 #### Colecciones de Recurso
 
-Además de generar recursos que transforman modelos individuales, puede generar recursos que sean responsables de transformar colecciones de modelos. Esto permite que tu respuesta incluya enlaces y otra metainformación relevante para una colección completa de un recurso determinado.
+Además de generar recursos que transforman modelos individuales, puedes generar recursos que sean responsables de transformar colecciones de modelos. Esto permite que tu respuesta incluya enlaces y otra metainformación relevante para una colección completa de un recurso determinado.
 
-Para crear una colección de recursos, debes utilizar la opción `--collection` al crear el recurso. O, incluir la palabra `Colección` en el nombre del recurso le indicará a Laravel que debe crear un recurso de colección. Los recursos de colección extienden la clase `Illuminate\Http\Resources\Json\ResourceCollection`:
+Para crear una colección de recursos, debes utilizar la opción `--collection` al crear el recurso. O, incluir la palabra `Colección` en el nombre del recurso que le indicará a Laravel que debe crear un recurso de colección. Los recursos de colección extienden la clase `Illuminate\Http\Resources\Json\ResourceCollection`:
 
     php artisan make:resource Users --collection
 
@@ -66,7 +66,7 @@ Antes de sumergirse en todas las opciones disponibles para escribir recursos, pr
         }
     }
 
-Cada clase de recurso define un método `toArray` que devuelve el arreglo de atributos que deben convertirse a JSON al enviar la respuesta. Observa que podemos acceder a las propiedades del modelo directamente desde la variable `$this`. Esto se debe a que una clase de recurso representará automáticamente la propiedad y el acceso del método al modelo subyacente para un acceso conveniente. Una vez que se define el recurso, se puede devolver desde una ruta o controlador:
+Cada clase de recurso define un método `toArray` que devuelve el arreglo de atributos que deben convertirse a JSON al enviar la respuesta. Observa que podemos acceder a las propiedades del modelo directamente desde la variable `$this`. Esto se debe a que una clase de recurso accederá automáticamente a la propiedad del modelo subyacente para un acceso conveniente. Una vez que se define el recurso, se puede devolver desde una ruta o controlador:
 
     use App\User;
     use App\Http\Resources\User as UserResource;
@@ -86,7 +86,7 @@ Si estás devolviendo una colección de recursos o una respuesta paginada, puede
         return UserResource::collection(User::all());
     });
 
-Por supuesto, esto no permite ninguna adición de metadatos que pueden necesitar ser retornados con la colección. Si deseas personalizar la respuesta de la colección de recursos, puedes crear un recurso dedicado para representar la colección:
+Observa que esto no permite ninguna adición de metadatos que pueden necesitar ser retornados con la colección. Si deseas personalizar la respuesta de la colección de recursos, puedes crear un recurso dedicado para representar la colección:
 
     php artisan make:resource UserCollection
 
@@ -130,7 +130,7 @@ Después de definir tu colección de recursos, ésta la puedes devolver desde un
 
 Normalmente, la propiedad `$this->collection` de una colección de recursos se rellena automáticamente con el resultado de la asignación de cada elemento de la colección a su clase de recurso singular. Se asume que la clase de recurso singular es el nombre de clase de la colección sin la cadena `Collection` al final.
 
-Por ejemplo, `UserCollection` intentará asignar las instancias de usuario dadas al recurso `User`. Para personalizar este comportamiento, puede anular la propiedad `$collects` de su colección de recursos:
+Por ejemplo, `UserCollection` intentará asignar las instancias de usuario dadas al recurso `User`. Para personalizar este comportamiento, puedes anular la propiedad `$collects` de tu colección de recursos:
 
     <?php
 
@@ -319,7 +319,7 @@ Si deseas deshabilitar la envoltura del recurso más externo, puede usar el mét
 
 Tienes total libertad para determinar cómo se envuelven las relaciones de tus recursos. Si deseas que todas las colecciones de recursos se envuelvan en una clave `data`, independientemente de su anidamiento, debes definir una clase de colección de recursos para cada recurso y devolver la colección dentro de una clave` data`.
 
-Por supuesto, puedes que te estés preguntando si esto hará que tu recurso más externo se incluya en dos claves `data`. No te preocupes, Laravel nunca permitirá que tus recursos se envuelvan por error, por lo que no tienes que preocuparte por el nivel de anidamiento de la colección de recursos que estás transformando:
+Puedes que te estés preguntando si esto hará que tu recurso más externo se incluya en dos claves `data`. No te preocupes, Laravel nunca permitirá que tus recursos se envuelvan por error, por lo que no tienes que preocuparte por el nivel de anidamiento de la colección de recursos que estás transformando:
 
     <?php
 
@@ -549,7 +549,7 @@ Si tu tabla intermedia utiliza un accesador distinto de `pivot`, puede usar el m
 <a name="adding-meta-data"></a>
 ### Añadiendo Metadatos
 
-Algunos estándares de API de JSON requieren la adición de metadatos a tus respuestas de recursos y colecciones de recursos. Esto a menudo incluye cosas como `links` al recurso o recursos relacionados, o metadatos sobre el recurso en sí. Si necesita devolver metadatos adicionales sobre un recurso, inclúyelo en tu método `toArray`. Por ejemplo, puedes incluir información de `link` al transformar una colección de recursos:
+Algunos estándares de API de JSON requieren la adición de metadatos a tus respuestas de recursos y colecciones de recursos. Esto a menudo incluye cosas como `links` al recurso o recursos relacionados, o metadatos sobre el recurso en sí. Si necesitas devolver metadatos adicionales sobre un recurso, inclúyelos en tu método `toArray`. Por ejemplo, puedes incluir información de `link` al transformar una colección de recursos:
 
     /**
      * Transform the resource into an array.
