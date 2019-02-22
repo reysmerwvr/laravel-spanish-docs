@@ -66,7 +66,7 @@ Antes de sumergirse en todas las opciones disponibles para escribir recursos, pr
         }
     }
 
-Cada clase de recurso define un método `toArray` que devuelve el arreglo de atributos que deben convertirse a JSON al enviar la respuesta. Observa que podemos acceder a las propiedades del modelo directamente desde la variable `$this`. Esto se debe a que una clase de recurso accederá automáticamente a la propiedad del modelo subyacente para un acceso conveniente. Una vez que se define el recurso, se puede devolver desde una ruta o controlador:
+Cada clase de recurso define un método `toArray` que devuelve el arreglo de atributos que deben convertirse a JSON al enviar la respuesta. Observa que podemos acceder a las propiedades del modelo directamente desde la variable `$this`. Esto es porque la clase del recurso va a redirigir de manera automática el acceso de propiedades y métodos al modelo asignado. Una vez que se define el recurso, se puede devolver desde una ruta o controlador:
 
     use App\User;
     use App\Http\Resources\User as UserResource;

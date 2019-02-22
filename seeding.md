@@ -1,4 +1,4 @@
-# Database: Seeding
+# Base de datos: Seeding
 
 - [Introducción](#introduction)
 - [Escribiendo Seeders](#writing-seeders)
@@ -9,7 +9,7 @@
 <a name="introduction"></a>
 ## Introducción
 
-Laravel incluye un método sencillo para alimentar tu base de datos con datos de prueba usando clases seeder. Todas las clases seeder son almacenadas en el directorio `database/seeds`. Las clases seeder pueden tener cualquier nombre que desees, pero deberías seguir probablemente alguna convención razonable, tales como `UsersTableSeeder` etc. De forma predeterminada, una clase `DatabaseSeeder` se define para tí. A partir de esta clase, puedes usar el método `call` para registrar otras clases seeder, permitiendo que controles el orden del seeding.
+Laravel incluye un método sencillo para alimentar tu base de datos con datos de prueba usando clases `Seeder`. Todas las clases `Seeder` son almacenadas en el directorio `database/seeds`. Las clases `Seeder` pueden tener cualquier nombre que desees, pero deberías seguir probablemente alguna convención razonable, tales como `UsersTableSeeder` etc. De forma predeterminada, una clase `DatabaseSeeder` se define para tí. A partir de esta clase, puedes usar el método `call` para registrar otras clases seeder, permitiendo que controles el orden en que se ejecutan.
 
 <a name="writing-seeders"></a>
 ## Escribiendo Seeders
@@ -47,12 +47,12 @@ Como un ejemplo, vamos a modificar la clase `DatabaseSeeder` predeterminada y ag
         }
     }
 
-> {tip} Puede escribir cualquier dependencia que necesite dentro de la firma del método `run`. Se resolverán automáticamente a través de Laravel [contenedor de servicio] (/ docs / {{version}} / container).
+> {tip} Puede escribir cualquier dependencia que necesite dentro de la firma del método `run`. Se resolverán automáticamente a través del [contenedor de servicio](/docs/{{version}}/container) de Laravel.
 
 <a name="using-model-factories"></a>
-### Usando Fábricas de Modelos
+### Usando Model Factories
 
-Ciertamente, especificar manualmente los atributos para cada seeder de modelos es lento y complicado. En lugar de eso, puedes usar [fábricas de modelos](/docs/{{version}}/database-testing#writing-factories) para generar convenientemente cantidades grandes de registros de bases de datos. Primero, revisa la [documentación sobre model factories](/docs/{{version}}/database-testing#writing-factories) para aprender cómo definir tus factories. Una vez que hayas definido tus factories, puedes usar la función helper `factory` para insertar registros dentro de tu base de datos.
+Ciertamente, especificar manualmente los atributos para cada seeder de modelos es lento y complicado. En lugar de eso, puedes usar [Model Factories](/docs/{{version}}/database-testing#writing-factories) para generar convenientemente cantidades grandes de registros de bases de datos. Primero, revisa la [documentación sobre model factories](/docs/{{version}}/database-testing#writing-factories) para aprender cómo definir tus factories. Una vez que hayas definido tus factories, puedes usar la función helper `factory` para insertar registros dentro de tu base de datos.
 
 Por ejemplo, vamos a crear 50 usuarios y establecer una asociación con los posts para cada usuario:
 
@@ -94,7 +94,7 @@ Una vez que hayas escrito tu seeder, puedes necesitar regenerar el cargador auto
 
     composer dump-autoload
 
-Ahora puedes usar el comando Artisan `db:seed` para alimentar tu base de datos. De forma predeterminada, el comando `db:seed` ejecuta la clase `DatabaseSeeder`, la cual puede ser usada para ejecutar otras clases seed. Sin embargo, puedes usar la opción `--class` para especificar que una clase seeder en específica se ejecute individualmente:
+Ahora puedes usar el comando Artisan `db:seed` para alimentar tu base de datos. De forma predeterminada, el comando `db:seed` ejecuta la clase `DatabaseSeeder`, la cual puede ser usada para ejecutar otras clases seeder. Sin embargo, puedes usar la opción `--class` para especificar que una clase seeder específica se ejecute individualmente:
 
     php artisan db:seed
 
