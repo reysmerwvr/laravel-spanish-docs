@@ -1,4 +1,4 @@
-# Service Container
+# Contenedor de Servicios (Service Container)
 
 - [Introducción](#introduction)
 - [Enlaces](#binding)
@@ -64,7 +64,7 @@ Echemos un vistazo a un ejemplo sencillo:
 
 En este ejemplo, `UserController` necesita retornar usuarios desde una fuente de datos. Así que, **inyectaremos** un servicio que es capaz de retornar los usuarios. En este conexto, nuestro `UserRepository` probablemente usa [Eloquent](/docs/{{version}}/eloquent) para retornar la información de los usuarios desde la base de datos. Sin embargo, dado que el repositorio es inyectado, somos capaces de cambiarlo fácilmente con otra implementación. También somos capaces de "simular" o crear una implementación de ejemplo de `UserRepository` al probar nuestra aplicación.
 
-Un conocimiento profundo del contenedor de servicios de Laravel es esencial para construir aplicaciones grandes y poderosas así como también contribuir al nucleo de Laravel.
+Un conocimiento profundo del contenedor de servicios de Laravel es esencial para construir aplicaciones grandes y poderosas así como también contribuir al núcleo de Laravel.
 
 <a name="binding"></a>
 ## Enlaces
@@ -138,7 +138,7 @@ Esta sentencia le dice al contenedor que debe inyectar `RedisEventPusher` cuando
 <a name="contextual-binding"></a>
 ### Enlaces Contextuales
 
-Algunas veces tendrás dos clases que usan la misma interfaz, pero quieres inyectar diferentes implementaciones en cada clase. Por ejmplo, dos controladores pueden depender de diferentes implementaciones del [contrato](/docs/{{version}}/contracts) `Illuminate\Contracts\Filesystem\Filesystem`. Laravel proporciona una simple y fluida interfaz para definir este comportamiento:
+Algunas veces tendrás dos clases que usan la misma interfaz, pero quieres inyectar diferentes implementaciones en cada clase. Por ejemplo, dos controladores pueden depender de diferentes implementaciones del [contrato](/docs/{{version}}/contracts) `Illuminate\Contracts\Filesystem\Filesystem`. Laravel proporciona una simple y fluida interfaz para definir este comportamiento:
 
     use Illuminate\Support\Facades\Storage;
     use App\Http\Controllers\PhotoController;
@@ -160,7 +160,7 @@ Algunas veces tendrás dos clases que usan la misma interfaz, pero quieres inyec
 <a name="tagging"></a>
 ### Etiquetado
 
-Ocasionalmente, puedes necesitar resolver todo de una determinada "categoría" de enlaces. Por ejemplo, puede que estes construyendo un agregador de reportes que recibe un arreglo de diferentes implementaciones de la interfaz `Report`. Luego de registrar las implementaciones de `Report`, puedes asignarles una etiqueta usando el método `tag`:
+Ocasionalmente, puedes necesitar resolver todo de una determinada "categoría" de enlaces. Por ejemplo, puede que estés construyendo un agregador de reportes que recibe un arreglo de diferentes implementaciones de la interfaz `Report`. Luego de registrar las implementaciones de `Report`, puedes asignarles una etiqueta usando el método `tag`:
 
     $this->app->bind('SpeedReport', function () {
         //
@@ -197,7 +197,7 @@ Puedes usar el método `make` para resolver una instancia de clase fuera del con
 
     $api = $this->app->make('HelpSpot\API');
 
-Si estás en una ubicación de tu código que no tiene acceso a la variable `$app`, puedes usar el el helper global `resolve`:
+Si estás en una ubicación de tu código que no tiene acceso a la variable `$app`, puedes usar el helper global `resolve`:
 
     $api = resolve('HelpSpot\API');
 
@@ -208,7 +208,7 @@ Si algunas de las dependencias de tu clase no son resueltas mediante el contened
 <a name="automatic-injection"></a>
 #### Inyección Automática
 
-Alternativamente, y de forma importante importante, puedes "determinar el tipo" de la dependencia en el constructor de una clase que es resuelta por el contenedor, incluyendo [controladores](/docs/{{version}}/controllers), [listeners de eventos](/docs/{{version}}/events), [colas](/docs/{{version}}/queues), [middleware](/docs/{{version}}/middleware) y más. En la práctica, así es como la mayoría de tus objetos deben ser resueltos por el contenedor.
+Alternativamente, y de forma importante, puedes "determinar el tipo" de la dependencia en el constructor de una clase que es resuelta por el contenedor, incluyendo [controladores](/docs/{{version}}/controllers), [listeners de eventos](/docs/{{version}}/events), [colas](/docs/{{version}}/queues), [middleware](/docs/{{version}}/middleware) y más. En la práctica, así es como la mayoría de tus objetos deben ser resueltos por el contenedor.
 
 Por ejemplo, puedes determinar el tipo de un repositorio definido por tu aplicación en el constructor de un controlador. El repositorio será automáticamente resuelto e inyectado en la clase:
 
@@ -261,7 +261,7 @@ El contenedor de servicios ejecuta un evento cada vez que resuelve un objeto. Pu
         // Called when container resolves objects of type "HelpSpot\API"...
     });
 
-Como puedes ver, el objeto siendo resuelto será pasado a la función de retorno, permitiendote establecer cualquier propiedad adicional en el objeto antes de que sea entregado a su consumidor.
+Como puedes ver, el objeto siendo resuelto será pasado a la función de retorno, permitiéndote establecer cualquier propiedad adicional en el objeto antes de que sea entregado a su consumidor.
 
 <a name="psr-11"></a>
 ## PSR-11
