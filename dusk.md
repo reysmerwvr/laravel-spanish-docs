@@ -1,4 +1,4 @@
-# Pruebas de navegador (Laravel Dusk)
+# Laravel Dusk
 
 - [Introducción](#introduction)
 - [Instalación](#installation)
@@ -13,14 +13,15 @@
     - [Migraciones de Base de Datos](#migrations)
 - [Interactuando con Elementos](#interacting-with-elements)
     - [Selectores de Dusk](#dusk-selectors)
-    - [Clickeando Enlaces](#clicking-links)
+    - [Haciendo Clic En Enlaces](#clicking-links)
     - [Texto, Valores y Atributos](#text-values-and-attributes)
     - [Usando Formularios](#using-forms)
     - [Adjuntando Archivos](#attaching-files)
-    - [Usando el Teclado](#using-the-keyboard)
-    - [Usando el Ratón](#using-the-mouse)
-    - [Estableciendo el Alcance de los Selectores](#scoping-selectors)
-    - [Esperando por Elementos](#waiting-for-elements)
+    - [Usando El Teclado](#using-the-keyboard)
+    - [Usando El Ratón](#using-the-mouse)
+    - [Diálogos De JavaScript](#javascript-dialogs)
+    - [Alcance De Selectores](#scoping-selectors)
+    - [Esperando Por Elementos](#waiting-for-elements)
     - [Haciendo Aserciones de Vue](#making-vue-assertions)
 - [Aserciones Disponibles](#available-assertions)
 - [Páginas](#pages)
@@ -41,7 +42,7 @@
 <a name="introduction"></a>
 ## Introducción
 
-Laravel Dusk proporciona una API de automatización y prueba para navegador, expresiva y fácil de usar. De forma predeterminada, Dusk no requiere que instales JDK o Selenium en tu computador. En su lugar, Dusk usa una instalación de [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/home) independiente. Sin embargo, siéntete libre de utilizar cualquier otro driver compatible con Selenium que desees.
+Laravel Dusk proporciona una API de automatización y prueba para navegador expresiva y fácil de usar. De forma predeterminada, Dusk no requiere que instales JDK o Selenium en tu computador. En su lugar, Dusk usa una instalación de [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/home) independiente. Sin embargo, siéntete libre de utilizar cualquier otro driver compatible con Selenium que desees.
 
 <a name="installation"></a>
 ## Instalación
@@ -200,13 +201,13 @@ Para empezar, vamos a escribir una prueba que verifica que podemos entrar a nues
         }
     }
 
-Como puedes ver en el ejemplo anterior, el método `browse` acepta una función callback. Una instancia de navegador será pasada automáticamente a esta función de retorno por Dusk y es el objeto principal usado para interactuar con y hacer aserciones contra tu aplicación.
+Como puedes ver en el ejemplo anterior, el método `browse` acepta una función callback. Una instancia de navegador será pasada automáticamente a esta función de retorno por Dusk y es el objeto principal utilizado para interactuar y hacer aserciones en la aplicación.
 
 > {tip} Esta prueba puede ser usada para probar la pantalla login generada por el comando Artisan `make:auth`.
 
 #### Creando Múltiples Navegadores
 
-Algunas veces puedes necesitar múltiples navegadores con el propósito de ejecutar apropiadamente una prueba. Por ejemplo, múltiples navegadores pueden ser necesitados para probar una pantalla de conversaciones que interactúa con websockets. Para crear múltiples navegadores, "pregunta" por más de un navegador en la firma de la función de retorno dada al método `browse`:
+Algunas veces puedes necesitar múltiples navegadores con el propósito de ejecutar apropiadamente una prueba. Por ejemplo, múltiples navegadores pueden ser necesitados para probar una pantalla de conversaciones que interactúa con websockets. Para crear múltiples navegadores, "solicita" más de un navegador en la firma del callback dado al método `browse`:
 
     $this->browse(function ($first, $second) {
         $first->loginAs(User::find(1))
@@ -285,7 +286,7 @@ Frecuentemente, estarás probando páginas que requieren autenticación. Puedes 
 <a name="migrations"></a>
 ### Migraciones de Bases de Datos
 
-Cuando tu prueba requiere migraciones, como el ejemplo de autenticación visto antes, nunca deberías usar el trait `RefreshDatabase`. El trait `RefreshDatabase` influye sobre las transacciones de base de datos, las cuales no serán aplicables a traves de las solicitudes HTTP. En su lugar, usa el trait `DatabaseMigrations`:
+Cuando tu prueba requiere migraciones, como el ejemplo de autenticación visto antes, nunca deberías usar el trait `RefreshDatabase`. El trait `RefreshDatabase` se apoya en transacciones de base de datos, las cuales no serán aplicables a traves de las solicitudes HTTP. En su lugar, usa el trait `DatabaseMigrations`:
 
     <?php
 
@@ -328,7 +329,7 @@ Los selectores de Dusk permiten que te enfoques en la escritura de pruebas efect
     $browser->click('@login-button');
 
 <a name="clicking-links"></a>
-### Clickeando Enlaces
+### Haciendo Clic En Enlaces
 
 Para hacer clic sobre un enlace, puedes usar el método `clickLink` en la instancia del navegador. El método `clickLink` hará clic en el enlace que tiene el texto dado en la pantalla:
 
@@ -337,7 +338,7 @@ Para hacer clic sobre un enlace, puedes usar el método `clickLink` en la instan
 > {note} Este método interactúa con jQuery. Si jQuery no está disponible en la página, Dusk lo inyectará automáticamente de modo que esté disponible por la duración de la prueba.
 
 <a name="text-values-and-attributes"></a>
-### Texto, Valores, y Atributos
+### Texto, Valores y Atributos
 
 #### Obteniendo y Estableciendo Valores
 
@@ -383,7 +384,7 @@ Puedes limpiar el valor de un campo usando el método `clear`:
 
 #### Listas Desplegables
 
-Para seleccionar un valor en un cuadro de selección de lista desplegable, puedes usar el método `select`. Al momento de pasar un valor al método `select`, deberías pasar el valor de opción a resaltar en lugar del texto en pantalla:
+Para seleccionar un valor en un cuadro de selección de lista desplegable, puedes usar el método `select`. Al momento de pasar un valor al método `select`, deberías pasar el valor de opción a resaltar en lugar del texto mostrado en pantalla:
 
     $browser->select('size', 'Large');
 
@@ -430,7 +431,7 @@ Incluso puedes enviar una "tecla de función" al selector CSS principal que cont
 <a name="using-the-mouse"></a>
 ### Usando el Ratón
 
-#### Clickeando sobre Elementos
+#### Haciendo Clic Sobre Elementos
 
 El método `click` puede ser usado para "clickear" sobre un elemento que coincida con el selector dado:
 
@@ -442,7 +443,7 @@ El método `mouseover` puede ser usado cuando necesitas mover el ratón sobre un
 
     $browser->mouseover('.selector');
 
-#### Arrastrar & Soltar
+#### Arrastrar y Soltar
 
 El método `drag` puede ser usado para arrastrar un elemento que coincida con el selector dado hasta otro elemento:
 
@@ -455,10 +456,32 @@ O, puedes arrastrar un elemento en una única dirección:
     $browser->dragUp('.selector', 10);
     $browser->dragDown('.selector', 10);
 
-<a name="scoping-selectors"></a>
-### Estableciendo el Alcance de Selectores
+<a name="javascript-dialogs"></a>
+### Diálogos de JavaScript
 
-Algunas veces puedes querer ejecutar varias operaciones al momento de establecer el alcance de todas las operaciones dentro de un selector dado. Por ejemplo, puedes querer comprobar que algunos textos existen unicamente dentro de una tabla y después presionar un botón dentro de la tabla. Puedes usar el método `with` para completar esta tarea. Todas las operaciones ejecutadas dentro de la función de retorno dada al método `with` serán establecidas con alcance al selector original:
+Dusk provee de varios métodos para interactuar con Diálogos de JavaScript:
+
+    // Wait for a dialog to appear:
+    $browser->waitForDialog($seconds = null);
+    
+    // Assert that a dialog has been displayed and that its message matches the given value:
+    $browser->assertDialogOpened('value');
+
+    // Type the given value in an open JavaScript prompt dialog:
+    $browser->typeInDialog('Hello World');
+
+Para cerrar un Diálogo de JavaScript abierto, haga clic en el botón Aceptar o OK:
+
+    $browser->acceptDialog();
+
+Para cerrar un Diálogo de JavaScript abierto, haga clic en el botón Cancelar (solo para un diálogo de confirmación):
+
+    $browser->dismissDialog();
+
+<a name="scoping-selectors"></a>
+### Alcance De Selectores
+
+Algunas veces puedes querer ejecutar varias operaciones dentro del alcance de un selector dado. Por ejemplo, puedes querer comprobar que algunos textos existen unicamente dentro de una tabla y después presionar un botón dentro de la tabla. Puedes usar el método `with` para completar esta tarea. Todas las operaciones ejecutadas dentro de la función de retorno dada al método `with` serán exploradas en el selector original:
 
     $browser->with('.table', function ($table) {
         $table->assertSee('Hello World')
@@ -468,7 +491,7 @@ Algunas veces puedes querer ejecutar varias operaciones al momento de establecer
 <a name="waiting-for-elements"></a>
 ### Esperando por Elementos
 
-Al momento de probar aplicaciones que usan JavaScript de forma extensiva, frecuentemente se vuelve necesario "esperar" por que ciertos elementos o datos estén disponibles antes de proceder con una prueba. Dusk hace esto fácilmente. Usando una variedad de métodos, puedes esperar que los elementos estén visibles en la página e incluso esperar hasta que una expresión de JavaScript dada se evalúe como `true`.
+Al momento de probar aplicaciones que usan JavaScript de forma extensiva, frecuentemente se vuelve necesario "esperar" por ciertos elementos o datos estén disponibles antes de proceder con una prueba. Dusk hace esto fácilmente. Usando una variedad de métodos, puedes esperar que los elementos estén visibles en la página e incluso esperar hasta que una expresión de JavaScript dada se evalúe como `true`.
 
 #### Esperando
 
@@ -486,7 +509,7 @@ El método `waitFor` puede ser usado para pausar la ejecución de la prueba hast
     // Wait a maximum of one second for the selector...
     $browser->waitFor('.selector', 1);
 
-También puedes esperar todo el tiempo que el selector dado esté faltando en la página:
+También puede esperar hasta que el selector dado no se encuentre en la página:
 
     $browser->waitUntilMissing('.selector');
 
@@ -494,7 +517,7 @@ También puedes esperar todo el tiempo que el selector dado esté faltando en la
 
 #### Estableciendo el Alcance de Selectores Cuando Estén Disponibles
 
-Ocasionalmente, puedes querer esperar por un selector dado y después interactuar con el elemento que coincida con el selector. Por ejemplo, puedes querer esperar hasta que una ventana modal esté disponible y después presionar el botón "OK" dentro de esa ventana. El método `whenAvailable` puede ser usado en este caso. Todas las operaciones de elementos ejecutadas dentro de la función de retorno dada serán establecidas con alcance al selector original:
+Ocasionalmente, puedes querer esperar por un selector dado y después interactuar con el elemento que coincida con el selector. Por ejemplo, puedes querer esperar hasta que una ventana modal esté disponible y después presionar el botón "OK" dentro de esa ventana. El método `whenAvailable` puede ser usado en este caso. Todas las operaciones de elementos ejecutadas dentro de la función de retorno dada serán ejecutadas dentro del selector original:
 
     $browser->whenAvailable('.modal', function ($modal) {
         $modal->assertSee('Hello World')
@@ -533,7 +556,7 @@ También puede esperar la localización de una ruta con nombre:
 
 #### Esperando por Recargas de Página
 
-Si necesitas hacer aserciones después de que una página ha sido recargada, usa el método `waitForReload`:
+Si necesita hacer aserciones después de que se ha recargado una página, usa el método `waitForReload`:
 
     $browser->click('.some-action')
             ->waitForReload()
@@ -556,7 +579,7 @@ Algunas veces puedes querer pausar la ejecución de una prueba hasta que una exp
 Los siguientes métodos puedes ser usados para esperar hasta que un atributo de componente de Vue dado tenga un determinado valor:
 
     // Wait until the component attribute contains the given value...
-    $browser->waitUntilVueIs('user.name', 'Taylor', '@user');
+    $browser->waitUntilVue('user.name', 'Taylor', '@user');
 
     // Wait until the component attribute doesn't contain the given value...
     $browser->waitUntilVueIsNot('user.name', null, '@user');
@@ -1108,15 +1131,15 @@ El método `assert` puede hacer algunas aserciones necesarias para verificar que
     }
 
 <a name="navigating-to-pages"></a>
-### Navegando hacia las Páginas
+### Navegando Hacia las Páginas
 
-Una vez que una página ha sido configurada, puedes navegar hacia esta usando el método `visit`:
+Una vez que se ha configurado una página, puedes navegar a ella utilizando el método `visit`:
 
     use Tests\Browser\Pages\Login;
 
     $browser->visit(new Login);
 
-Algunas veces puedes estar ya en una página dada y necesitas "cargar" los selectores y métodos dentro del contexto de prueba actual. Esto es común al momento de presionar un botón y ser redireccionado a una página dada sin navegar explícitamente a esta. En esta situación, puedes usar el método `on` para cargar la página.
+A veces es posible que ya estés en una página determinada y necesitas "cargar" los selectores y métodos dentro del contexto de prueba actual. Esto es común al momento de presionar un botón y ser redireccionado a una página dada sin navegar explícitamente a ésta. En esta situación, puedes usar el método `on` para cargar la página.
 
     use Tests\Browser\Pages\CreatePlaylist;
 
@@ -1319,35 +1342,35 @@ Una vez que el componente ha sido definido, fácilmente podemos seleccionar una 
 
 Si estás usando CircleCI para ejecutar tus pruebas de Dusk, puedes usar este archivo de configuración como punto de partida. Al igual que con TravisCI, usaremos el comando `php artisan serve` para ejecutar el servidor web integrado de PHP:
 
-     version: 2
-     jobs:
-         build:
-             steps:
+    version: 2
+    jobs:
+        build:
+            steps:
                 - run: sudo apt-get install -y libsqlite3-dev
                 - run: cp .env.testing .env
                 - run: composer install -n --ignore-platform-reqs
                 - run: npm install
                 - run: npm run production
                 - run: vendor/bin/phpunit
-
+       
                 - run:
-                   name: Start Chrome Driver
-                   command: ./vendor/laravel/dusk/bin/chromedriver-linux
-                   background: true
-
+                    name: Start Chrome Driver
+                    command: ./vendor/laravel/dusk/bin/chromedriver-linux
+                    background: true
+       
                 - run:
-                   name: Run Laravel Server
-                   command: php artisan serve
-                   background: true
-
+                    name: Run Laravel Server
+                    command: php artisan serve
+                    background: true
+       
                 - run:
-                   name: Run Laravel Dusk Tests
-                   command: php artisan dusk
+                    name: Run Laravel Dusk Tests
+                    command: php artisan dusk
 
 <a name="running-tests-on-codeship"></a>
 ### Codeship
 
-Para ejecutar pruebas de Dusk en [Codeship](https://codeship.com), agrega los siguientes comandos a tu proyecto Codeship. Ciertamente, estos comandos son un punto de partida y eres libre de agregar los comandos adicionales que necesites:
+Para ejecutar pruebas de Dusk en [Codeship](https://codeship.com), agrega los siguientes comandos a tu proyecto Codeship. Estos comandos son sólo un punto de partida y eres libre de agregar los comandos adicionales que necesites:
 
     phpenv local 7.2
     cp .env.testing .env
