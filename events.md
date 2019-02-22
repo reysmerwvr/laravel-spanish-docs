@@ -17,14 +17,14 @@
 <a name="introduction"></a>
 ## Introducción
 
-Los eventos de Laravel proporcionan una implementación de observador simple, lo que le permite suscribirse y escuchar diversos eventos que ocurren en tu aplicación. Las clases de eventos normalmente se almacenan en el directorio `app/Events`, mientras que tus oyentes se almacenan en `app/Listeners`. No te preocupes si no ves estos directorios en tu aplicación, ya que se crearán para ti cuando generes eventos y oyentes utilizando los comandos de consola Artisan.
+Los eventos de Laravel proporcionan una implementación de observador simple, lo que permite suscribirse y escuchar diversos eventos que ocurren en tu aplicación. Las clases de eventos normalmente se almacenan en el directorio `app/Events`, mientras que tus oyentes se almacenan en `app/Listeners`. No te preocupes si no ves estos directorios en tu aplicación, ya que se crearán para ti cuando generes eventos y oyentes utilizando los comandos de consola Artisan.
 
 Los eventos sirven como una excelente manera de desacoplar varios aspectos de tu aplicación, ya que un solo evento puede tener múltiples oyentes que no dependen entre sí. Por ejemplo, es posible que desees enviar una notificación de Slack a tu usuario cada vez que se envíe un pedido. En lugar de acoplar tu código de procesamiento de pedidos a tu código de notificación Slack, puedes generar un evento `OrderShipped`, que un oyente puede recibir y transformar en una notificación Slack.
 
 <a name="registering-events-and-listeners"></a>
 ## Registro de Eventos y Oyentes
 
-El `EventServiceProvider` incluido en tu aplicación Laravel proporciona un lugar conveniente para registrar todos los oyentes de eventos de tu aplicación. La propiedad `listen` contiene un arreglo de todos los eventos (claves) y sus oyentes (valores). Por supuesto, puedes agregar tantos eventos a este arreglo como lo requieras tu aplicación. Por ejemplo, agreguemos un evento `OrderShipped`:
+El `EventServiceProvider` incluido en tu aplicación Laravel proporciona un lugar conveniente para registrar todos los oyentes de eventos de tu aplicación. La propiedad `listen` contiene un arreglo de todos los eventos (claves) y sus oyentes (valores). Puedes agregar tantos eventos a este arreglo como lo requieras tu aplicación. Por ejemplo, agreguemos un evento `OrderShipped`:
 
     /**
      * The event listener mappings for the application.
@@ -40,7 +40,7 @@ El `EventServiceProvider` incluido en tu aplicación Laravel proporciona un luga
 <a name="generating-events-and-listeners"></a>
 ### Generación de Eventos y Oyentes
 
-Por supuesto, crear manualmente los archivos para cada evento y oyente es engorroso. En vez de eso, agrega oyentes y eventos a tu `EventServiceProvider` y usa el comando `event:generate`. Este comando generará cualquier evento u oyente que esté listado en tu `EventServiceProvider`. Por supuesto, los eventos y oyentes que ya existen quedarán intactos:
+Por supuesto, crear manualmente los archivos para cada evento y oyente es engorroso. En vez de eso, agrega oyentes y eventos a tu `EventServiceProvider` y usa el comando `event:generate`. Este comando generará cualquier evento u oyente que esté listado en tu `EventServiceProvider`. Los eventos y oyentes que ya existen quedarán intactos:
 
     php artisan event:generate
 
@@ -65,7 +65,7 @@ Normalmente, los eventos deberían registrarse a través del arreglo `$listen` d
 
 #### Comodín de Oyentes de un Evento
 
-Puedes incluso registrar oyentes usando el `*` como un parámetro comodín, lo que te permite capturar múltiples eventos en el mismo oyente. Los comodines de oyentes reciben el nombre del evento como su primer argumento, y el arreglo de datos de eventos completo como su segundo argumento:
+Puedes incluso registrar oyentes usando el `*` como un parámetro comodín, lo que te permite capturar múltiples eventos en el mismo oyente. Los comodines de oyentes reciben el nombre del evento como su primer argumento y el arreglo de datos de eventos completo como su segundo argumento:
 
     Event::listen('event.*', function ($eventName, array $data) {
         //
