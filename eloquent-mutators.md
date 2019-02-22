@@ -6,15 +6,15 @@
     - [Definiendo un Mutador](#defining-a-mutator)
 - [Mutadores de Fecha](#date-mutators)
 - [Conversión de Atributos](#attribute-casting)
-    - [Conversión de Arreglos y JSON ](#array-and-json-casting)
-    - [Conversión de fechas ](#date-casting)
+    - [Conversión de Arreglos y JSON](#array-and-json-casting)
+    - [Conversión de fechas](#date-casting)
 
 <a name="introduction"></a>
 ## Introducción
 
 Los accesadores y mutadores permiten que des formato a los valores de atributos de Eloquent cuando los obtienes o estableces en las instancias de modelo. Por ejemplo, puede que te guste usar el [encriptador de Laravel](/docs/{{version}}/encryption) para cifrar un valor mientras es almacenado en la base de datos y después descifrar automáticamente el atributo cuando accedes a él en un modelo de Eloquent.
 
-En adición a accesadores y mutadores personalizados, Eloquent también puede convertir automáticamente campos de fecha a instancias [Carbon](https://github.com/briannesbitt/Carbon) o incluso [convertir campos de texto a JSON](#attribute-casting).
+Además de los accesadores y los mutadores personalizados, Eloquent también puede convertir automáticamente campos de fecha a instancias [Carbon](https://github.com/briannesbitt/Carbon) o incluso [convertir campos de texto a JSON](#attribute-casting).
 
 <a name="accessors-and-mutators"></a>
 ## Accesadores y Mutadores
@@ -50,7 +50,7 @@ Como puedes ver, el valor original de la columna es pasado al accesador, permiti
 
     $firstName = $user->first_name;
 
-Ciertamente, también puedes usar accesadores para retornar nuevos valores computados de atributos existentes:
+También puedes usar accesadores para retornar nuevos valores computados de atributos existentes:
 
     /**
      * Get the user's full name.
@@ -89,7 +89,7 @@ Para definir un mutador, define un método `setFooAttribute` en tu modelo, donde
         }
     }
 
-El mutador recibirá el valor que está siendo establecido en el atributo, permitiendote manipular el valor y establecer el valor manipulado en la propiedad `$attributes` interna del modelo Eloquent. Así, por ejemplo, si intentamos establecer el atributo `first_name` como `Sally`:
+El mutador recibirá el valor que está siendo establecido en el atributo, permitiéndote manipular el valor y establecer el valor manipulado en la propiedad `$attributes` interna del modelo Eloquent. Así, por ejemplo, si intentamos establecer el atributo `first_name` como `Sally`:
 
     $user = App\User::find(1);
 
@@ -100,7 +100,7 @@ En este ejemplo, la función `setFirstNameAttribute` será ejecutada con el valo
 <a name="date-mutators"></a>
 ## Mutadores de Fecha
 
-De forma predeterminada, Eloquent convierte las columnas `created_at` y `updated_at` a instancias de [Carbon](https://github.com/briannesbitt/Carbon), la cual extiende la clase `DateTime` de PHP para proporcionar una mezcla de métodos útiles. Puedes personalizar cuáles fechas serán automáticamente mutadas e incluso deshabilitar completamente esta mutación, al sobrescribir la propiedad `$dates` de tu modelo:
+De forma predeterminada, Eloquent convertirá las columnas `created_at` y `updated_at` a instancias de [Carbon](https://github.com/briannesbitt/Carbon), la cual extiende la clase `DateTime` de PHP para proporcionar una variedad de métodos útiles.  Puedes agregar atributos de fecha adicionales estableciendo la propiedad `$dates` de tu modelo.
 
     <?php
 
@@ -122,7 +122,7 @@ De forma predeterminada, Eloquent convierte las columnas `created_at` y `updated
 
 > {tip} Puedes desactivar las marcas de tiempo (timestamps) predeterminadas `created_at` y` updated_at` configurando la propiedad pública `$timestamps` de tu modelo en `false`.
 
-Cuando una columna es considerada una fecha, puedes establecer su valor a una marca de tiempo UNIX, cadena de fecha (`Y-m-d`), cadena fecha-hora y por supuesto, una instancia `DateTime` / `Carbon`. El valor de la fecha será convertido y almacenado correctamente en tu base de datos:
+Cuando una columna es considerada una fecha, puedes establecer su valor a una marca de tiempo UNIX, cadena de fecha (`Y-m-d`), cadena fecha-hora o una instancia `DateTime` / `Carbon`. El valor de la fecha será convertido y almacenado correctamente en tu base de datos:
 
     $user = App\User::find(1);
 
