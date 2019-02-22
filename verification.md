@@ -1,4 +1,4 @@
-# Email Verification
+# Verificación de Correo Electrónico
 
 - [Introducción](#introduction)
 - [Consideraciones De La Base De Datos](#verification-database)
