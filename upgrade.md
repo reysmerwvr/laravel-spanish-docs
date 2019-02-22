@@ -15,7 +15,7 @@ Actualiza tu dependencia `laravel/framework` a `5.7.*` en tu archivo `composer.j
 
 Si estás utilizando Laravel Passport, debes actualizar tu dependencia, `laravel/passport` a `^7.0` en tu archivo `composer.json`.
 
-Por supuesto, no olvides examinar los paquetes de terceros consumidos por tu aplicación y verificar que estés utilizando la versión adecuada para soportar Laravel 5.7.
+Luego examina los paquetes de terceros consumidos por tu aplicación y verificar que estés utilizando la versión adecuada para soportar Laravel 5.7.
 
 ### Aplicación
 
@@ -413,7 +413,7 @@ El método `check` ahora **opcionalmente** verifica si el algoritmo del hash coi
 
 #### Conversión de Variables Dinámicas de Mailable
 
-**Probabilidad de impacto: Medio**
+**Probabilidad de impacto: Bajo**
 
 Las variables que se pasan dinámicamente a vistas mailables [ahora son automáticamente convertidas a camel case](https://github.com/laravel/framework/pull/24232), lo que hace que las variables dinámicas de Mailable tengan un comportamiento compatible con las variables dinámicas de la vista. Las variables dinámicas de Mailable no son una función documentada de Laravel, por lo que la probabilidad de impacto en tu aplicación es baja.
 
