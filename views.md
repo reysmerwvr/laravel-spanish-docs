@@ -28,7 +28,7 @@ Ya que esta vista es almacenada en `resources/views/greeting.blade.php`, podemos
 
 Como puedes ver, el primer argumento pasado al helper `view` corresponde al nombre del archivo de la vista en el directorio `resources/views`. El segundo argumento es un arreglo de datos que debería estar disponible para la vista. En este caso, estamos pasando la variable `name`, la cual es mostrada en la vista usando la [sintaxis de Blade](/docs/{{version}}/blade).
 
-Ciertamente, las vistas también pueden estar anidadas dentro de sub-directorios del directorio `resources/views`. La notación de "Punto" puede ser usada para referenciar vistas anidadas. Por ejemplo, si tu vista está almacenada en `resources/views/admin/profile.blade.php`, puedes hacer referencia a esta de la siguiente forma:
+Las vistas también pueden estar anidadas dentro de sub-directorios del directorio `resources/views`. La notación de "Punto" puede ser usada para referenciar vistas anidadas. Por ejemplo, si tu vista está almacenada en `resources/views/admin/profile.blade.php`, puedes hacer referencia a esta de la siguiente forma:
 
     return view('admin.profile', $data);
 
@@ -48,7 +48,7 @@ Usando el método `first`, puedes crear la primera vista que existe en un arregl
 
     return view()->first(['custom.admin', 'admin'], $data);
 
-Ciertamente, también puedes ejecutar este método por medio de la clase [facade](/docs/{{version}}/facades) `View`:
+También puedes ejecutar este método por medio de la clase [facade](/docs/{{version}}/facades) `View`:
 
     use Illuminate\Support\Facades\View;
 
@@ -68,7 +68,7 @@ Al momento de pasar información de esta manera, los datos deberían ser un arre
 <a name="sharing-data-with-all-views"></a>
 #### Compartiendo Datos con Todas las Vistas
 
-Ocasionalmente, puedes necesitar compartir una pieza de datos con todas las vistas que son renderizadas por tu aplicación. Puedes hacer eso usando el método `share` de la clase facade View. Típicamente, deberías colocar las ejecuciones a `share` dentro del método `boot` de un proveedor de servicio. Eres libre de agregarlos al `AppServiceProvider` o generar un proveedor de servicio diferente para alojarlos:
+Ocasionalmente, puedes necesitar compartir una pieza de datos con todas las vistas que son renderizadas por tu aplicación. Puedes hacer eso usando el método `share` de la clase facade `View`. Típicamente, deberías colocar las ejecuciones a `share` dentro del método `boot` de un proveedor de servicio. Eres libre de agregarlos al `AppServiceProvider` o generar un proveedor de servicio diferente para alojarlos:
 
     <?php
 
