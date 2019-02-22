@@ -16,7 +16,7 @@ Los lanzamientos de cambios de paradigma están separados por muchos años y rep
 <a name="support-policy"></a>
 ## Política de Soporte
 
-Para las versiones LTS, como Laravel 5.5, se proporcionan correcciones de errores durante 2 años y correcciones de seguridad por 3 años. Estas versiones proporcionan la ventana más larga de soporte y mantenimiento. Para las versiones generales, las correcciones de errores se proporcionan durante 6 meses y las correcciones de seguridad durante 1 año.
+Para las versiones LTS, como Laravel 5.5, se proporcionan correcciones de errores durante 2 años y correcciones de seguridad por 3 años. Estas versiones proporcionan la ventana más larga de soporte y mantenimiento. Para las versiones generales, las correcciones de errores se proporcionan durante 6 meses y las correcciones de seguridad durante 1 año.  Para todas las librerías adicionales, incluyendo Lumen, solo la última versión recibe correcciones de errores.
 
 | Versión | Lanzamiento | Corrección de errores hasta | Correcciones de seguridad hasta |
 | --- | --- | --- | --- |
@@ -36,7 +36,7 @@ Laravel 5.7 continúa las mejoras hechas en Laravel 5.6 al introducir [Laravel N
 
 ### Laravel Nova
 
-[Laravel Nova](https://nova.laravel.com) es un hermoso panel de administración y el mejor en su clase para aplicaciones de Laravel. Por supuesto, la característica principal de Nova es la capacidad de administrar sus registros de base de datos subyacentes utilizando Eloquent. Además, Nova ofrece soporte para filtros, lentes, acciones, acciones en cola, métricas, autorización, herramientas personalizadas, tarjetas personalizadas, campos personalizados y más.
+[Laravel Nova](https://nova.laravel.com) es un hermoso panel de administración y el mejor en su clase para aplicaciones de Laravel. La característica principal de Nova es la capacidad de administrar sus registros de base de datos subyacentes utilizando Eloquent. Además, Nova ofrece soporte para filtros, lentes, acciones, acciones en cola, métricas, autorización, herramientas personalizadas, tarjetas personalizadas, campos personalizados y más.
 
 Para obtener más información sobre Laravel Nova, visite el [sitio web de Nova](https://nova.laravel.com).
 
