@@ -936,6 +936,20 @@ El campo bajo validación debe estar presente entre los datos entrada y no vací
 
 El campo bajo validación debe estar presente y no vacío si el campo _anotherfield_ es igual a cualquier _valor_.
 
+Si deseas construir una condición más compleja para la regla `required_if`, puedes usar el método `Rule::requiredIf`. Este método acepta un valor booleano o un Closure. Cuando se pasa un Closure, éste debe devolver `true` o `false` para indicar si el campo bajo validación es obligatorio:
+
+    use Illuminate\Validation\Rule;
+
+    Validator::make($request->all(), [
+        'role_id' => Rule::requiredIf($request->user()->is_admin),
+    ]);
+
+    Validator::make($request->all(), [
+        'role_id' => Rule::requiredIf(function () use ($request) {
+            return $request->user()->is_admin;
+        }),
+    ]);
+
 <a name="rule-required-unless"></a>
 #### required_unless:_anotherfield_,_value_,...
 
