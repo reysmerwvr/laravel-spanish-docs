@@ -26,6 +26,53 @@ Laravel incluye una variedad de funciones "helpers" globales de PHP. Muchas de e
 
 <div class="collection-method-list" markdown="1">
 
+[Arr::add](#method-array-add)
+[Arr::collapse](#method-array-collapse)
+[Arr::divide](#method-array-divide)
+[Arr::dot](#method-array-dot)
+[Arr::except](#method-array-except)
+[Arr::first](#method-array-first)
+[Arr::flatten](#method-array-flatten)
+[Arr::forget](#method-array-forget)
+[Arr::get](#method-array-get)
+[Arr::has](#method-array-has)
+[Arr::last](#method-array-last)
+[Arr::only](#method-array-only)
+[Arr::pluck](#method-array-pluck)
+[Arr::prepend](#method-array-prepend)
+[Arr::pull](#method-array-pull)
+[Arr::random](#method-array-random)
+[Arr::set](#method-array-set)
+[Arr::sort](#method-array-sort)
+[Arr::sortRecursive](#method-array-sort-recursive)
+[Arr::where](#method-array-where)
+[Arr::wrap](#method-array-wrap)
+[data_fill](#method-data-fill)
+[data_get](#method-data-get)
+[data_set](#method-data-set)
+[head](#method-head)
+[last](#method-last)
+</div>
+
+### Rutas
+
+<div class="collection-method-list" markdown="1">
+
+[app_path](#method-app-path)
+[base_path](#method-base-path)
+[config_path](#method-config-path)
+[database_path](#method-database-path)
+[mix](#method-mix)
+[public_path](#method-public-path)
+[resource_path](#method-resource-path)
+[storage_path](#method-storage-path)
+
+</div>
+
+### Cadenas
+
+<div class="collection-method-list" markdown="1">
+
 [\__](#method-__)
 [Str::camel](#method-camel-case)
 [class_basename](#method-class-basename)
@@ -55,58 +102,10 @@ Laravel incluye una variedad de funciones "helpers" globales de PHP. Muchas de e
 [trans](#method-trans)
 [trans_choice](#method-trans-choice)
 [Str::uuid](#method-str-uuid)
-</div>
-
-### Rutas
-
-<div class="collection-method-list" markdown="1">
-
-[app_path](#method-app-path)
-[base_path](#method-base-path)
-[config_path](#method-config-path)
-[database_path](#method-database-path)
-[mix](#method-mix)
-[public_path](#method-public-path)
-[resource_path](#method-resource-path)
-[storage_path](#method-storage-path)
 
 </div>
 
-### Cadenas
-
-<div class="collection-method-list" markdown="1">
-[\__](#method-__)
-[camel_case](#method-camel-case)
-[class_basename](#method-class-basename)
-[e](#method-e)
-[ends_with](#method-ends-with)
-[kebab_case](#method-kebab-case)
-[preg_replace_array](#method-preg-replace-array)
-[snake_case](#method-snake-case)
-[starts_with](#method-starts-with)
-[str_after](#method-str-after)
-[str_before](#method-str-before)
-[str_contains](#method-str-contains)
-[str_finish](#method-str-finish)
-[str_is](#method-str-is)
-[str_limit](#method-str-limit)
-[Str::orderedUuid](#method-str-ordereduuid)
-[str_plural](#method-str-plural)
-[str_random](#method-str-random)
-[str_replace_array](#method-str-replace-array)
-[str_replace_first](#method-str-replace-first)
-[str_replace_last](#method-str-replace-last)
-[str_singular](#method-str-singular)
-[str_slug](#method-str-slug)
-[str_start](#method-str-start)
-[studly_case](#method-studly-case)
-[title_case](#method-title-case)
-[trans](#method-trans)
-[trans_choice](#method-trans-choice)
-[Str::uuid](#method-str-uuid)
-</div>
-
-### Enlaces
+### URLs
 
 <div class="collection-method-list" markdown="1">
 
@@ -196,7 +195,7 @@ Laravel incluye una variedad de funciones "helpers" globales de PHP. Muchas de e
 <a name="method-array-add"></a>
 #### `Arr::add()` {#collection-method .first-collection-method}
 
-La función `Arr::add` agrega una clave/valor dada a un arreglo si la clave no existe previamente en el arreglo:
+La función `Arr::add` agrega una clave / valor dada a un arreglo si la clave no existe previamente en el arreglo:
 
 	use Illuminate\Support\Arr;
 
@@ -728,7 +727,7 @@ La función `config_path` retorna la ruta completa al directorio `config`. Puede
 <a name="method-database-path"></a>
 #### `database_path()` {#collection-method}
 
-La función `database_path` retorna la ruta completa al directorio `database`. Puedes además usar la función `database_path` para generar una ruta completa a un archivo dado dentro del directorio database:
+La función `database_path` retorna la ruta completa al directorio `database`. Puedes además usar la función `database_path` para generar una ruta completa a un archivo dado dentro del directorio `database`:
 
     $path = database_path();
     
@@ -908,7 +907,7 @@ Puedes además pasar un arreglo de valores para determinar si la cadena dada con
 <a name="method-str-finish"></a>
 #### `Str::finish()` {#collection-method}
 
-La función `Str::finish` agrega una instancia individual del valor dado a una cadena si este no finaliza con el valor:
+La función `Str::finish` agrega una instancia individual del valor dado a una cadena si éste no finaliza con el valor:
 
 	use Illuminate\Support\Str;
 
@@ -936,7 +935,6 @@ La función `Str::is` determina si una cadena dada concuerda con un patrón dado
     // false
 
 <a name="method-str-limit"></a>
-
 #### `Str::limit()` {#collection-method}
 
 La función `Str::limit` trunca la cadena dada en la longitud especificada:
@@ -956,19 +954,15 @@ Puedes además pasar un tercer argumento para cambiar la cadena que será adjunt
     // The quick brown fox (...)
 
 <a name="method-str-ordereduuid"></a>
-
 #### `Str::orderedUuid` {#collection-method}
 
 El método `Str::orderedUuid` genera una "primera marca de tiempo" UUID que puede ser eficientemente almacenada en una columna indexada de la base de datos:
 
-```
-use Illuminate\Support\Str;
+    use Illuminate\Support\Str;
 
-return (string) Str::orderedUuid();
-```
+    return (string) Str::orderedUuid();
 
 <a name="method-str-plural"></a>
-
 #### `Str::plural()` {#collection-method}
 
 La función `Str::plural` convierte una cadena a su forma plural. Esta función actualmente solo soporta el idioma inglés:
@@ -1068,7 +1062,7 @@ La función `Str::slug` genera una URL amigable con la cadena dada:
 <a name="method-str-start"></a>
 #### `Str::start()` {#collection-method}
 
-La función `Str::start` agrega una instancia individual del valor dado a una cadena si esta no inicia con ese valor:
+La función `Str::start` agrega una instancia individual del valor dado a una cadena si ésta no inicia con ese valor:
 
 	use Illuminate\Support\Str;
 
@@ -1121,21 +1115,9 @@ La función `trans_choice` traduce la clave de traducción dada con inflexión:
 Si la clave de traducción dada no existe, la función `trans_choice` retornará la clave dada. Así, usando el ejemplo de arriba, la función `trans_choice` podría retornar `messages.notifications` si la clave de traducción no existe.
 
 <a name="method-str-uuid"></a>
-
-#### `Str::uuid` {#collection-method}
-
-El método `Str::uuid`  genera un UUID (Versión 4):
-
-```
-use Illuminate\Support\Str;
-
-return (string) Str::uuid();
-```
-
-<a name="method-str-uuid"></a>
 #### `Str::uuid()` {#collection-method}
 
-El método `Str::uuid` genera un UUID (version 4):
+El método `Str::uuid` genera un UUID (versión 4):
 
     use Illuminate\Support\Str;
 
@@ -1219,7 +1201,7 @@ Si una ruta no es proporcionada, una instancia de `Illuminate\Routing\UrlGenerat
     $previous = url()->previous();
 
 <a name="miscellaneous"></a>
-## Diversos
+## Variados
 
 <a name="method-abort"></a>
 #### `abort()` {#collection-method}
@@ -1445,19 +1427,18 @@ La función `env` recupera el valor de una [variable de entorno](/docs/{{version
 <a name="method-event"></a>
 #### `event()` {#collection-method}
 
-La función `event` despacha el [event](/docs/{{version}}/events) dado a sus listeners:
+La función `event` despacha el [evento](/docs/{{version}}/events) dado a sus listeners:
 
     event(new UserRegistered($user));
 
 <a name="method-factory"></a>
 #### `factory()` {#collection-method}
 
-La función `factory` crea un constructor de modelos de fábrica para una clase dada, nombre y cantidad. Este puede ser usado mientras [pruebas](/docs/{{version}}/database-testing#writing-factories) o haces [seeding](/docs/{{version}}/seeding#using-model-factories):
+La función `factory` crea un constructor de model factories para una clase dada, nombre y cantidad. Este puede ser usado mientras [pruebas](/docs/{{version}}/database-testing#writing-factories) o haces [seeding](/docs/{{version}}/seeding#using-model-factories):
 
     $user = factory(App\User::class)->make();
 
 <a name="method-filled"></a>
-
 #### `filled()` {#collection-method}
 
 La función `filled` retorna el valor dado que no esté "vacío":
@@ -1543,24 +1524,7 @@ La función `optional` también acepta un Closure como segundo argumento. El Clo
 		return new DummyUser;
 	});
 
-Puedes llamar además a métodos en el objeto retornado. Al igual que con la propiedad de acceso, si el objeto dado es `null` llamar a un método retornará `null` en vez de causar un error:
-
-```
-return optional($user)->getTwitterProfile();
-```
-
-Si el método que quieres llamar no está en el objeto en si, puedes pasar una función de retorno a `optional` como segundo argumento:
-
-```
-return optional(User::find($id), function ($user) {
-    return TwitterApi::findUser($user->twitter_id);
-});
-```
-
-Si el objeto dado no es `null`, la función de retorno será llamada y su valor de retorno seré devuelto como está. Si el objeto dado es `null`, la función de retorno no será llamada y `optional` retornará `null` en vez de causar un error.
-
 <a name="method-policy"></a>
-
 #### `policy()` {#collection-method}
 
 El método `policy` recupera una instancia de la [política](/docs/{{version}}/authorization#creating-policies) para una clase dada:
@@ -1668,7 +1632,7 @@ La función `tap` acepta dos argumentos: un `$value` arbitrario y una función d
         $user->save();
     });
 
-Si no hay función de retorno para la función `tap`, puedes llamar cualquier método en el `$value` dado. El valor de retorno del método al que llama siempre será `$value`, sin importar lo que el método retorna en su definición. Por ejemplo, el método de Eloquent `update` típicamente retorna un entero. Sin embargo, podemos forzar que el método retorne el modelo en si mismo encadenando el método `update` a través de la función `tap`:
+Si no hay función de retorno para la función `tap`, puedes llamar cualquier método en el `$value` dado. El valor de retorno del método al que llama siempre será `$value`, sin importar lo que el método retorna en su definición. Por ejemplo, el método de Eloquent `update` típicamente retorna un entero. Sin embargo, podemos forzar que el método retorne el modelo en sí mismo encadenando el método `update` a través de la función `tap`:
 
     $user = tap($user)->update([
         'name' => $name,
