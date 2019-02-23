@@ -11,7 +11,6 @@
 - [Middleware Terminable](#terminable-middleware)
 
 <a name="introduction"></a>
-
 ## Introducción
 
 Los Middleware proporcionan un mecanismo conveniente para filtrar consultas HTTP en toda tu aplicación. Por ejemplo, Laravel incluye un middleware que verifica si el usuario de tu aplicación está autenticado. Si el usuario no está autenticado, el middleware redireccionará al usuario a la pantalla de inicio de sesión. Sin embargo, si el usuario es autenticado, el middleware permitirá que la consulta proceda dentro de la aplicación.
@@ -21,7 +20,6 @@ Middleware adicionales pueden ser escritos para realizar una variedad de tareas 
 Hay varios middleware incluidos en el framework Laravel, incluyendo middleware para autenticación y protección CSRF. Todos esos middleware están localizados en el directorio `app/Http/Middleware`.
 
 <a name="defining-middleware"></a>
-
 ## Definiendo un Middleware
 
 Para crear un nuevo middleware, usa el comando de Artisan: `make:middleware` 
@@ -55,15 +53,15 @@ Este comando ubicará una nueva clase `CheckAge` dentro de tu directorio `app/Ht
         }
     }
 
-Como puedes ver, si la `edad` dada es menor o igual a `200`, el middleware retornará una redirección HTTP al cliente; de otra forma, la solicitud pasará dentro de la aplicación. Para pasar la solicitud mas profundo dentro de la aplicación (permitiendo al middleware "pasar") llama al callback `$next` con el `$request`.
+Como puedes ver, si la `edad` dada es menor o igual a `200`, el middleware retornará una redirección HTTP al cliente; de otra forma, la solicitud pasará más adentro de la aplicación. Para pasar la solicitud más profundo dentro de la aplicación (permitiendo al middleware "pasar") llama al callback `$next` con el `$request`.
 
 Es mejor visualizar el middleware como una serie de "capas" que deben pasar las solicitudes HTTP antes de que lleguen a tu aplicación. Cada capa puede examinar la solicitud e incluso rechazarla por completo.
 
-> {tip} Todos los middleware son resueltos a través del [contenedor de servicio](https://laravel.com/docs/5.6/container), de esta forma, puedes tipear cualquier dependencia que necesites dentro del constructor del middleware.
+> {tip} Todos los middleware son resueltos a través del [contenedor de servicio](https://laravel.com/docs/5.6/container), de esta forma, puedes declarar el tipo de cualquier dependencia que necesites dentro del constructor del middleware.
 
 ### Middleware Before y After
 
-Que un middleware se ejecute antes o después de una solicitud depende del middleware en si mismo. Por ejemplo, el siguiente middleware podría realizar alguna tarea **antes** que la solicitud sea manejada por la aplicación:
+Que un middleware se ejecute antes o después de una solicitud depende del middleware en sí mismo. Por ejemplo, el siguiente middleware podría realizar alguna tarea **antes** que la solicitud sea manejada por la aplicación:
 
     <?php
     
@@ -105,13 +103,11 @@ Sin embargo, este middleware podría realizar esta tarea **despúes** de que la 
 ## Registrando un Middleware
 
 <a name="global-middleware"></a>
-
 ### Middleware Globales
 
 Si tu quieres que un middleware corra durante cada solicitud HTTP a tu aplicación, lista la clase del middleware en la propiedad `$middleware` de tu clase `app/Http/Kernel.php`.
 
 <a name="assigning-middleware-to-routes"></a>
-
 ### Asignando un Middleware a las Rutas
 
 Si te gustaría asignar un middleware a rutas específicas, deberías primero asignar una clave al middleware en tu archivo `app/Http/Kernel.php`. Por defecto, la propiedad`$routeMiddleware` de esta clase contiene entradas para los middleware incluidos con Laravel. Para agregar uno propio, adjúntalo a esta lista y asígnale una clave de tu elección:
@@ -155,7 +151,7 @@ Cuando asignas middleware, puedes además pasar un nombre de clase plenamente ca
 
 Algunas veces puedes querer agrupar varios middleware bajo una sola clave para hacerlos más fáciles de asignar a las rutas. Puedes hacer esto usando la propiedad `$middlewareGroups` de tu kernel HTTP.
 
-Por fuera, Laravel viene con los grupos de middleware `web` y `api` que contienen middleware comunes que puedes aplicar a la UI de tu web y a las rutas de tu API:
+Por defecto, Laravel viene con los grupos de middleware `web` y `api` que contienen middleware comunes que puedes aplicar a la UI de tu web y a las rutas de tu API:
 
     /**
      * The application's route middleware groups.
@@ -188,12 +184,12 @@ Los grupos de Middleware pueden ser asignados a las rutas y las acciones de los 
         //
     });
 
-> {tip} Por fuera, el grupo de middleware `web` es automaticamente aplicado a tu archivo `routes/web.php` por el `RouteServiceProvider`.
+> {tip} Por defecto, el grupo de middleware `web` es automaticamente aplicado a tu archivo `routes/web.php` por el `RouteServiceProvider`.
 
 <a name="sorting-middleware"></a>
 ### Clasificación de Middleware
 
-Raramente, necesitarás que tu middleware se ejecute en un orden especifico pero no tener control sobre su orden cuando son asignados a una ruta. En este caso, puedes especificar la prioridad de tu middleware usando la propiedad `$middlewarePriority` de tu archivo `app/Http/Kernel.php`:
+Raramente, necesitarás que tu middleware se ejecute en un orden específico pero no tienes control sobre su orden cuando son asignados a una ruta. En este caso, puedes especificar la prioridad de tu middleware usando la propiedad `$middlewarePriority` de tu archivo `app/Http/Kernel.php`:
 
     /**
      * The priority-sorted list of middleware.
@@ -252,9 +248,9 @@ Los parámetros en los middleware pueden ser especificados al definir la ruta se
     })->middleware('role:editor');
 
 <a name="terminable-middleware"></a>
-## Middleware Terminados
+## Middleware Terminable
 
-Algunas veces un middleware puede necesitar hacer algún trabajo después de que la respuesta HTTP ha sido preparada. Por ejemplo, el middleware "session" incluído con Laravel escribe los datos de la sesión para almacenarlos después de que la respuesta ha sido totalmente preparada. Si defines un método `terminate` en tu middleware, este automaticamente será llamado despúes de que la respuesta esté lista para ser enviada al navegador.
+Algunas veces un middleware puede necesitar hacer algún trabajo después de que la respuesta HTTP ha sido preparada. Por ejemplo, el middleware "session" incluído con Laravel escribe los datos de la sesión para almacenarlos después de que la respuesta ha sido totalmente preparada. Si defines un método `terminate` en tu middleware, este automáticamente será llamado despúes de que la respuesta esté lista para ser enviada al navegador.
 
     <?php
     
