@@ -91,7 +91,7 @@ Al momento de probar, puedes necesitar insertar unos pocos registros dentro de t
         ];
     });
 
-Dentro del Closure, la cual sirve como la definición del factory, puedes devolver los valores de prueba predeterminados de todos los atributos del modelo. El Closure recibirá una instancia de la librería PHP [Faker](https://github.com/fzaninotto/Faker), la cual permitirá que generes convenientemente varios tipos de datos aleatorios para las pruebas.
+Dentro del Closure, la cual sirve como la definición del factory, puedes devolver los valores de prueba predeterminados de todos los atributos del modelo. El Closure recibirá una instancia de la biblioteca PHP [Faker](https://github.com/fzaninotto/Faker), la cual permitirá que generes convenientemente varios tipos de datos aleatorios para las pruebas.
 
 También puedes crear archivos de factories adicionales para cada modelo para una mejor organización. Por ejemplo, podrías crear archivos `UserFactory.php` y `CommentFactory.php` dentro de tu directorio `database/factories`. Todos los archivos dentro del directorio `factories` serán cargados automáticamente por Laravel.
 

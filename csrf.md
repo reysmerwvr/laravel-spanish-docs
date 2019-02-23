@@ -23,7 +23,7 @@ El [middleware](/docs/{{version}}/middleware) `VerifyCsrfToken`, el cual es incl
 
 #### Tokens CSRF & JavaScript
 
-Cuando se crean aplicaciones controladas por JavaScript, es conveniente hacer que tu librería HTTP de JavaScript agregue el token CSRF a cada petición saliente. Por defecto, el archivo `resources/js/bootstrap.js` registra el valor de la meta etiqueta `csrf-token` con la librería HTTP Axios. Si no estás usando esta librería, necesitarás configurar este comportamiento de forma manual para tu aplicación.
+Cuando se crean aplicaciones controladas por JavaScript, es conveniente hacer que tu biblioteca HTTP de JavaScript agregue el token CSRF a cada petición saliente. Por defecto, el archivo `resources/js/bootstrap.js` registra el valor de la meta etiqueta `csrf-token` con la biblioteca HTTP Axios. Si no estás usando esta biblioteca, necesitarás configurar este comportamiento de forma manual para tu aplicación.
 
 <a name="csrf-excluding-uris"></a>
 ## Excluyendo las URIs de la Protección CSRF
@@ -61,7 +61,7 @@ Además de comprobar el token CSRF como parámetro POST, el middleware `VerifyCs
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-Entonces, una vez que has creado la etiqueta `meta`, puedes instruir una librería como jQuery para añadir automáticamente el token a todos los encabezados de las peticiones. Esto proporciona protección CSRF fácil y conveniente para tus aplicaciones basadas en AJAX.
+Entonces, una vez que has creado la etiqueta `meta`, puedes instruir una biblioteca como jQuery para añadir automáticamente el token a todos los encabezados de las peticiones. Esto proporciona protección CSRF fácil y conveniente para tus aplicaciones basadas en AJAX.
 
     $.ajaxSetup({
         headers: {
@@ -69,7 +69,7 @@ Entonces, una vez que has creado la etiqueta `meta`, puedes instruir una librer�
         }
     });
 
-> {tip} Por defecto, el archivo `resources/js/bootstrap.js` registra el valor de la etiqueta meta `csrf-token` con la librería HTTP Axios. Si no estás usando esta librería, necesitarás configurar este comportamiento de forma manual para tu aplicación.
+> {tip} Por defecto, el archivo `resources/js/bootstrap.js` registra el valor de la etiqueta meta `csrf-token` con la biblioteca HTTP Axios. Si no estás usando esta biblioteca, necesitarás configurar este comportamiento de forma manual para tu aplicación.
 
 <a name="csrf-x-xsrf-token"></a>
 ## X-XSRF-TOKEN

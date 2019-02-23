@@ -303,7 +303,7 @@ Modificador  |  Descripción
 
 #### Prerequisitos
 
-Antes de modificar una columna, asegúrate de agregar la dependencia `doctrine/dbal` a tu archivo `composer.json`. La librería DBAL de Doctrine es usada para determinar el estado actual de la columna y crear las consultas SQL necesarias para hacer los ajustes especificados a la columna:
+Antes de modificar una columna, asegúrate de agregar la dependencia `doctrine/dbal` a tu archivo `composer.json`. La biblioteca DBAL de Doctrine es usada para determinar el estado actual de la columna y crear las consultas SQL necesarias para hacer los ajustes especificados a la columna:
 
     composer require doctrine/dbal
 
@@ -336,7 +336,7 @@ Para renombrar una columna, puedes usar el método `renameColumn` en el construc
 <a name="dropping-columns"></a>
 ### Eliminando Columnas
 
-Para eliminar una columna, usa el método `dropColumn` en el constructor de esquemas. Antes de eliminar columnas de una base de datos SQLite, necesitarás agregar la dependencia `doctrine/dbal` a tu archivo `composer.json` y ejecutar el comando `composer update` en tu terminal para instalar la librería:
+Para eliminar una columna, usa el método `dropColumn` en el constructor de esquemas. Antes de eliminar columnas de una base de datos SQLite, necesitarás agregar la dependencia `doctrine/dbal` a tu archivo `composer.json` y ejecutar el comando `composer update` en tu terminal para instalar la biblioteca:
 
     Schema::table('users', function (Blueprint $table) {
         $table->dropColumn('votes');

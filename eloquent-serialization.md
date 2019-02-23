@@ -171,7 +171,7 @@ Puedes personalizar el formato de serialización de atributos de fecha de Eloque
 
 #### Personalización Global Mediante Carbon
 
-Laravel extiende la librería de fecha [Carbon](https://github.com/briannesbitt/Carbon) con el propósito de proporcionar la personalización conveniente del formato de serialización de Carbon. Para personalizar la forma en que todas las fechas Carbon a través de tu aplicación sean serializadas, usa el método `Carbon::serializeUsing`. El método `serializeUsing` acepta una Closure la cual devuelve una representación en forma de cadena de la fecha para la serialización JSON:
+Laravel extiende la biblioteca de fechas [Carbon](https://github.com/briannesbitt/Carbon) con el propósito de proporcionar la personalización conveniente del formato de serialización de Carbon. Para personalizar la forma en que todas las fechas Carbon a través de tu aplicación sean serializadas, usa el método `Carbon::serializeUsing`. El método `serializeUsing` acepta una Closure la cual devuelve una representación en forma de cadena de la fecha para la serialización JSON:
 
     <?php
 

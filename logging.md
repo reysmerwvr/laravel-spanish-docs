@@ -1,4 +1,4 @@
-# Logging
+# Registro (Logging)
 
 - [Introducción](#introduction)
 - [Configuración](#configuration)
@@ -13,16 +13,16 @@
 <a name="introduction"></a>
 ## Introducción
 
-Para ayudarte a aprender más acerca de lo que está suciendo dentro de tu aplicación, Laravel proporciona un robusto servicio de registro que te permite registrar mensajes en archivos, el registro de errores del sistema e incluso Slack para notificar a todo tu equipo.
+Para ayudarte a aprender más acerca de lo que está sucediendo dentro de tu aplicación, Laravel proporciona un robusto servicio de registro que te permite registrar mensajes en archivos, en el registro de errores del sistema e incluso en Slack para notificar a todo tu equipo.
 
-De forma interna, Laravel usa la librería [Monolog](https://github.com/Seldaek/monolog), que proporciona soporte para una variedad de poderosos manejadores de registros. Laravel hace que sea pan comido configurar dichos manejadores, permitiéndote mezclar y juntarlos para personalizar el manejo de registros en tu aplicación.
+De forma interna, Laravel usa la biblioteca [Monolog](https://github.com/Seldaek/monolog), que proporciona soporte para una variedad de poderosos manejadores de registros. Laravel hace que sea pan comido configurar dichos manejadores, permitiéndote mezclar y juntarlos para personalizar el manejo de registros en tu aplicación.
 
 <a name="configuration"></a>
 ## Configuración
 
-Toda la configuración para el sistema de registros de tu aplicación se encuentra en el archivo de configuración `config/logging.php`. Este archivo te permite configurar los canales de registros de tu aplicación, así que asegurarte de revisar cada uno de los canales disponibles y sus opciones. Por supuesto, revisaremos algunas opciones comunes a continuación.
+Toda la configuración para el sistema de registros de tu aplicación se encuentra en el archivo de configuración `config/logging.php`. Este archivo te permite configurar los canales de registros de tu aplicación, así que asegurarte de revisar cada uno de los canales disponibles y sus opciones. Revisaremos algunas opciones comunes a continuación.
 
-Por defecto, Laravel usara el canal `stack` al registrar mensajes. El canal `stack` es usado para agregar múltiples canales de registros a un sólo canal. Para más información sobre construir stacks, revisa la [documentación debajo](#building-log-stacks).
+Por defecto, Laravel usara el canal `stack` al registrar mensajes. El canal `stack` es usado para agregar múltiples canales de registros en un solo canal. Para más información sobre construir stacks, revisa la [documentación debajo](#building-log-stacks).
 
 #### Configurando el Nombre del Canal
 
@@ -49,6 +49,16 @@ Nombre | Descripción
 
 > {tip} Comprueba la documentación en [personalización avanzada de canales](#advanced-monolog-channel-customization) para aprender más sobre `monolog` y drivers `personalizados`.
 
+#### Configuración De Los Canales Single y Daily
+
+Los canales `single` y `daily` tienen tres opciones de configuración opcionales: `bubble`, `permission` y `locking`.
+
+Nombre | Descripción | Default
+------------- | ------------- | -------------
+`bubble` | Indica si los mensajes deberían llegar a otros canales después de ser manejados | `true`
+`permission` | Los permisos del archivo de registro | `644`
+`locking` | Intenta bloquear el archivo de registro antes de escribirlo | `false`
+
 #### Configurando el Canal de Slack
 
 El canal `slack` requiere una opción de configuración `url`. Esta URL debe coincidir con una URL de un [webhook entrante](https://slack.com/apps/A0F7XDUAZ-incoming-webhooks) que has configurado para tu equipo de Slack.
@@ -56,7 +66,7 @@ El canal `slack` requiere una opción de configuración `url`. Esta URL debe coi
 <a name="building-log-stacks"></a>
 ### Construyendo Stacks de Registros
 
-Como mencionamos anteriormente, el driver `stack` permite que combines múltiples canales en un sólo canal de registro. Para ilustrar como usar stacks de registros, vamos a echar un vistazo a un ejemplo de configuración que podrías ver en una aplicación en producción:
+Como mencionamos anteriormente, el driver `stack` permite que combines múltiples canales en un sólo canal de registro. Para ilustrar cómo usar stacks de registros, vamos a echar un vistazo a un ejemplo de configuración que podrías ver en una aplicación en producción:
 
     'channels' => [
         'stack' => [
@@ -189,15 +199,14 @@ Una vez que has configurado la opción `tap` en tu canal, estás listo para defi
         }
     }
 
-> {tip} Todas tus clases "tap" son resultas por el [service container](/docs/{{version}}/container), así que cualquier dependencia del constuctor que requieran será inyectada automáticamente.
+> {tip} Todas tus clases "tap" son resultas por el [contenedor de servicios](/docs/{{version}}/container), así que cualquier dependencia del constuctor que requieran será inyectada automáticamente.
 
 <a name="creating-monolog-handler-channels"></a>
 ### Creando Canales para Manejadores de Monolog
 
-Monolog tiene una variedad de [handlers disponibles](https://github.com/Seldaek/monolog/tree/master/src/Monolog/Handler). En algunos casos, el tipo de registro que quieres crear es simplemente un driver de Monolog con una instancia de un handler en especifico. Estos canales pueden ser creados usando el driver `monolog`.
+Monolog tiene una variedad de [manejadores disponibles](https://github.com/Seldaek/monolog/tree/master/src/Monolog/Handler). En algunos casos, el tipo de registro que quieres crear es simplemente un driver de Monolog con una instancia de un handler en específico. Estos canales pueden ser creados usando el driver `monolog`.
 
-Al usar el driver `monolog`, la opción de configuración `handler` es usadad para especificar que handler será instanciado.
-Opcionalmente, cualquier parametros del constructor que el handler necesite puede ser especificado usando la opción de configuración `handler_with`:
+Al usar el driver `monolog`, la opción de configuración `handler` es usada para especificar que handler será instanciado. Opcionalmente, cualquier parametros del constructor que el handler necesite puede ser especificado usando la opción de configuración `handler_with`:
 
     'logentries' => [
         'driver'  => 'monolog',
@@ -221,7 +230,7 @@ Al usar el driver `monolog`, `LineFormatter` de Monolog será usado como formate
         ],
     ],
 
-Si estaś usando un manejador de Monolog que es capaz de proveer su propio formateador, puedes establecer el valor de la opción de configuración `formatter` a `default`:
+Si estás usando un manejador de Monolog que es capaz de proveer su propio formateador, puedes establecer el valor de la opción de configuración `formatter` a `default`:
 
     'newrelic' => [
         'driver' => 'monolog',
