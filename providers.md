@@ -1,38 +1,38 @@
 # Service Providers
 
-- [Introduction](#introduction)
-- [Writing Service Providers](#writing-service-providers)
-    - [The Register Method](#the-register-method)
-    - [The Boot Method](#the-boot-method)
-- [Registering Providers](#registering-providers)
-- [Deferred Providers](#deferred-providers)
+- [Introducción](#introduction)
+- [Escribiendo Proveedores de Servicios](#writing-service-providers)
+    - [Método Register](#the-register-method)
+    - [Método Boot](#the-boot-method)
+- [Registrando Proveedores](#registering-providers)
+- [Proveedores Diferidos](#deferred-providers)
 
 <a name="introduction"></a>
-## Introduction
+## Introducción
 
-Service providers are the central place of all Laravel application bootstrapping. Your own application, as well as all of Laravel's core services are bootstrapped via service providers.
+Los proveedores de servicios son la parte central de la maquetación de una aplicación Laravel. Tu propia aplicación, así como todos los servicios principales de Laravel son maquetados usando proveedores de servicios.
 
-But, what do we mean by "bootstrapped"? In general, we mean **registering** things, including registering service container bindings, event listeners, middleware, and even routes. Service providers are the central place to configure your application.
+Pero, ¿qué queremos decir por "maquetando"? En general, nos referimos a **registrar** cosas, incluyendo registrar enlaces de contenedores de servicios, listeners de eventos, middleware e incluso rutas. Los proveedores de servicios son el lugar principal para configurar tu aplicación.
 
-If you open the `config/app.php` file included with Laravel, you will see a `providers` array. These are all of the service provider classes that will be loaded for your application. Of course, many of these are "deferred" providers, meaning they will not be loaded on every request, but only when the services they provide are actually needed.
+Si abres el archivo `config/app.php` incluido con Laravel, verás un arreglo `providers`. Estos son todos los proveedores de servicio que serán cargados para tu aplicación. Observa que muchos de estos son proveedores "diferidos", lo que significa que no serán cargados en cada solicitud, sino sólo cuando los servicios que proporcionan sean necesarios.
 
-In this overview you will learn how to write your own service providers and register them with your Laravel application.
+En este resumen aprendarás a escribir tus propios proveedores de servicio y registrarlos en tu aplicación de Laravel. 
 
 <a name="writing-service-providers"></a>
-## Writing Service Providers
+## Escribiendo Proveedores de Servicios
 
-All service providers extend the `Illuminate\Support\ServiceProvider` class. Most service providers contain a `register` and a `boot` method. Within the `register` method, you should **only bind things into the [service container](/docs/{{version}}/container)**. You should never attempt to register any event listeners, routes, or any other piece of functionality within the `register` method.
+Todos los proveedores de servicios extienden la clase `Illuminate\Support\ServiceProvider`. La mayoría de los proveedores de servicio contienen un método `register` y `boot`. Dentro del método `register`, debes **enlazar cosas sólo al [contenedor de servicios](/docs/{{version}}/container)**. Nunca debes tratar de registrar ningún listener de eventos, rutas o cualquier otra pieza de funcionalidad dentro del método `register`.
 
-The Artisan CLI can generate a new provider via the `make:provider` command:
+La línea de comandos Artisan puede generar un nuevo proveedor mediante el comando `make:provider`:
 
     php artisan make:provider RiakServiceProvider
 
 <a name="the-register-method"></a>
-### The Register Method
+### Método Register
 
-As mentioned previously, within the `register` method, you should only bind things into the [service container](/docs/{{version}}/container). You should never attempt to register any event listeners, routes, or any other piece of functionality within the `register` method. Otherwise, you may accidentally use a service that is provided by a service provider which has not loaded yet.
+Como mencionamos anteriormente, dentro del método `register`, denes sólo enlazar cosas al [contenedor de servicio](/docs/{{version}}/container). Nunca debes intentar registrar ningún listener de eventos, rutas o cualquier otra pieza de funcionalidad dentro del método `register`. De otra forma, puedes accidentalmente usar un servicio que es proporcionado por un proveedor de servicio que no aún no ha sido cargado.
 
-Let's take a look at a basic service provider. Within any of your service provider methods, you always have access to the `$app` property which provides access to the service container:
+Vamos a echar un vistazo a un proveedor de servicio básico. Dentro de cualquiera de los métodos de tu proveedor de servicios, siempre tienes acceso a la propiedad `$app` que proporciona acceso al contenedor de servicios:
 
     <?php
 
@@ -56,11 +56,11 @@ Let's take a look at a basic service provider. Within any of your service provid
         }
     }
 
-This service provider only defines a `register` method, and uses that method to define an implementation of `Riak\Connection` in the service container. If you don't understand how the service container works, check out [its documentation](/docs/{{version}}/container).
+Este proveedor de servicios sólo define un método `register` y usa dicho método para definir una implementación de `Riak\Connection` en el contenedor de servicios. Si no entiendes como el contenedor de servicios funciona, revisa [su documentación](/docs/{{version}}/container).
 
-#### The `bindings` And `singletons` Properties
+#### Propiedades `bindings` y `singletons`
 
-If your service provider registers many simple bindings, you may wish to use the `bindings` and `singletons` properties instead of manually registering each container binding. When the service provider is loaded by the framework, it will automatically check for these properties and register their bindings:
+Si tu proveedor de servicios registra muchos bindings simples, puedes querer usar las propiedades `bindings` y `singletons` en lugar de manualmente registrar cada binding de contenedor. Cuando el proveedor de servicios es cargado por el framework, automáticamente comprobará dichas propiedades y registrará sus bindings:
 
     <?php
 
@@ -94,9 +94,9 @@ If your service provider registers many simple bindings, you may wish to use the
     }
 
 <a name="the-boot-method"></a>
-### The Boot Method
+### Método Boot
 
-So, what if we need to register a [view composer](/docs/{{version}}/views#view-composers) within our service provider? This should be done within the `boot` method. **This method is called after all other service providers have been registered**, meaning you have access to all other services that have been registered by the framework:
+Entonces, ¿qué sucede si necesitamos registrar un [view composer](/docs/{{version}}/views#view-composers) dentro de nuestro proveedor de servicios? Esto debería ser hecho dentro del método `boot`. **Este método es llamado luego de que todos los demás proveedores de servicio sean registrados**, lo que quiere decir que tienes acceso a todos los demás proveedores de servicio que han sido registrados por el framework:
 
     <?php
 
@@ -119,9 +119,9 @@ So, what if we need to register a [view composer](/docs/{{version}}/views#view-c
         }
     }
 
-#### Boot Method Dependency Injection
+#### Inyección de Dependencias en el Método Boot
 
-You may type-hint dependencies for your service provider's `boot` method. The [service container](/docs/{{version}}/container) will automatically inject any dependencies you need:
+Puedes escribir manualmente las dependencias para el método `boot` de tu proveedor de servicios. El [contenedor de servicios](/docs/{{version}}/container) inyectará automáticamente cualquier dependencia que necesites:
 
     use Illuminate\Contracts\Routing\ResponseFactory;
 
@@ -133,11 +133,11 @@ You may type-hint dependencies for your service provider's `boot` method. The [s
     }
 
 <a name="registering-providers"></a>
-## Registering Providers
+## Registrando Proveedores
 
-All service providers are registered in the `config/app.php` configuration file. This file contains a `providers` array where you can list the class names of your service providers. By default, a set of Laravel core service providers are listed in this array. These providers bootstrap the core Laravel components, such as the mailer, queue, cache, and others.
+Todos los proveedores de servicios son registrados en el archivo de configuración `config/app.php`. Este archivo contiene un arreglo `providers` donde puedes listar los nombres de clase de tus proveedores de servicios. Por defecto, una serie de proveedores de servicios principales de Laravel son listados en este arreglo. Estos proveedores maquetan los componentes principales de Laravel, como mailer, queue, cache entre otros.
 
-To register your provider, add it to the array:
+Para registrar tu proveedor, agregalo al arreglo:
 
     'providers' => [
         // Other Service Providers
@@ -146,13 +146,13 @@ To register your provider, add it to the array:
     ],
 
 <a name="deferred-providers"></a>
-## Deferred Providers
+## Proveedores Diferidos
 
-If your provider is **only** registering bindings in the [service container](/docs/{{version}}/container), you may choose to defer its registration until one of the registered bindings is actually needed. Deferring the loading of such a provider will improve the performance of your application, since it is not loaded from the filesystem on every request.
+Si tu proveedor **sólo** está registrando enlaces en el [contenedor de servicios](/docs/{{version}}/container), puedes elegir diferir su registro hasta que uno de los enlaces registrados es necesario. Diferir la carga de dicho proveedor mejorará el rendimiento de tu aplicación, ya que no es cargado desde el sistema de archivos en cada solicitud.
 
-Laravel compiles and stores a list of all of the services supplied by deferred service providers, along with the name of its service provider class. Then, only when you attempt to resolve one of these services does Laravel load the service provider.
+Laravel compila y almacena una lista de todos los servicios suministrados por proveedores de servicios diferidos, junto con el nombre de clase de su proveedor de servicio. Luego, sólo cuando intentas resolver uno de estos servicios Laravel carga el proveedor de servicio.
 
-To defer the loading of a provider, set the `defer` property to `true` and define a `provides` method. The `provides` method should return the service container bindings registered by the provider:
+Para diferir la carga de un proveedor, establece la propiedad `defer` a `true` y define un método `provides`. El método `provides` debe retornar los enlaces del contenedor de servicio registrados por el proveedor:
 
     <?php
 
