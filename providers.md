@@ -1,4 +1,4 @@
-# Service Providers
+# Proveedores de Servicios
 
 - [Introducción](#introduction)
 - [Escribiendo Proveedores de Servicios](#writing-service-providers)
@@ -12,16 +12,16 @@
 
 Los proveedores de servicios son la parte central de la maquetación de una aplicación Laravel. Tu propia aplicación, así como todos los servicios principales de Laravel son maquetados usando proveedores de servicios.
 
-Pero, ¿qué queremos decir por "maquetando"? En general, nos referimos a **registrar** cosas, incluyendo registrar enlaces de contenedores de servicios, listeners de eventos, middleware e incluso rutas. Los proveedores de servicios son el lugar principal para configurar tu aplicación.
+Pero, ¿qué queremos decir por "maquetación"? En general, nos referimos a **registrar** cosas, incluyendo registrar enlaces de contenedores de servicios, listeners de eventos, middleware e incluso rutas. Los proveedores de servicios son el lugar principal para configurar tu aplicación.
 
-Si abres el archivo `config/app.php` incluido con Laravel, verás un arreglo `providers`. Estos son todos los proveedores de servicio que serán cargados para tu aplicación. Observa que muchos de estos son proveedores "diferidos", lo que significa que no serán cargados en cada solicitud, sino sólo cuando los servicios que proporcionan sean necesarios.
+Si abres el archivo `config/app.php` incluido con Laravel, verás un arreglo `providers`. Estos son todos los proveedores de servicio que serán cargados para tu aplicación. Observa que muchos de éstos son proveedores "diferidos", lo que significa que no serán cargados en cada solicitud, sino sólo cuando los servicios que proporcionan sean necesarios.
 
 En este resumen aprendarás a escribir tus propios proveedores de servicio y registrarlos en tu aplicación de Laravel. 
 
 <a name="writing-service-providers"></a>
 ## Escribiendo Proveedores de Servicios
 
-Todos los proveedores de servicios extienden la clase `Illuminate\Support\ServiceProvider`. La mayoría de los proveedores de servicio contienen un método `register` y `boot`. Dentro del método `register`, debes **enlazar cosas sólo al [contenedor de servicios](/docs/{{version}}/container)**. Nunca debes tratar de registrar ningún listener de eventos, rutas o cualquier otra pieza de funcionalidad dentro del método `register`.
+Todos los proveedores de servicios extienden de la clase `Illuminate\Support\ServiceProvider`. La mayoría de los proveedores de servicio contienen un método `register` y `boot`. Dentro del método `register`, debes **enlazar cosas sólo al [contenedor de servicios](/docs/{{version}}/container)**. Nunca debes tratar de registrar ningún listener de eventos, rutas o cualquier otra pieza de funcionalidad dentro del método `register`.
 
 La línea de comandos Artisan puede generar un nuevo proveedor mediante el comando `make:provider`:
 
@@ -30,7 +30,7 @@ La línea de comandos Artisan puede generar un nuevo proveedor mediante el coman
 <a name="the-register-method"></a>
 ### Método Register
 
-Como mencionamos anteriormente, dentro del método `register`, denes sólo enlazar cosas al [contenedor de servicio](/docs/{{version}}/container). Nunca debes intentar registrar ningún listener de eventos, rutas o cualquier otra pieza de funcionalidad dentro del método `register`. De otra forma, puedes accidentalmente usar un servicio que es proporcionado por un proveedor de servicio que no aún no ha sido cargado.
+Como mencionamos anteriormente, dentro del método `register`, debes sólo enlazar cosas al [contenedor de servicio](/docs/{{version}}/container). Nunca debes intentar registrar ningún listener de eventos, rutas o cualquier otra pieza de funcionalidad dentro del método `register`. De lo contrario, puedes accidentalmente usar un servicio que es proporcionado por un proveedor de servicio que no aún no  se ha cargado.
 
 Vamos a echar un vistazo a un proveedor de servicio básico. Dentro de cualquiera de los métodos de tu proveedor de servicios, siempre tienes acceso a la propiedad `$app` que proporciona acceso al contenedor de servicios:
 
@@ -56,7 +56,7 @@ Vamos a echar un vistazo a un proveedor de servicio básico. Dentro de cualquier
         }
     }
 
-Este proveedor de servicios sólo define un método `register` y usa dicho método para definir una implementación de `Riak\Connection` en el contenedor de servicios. Si no entiendes como el contenedor de servicios funciona, revisa [su documentación](/docs/{{version}}/container).
+Este proveedor de servicios sólo define un método `register` y usa dicho método para definir una implementación de `Riak\Connection` en el contenedor de servicios. Si no entiendes cómo el contenedor de servicios funciona, revisa [su documentación](/docs/{{version}}/container).
 
 #### Propiedades `bindings` y `singletons`
 
@@ -148,7 +148,7 @@ Para registrar tu proveedor, agregalo al arreglo:
 <a name="deferred-providers"></a>
 ## Proveedores Diferidos
 
-Si tu proveedor **sólo** está registrando enlaces en el [contenedor de servicios](/docs/{{version}}/container), puedes elegir diferir su registro hasta que uno de los enlaces registrados es necesario. Diferir la carga de dicho proveedor mejorará el rendimiento de tu aplicación, ya que no es cargado desde el sistema de archivos en cada solicitud.
+Si tu proveedor **sólo** está registrando enlaces en el [contenedor de servicios](/docs/{{version}}/container), puedes elegir diferir su registro hasta que uno de los enlaces registrados sea necesario. Diferir la carga de dicho proveedor mejorará el rendimiento de tu aplicación, ya que no es cargado desde el sistema de archivos en cada solicitud.
 
 Laravel compila y almacena una lista de todos los servicios suministrados por proveedores de servicios diferidos, junto con el nombre de clase de su proveedor de servicio. Luego, sólo cuando intentas resolver uno de estos servicios Laravel carga el proveedor de servicio.
 
@@ -191,5 +191,4 @@ Para diferir la carga de un proveedor, establece la propiedad `defer` a `true` y
         {
             return [Connection::class];
         }
-
     }
