@@ -1,4 +1,4 @@
-# JavaScript & Estructuración de CSS
+# JavaScript y Estructuración de CSS
 
 - [Introducción](#introduction)
 - [Escribiendo CSS](#writing-css)
@@ -13,49 +13,49 @@ Mientras Laravel no dicta la pauta sobre que pre-procesadores de JavaScript o CS
 
 #### CSS
 
-[Laravel Mix](/docs/{{version}}/mix) proporciona una clara, API expresiva sobre compilación de SASS o Less, las cuales son extensiones de CSS plano que agregan variables, mixins y otras poderosas características que hacen el trabajo con CSS mucho más divertido. En este documento, discutiremos brevemente la compilación CSS en general; sin embargo, deberías consultar la [documentación de Laravel Mix](/docs/{{version}}/mix) completa para mayor información sobre compilación de SASS o Less.
+[Laravel Mix](/docs/{{version}}/mix) proporciona una clara y expresiva API sobre compilación de Sass o Less, las cuales son extensiones de CSS plano que agregan variables, mixins y otras poderosas características que hacen el trabajo con CSS mucho más divertido. En este documento, discutiremos brevemente la compilación CSS en general; sin embargo, deberías consultar la [documentación de Laravel Mix](/docs/{{version}}/mix) completa para mayor información sobre compilación de Sass o Less.
 
 #### JavaScript
 
-Laravel no requiere que uses un framework o librería de JavaScript específico para construir tus aplicaciones. De hecho, no tienes que usar JavaScript en lo absoluto. Sin embargo, Laravel si incluye algunas de las estructuras básicas para hacer más fácil los primeros pasos para escribir JavaScript moderno usando el framework [Vue](https://vuejs.org). Vue proporciona una API expresiva para construir aplicaciones de JavaScript robustas usando componentes. Como con CSS, podemos usar Laravel Mix para compilar fácilmente componentes de JavaScript en un único archivo de JavaScript para los eventos del navegador.
+Laravel no requiere que uses un framework o biblioteca de JavaScript específica para construir tus aplicaciones. De hecho, no tienes que usar JavaScript en lo absoluto. Sin embargo, Laravel sí incluye algunas de las estructuras básicas para hacer más fácil los primeros pasos para escribir JavaScript moderno usando el framework [Vue](https://vuejs.org). Vue proporciona una API expresiva para construir aplicaciones de JavaScript robustas usando componentes. Como con CSS, podemos usar Laravel Mix para compilar fácilmente componentes de JavaScript en un único archivo de JavaScript para los eventos del navegador.
 
 #### Removiendo la Estructura del Frontend
 
-Si prefieres remover la estructura del frontend de tu aplicación, puedes usar el comando Artisan `preset`. Este comando, cuando se combina con la opción `none`, removerá las estructuras de Bootstrap y Vue de tu aplicación, dejando solamente un archivo SASS en blanco y unas cuantas librerías de utilidades comunes para JavaScript.
+Si prefieres remover la estructura del frontend de tu aplicación, puedes usar el comando Artisan `preset`. Este comando, cuando se combina con la opción `none`, eliminará la maquetación de Bootstrap y Vue de tu aplicación, dejando solamente un archivo Sass en blanco y unas cuántas bibliotecas de utilidades de JavaScript comunes.
 
     php artisan preset none
 
 <a name="writing-css"></a>
 ## Escribiendo CSS
 
-El archivo `package.json` de Laravel incluye el paquete `bootstrap-sass` que te ayuda a empezar a hacer un prototipo del frontend de tu aplicación usando Bootstrap. Sin embargo, siéntete libre de agregar o remover los paquetes del archivo `package.json` como sea necesario para tu aplicación. No es obligatorio que uses el framework Bootstrap para construir tu aplicación de Laravel - se proporciona un buen punto de inicio para aquellos que elijan usarlo.
+El archivo `package.json` de Laravel incluye el paquete `bootstrap` que te ayuda a empezar a hacer un prototipo del frontend de tu aplicación usando Bootstrap. Sin embargo, siéntete libre de agregar o eliminar los paquetes del archivo `package.json` como sea necesario para tu aplicación. No es obligatorio que uses el framework Bootstrap para construir tu aplicación de Laravel - se proporciona un buen punto de inicio para aquellos que elijan usarlo.
 
-Antes de compilar tu CSS, instala las dependencias de frontend de tu proyecto usando el [Gestor de Paquetes para NodeJS(NPM)](https://www.npmjs.org):
+Antes de compilar tu CSS, instala las dependencias de frontend de tu proyecto usando el [gestor de paquetes para Node (NPM)](https://www.npmjs.org):
 
     npm install
 
-Una vez que las dependencias hayan sido instaladas usando `npm install`, puedes compilar tus archivos SASS a CSS plano usando [Laravel Mix](/docs/{{version}}/mix#working-with-stylesheets). El comando `npm run dev` procesará las instrucciones en tu archivo `webpack.mix.js`. Típicamente, tu CSS compilado estará ubicado en el directorio `public/css`:
+Una vez que las dependencias hayan sido instaladas usando `npm install`, puedes compilar tus archivos Sass a CSS plano usando [Laravel Mix](/docs/{{version}}/mix#working-with-stylesheets). El comando `npm run dev` procesará las instrucciones en tu archivo `webpack.mix.js`. Típicamente, tu CSS compilado estará ubicado en el directorio `public/css`:
 
     npm run dev
 
-El archivo `webpack.mix.js` incluido de forma predeterminada con Laravel compilará el archivo SASS `resources/sass/app.scss`. Este archivo `app.scss` importa un archivo de variables SASS y carga Bootstrap, el cual proporciona un buen punto de comienzo para la mayoría de las aplicaciones. Siéntete libre de personalizar el archivo `app.scss` en la forma que desees o incluso usar un pre-procesador completamente diferente [configurando Laravel Mix](/docs/{{version}}/mix).
+El archivo `webpack.mix.js` incluido de forma predeterminada con Laravel compilará el archivo Sass `resources/sass/app.scss`. Este archivo `app.scss` importa un archivo de variables Sass y carga Bootstrap, el cual proporciona un buen punto de comienzo para la mayoría de las aplicaciones. Siéntete libre de personalizar el archivo `app.scss` en la forma que desees o incluso usar un pre-procesador completamente diferente [configurando Laravel Mix](/docs/{{version}}/mix).
 
 <a name="writing-javascript"></a>
 ## Escribiendo JavaScript
 
-Todas las dependencias de JavaScript requeridas por tu aplicación pueden ser encontradas en el archivo `package.json` en el directorio principal del proyecto. Este archivo es similar a un archivo `composer.json` excepto que este especifica las dependencias de JavaScript en lugar de las dependencias de PHP. Puedes instalar estas dependencias usando el [Gestor de Paquetes de NodeJS (NPM)](https://www.npmjs.org): 
+Todas las dependencias de JavaScript requeridas por tu aplicación pueden ser encontradas en el archivo `package.json` en el directorio principal del proyecto. Este archivo es similar a un archivo `composer.json` excepto que éste específica las dependencias de JavaScript en lugar de las dependencias de PHP. Puedes instalar estas dependencias usando el [gestor de paquetes de Node (NPM)](https://www.npmjs.org): 
 
     npm install
 
-> {tip} De forma predeterminada, el archivo `package.json` de Laravel incluye unos cuantos paquetes tales como `vue` y `axios` para ayudarte a empezar a construir tu aplicación de JavaScript. Siéntete libre de agregar o remover el archivo `package.json` como sea necesario para tu aplicación.
+> {tip} De forma predeterminada, el archivo `package.json` de Laravel incluye unos cuantos paquetes tales como `vue` y `axios` para ayudarte a empezar a construir tu aplicación de JavaScript. Siéntete libre de agregar o eliminar del archivo `package.json` según sea necesario para tu aplicación.
 
 Una vez que los paquetes sean instalados, puedes usar el comando `npm run dev` para [compilar tus recursos](/docs/{{version}}/mix). Webpack es un empaquetador de módulos para aplicaciones modernas en JavaScript. Cuando ejecutes el comando `npm run dev`, Webpack ejecutará las instrucciones en tu archivo `webpack.mix.js`:
 
     npm run dev
 
-De forma predeterminada, el archivo de `webpack.mix.js` de Laravel compila tu archivo SASS y el de `resources/js/app.js`. Dentro de el archivo `app.js` puedes registrar tus componentes de Vue o, si prefieres un framework distinto, configurar tu propia aplicación de JavaScript. Tu JavaScript compilado será colocado típicamente en el directorio `public/js`.
+De forma predeterminada, el archivo de `webpack.mix.js` de Laravel compila tu archivo Sass y él de `resources/js/app.js`. Dentro de el archivo `app.js` puedes registrar tus componentes de Vue o, si prefieres un framework distinto, configurar tu propia aplicación de JavaScript. Tu JavaScript compilado será colocado típicamente en el directorio `public/js`.
 
-> {tip} El archivo `app.js` cargará el archivo `resources/js/bootstrap.js` lo cual hace sin ayuda y configura Vue, Axios, jQuery, y todas las demás dependencias de javaScript. Si tienes dependencias adicionales de JavaScript que configurar, puedes hacerlo en este archivo.
+> {tip} El archivo `app.js` cargará el archivo `resources/js/bootstrap.js` el cual estructura y configura Vue, Axios, jQuery, y todas las demás dependencias de javaScript. Si tienes dependencias adicionales de JavaScript que configurar, puedes hacerlo en este archivo.
 
 <a name="writing-vue-components"></a>
 ### Escribiendo Componentes de Vue
@@ -67,7 +67,7 @@ De forma predeterminada, las aplicaciones nuevas de Laravel contienen un compone
         require('./components/ExampleComponent.vue')
     );
 
-Para usar el componente en tu aplicación, puedes colocarlo en una de tus plantillas HTML. Por ejemplo, después de ejecutar el comando Artisan `make:auth` para estructurar las pantallas de registro y autenticación de tu aplicación, podrías colocar el componente en la plantilla de Blade `home.blade.php`:
+Para usar el componente en tu aplicación, puedes colocarlo en una de tus plantillas HTML. Por ejemplo, después de ejecutar el comando Artisan `make:auth` para maquetar las pantallas de registro y autenticación de tu aplicación, podrías colocar el componente en la plantilla de Blade `home.blade.php`:
 
     @extends('layouts.app')
 
@@ -77,7 +77,7 @@ Para usar el componente en tu aplicación, puedes colocarlo en una de tus planti
 
 > {tip} Recuerda, deberías ejecutar el comando `npm run dev` cada vez que cambies un componente de Vue. O, puedes ejecutar el comando `npm run watch` para monitorear y recompilar automáticamente tus componentes cada vez que sean modificados.
 
-Ciertamente, si estás interesado en aprender más sobre escribir componentes de Vue, deberías leer la [Documentación de Vue](https://vuejs.org/guide/), la cual proporciona un minucioso resumen fácil de leer del framework Vue.
+Si estás interesado en aprender más sobre escribir componentes de Vue, deberías leer la [Documentación de Vue](https://vuejs.org/guide/), la cual proporciona un minucioso resumen fácil de leer del framework Vue.
 
 <a name="using-react"></a>
 ### Usando React
