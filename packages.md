@@ -3,7 +3,7 @@
 - [Introducción](#introduction)
     - [Una nota sobre Facades](#a-note-on-facades)
 - [Descubrimiento de Paquetes](#package-discovery)
-- [Proveedor de Servicios](#service-providers)
+- [Proveedores de Servicios](#service-providers)
 - [Recursos](#resources)
     - [Configuración](#configuration)
     - [Migraciones](#migrations)
@@ -11,27 +11,27 @@
     - [Traducciones](#translations)
     - [Vistas](#views)
 - [Comandos](#commands)
-- [Archivos Publicos](#public-assets)
+- [Archivos Públicos](#public-assets)
 - [Publicar Grupos de Archivos](#publishing-file-groups)
 
 <a name="introduction"></a>
 ## Introducción
 
-Los paquetes son la forma principal de agregar funcionalidad a Laravel. Los paquetes pueden ser cualquier cosa, desde una gran manera de trabajar con fechas como [Carbon](https://github.com/briannesbitt/Carbon), o un framework completo de pruebas BDD como [Behat](https://github.com/Behat/Behat).
+Los paquetes son la forma principal de agregar funcionalidad a Laravel. Los paquetes pueden ser cualquier cosa, desde una estupenda manera de trabajar con fechas como [Carbon](https://github.com/briannesbitt/Carbon), o un framework completo de pruebas BDD como [Behat](https://github.com/Behat/Behat).
 
-Por supuesto, hay diferentes tipos de paquetes. Algunos paquetes son independientes, lo que significa que funcionan con cualquier framework de PHP. Carbon y Behat son ejemplos de paquetes independientes. Cualquiera de estos paquetes se puede usar con Laravel simplemente solicitándolos en el archivo `composer.json`.
+Hay diferentes tipos de paquetes. Algunos paquetes son independientes, lo que significa que funcionan con cualquier framework de PHP. Carbon y Behat son ejemplos de paquetes independientes. Cualquiera de estos paquetes se puede usar con Laravel simplemente solicitándolos en el archivo `composer.json`.
 
 Por otro lado, otros paquetes están específicamente destinados para su uso con Laravel. Estos paquetes pueden tener rutas, controladores, vistas y configuraciones específicamente diseñadas para mejorar una aplicación Laravel. Esta guía cubre principalmente el desarrollo de aquellos paquetes que son específicos de Laravel.
 
 <a name="a-note-on-facades"></a>
 ### Una nota sobre Facades
 
-Al escribir una aplicación Laravel, generalmente no importa si usas contratos o facades ya que ambos brindan niveles esencialmente iguales de capacidad de pruebas. Sin embargo, al escribir paquetes, tu paquete normalmente no tendrá acceso a todos los asistentes de prueba de Laravel. Si deseas escribir pruebas para el paquete como si existiera dentro de una típica aplicación Laravel puedes usar el paquete [Orchestral Testbench](https://github.com/orchestral/testbench).
+Al escribir una aplicación Laravel, generalmente no importa si usas contratos o facades ya que ambos brindan niveles esencialmente iguales de capacidad de pruebas. Sin embargo, al escribir paquetes, tu paquete normalmente no tendrá acceso a todos las funciones helpers de prueba de Laravel. Si deseas escribir pruebas para el paquete como si existiera dentro de una típica aplicación Laravel puedes usar el paquete [Orchestral Testbench](https://github.com/orchestral/testbench).
 
 <a name="package-discovery"></a>
 ## Descubrimiento de Paquetes
 
-En el archivo de configuración `config/app.php` de una aplicación Laravel, la opción `providers` define una lista de proveedores de servicios que Laravel debe cargar. Cuando alguien instala tu paquete normalmente querrá que su proveedor de servicio sea incluido en esta lista. En lugar de requerir que los usuarios agreguen manualmente su proveedor de servicios a la lista, puede definir el proveedor en la sección `extra` del archivo `composer.json` de tu paquete. Además de los proveedores de servicios, también puedes enumerar los [facades](/docs/{{version}}/facades) que desees registrar:
+En el archivo de configuración `config/app.php` de una aplicación Laravel, la opción `providers` define una lista de proveedores de servicios que Laravel debe cargar. Cuando alguien instala tu paquete normalmente querrás que tu proveedor de servicio sea incluido en esta lista. En lugar de requerir que los usuarios agreguen manualmente su proveedor de servicios a la lista, puede definir el proveedor en la sección `extra` del archivo `composer.json` de tu paquete. Además de los proveedores de servicios, también puedes enumerar los [facades](/docs/{{version}}/facades) que desees registrar:
 
     "extra": {
         "laravel": {
@@ -46,9 +46,9 @@ En el archivo de configuración `config/app.php` de una aplicación Laravel, la 
 
 Una vez que tu paquete se haya configurado para su descubrimiento, Laravel registrará automáticamente sus proveedores de servicios y facades cuando esté instalado, creando una experiencia de instalación conveniente para los usuarios de tu paquete.
 
-### Optar por el descubrimiento del paquete
+### Exclusión Del Descubrimiento De Paquetes
 
-Si usted es el consumidor de un paquete y desea deshabilitar el descubrimiento de paquetes para un paquete, puede incluir el nombre del paquete en la sección `extra` del archivo `composer.json` de tu aplicación Laravel:
+Si eres es el consumidor de un paquete y deseas deshabilitar el descubrimiento de paquetes para un paquete, puedes incluir el nombre del paquete en la sección `extra` del archivo `composer.json` de tu aplicación Laravel:
 
     "extra": {
         "laravel": {
@@ -58,7 +58,7 @@ Si usted es el consumidor de un paquete y desea deshabilitar el descubrimiento d
         }
     },
 
-Puede deshabilitar el descubrimiento de paquetes para todos los paquetes que usan el carácter `*` dentro de la directiva `dont-discover` de su aplicación:
+Puede deshabilitar el descubrimiento de paquetes para todos los paquetes que usan el carácter `*` dentro de la directiva `dont-discover` de tu aplicación:
 
     "extra": {
         "laravel": {
@@ -69,12 +69,11 @@ Puede deshabilitar el descubrimiento de paquetes para todos los paquetes que usa
     },
 
 <a name="service-providers"></a>
-## Proveedor de Servicios
+## Proveedores de Servicios
 
-Los [Proveedores de Servicios](/docs/{{version}}/providers) son la conexión entre tu paquete y Laravel. Un proveedor de servicios es responsable de enlazar cosas a Laravel con el [Contenedor de Servicios](/docs/{{version}}/container) e informar a Laravel dónde cargar los recursos del paquete, como vistas, configuración y archivos de localización.
+Los [Proveedores de Servicios](/docs/{{version}}/providers) son la conexión entre tu paquete y Laravel. Un proveedor de servicios es responsable de enlazar cosas a Laravel con el [Contenedor de Servicios](/docs/{{version}}/container) e informar a Laravel dónde cargar los recursos del paquete como vistas y archivos de configuración y de configuración regional.
 
-Un Proveedor de Servicios extiende de la clase `Illuminate\Support\ServiceProvider` y contiene dos métodos: `register` y `boot`. La clase base `ServiceProvider` esta ubicada en `illuminate/support`, donde debemos especificar todas las dependencias de nuestro paquete.
-Para obtener más información sobre la estructura y el propósito de los proveedores de servicios, visita su [documentación](/docs/{{version}}/providers).
+Un Proveedor de Servicios extiende de la clase `Illuminate\Support\ServiceProvider` y contiene dos métodos: `register` y `boot`. La clase base `ServiceProvider` está ubicada en `illuminate/support`, donde debemos especificar todas las dependencias de nuestro paquete. Para obtener más información sobre la estructura y el propósito de los proveedores de servicios, visita su [documentación](/docs/{{version}}/providers).
 
 <a name="resources"></a>
 ## Recursos
@@ -96,7 +95,7 @@ Por lo general, deberás publicar el archivo de configuración de tu paquete en 
         ]);
     }
 
-Ahora, cuando los usuarios de tu paquete ejecutan el comando `vendor:publish` de Laravel, su archivo se copiará a la ubicación de publicación especificada. Por supuesto, una vez que se haya publicado su configuración, se podrá acceder a sus valores como cualquier otro archivo de configuración:
+Ahora, cuando los usuarios de tu paquete ejecutan el comando `vendor:publish` de Laravel, su archivo se copiará a la ubicación de publicación especificada. Una vez que se haya publicado su configuración, se podrá acceder a sus valores como cualquier otro archivo de configuración:
 
     $value = config('courier.option');
 
@@ -150,7 +149,7 @@ Si tu paquete contiene [migraciones de base de datos](/docs/{{version}}/migracio
         $this->loadMigrationsFrom(__DIR__.'/path/to/migrations');
     }
 
-Una vez que se hayan registrado las migraciones de tu paquete, estas se ejecutarán automáticamente cuando se utilize el comando `php artisan migrate`. Cabe destacar que no es necesario exportarlas al directorio principal de las migraciones en la aplicación.
+Una vez que se hayan registrado las migraciones de tu paquete, éstas se ejecutarán automáticamente cuando se utilize el comando `php artisan migrate`. Cabe destacar que no es necesario exportarlas al directorio principal de las migraciones en la aplicación.
 
 <a name="translations"></a>
 ### Traducciones
@@ -173,7 +172,7 @@ Las traducciones de paquetes se referencian usando la convención de sintaxis `p
 
 #### Publicación de Traducciones
 
-Si deseas publicar las traducciones de tu paquete en el directorio `resources/lang/vendor` de la aplicación, puedes usar el método `publishes` del proveedor de servicios. El método `publishes` acepta una matriz de rutas de paquetes y sus ubicaciones de publicación deseadas. Por ejemplo, para publicar los archivos de traducción para el paquete `courier`, puedes hacer lo siguiente:
+Si deseas publicar las traducciones de tu paquete en el directorio `resources/lang/vendor` de la aplicación, puedes usar el método `publishes` del proveedor de servicios. El método `publishes` acepta un arreglo de rutas de paquetes y sus ubicaciones de publicación deseadas. Por ejemplo, para publicar los archivos de traducción para el paquete `courier`, puedes hacer lo siguiente:
 
     /**
      * Perform post-registration booting of services.
@@ -239,7 +238,7 @@ Ahora, cuando los usuarios de su paquete ejecutan el comando Artisan `vendor:pub
 <a name="commands"></a>
 ## Comandos
 
-Para registrar los comandos Artisan de tu paquete con Laravel puedes usar el método `commands`. Este método espera una matriz de clases de comando. Una vez que los comandos han sido registrados, puedes ejecutarlos usando [Artisan](/docs/{{version}}/artisan):
+Para registrar los comandos Artisan de tu paquete con Laravel puedes usar el método `commands`. Este método espera un arreglo con los nombres de clases de comando. Una vez que los comandos han sido registrados, puedes ejecutarlos usando [Artisan CLI](/docs/{{version}}/artisan):
 
     /**
      * Bootstrap the application services.
@@ -257,9 +256,9 @@ Para registrar los comandos Artisan de tu paquete con Laravel puedes usar el mé
     }
 
 <a name="public-assets"></a>
-## Archivos Publicos
+## Archivos Públicos
 
-Su paquete puede tener archivos como JavaScript, CSS e imágenes. Para publicar estos archivos en el directorio `public` de la aplicación debes usar el método `publishes` del proveedor de servicios. En este ejemplo, también agregaremos una etiqueta de grupo de archivos `public`, que se puede usar para publicar grupos de archivos relacionados:
+Tu paquete puede tener archivos como JavaScript, CSS e imágenes. Para publicar estos archivos en el directorio `public` de la aplicación debes usar el método `publishes` del proveedor de servicios. En este ejemplo, también agregaremos una etiqueta de grupo de archivos `public`, que se puede usar para publicar grupos de archivos relacionados:
 
     /**
      * Perform post-registration booting of services.
@@ -273,7 +272,7 @@ Su paquete puede tener archivos como JavaScript, CSS e imágenes. Para publicar 
         ], 'public');
     }
 
-Ahora, cuando los usuarios de tu paquete ejecuten el comando `vendor:publish` sus archivos se copiarán en la ubicación especificada. Como normalmente necesitarás sobrescribir los archivos cada vez que se actualice el paquete, puedes usar el indicador `--force`:
+Ahora, cuando los usuarios de tu paquete ejecuten el comando `vendor:publish` tus archivos se copiarán en la ubicación especificada. Como normalmente necesitarás sobrescribir los archivos cada vez que se actualice el paquete, puedes usar el indicador `--force`:
 
     php artisan vendor:publish --tag=public --force
 
