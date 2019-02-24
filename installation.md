@@ -10,12 +10,12 @@
 <a name="installation"></a>
 ## Instalación
 
-> {video} ¿Eres un aprediz visual? Laracasts proporciona una [introducción gratuita a Laravel](http://laravelfromscratch.com) para los recién llegados al Framework. Es un excelente lugar para comenzar tu aventura.
+> {video} ¿Eres un aprediz visual? Laracasts proporciona una [introducción gratuita a Laravel](http://laravelfromscratch.com) para los recién llegados al framework. Es un excelente lugar para comenzar tu aventura.
 
 <a name="server-requirements"></a>
 ### Requisitos Del Servidor
 
-El framework Laravel tiene algunos requisitos de sistema. Por supuesto, todos estos requisitos son cubiertos por la máquina virtual [Laravel Homestead](/docs/{{version}}/homestead), así que es altamente recomendable que uses Homestead como tu entorno local de desarrollo de Laravel.
+El framework Laravel tiene algunos requisitos del sistema. Todos estos requisitos son cubiertos por la máquina virtual [Laravel Homestead](/docs/{{version}}/homestead), así que es altamente recomendable que uses Homestead como tu entorno local de desarrollo de Laravel.
 
 Sin embargo, si no estás utilizando Homestead, deberás asegurarte de que tu servidor cumpla con los siguientes requisitos:
 
@@ -28,6 +28,7 @@ Sin embargo, si no estás utilizando Homestead, deberás asegurarte de que tu se
 - Extensión XML de PHP
 - Extensión Ctype de PHP
 - Extensión JSON de PHP
+- Extensión BCMath de PHP
 </div>
 
 <a name="installing-laravel"></a>
@@ -39,7 +40,7 @@ Laravel utiliza [Composer](https://getcomposer.org) para administrar sus depende
 
 Primero, descarga el instalador de Laravel usando Composer:
 
-    composer global require "laravel/installer"    
+    composer global require laravel/installer    
 
 Asegurate de colocar el directorio `vendor/bin` en tu `$PATH` para que el ejecutable de Laravel pueda ser localizado en tu sistema. Este directorio existe en diferentes ubicaciones según el sistema operativo que estés utilizando; sin embargo, algunas de las ubicaciones más comunes son las siguientes:
 
@@ -48,7 +49,7 @@ Asegurate de colocar el directorio `vendor/bin` en tu `$PATH` para que el ejecut
 - GNU / Distribuciones Linux: `$HOME/.config/composer/vendor/bin`
 </div>
 
-Una vez instalado, el comando `laravel new` ceará una instalación fresca de Laravel en el directorio que especifiques. Por ejemplo, `laravel new blog` creará un directorio `blog` que contendrá una instalación nueva de Laravel con todas las dependiencias de Laravel ya instaladas:
+Una vez instalado, el comando `laravel new` creará una nueva instalación de Laravel en el directorio que especifiques. Por ejemplo, `laravel new blog` creará un directorio `blog` que contendrá una nueva instalación de Laravel con todas las dependiencias de Laravel ya instaladas:
 
     laravel new blog
 
@@ -64,14 +65,14 @@ Si tienes instalado PHP de manera local y te gustaría utilizar el servidor de d
 
     php artisan serve    
 
-Por supuesto, otras opciones de desarrollo local más robustas están disponibles mediante [Homestead](/docs/{{version}}/homestead) y [Valet](/docs/{{version}}/valet).
+Otras opciones de desarrollo local más robustas están disponibles mediante [Homestead](/docs/{{version}}/homestead) y [Valet](/docs/{{version}}/valet).
 
 <a name="configuration"></a>
 ### Configuración
 
 #### Directorio Público
 
-Después de haber instalado Laravel, deberás configurar el documento raíz / de tu servidor web para que este sea el directorio `public`. El archivo `index.php` en este directorio funciona como controlador frontal para todas las peticiones HTTP que entran a tu aplicación.
+Después de haber instalado Laravel, deberás configurar el documento raíz de tu servidor web para que sea el directorio `public`. El archivo `index.php` en este directorio funciona como controlador frontal (front controller) para todas las peticiones HTTP que entran a tu aplicación.
 
 #### Archivos De Configuración
 
@@ -129,4 +130,4 @@ Si estás utilizando Nginx, la siguiente directiva en la configuación de tu sit
         try_files $uri $uri/ /index.php?$query_string;
     }
 
-Desde luego, cuando uses [Homestead](/docs/{{version}}/homestead) o [Valet](/docs/{{version}}/valet), las URLs amigables serán configuradas automáticamente.
+Cuando uses [Homestead](/docs/{{version}}/homestead) o [Valet](/docs/{{version}}/valet), las URLs amigables serán configuradas automáticamente.
