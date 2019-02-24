@@ -5,7 +5,7 @@
     - [Tipos De Variables De Entorno](#environment-variable-types)
     - [Recuperar La Configuración Del Entorno](#retrieving-environment-configuration)
     - [Determinando El Entorno Actual](#determining-the-current-environment)
-    - [Ocultar Variables De Entornos A Paginas De Depuración](#hiding-environment-variables-from-debug)
+    - [Ocultar Variables De Entornos A Páginas De Depuración](#hiding-environment-variables-from-debug)
 - [Acceder A Valores De Configuración](#accessing-configuration-values)
 - [Almacenamiento En Caché De La Configuración](#configuration-caching)
 - [Modo De Mantenimiento](#maintenance-mode)
@@ -20,18 +20,18 @@ Todos los archivos de configuración para el framework Laravel están almacenado
 
 A menudo es útil tener diferentes valores de configuración basados en el entorno en el que se ejecuta la aplicación. Por ejemplo, es posible que desees utilizar un servidor de caché localmente diferente al servidor que usas en producción.
 
-Para hacer esto sencillo, Laravel utiliza la librería de PHP [DotEnv](https://github.com/vlucas/phpdotenv) por Vance Lucas. En una nueva instalación de Laravel, el directorio raíz de tu aplicación contendrá un archivo `.env.example`. Si instalas aravel por medio de Composer, este archivo será renombrado automáticamente a `.env`. De lo contrario, deberás renombrar el archivo manualmente.
+Para hacer esto sencillo, Laravel utiliza la librería de PHP [DotEnv](https://github.com/vlucas/phpdotenv) por Vance Lucas. En una nueva instalación de Laravel, el directorio raíz de tu aplicación contendrá un archivo `.env.example`. Si instalas Laravel por medio de Composer, este archivo será renombrado automáticamente a `.env`. De lo contrario, deberás renombrar el archivo manualmente.
 
-Tu archivo `.env` deberá omitirse en el controlador de versiones de su aplicación, ya que cada desarrollador / servidor utilizando tu aplicación puede requerir una configuración diferente del entorno. Además, esto sería un riesgo de seguridad en caso de que un intruso obtenga acceso al repositorio de control de versiones de tu aplicación.
+Tu archivo `.env` deberá omitirse en el sistema de control de versiones de tu aplicación, ya que cada desarrollador / servidor que usa tu aplicación puede requerir una configuración de entorno diferente. Además, esto sería un riesgo de seguridad en caso de que un intruso obtenga acceso al repositorio de control de versiones de tu aplicación.
 
-Si estás desarrollando con un equipo, es posible que desees continuar incluyendo el archivo `.env.example` en tu aplicación. Al poner valores de ejemplo en el archivo de configuración de muestra, otros desarrolladores en tu equipo podrán ver claramente cuales variables de entorno se necesitan para ejecutar tu aplicación. También puedes crear un archivo `.env.testing`. Este archivo sobrescribirá el archivo `.env` al ejecutar pruebas con PHPUnit o al ejecutar comandos de Artisan con la opción `--env=testing`.
+Si estás desarrollando con un equipo, es posible que desees continuar incluyendo el archivo `.env.example` en tu aplicación. Al poner valores de ejemplo (placeholder) en el archivo de configuración `.env.example`, otros desarrolladores en tu equipo podrán ver claramente cuáles variables de entorno se necesitan para ejecutar tu aplicación. También puedes crear un archivo `.env.testing`. Este archivo sobrescribirá el archivo `.env` al ejecutar pruebas con PHPUnit o al ejecutar comandos de Artisan con la opción `--env=testing`.
 
 > {tip} Cualquier variable en tu archivo `.env` puede ser anulada por variables de entorno externas tales como variables de entorno de nivel de servidor o de nivel de sistema.
 
 <a name="environment-variable-types"></a>
 ### Tipos De Variables De Entorno
 
-Todas las variables en tus archivos `.env` son parseadas como cadenas, así que algunos valores reservados han sido creados para permitirte retornar un rango más amplio de tipos desde la función `env()`:
+Todas las variables en tus archivos `.env` se traducen como cadenas, así que algunos valores reservados han sido creados para permitirte retornar un rango más amplio de tipos desde la función `env()`:
 
 Valor en `.env`  | Valor en `env()`
 ------------- | -------------
@@ -44,7 +44,7 @@ empty | (cadena) ''
 null | (null) null
 (null) | (null) null
 
-Si necesitas definir una variable de entorno con un valor que contiene espacios, puedes hacer eso encerrando el valor en comillas dobles.
+Si necesitas definir una variable de entorno con un valor que contiene espacios, puedes hacerlo  encerrando el valor en comillas dobles.
 
     APP_NAME="My Application"
 
@@ -77,9 +77,9 @@ También puedes pasar argumentos al método `environment` para verificar si el e
 > {tip} La detección del entorno actual de la aplicación puede ser anulada por una variable de entorno `APP_ENV` a nivel del servidor. Esto puede ser útil cuando necesites compartir la misma aplicación para diferentes configuraciones de entorno, para que puedas configurar un host determinado para que coincida con un entorno determinado en las configuraciones de tu servidor.
 
 <a name="hiding-environment-variables-from-debug"></a>
-### Ocultar Variables De Entornos A Paginas De Depuración
+### Ocultar Variables De Entornos A Páginas De Depuración
 
-Cuando una excepción no es capturada y la variable de entorno `APP_DEBUG` es igual a `true`, la página de depuración mostrara todas las variables de entorno y sus contenidos. En algunos casos vas a querer ocultar ciertas variables. Puedes hacer esto actualizando la opción `debug_blacklist` en tu archivo de configuración `config/app.php`.
+Cuando una excepción no es capturada y la variable de entorno `APP_DEBUG` es igual a `true`, la página de depuración mostrará todas las variables de entorno y sus contenidos. En algunos casos vas a querer ocultar ciertas variables. Puedes hacer esto actualizando la opción `debug_blacklist` en tu archivo de configuración `config/app.php`.
 
 Algunas variables están disponibles tanto en las variables de entorno y en los datos del servidor / petición. Por lo tanto, puede que necesites ocultarlos tanto para `$_ENV` como `$_SERVER`:
 
@@ -107,7 +107,7 @@ Algunas variables están disponibles tanto en las variables de entorno y en los 
 <a name="accessing-configuration-values"></a>
 ## Acceder A Valores De Configuración
 
-Puedes acceder fácilmente a tus valores de configuración utilizando la funcion helper global `config` desde cualquier lugar de tu aplicación. Se puede acceder a los valores de configuración usanto la sintaxis de "punto", que incluye el nombre del archivo y la opción a la que se desea acceder. También puedes especificar un valor predeterminado que se devolverá si la opción de configuración no existe:
+Puedes acceder fácilmente a tus valores de configuración utilizando la funcion helper global `config` desde cualquier lugar de tu aplicación. Se puede acceder a los valores de configuración usanto la sintaxis de "punto", que incluye el nombre del archivo y la opción a la que deseas acceder. También puedes especificar un valor predeterminado que se devolverá si la opción de configuración no existe:
 
     $value = config('app.timezone');
 
@@ -120,14 +120,14 @@ Para establecer valores de configuración en tiempo de ejecución, pasa un arreg
 
 Para dar a tu aplicación un aumento de velocidad, debes almacenar en caché todos tus archivos de configuración en un solo archivo usando el comando de Artisan `config:cache`. Esto combinará todas las opciónes de configuracieon para tu aplicación en un solo archivo que será cargado rápidamente por el framework.
 
-Usualmente deberías ejecutar el comando `php artisan config:cache` como parte de tu rutina de deploy a producción. El comando no se debe ejecutar durante el desarrollo local ya que las opciones de configuración con frecuencia deberán cambiarse durante el desarrollo de tu aplicación.
+Usualmente deberías ejecutar el comando `php artisan config:cache` como parte de tu rutina de despliegue a producción. El comando no se debe ejecutar durante el desarrollo local ya que las opciones de configuración con frecuencia deberán cambiarse durante el desarrollo de tu aplicación.
 
-> {note} Si ejecutas el comando `config:cache` durante el proceso de deploy, debe asegurarte de llamar solo a la función `env` desde tus archivos de configuración. Una vez que la configuración se ha almacenado en caché, el archivo `.env` no será cargado y todas las llamadas a la función `env` retornarán `null`.
+> {note} Si ejecutas el comando `config:cache` durante el proceso de despliegue, debes asegurarte de llamar solo a la función `env` desde tus archivos de configuración. Una vez que la configuración se ha almacenado en caché, el archivo `.env` no será cargado y todas las llamadas a la función `env` retornarán `null`.
 
 <a name="maintenance-mode"></a>
 ## Modo De Mantenimiento
 
-Cuando tu aplicación se encuentre en modo de mantenimiento, se mostrará una vista personalizada para todas las solicitudes en tu aplicación. Esto facilita la "desactivación" de tu aplicación mientras se está actualizando o cuando se realiza mantenimiento. Se incluye una verificación de modo de mantenimiento en el stack de middleware predeterminado para tu aplicación. Si la aplicación está en modo de mantenimiento, una excepción `MaintenanceModeException` será lanzada con un código de estatus 503.
+Cuando tu aplicación se encuentre en modo de mantenimiento, se mostrará una vista personalizada para todas las solicitudes en tu aplicación. Esto facilita la "desactivación" de tu aplicación mientras se está actualizando o cuando se realiza mantenimiento. Se incluye una verificación de modo de mantenimiento en la pila de middleware predeterminada para tu aplicación. Si la aplicación está en modo de mantenimiento, una excepción `MaintenanceModeException` será lanzada con un código de estado 503.
 
 Para habilitar el modo de mantenimiento, ejecuta el comando de Artisan `down`:
 
@@ -137,7 +137,7 @@ También puedes proporcionar las opciones `message` y `retry` al comando `down`.
 
     php artisan down --message="Upgrading Database" --retry=60
 
-Incluso en modo de mantenimiento, a direcciones IP específicas o redes se les puede permitir acceder a la aplicación usando la opción `allow` del comando:
+Incluso en modo de mantenimiento, se les puede permitir acceder a la aplicación a direcciones IP  o redes específicas usando la opción `allow` del comando:
 
     php artisan down --allow=127.0.0.1 --allow=192.168.0.0/16
 
