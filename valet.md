@@ -167,8 +167,6 @@ Para compartir un sitio, deberás dirigirte hacia el directorio del sitio desde 
 
 Para detener la ejecución de `share` en tu sitio, presiona `Control + C` para cancelar el proceso.
 
-> {note} `valet share` actualmente no soporta sitios que han sido asegurados con el comando `valet secure`.
-
 <a name="custom-valet-drivers"></a>
 ## Drivers De Valet Personalizados
 
