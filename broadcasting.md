@@ -3,7 +3,7 @@
 - [Introducción](#introduction)
     - [Configuración](#configuration)
     - [Prerrequisitos Del Driver](#driver-prerequisites)
-- [Resumen Del Concepto](#concept-overview)
+- [Descripción General](#concept-overview)
     - [Usando Una Aplicación De Ejemplo](#using-example-application)
 - [Definiendo Eventos De Transmisión](#defining-broadcast-events)
     - [Nombre De La Transmisión](#broadcast-name)
@@ -35,7 +35,7 @@ En muchas aplicaciones web modernas, los WebSockets son usados para implementar 
 
 Para asistirte en la construcción de ese tipo de aplicaciones, Laravel hace fácil "emitir" tus [eventos](/docs/{{version}}/events) a través de una conexión WebSocket. Emitir tus eventos te permite compartir los mismos nombres de eventos entre tu código del lado del servidor y tu aplicación JavaScript del lado de cliente.
 
-> {tip} Antes de sumergirnos en la emisión de eventos, asegurate de haber leido toda la documentación de Laravel sobre [eventos y listeners](/docs/{{version}}/events).
+> {tip} Antes de sumergirnos en la emisión de eventos, asegurate de haber leído toda la documentación de Laravel sobre [eventos y listeners](/docs/{{version}}/events).
 
 <a name="configuration"></a>
 ### Configuración
@@ -61,7 +61,7 @@ Si estás transmitiendo tus eventos mediante [Pusher](https://pusher.com), debes
 
     composer require pusher/pusher-php-server "~3.0"
 
-Luego, debes configurar tus credenciales de Pusher en el archivo de configuración `config/broadcasting.php`. Un ejemplo de configuración de Pusher está incluido en este archivo, permitiendote especificar rápidamente tu clave de Pusher, contraseña y ID de la aplicación. La configuración de `pusher` del archivo `config/broadcasting.php` también te permite especificar `options` adicionales que son soportadas por Pusher, como el cluster:
+Luego, debes configurar tus credenciales de Pusher en el archivo de configuración `config/broadcasting.php`. Un ejemplo de configuración de Pusher está incluido en este archivo, permitiéndote especificar rápidamente tu clave de Pusher, contraseña y ID de la aplicación. La configuración de `pusher` del archivo `config/broadcasting.php` también te permite especificar `options` adicionales que son soportadas por Pusher, como el cluster:
 
     'options' => [
         'cluster' => 'eu',
@@ -70,7 +70,7 @@ Luego, debes configurar tus credenciales de Pusher en el archivo de configuraci�
 
 Al usar Pusher y [Laravel Echo](#installing-laravel-echo), debes especificar `pusher` como tu transmisor deseado al instanciar la instancia de Echo en tu archivo `resources/js/bootstrap.js`:
 
-    import Echo from "laravel-echo"
+    import Echo from "laravel-echo";
 
     window.Pusher = require('pusher-js');
 
@@ -87,7 +87,7 @@ Si estás usando el transmisor de Redis, debes instalar la librería Predis:
 
 El transmisor de Redis transmitirá mensajes usando las característica pub / sub de Redis; sin embargo, necesitarás unir esto con un servidor de WebSocket que puede recibir mensajes desde Redis y emitirlos a tus canales de WebSocket.
 
-Cuando el transmisor de Redis publica un evento, este será publicado en los nombres de canales especificados en el evento y la carga será una cadena codificada de JSON que contiene el nombre del evento, una carga `data` y el usuario que genero el ID de socket del evento (si aplica).
+Cuando el transmisor de Redis publica un evento, éste será publicado en los nombres de canales especificados en el evento y la carga será una cadena codificada de JSON que contiene el nombre del evento, una carga `data` y el usuario que genero el ID de socket del evento (si aplica).
 
 #### Socket.IO
 
@@ -113,7 +113,7 @@ Finalmente, necesitarás ejecutar un servidor de Socket.IO compatible. Laravel n
 Antes de transmitir eventos, también necesitarás configurar y ejecutar un [listener de colas](/docs/{{version}}/queues). Toda la transmisión de eventos es realizada mediante trabajos en cola para que el tiempo de respuesta de tu aplicación no se vea necesariamente afectado.
 
 <a name="concept-overview"></a>
-## Resumen Del Concepto
+## Descripción General
 
 La transmisión de eventos de Laravel te permite transmitir tus eventos del lado del servidor de Laravel a tu aplicación JavaScript del lado del cliente usando un enfoque basado en drivers a los WebSockets. Actualmente, Laravel viene con drivers de [Pusher](https://pusher.com) y Redis. Los eventos pueden ser fácilmente consumidos en el lado del cliente usando el paquete de JavaScript [Laravel Echo](#installing-laravel-echo).
 
@@ -122,9 +122,9 @@ Los eventos son transmitidos mediante "canales", que pueden ser definidos como p
 <a name="using-example-application"></a>
 ### Usando Una Aplicación De Ejemplo
 
-Antes de sumergirnos en cada componente de la transmisión de eventos, vamos a ver un resumen usando una tienda virtual como ejemplo. No discutiremos los detalles sobre configurar [Pusher](https://pusher.com) o [Laravel Echo](#installing-laravel-echo) dado que estos será discutido a detalle en otras secciones de esta documentación.
+Antes de sumergirnos en cada componente de la transmisión de eventos, vamos a ver un resumen usando una tienda virtual como ejemplo. No discutiremos los detalles sobre configurar [Pusher](https://pusher.com) o [Laravel Echo](#installing-laravel-echo) dado que éstos será discutido a detalle en otras secciones de esta documentación.
 
-En nuestra aplicación, vamos a asumir que tenemos una página que permite a los usuarios ver el estado de envio de sus ordenes. Vamos también a asumir que un evento `ShippingStatusUpdated` es ejecutado cuando un estado de envio es procesado por la aplicación:
+En nuestra aplicación, vamos a asumir que tenemos una página que permite a los usuarios ver el estado de envío de sus ordenes. Vamos también a asumir que un evento `ShippingStatusUpdated` es ejecutado cuando un estado de envío es procesado por la aplicación:
 
     event(new ShippingStatusUpdated($update));
 
@@ -175,11 +175,11 @@ Recuerda, los usuarios deben ser autorizados para escuchar en canales privados. 
 
 El método `channel` acepta dos argumentos: el nombre del canal y un callback que retorna `true` o `false` indicando si el usuario está autorizado para escuchar en el canal.
 
-Todos los callbacks de autorización recibien al usuario actualmente autenticado como primer argumento y cualquier paremetro adicional como argumentos siguientes. En este ejemplo, estamos usando el placeholder `{orderId}` para indicar que la porción "ID" del nombre del canal es un wildcard.
+Todos los callbacks de autorización recibien al usuario actualmente autenticado como primer argumento y cualquier paremetro adicional como siguientes argumentos. En este ejemplo, estamos usando el placeholder `{orderId}` para indicar que la porción "ID" del nombre del canal es un wildcard.
 
 #### Escuchar Transmisiones De Eventos
 
-Luego, todo lo que queda es escuchar el evento en nuestra aplicación de JavaScript. Podemos hacer eso uando Laravel Echo. Primero, usaremos el método `private` para suscribirnos a un canal privado. Luego, podemos usar el método `listen` para escuchar el evento `ShippingStatusUpdated`. Por defecto, todas las propiedades publicas del evento serán incluidas en el evento de transmisión:
+Luego, todo lo que queda es escuchar el evento en nuestra aplicación de JavaScript. Podemos hacer esto usando Laravel Echo. Primero, usaremos el método `private` para suscribirnos a un canal privado. Luego, podemos usar el método `listen` para escuchar el evento `ShippingStatusUpdated`. Por defecto, todas las propiedades públicas del evento serán incluidas en el evento de transmisión:
 
     Echo.private(`order.${orderId}`)
         .listen('ShippingStatusUpdated', (e) => {
@@ -189,9 +189,9 @@ Luego, todo lo que queda es escuchar el evento en nuestra aplicación de JavaScr
 <a name="defining-broadcast-events"></a>
 ## Definiendo La Transmisión De Eventos
 
-Para informar a Laravel de que un evento dado debería ser transmitido, implementa la interfaz `Illuminate\Contracts\Broadcasting\ShouldBroadcast` en la clase del evento. Esta interfaz ya está importada en todas las clases de eventos generadas por el framework para que así puedas agregarla fácilmente a tus eventos.
+Para informar a Laravel que un evento dado debería ser transmitido, implementa la interfaz `Illuminate\Contracts\Broadcasting\ShouldBroadcast` en la clase del evento. Esta interfaz ya está importada en todas las clases de eventos generadas por el framework para que así puedas agregarla fácilmente a tus eventos.
 
-La interfaz `ShouldBroadcast` requiere que implementes un sólo método: `broadcastOn`. El método `broadcastOn` debería retornar un canal o arreglo de canales en los que el evento debería transmitirse. Los canales deben ser instancias de `Channel`, `PrivateChannel` o `PresenceChannel`. Las instancias de `Channel` representan canales públicos a los que cualquier usuario puede suscribirse mientras que `PrivateChannels` y `PresenceChannels` representan canales privados que requieren [autorización](#authorizing-channels):
+La interfaz `ShouldBroadcast` requiere que implementes un sólo método: `broadcastOn`. El método `broadcastOn` debería retornar un canal o un arreglo de canales en los que el evento debería transmitirse. Los canales deben ser instancias de `Channel`, `PrivateChannel` o `PresenceChannel`. Las instancias de `Channel` representan canales públicos a los que cualquier usuario puede suscribirse mientras que `PrivateChannels` y `PresenceChannels` representan canales privados que requieren [autorización](#authorizing-channels):
 
     <?php
 
@@ -248,7 +248,7 @@ Por defecto, Laravel transmitirá el evento usando el nombre de clase del evento
         return 'server.created';
     }
 
-Si personalizas el nombre de la transmisión usando el método `broadcastAs`, debes asegurarte de registrar tu listener prefijandolo con un caracter `.`. Esto instruíra a Echo a no agregar el nombre de espacio de la aplicación al evento:
+Si personalizas el nombre de la transmisión usando el método `broadcastAs`, debes asegurarte de registrar tu listener prefijándolo con un caracter `.`. Esto instruíra a Echo a no agregar el nombre de espacio de la aplicación al evento:
 
     .listen('.server.created', function (e) {
         ....
@@ -257,7 +257,7 @@ Si personalizas el nombre de la transmisión usando el método `broadcastAs`, de
 <a name="broadcast-data"></a>
 ### Datos De La Transmisión
 
-Cuando un evento es transmitido, todas sus propiedades `public` son automáticamente serializadas y transmitidas como carga del evento, permitiendote acceder a cualquiera de sus datos públic desde tu aplicación de JavaScript. Así que, por ejemplo, si tu evento tiene una sola propiedad pública `$user` que contiene un modelo de Eloquent, la carga de transmisión del evento sería:
+Cuando un evento es transmitido, todas sus propiedades `public` son automáticamente serializadas y transmitidas como carga del evento, permitiéndote acceder a cualquiera de sus datos públicos desde tu aplicación de JavaScript. Así que, por ejemplo, si tu evento tiene una sola propiedad pública `$user` que contiene un modelo de Eloquent, la carga de transmisión del evento sería:
 
     {
         "user": {
@@ -319,7 +319,7 @@ Algunas veces quieres transmitir tu evento sólo si una condición dada es verda
 <a name="authorizing-channels"></a>
 ## Autorizando Canales
 
-Los canales privados requieren que autorizes que el usuario actualmente autenticado puede escuchar en el canal privado. Esto es logrado haciendo una solicitud HTTP a tu aplicación de Laravel con el nombre del canal y permitiendo a tu aplicación de terminar si el usuario puede escuchar en dicho canal. Al usar [Laravel Echo](#installing-laravel-echo), la solicitud HTTP para autorizar suscripciones a canales privados será realizada automáticamente; sin embargo, sí necesitas definir las rutas necesarias para responder a estas solicitudes.
+Los canales privados requieren que autorizes que el usuario actualmente autenticado puede escuchar en el canal privado. Esto es logrado haciendo una solicitud HTTP a tu aplicación de Laravel con el nombre del canal y permitiendo a tu aplicación de terminar si el usuario puede escuchar en dicho canal. Al usar [Laravel Echo](#installing-laravel-echo), la solicitud HTTP para autorizar suscripciones a canales privados será realizada automáticamente; sin embargo, si necesitas definir las rutas necesarias para responder a estas solicitudes.
 
 <a name="defining-authorization-routes"></a>
 ### Definiendo Rutas De Autorización
@@ -357,7 +357,7 @@ Todos los callbacks de autorización reciben al usuario actualmente autenticado 
 
 #### Authorization Callback Model Binding
 
-Igual que las rutas HTTP, las rutas de los canales pueden tomar ventaja de [modelo de enlace de rutas](/docs/{{version}}/routing#route-model-binding) de forma implicita y explicita. Por ejemplo, en lugar de recibir la cadena o ID númerico de la orden, puedes solicitar una instancia del modelo `Order`:
+Igual que las rutas HTTP, las rutas de los canales pueden tomar ventaja de [modelo de enlace de rutas](/docs/{{version}}/routing#route-model-binding) de forma implícita y explícita. Por ejemplo, en lugar de recibir la cadena o ID númerico de la orden, puedes solicitar una instancia del modelo `Order`:
 
     use App\Order;
 
@@ -378,7 +378,7 @@ Luego, registra tu canal en tu archivo `routes/channels.php`:
 
     Broadcast::channel('order.{order}', OrderChannel::class);
 
-Finalmente, puedes colocar la lógica de autorización para tu canal en el método `join` de la clase del canal. Este método `join` contendrá la misma lógica que típicamente habrías colocado en el Closure de tu canal de autorización. Por supuesto, puedes también tomar ventaja del modelo de enlace de canales:
+Finalmente, puedes colocar la lógica de autorización para tu canal en el método `join` de la clase del canal. Este método `join` contendrá la misma lógica que típicamente habrías colocado en el Closure de tu canal de autorización. Puedes también tomar ventaja del modelo de enlace de canales:
 
     <?php
 
@@ -412,12 +412,12 @@ Finalmente, puedes colocar la lógica de autorización para tu canal en el méto
         }
     }
 
-> {tip} Como muchas otras clases en Laravel, las clases de canales automáticamente serán resueltas por el [contenedor de servicios](/docs/{{version}}/container). Así que, puedes hacer type-hint de cualquier dependencia requerida por tu canal en su constructor.
+> {tip} Como muchas otras clases en Laravel, las clases de canales automáticamente serán resueltas por el [contenedor de servicios](/docs/{{version}}/container). Así que, puedes declarar el tipo de cualquier dependencia requerida por tu canal en su constructor.
 
 <a name="broadcasting-events"></a>
 ## Transmitiendo Eventos
 
-Una vez que has definido un evento y lo has marcado con la interfaz `ShouldBroadcast`, sólo necesitas ejecutar el evento usando la función `event`. El despachador de eventos notará que el evento está marcado con la interfaz `ShouldBroadcast` y agregar el evento a la cola para transmisión:
+Una vez que has definido un evento y lo has marcado con la interfaz `ShouldBroadcast`, sólo necesitas ejecutar el evento usando la función `event`. El despachador de eventos notará que el evento está marcado con la interfaz `ShouldBroadcast` y agrega el evento a la cola para transmisión:
 
     event(new ShippingStatusUpdated($update));
 
@@ -439,9 +439,7 @@ Para entender mejor cuando es posible que quieras usar el método `toOthers`, va
             this.tasks.push(response.data);
         });
 
-Sin embargo, recuerda que también transmitimos la creación de la tarea. Si tu aplicación de JavaScript está escuchando este evento para agregar tareas a la lista de tareas, tendrás tareas duplicadas en tu lista: una del punto de salida y una de la transmisión.
-
-Puedes resolver esto usando el método `toOthers` para instruir al transmisor para que no transmita el evento al usuario actual.
+Sin embargo, recuerda que también transmitimos la creación de la tarea. Si tu aplicación de JavaScript está escuchando este evento para agregar tareas a la lista de tareas, tendrás tareas duplicadas en tu lista: una del punto de salida y una de la transmisión.  Puedes resolver esto usando el método `toOthers` para instruir al transmisor para que no transmita el evento al usuario actual.
 
 > {note} Tu evento debe usar el trait `Illuminate\Broadcasting\InteractsWithSockets` para poder llamar al método `toOthers`.
 
@@ -542,7 +540,7 @@ Alternativamente, puedes prefijar las clases del evento con un `.` al suscribrte
 <a name="presence-channels"></a>
 ## Canales De Presencia
 
-Los Canales de Presencia son construidos sobre la seguridad de los canales privados mientras que exponen la caracteristica adicional de saber quien está susbscrito al canal. Esto hace que sea fácil construir caracteristicas de aplicación poderosas y colaborativas como notificar a usuarios cuando otro usuario está viendo la misma página.
+Los Canales de Presencia son construidos sobre la seguridad de los canales privados mientras que exponen la característica adicional de saber quien está susbscrito al canal. Esto hace que sea fácil construir características de aplicación poderosas y colaborativas como notificar a usuarios cuando otro usuario está viendo la misma página.
 
 <a name="authorizing-presence-channels"></a>
 ### Autorizando Canales De Presencia
@@ -560,7 +558,7 @@ Los datos retornados por el callback de autorización estarán disponibles para 
 <a name="joining-presence-channels"></a>
 ### Uniendose A Canales De Presencia
 
-Para unirse a un canal de presencia, puedes usar el método `join` de Echo. El método `join` retornará una implementación de `PresenceChannel` que, junto con exponer el método `listen`, te permite suscribirte a los eventos `here`, `joining` y `leaving`.
+Para unirse a un canal de presencia, puedes usar el método `join` de Echo. El método `join` retornará una implementación de `PresenceChannel` que, junto con la exposición del método `listen`, te permite suscribirte a los eventos `here`, `joining` y `leaving`.
 
     Echo.join(`chat.${roomId}`)
         .here((users) => {
@@ -578,7 +576,7 @@ El callback `here` será ejecutado inmediatamente una vez que el canal se haya u
 <a name="broadcasting-to-presence-channels"></a>
 ### Transmitiendo A Canales De Presencia
 
-Los canales de Presencia mpueden recibir eventos igual que los canales públicos y privados. Usando el ejemplo de una sala de chat, podemos querer transmitir eventos `NewMessage` al canal de presencia de la sala. Para hacer eso, retornaremos una instancia de `PresenceChannel` desde el método `broadcastOn` del evento:
+Los canales de Presencia pueden recibir eventos igual que los canales públicos y privados. Usando el ejemplo de una sala de chat, podemos querer transmitir eventos `NewMessage` al canal de presencia de la sala. Para hacer eso, retornaremos una instancia de `PresenceChannel` desde el método `broadcastOn` del evento:
 
     /**
      * Get the channels the event should broadcast on.
@@ -611,7 +609,9 @@ Puedes escuchar el evento join mediante el método `listen` de Echo:
 
 > {tip} Al usar [Pusher](https://pusher.com), debes habilitar la opción "Client Events" en la sección "App Settings" del [dashboard de tu aplicación](https://dashboard.pusher.com/) para enviar eventos del cliente.
 
-Algunas veces puedes querer transmitir un evento a otros clientes conectados sin tocar tu aplicación en lo absoluto. Esto puede ser particularmente útil para cosas como "escribir" notificaciones, donde quieres advertir a los usuarios de tu aplicación que otro usuario está escribiendo un mensaje en una pantalla dada. Para transmitir eventos del cliente, puedes usar el método `whisper` de Echo:
+Algunas veces puedes querer transmitir un evento a otros clientes conectados sin tocar tu aplicación en lo absoluto. Esto puede ser particularmente útil para cosas como "escribir" notificaciones, donde quieres advertir a los usuarios de tu aplicación que otro usuario está escribiendo un mensaje en una pantalla dada. 
+
+Para transmitir eventos del cliente, puedes usar el método `whisper` de Echo:
 
     Echo.private('chat')
         .whisper('typing', {
