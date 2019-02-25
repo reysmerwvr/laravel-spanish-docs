@@ -29,7 +29,7 @@
 <a name="introduction"></a>
 ## Introducción
 
-La estructura por defecto de aplicación de Laravel está pensada para proporcionar un buen punto de inicio tanto para grandes y pequeñas aplicaciones. Eres libre de organizar tu aplicación como quieras. Laravel no impone casi ninguna restricción sobre donde una clase es ubicada - siempre y cuando composer pueda cargar automáticamente la clase.
+La estructura por defecto de aplicación de Laravel está pensada para proporcionar un buen punto de inicio tanto para grandes y pequeñas aplicaciones. Pero, eres libre de organizar tu aplicación como quieras. Laravel no impone casi ninguna restricción sobre donde una clase es ubicada - siempre y cuando Composer pueda cargar automáticamente la clase.
 
 #### ¿Donde Está el Directorio de Modelos?
 
@@ -68,8 +68,7 @@ El directorio `public` contiene el archivo `index.php`, el cual es el punto de a
 <a name="the-resources-directory"></a>
 #### Directorio Resources
 
-El directorio `resources` contiene tus vistas así como también tus assets sin compilar tales como LESS, SASS o
-JavaScript. Este directorio también almacena todos tus archivos de idioma.
+El directorio `resources` contiene tus vistas así como también tus assets sin compilar tales como LESS, Sass o JavaScript. Este directorio también almacena todos tus archivos de idioma.
 
 <a name="the-routes-directory"></a>
 #### Directorio Routes
@@ -78,7 +77,7 @@ El directorio `routes` contiene todas las definiciones de rutas para tu aplicaci
 
 El archivo `web.php` contiene rutas que `RouteServiceProvider` coloca en el grupo de middleware `web`, que proporciona estado de sesión, protección CSRF y encriptación de cookies. Si tu aplicación no ofrece una API sin estado, todas tus rutas probablemente serán definidas en el archivo `web.php`.
 
-el archivo `api.php` contiene rutas que `RouteServiceProvider` coloca en el grupo de middleware `api`, que proporcionan limitación de velocidad. Estas rutas están pensadadas para no tener estado, así que las solicitudes que llegan a la aplicación a través de estas rutas están pensadas para ser autenticadas mediante tokens y no tendrán acceso al estado de sesión.
+El archivo `api.php` contiene rutas que `RouteServiceProvider` coloca en el grupo de middleware `api`, que proporcionan limitación de velocidad. Estas rutas están pensadadas para no tener estado, así que las solicitudes que llegan a la aplicación a través de estas rutas están pensadas para ser autenticadas mediante tokens y no tendrán acceso al estado de sesión.
 
 El archivo `console.php` es donde puedes definir todas los comandos basados en Closures de tu aplicación. Cada Closure está enlazado a una instancia de comando permitiendo una forma simple de interactuar con los métodos de entrada y salida de cada comando. Aunque este archivo no define ninguna ruta HTTP, sí define puntos de entrada en consola (rutas) a tu aplicación.
 
@@ -87,9 +86,9 @@ El archivo `channels.php` es donde puedes registrar todos los canales de transmi
 <a name="the-storage-directory"></a>
 #### Directorio Storage
 
-El directorio `storage` contiene tus plantillas compiladas de Blade, sesiones basadas en archivos, archivos de caches y otros archivos generados por el framework. Este directorio está segregado en los directorios `app`, `framework` y `logs`. El directorio `app` puede ser usado para almacenar cualquier archivo generado por tu aplicación. El directorio `framework` es usado para almacenar archivos generados por el framework y cache. Finalmente, el directorio `logs` contiene los archivos de log de tu aplicación.
+El directorio `storage` contiene tus plantillas compiladas de Blade, sesiones basadas en archivos, archivos de caches y otros archivos generados por el framework. Este directorio está segregado en los directorios `app`, `framework` y `logs`. El directorio `app` puede ser usado para almacenar cualquier archivo generado por tu aplicación. El directorio `framework` es usado para almacenar archivos generados por el framework y cache. Finalmente, el directorio `logs` contiene los archivos de registros de tu aplicación.
 
-El directorio `storage/app/public` puede ser usado para almacenar archivos generados por el usario, tales como imagenes de perfil, que deberían ser accesibles publicamente. Debes crear un enlace simbolico en `public/storage` que apunte a este directorio. Puedes crear el enlace usando el comando `php artisan storage:link`.
+El directorio `storage/app/public` puede ser usado para almacenar archivos generados por el usario, tales como imagenes de perfil, que deberían ser accesibles públicamente. Debes crear un enlace simbólico en `public/storage` que apunte a este directorio. Puedes crear el enlace usando el comando `php artisan storage:link`.
 
 <a name="the-tests-directory"></a>
 #### El Directorio Tests
@@ -104,9 +103,9 @@ El directorio `vendor` contiene tus dependencias de [Composer](https://getcompos
 <a name="the-app-directory"></a>
 ## Directorio App
 
-La mayoría de tu aplicación está almacenada el directorio `app`. Por defecto, este directorio tiene un nombre de espacio bajo `App` y es cargado automáticamente por composer usando el [estándar de autocarga PSR-4](https://www.php-fig.org/psr/psr-4/).
+La mayoría de tu aplicación está almacenada el directorio `app`. Por defecto, este directorio está regido por el nombre de espacio `App` y es cargado automáticamente por Composer usando el [estándar de autocarga PSR-4](https://www.php-fig.org/psr/psr-4/).
 
-El directorio `app` contiene una variedad de directorios adicionales tales como `Console`, `Http` y `Providers`. Piensa en los directorios `Console` y `Http` como si proporcionaran una API al nucleo de tu aplicación, pero no contienen lógica de la aplicación como tal. En otras palabras, son dos formas de emtir comandos a tu aplicación. El directorio `Console` contiene todos tus comandos de Artisan, mientras que el directorio `Http` contiene tus controladores, middleware y solicitudes.
+El directorio `app` contiene una variedad de directorios adicionales tales como `Console`, `Http` y `Providers`. Piensa en los directorios `Console` y `Http` como si proporcionaran una API al núcleo de tu aplicación, pero no contienen lógica de la aplicación como tal. En otras palabras, son dos formas de emtir comandos a tu aplicación. El directorio `Console` contiene todos tus comandos de Artisan, mientras que el directorio `Http` contiene tus controladores, middleware y solicitudes.
 
 Una variedad de otros directorios serán generados dentro del directorio `app` cuando uses los comandos `make` de Artisan para generar clases. Así que, por ejemplo, el directorio `app/Jobs` no existirá hasta que ejecutes el comando de Artisan `make:job` para generar una clase job.
 
@@ -130,7 +129,7 @@ Este directorio no existe por defecto, pero será creado para ti por los comando
 <a name="the-exceptions-directory"></a>
 #### Directorio Exceptions
 
-El directorio `Exceptions` contiene el manejador de excepciones de tu aplicación y también es un buen lugar para colocar cualquier excepción lanzada por tu aplicación. Si te gustaría personalizar como las excepciones son mostradas o renderizadas, debes modificar la clase `Handler` en este directorio.
+El directorio `Exceptions` contiene el manejador de excepciones de tu aplicación y también es un buen lugar para colocar cualquier excepción lanzada por tu aplicación. Si te gustaría personalizar cómo las excepciones son mostradas o renderizadas, debes modificar la clase `Handler` en este directorio.
 
 <a name="the-http-directory"></a>
 #### Directorio Http
@@ -155,13 +154,12 @@ Este directorio no existe por defecto, pero será creado para ti si ejecutas el 
 <a name="the-notifications-directory"></a>
 #### Directorio Notifications
 
-Este directorio no existe por defecto, pero será creado para ti si ejecutas el comando de Artisan `make:notification`. El directorio `Notifications` contiene todas las notificaciones "transaccionales" que son enviadas por tu aplicación, tales como notificaciones sencillas sobre eventos que ocurren dentro de tu aplicación. Las características de notifcaciones de Laravel abstrae el envio de notificaciones sobre una variedad de drivers como email, Slack, SMS o almacenados en la base de datos.
+Este directorio no existe por defecto, pero será creado para ti si ejecutas el comando de Artisan `make:notification`. El directorio `Notifications` contiene todas las notificaciones "transaccionales" que son enviadas por tu aplicación, tales como notificaciones sencillas sobre eventos que ocurren dentro de tu aplicación. Las características de notifcaciones de Laravel abstrae el envío de notificaciones sobre una variedad de drivers como email, Slack, SMS o almacenados en la base de datos.
 
 <a name="the-policies-directory"></a>
 #### Directorio Policies
 
-This directory does not exist by default, but will be created for you if you execute the `make:policy` Artisan command. The `Policies` directory contains the authorization policy classes for your application. Policies are used to determine if a user can perform a given action against a resource. For more information, check out the [authorization documentation](/docs/{{version}}/authorization).
-Este directorio no existe por defecto, pero será creado para ti si ejecutas el comando de Artisan `make:policy`. El directorio `Policies` contiene las clases de la política de autorización de tu aplicación. Las políticas son usadas para determinar si un usuario puede realizar una acción dada contra un recurso. Para más información, revisa la [documentación sobre autorización][authorization documentation](/docs/{{version}}/authorization).
+Este directorio no existe por defecto, pero será creado para ti si ejecutas el comando de Artisan `make:policy`. El directorio `Policies` contiene las clases de las políticas de autorización de tu aplicación. Las políticas son usadas para determinar si un usuario puede realizar una acción dada contra un recurso. Para más información, revisa la [documentación sobre autorización][authorization documentation](/docs/{{version}}/authorization).
 
 <a name="the-providers-directory"></a>
 #### Directorio Providers
