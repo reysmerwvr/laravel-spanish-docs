@@ -1,4 +1,4 @@
-# Sesion HTTP
+# Sesión HTTP
 
 - [Introducción](#introduction)
     - [Configuración](#configuration)
@@ -33,14 +33,14 @@ La opción de configuración `driver` de la sesión define donde los datos de la
 - `array` - las sesiones son almacenadas en un arreglo de PHP y no serán guardadas de forma permanente.
 </div>
 
-> {tip} El driver array es usado durante [la prueba](/docs/{{version}}/testing) y previene que los datos almacenados en la sesión sean guardados de forma permanente.
+> {tip} El driver array es usado durante [las pruebas](/docs/{{version}}/testing) y previene que los datos almacenados en la sesión sean guardados de forma permanente.
 
 <a name="driver-prerequisites"></a>
 ### Prerequisitos del Driver
 
 #### Base de Datos
 
-Al momento de usar el driver de sesión `database`, necesitarás crear una tabla para contener los elementos de la sesión. Debajo está una declaración de `Schema` de ejemplo para la tabla:
+Al momento de usar el driver de sesión `database`, necesitarás crear una tabla para contener los elementos de la sesión. A continuación se muestra una declaración de `Schema` de ejemplo para la tabla:
 
     Schema::create('sessions', function ($table) {
         $table->string('id')->unique();
@@ -59,7 +59,7 @@ Puedes usar el comando Artisan `session:table` para generar esta migración:
 
 #### Redis
 
-Antes de usar sesiones Redis con Laravel, necesitarás instalar el paquete `predis/predis` (~1.0) por medio de Composer. Puedes configurar tus conexiones Redis en el archivo de configuración `database`. En el archivo de configuración de `session`, la opción `connection` puede ser usada para especificar cual conexión Redis es usada por la sesión.
+Antes de usar sesiones Redis con Laravel, necesitarás instalar el paquete `predis/predis` (~1.0) por medio de Composer. Puedes configurar tus conexiones Redis en el archivo de configuración `database`. En el archivo de configuración de `session`, la opción `connection` puede ser usada para especificar cuál conexión Redis es usada por la sesión.
 
 <a name="using-the-session"></a>
 ## Usando la Sesión
@@ -164,11 +164,11 @@ El método `pull` obtendrá y eliminará un elemento de la sesión en una sola i
 <a name="flash-data"></a>
 ### Datos Instantáneos
 
-Algunas veces puedes querer almacenar varios item en la sesión para la próxima solicitud. Puedes hacer eso usando el método `flash`. Los datos almacenados en la sesión usando este método solamente estarán disponibles durante la subsecuente solicitud HTTP, y luego serán eliminados. Los datos instantáneos son principalmente útiles para mensajes de estado de vida corta:
+Algunas veces puedes querer almacenar varios elementos en la sesión para la próxima solicitud. Puedes hacer eso usando el método `flash`. Los datos almacenados en la sesión usando este método solamente estarán disponibles durante la subsecuente solicitud HTTP, y luego serán eliminados. Los datos instantáneos son principalmente útiles para mensajes de estado con vida corta:
 
     $request->session()->flash('status', 'Task was successful!');
 
-Si necesitas mantener tus datos instantáneos alrededor para varias solicitudes, puedes usar el método `reflash`, el cuál mantendrá todos los datos instantáneos para una solicitud adicional. Si solamente necesitas mantener datos instantáneos especificos, puedes usar el método `keep`:
+Si necesitas mantener tus datos instantáneos alrededor para varias solicitudes, puedes usar el método `reflash`, el cuál mantendrá todos los datos instantáneos para una solicitud adicional. Si solamente necesitas mantener datos instantáneos específicos, puedes usar el método `keep`:
 
     $request->session()->reflash();
 
@@ -182,7 +182,9 @@ El método `forget` removerá una porción de datos de la sesión. Si prefieres 
 	// Forget a single key...
     $request->session()->forget('key');
 
-	// Forget multiple keys...
+    // Forget multiple keys...
+    $request->session()->forget(['key1', 'key2']);
+
     $request->session()->flush();
 
 <a name="regenerating-the-session-id"></a>
@@ -221,9 +223,9 @@ Tu manejador de sesión personalizado debería implementar la interface `Session
 Ya que el propósito de estos métodos no es entendible rápidamente y sin dificultad, vamos a cubrir rápidamente lo que cada uno de estos métodos hace:
 
 <div class="content-list" markdown="1">
-- El método `open` típicamente sería usado en sistemas de almacenamiento de sesión basada en archivo. Ya que Laravel viene con un manejador de sesión `file`, casi nunca necesitarás poner cualquier cosa en este método. Puedes dejarlo como un pedazo vacío. Es una característica de diseño de interface pobre (lo que discutiremos más tarde) que PHP nos oblige a implementar este método.
-- El método `close`, como el método `open`, también puede se descartado. Para la mayoría de los drivers, no es necesitado.
-- El método `read` debería devolver la versión de cadena de la sesión de datos asociada con la `$sessionId` dado. No hay necesidad de hacer alguna serialización u otra codificación al momento de obtener o almacenar los datos de la sesión en tu manejador, ya que Laravel ejcutará la serialización por ti.
+- El método `open` típicamente sería usado en sistemas de almacenamiento de sesión basada en archivo. Ya que Laravel viene con un manejador de sesión `file`, casi nunca necesitarás poner cualquier cosa en este método. Puedes dejarlo como un stub vacío. Es una característica de diseño de interface pobre (lo que discutiremos más tarde) que PHP nos oblige a implementar este método.
+- El método `close`, como el método `open`, también puede ser descartado. Para la mayoría de los drivers, no es necesario.
+- El método `read` debería devolver la versión de cadena de la sesión de datos asociada con la `$sessionId` dada. No hay necesidad de hacer alguna serialización u otra codificación al momento de obtener o almacenar los datos de la sesión en tu manejador, ya que Laravel ejcutará la serialización por ti.
 - El método `write` debería escribir la cadena `$data` asociada dada con la `$sessionId` para algún sistema de almacenamiento persistente, tal como MongoDB, Dynamo, etc. Otra vez, no deberías ejecutar alguna serialización - Laravel ya ha manejado esto por ti.
 - El método `destroy` debería remover los datos asociados con la $sessionId` desde el almacenamiento persistente.
 - El método `gc` debería destruir todos los datos de la sesión que son más viejos que el `$lifetime` dado, el cual es una marca de tiempo UNIX. Para los sistemas que se auto-expiran como Memcached y Redis, este método puede ser dejado vacío.
@@ -232,7 +234,7 @@ Ya que el propósito de estos métodos no es entendible rápidamente y sin dific
 <a name="registering-the-driver"></a>
 #### Registrando el Manejador
 
-Una vez que tu manejador ha sido implementado, estás listo para registrarlo con el framework. Para agregar manejadores adicionales para el backend de sesión de Laravel, puedes usar el método `extend` del método en la `Session` [facade](/docs/{{version}}/facades). Deberías ejecutar el método `extend` desde el método `boot` de un [proveedor de servicio](/docs/{{version}}/providers). Puedes hacer esto desde el existente `AppServiceProvider` o crear un nuevo proveedor completo:
+Una vez que tu manejador ha sido implementado, estás listo para registrarlo en el framework. Para agregar manejadores adicionales para el backend de sesión de Laravel, puedes usar el método `extend` del método en la `Session` [facade](/docs/{{version}}/facades). Deberías ejecutar el método `extend` desde el método `boot` de un [proveedor de servicio](/docs/{{version}}/providers). Puedes hacer esto desde el existente `AppServiceProvider` o crear un nuevo proveedor de servicios completo:
 
     <?php
 
