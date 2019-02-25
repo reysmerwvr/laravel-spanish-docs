@@ -1,19 +1,19 @@
-# Localization
+# Configuración Regional
 
 - [Introducción](#introduction)
-	- [Configurando La Ubicación](#configuring-the-locale)
-- [Definiendo Cadenas de Traducciones](#defining-translation-strings)
+	- [Configurando La Configuración Regional](#configuring-the-locale)
+- [Definiendo Cadenas De Traducciones](#defining-translation-strings)
     - [Usando Claves Cortas](#using-short-keys)
-    - [Usando Cadenas de Traducciones como Claves](#using-translation-strings-as-keys)
-- [Retornando Cadenas de Traducciones](#retrieving-translation-strings)
-    - [Reemplazando Parametros en Cadenas de Traducciones](#replacing-parameters-in-translation-strings)
+    - [Usando Cadenas De Traducciones Como Claves](#using-translation-strings-as-keys)
+- [Retornando Cadenas De Traducciones](#retrieving-translation-strings)
+    - [Reemplazando Parametros En Cadenas De Traducciones](#replacing-parameters-in-translation-strings)
     - [Pluralización](#pluralization)
 - [Sobrescribiendo Archivos del Paquete de Idioma](#overriding-package-language-files)
 
 <a name="introduction"></a>
 ## Introducción
 
-Las características de localización de Laravel proporcionan una forma conveniente de retornar cadenas en varios idiomas, permitiendote soportar fácilmente múltiples idiomas en tu aplicación. Las cadenas de idiomas son almacenadas en archivos dentro del directorio `resources/lang`. Dentro de este directorio debería haber un subdirectorio para cada idioma soportado por la aplicación:
+Las características de configuración regional de Laravel proporcionan una forma conveniente de retornar cadenas en varios idiomas, permitiéndote soportar fácilmente múltiples idiomas en tu aplicación. Las cadenas de idiomas son almacenadas en archivos dentro del directorio `resources/lang`. Dentro de este directorio debería haber un subdirectorio para cada idioma soportado por la aplicación:
 
     /resources
         /lang
@@ -31,9 +31,9 @@ Todos los archivos de idioma retornan un arreglo de cadenas con sus claves. Por 
     ];
 
 <a name="configuring-the-locale"></a>
-### Configurando La Ubicación
+### Configurando La Configuración Regional
 
-El idioma por defecto para tu aplicación es almacenado en el archivo de configuración `config/app.php`. Puedes modificar este valor en base a las necesidades de tu aplicación. También puedes cambiar el idioma activo en tiempo de ejecución usando el método `setLocale` en el facade `App`:
+El idioma por defecto para tu aplicación se almacena en el archivo de configuración `config/app.php`. Puedes modificar este valor en base a las necesidades de tu aplicación. También puedes cambiar el idioma activo en tiempo de ejecución usando el método `setLocale` en el facade `App`:
 
     Route::get('welcome/{locale}', function ($locale) {
         App::setLocale($locale);
@@ -41,13 +41,13 @@ El idioma por defecto para tu aplicación es almacenado en el archivo de configu
         //
     });
 
-Puedes configurar un "idioma alternativo", que será usando cuando el idioma activo no contiene una determinada cadena de traducción. Al igual que el idioma por defecto, el idioma alternativo también es configurado en el archivo de configuración `config/app.php`:
+Puedes configurar un "idioma alternativo", que será usado cuando el idioma activo no contiene una determinada cadena de traducción. Al igual que el idioma por defecto, el idioma alternativo también es configurado en el archivo de configuración `config/app.php`:
 
     'fallback_locale' => 'en',
 
-#### Determinando La Ubicación Actual
+#### Determinando La Configuración Regional Actual
 
-Puedes usar los métodos `getLocale` y `isLocale` en el facade `App` para determinar la ubicación actual o comprobar si la ubicación es un valor dado:
+Puedes usar los métodos `getLocale` y `isLocale` en el facade `App` para determinar la configuración regional actual o comprobar si la configuración tiene un valor dado:
 
     $locale = App::getLocale();
 
@@ -98,7 +98,9 @@ Puedes retornar líneas desde archivos de idioma usando la función helper `__`.
 
     echo __('messages.welcome');
 
-Si estás usando el [motor de plantillas Blade](/docs/{{version}}/blade), puedes usar la sintaxis `{{{ }}` para imprimir la cadena de traducción o usar la directiva `@lang`:
+    echo __('I love programming.');
+
+Si estás usando el [motor de plantillas Blade](/docs/{{version}}/blade), puedes usar la sintaxis `{{ }}` para imprimir la cadena de traducción o usar la directiva `@lang`:
 
     {{ __('messages.welcome') }}
 
@@ -127,7 +129,7 @@ Si tu placeholder contiene sólo letras mayúsculas o sólo tiene su primera let
 <a name="pluralization"></a>
 ### Pluralización
 
-La pluralización es un problema complejo, ya que diferentes idiomas tienen una variedad de reglas complejas de pluralización. Usando el símbolo de "pipe", puedes distinguir entre las formas singulares y plurales de una cadena:
+La pluralización es un problema complejo, ya que diferentes idiomas tienen una variedad de reglas complejas de pluralización. Usando el símbolo `|`, puedes distinguir entre las formas singulares y plurales de una cadena:
 
     'apples' => 'There is one apple|There are many apples',
 
