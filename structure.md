@@ -1,4 +1,4 @@
-# Directory Structure
+# Estructura de Directorios
 
 - [Introducción](#introduction)
 - [Directorio Raíz](#the-root-directory)
