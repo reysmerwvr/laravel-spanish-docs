@@ -1,4 +1,4 @@
-# Request Lifecycle
+# Ciclo De Vida De La Solicitud
 
 - [Introducción](#introduction)
 - [Resumen Del Ciclo De Vida](#lifecycle-overview)
@@ -7,9 +7,9 @@
 <a name="introduction"></a>
 ## Introducción
 
-Al usar cualquier herramienta en el "mundo real", te sientes más cómodo si entiendes como esa herramienta funciona. El desarrollo de aplicaciones no es diferente. Cuando entiendes como tus herramientas de desarrollo funcionan, te sientes más cómodo y seguro usándolas.
+Al usar cualquier herramienta en el "mundo real", te sientes más cómodo si entiendes como esa herramienta funciona. El desarrollo de aplicaciones no es diferente. Cuando entiendes cómo tus herramientas de desarrollo funcionan, te sientes más cómodo y seguro usándolas.
 
-El objetivo de este documento es darte un buen resumen sobre como el framework Laravel funciona. Al conocer el framework mejor, todo lo demás se siente menos "mágico" y te sentirás más cómodo construyendo tus aplicaciones. Si no entiendes todos los terminos de una sóla vez, ¡no te desesperes! Sólo trata de obtener una comprensión básica de lo que está sucediendo y tus conocimientos crecerán a medida que exploras otras secciones de la documentación.
+El objetivo de este documento es darte un buen resumen sobre cómo el framework Laravel funciona. Al conocer el framework mejor, todo lo demás se siente menos "mágico" y te sentirás más cómodo construyendo tus aplicaciones. Si no entiendes todos los términos de una sola vez, ¡no te desesperes! Sólo trata de obtener una comprensión básica de lo que está sucediendo y tus conocimientos crecerán a medida que exploras otras secciones de la documentación.
 
 <a name="lifecycle-overview"></a>
 ## Resumen Del Ciclo De Vida
@@ -28,23 +28,23 @@ El kernel HTTP extiende de la clase `Illuminate\Foundation\Http\Kernel`, que def
 
 El kernel HTTP también define una lista de [middleware](/docs/{{version}}/middleware) HTTP que todas las solicitudes deben pasar antes de ser manejadas por la aplicación. Estos middleware manejan la lectura y escritura de la [sesión HTTP](/docs/{{version}}/session), determinando si la aplicación está en modo de mantenimiento, [verificando el token CSRF](/docs/{{version}}/csrf) y más.
 
-La firma del método para el método `handle` del kernel HTTP es bastante simple: recibe un `Request` y retorna un `Response`. Piensa en el Kernel como una caja negra grande que representa toda tu aplicación. Alimentala con solicitudes HTTP y retornará respuestas HTTP.
+La firma del método para el método `handle` del kernel HTTP es bastante simple: recibe un `Request` y retorna un `Response`. Piensa en el Kernel como una caja negra grande que representa toda tu aplicación. Aliméntala con solicitudes HTTP y retornará respuestas HTTP.
 
 #### Proveedores De Servicios
 
 Una de las acciones de maquetado más importantes del Kernel es cargar los [proveedores de servicios](/docs/{{version}}/providers) de tu aplicación. Todos los proveedores de servicios de la aplicación son configurados en el arreglo `providers` del archivo de configuración `config/app.php`. Primero, el método `register` será llamado en todos los proveedores, luego, una vez que todos los proveedores sean registrados, el método `boot` será llamado.
 
-Los proveedores de servicios son responsables de maquetar todos los distintos componentes del framework, como la base de datos, colas, validaciones y componentes de rutas. Dado que maquetan y configuran cada característica ofrecida por el framework, los proveedores de servicios son el aspecto más importante de todo el proceso de maquetado de Laravel.
+Los proveedores de servicios son responsables de estructurar todos los distintos componentes del framework, como la base de datos, colas, validaciones y componentes de rutas. Dado que estructuran y configuran cada característica ofrecida por el framework, los proveedores de servicios son el aspecto más importante de todo el proceso de estructuración de Laravel.
 
 #### Despachar La Solicitud
 
-Una vez que la aplicación ha sido maquetada y todos los proveedores de servicios han sido registrados, la `Solicitud` será manejada por el enrutador para despacho. El enrutador despachará la solicitud a una ruta o controlador, así como ejecutar cualquier middleware especifíco de ruta.
+Una vez que la aplicación ha sido estructurada y todos los proveedores de servicios han sido registrados, la solicitud o `Request` será manejada por el enrutador para su despacho. El enrutador enviará la solicitud a una ruta o controlador, así como ejecutará cualquier middleware específico de ruta.
 
 <a name="focus-on-service-providers"></a>
 ## Enfoque En Los Proveedores De Servicios
 
-Los proveedores de servicios son la clave para maquetar una aplicación de Laravel. La instancia de la aplicación es creada, los proveedores de servicios son registrados y la solicitud es entregada a la aplicación maquetada. ¡Es realmente así de simple!
+Los proveedores de servicios son realmente la clave para estructurar una aplicación de Laravel. La instancia de la aplicación es creada, los proveedores de servicios son registrados y la solicitud es entregada a la aplicación ya estructurada. ¡Es realmente así de simple!
 
-Tener un firme conocimiento sobre como una aplicación de Laravel es construída y maquetada mediante proveedores de servicios es muy útil. Por supuesto, los proveedores de servicios por defecto de tu aplicación están almacenados en el directorio `app/Providers`. 
+Tener un firme conocimiento sobre cómo una aplicación de Laravel es construída y estructurada mediante proveedores de servicios es muy útil. Los proveedores de servicios por defecto de tu aplicación están almacenados en el directorio `app/Providers`. 
 
-Por defecto, `AppServiceProvider` está algo vacío. Este proveedor es un buen lugar para agregar el maquetado de tu aplicación y enlaces de contenedores de servicios. Por supuesto, para aplicaciones grandes, puedes desear crear múltiples proveedores de servicios, cada uno con una forma más granular de maquetado.
+Por defecto, `AppServiceProvider` está casi vacío. Este proveedor es un buen lugar para agregar tu propia estructura de componentes y enlaces al contenedor de servicios de tu aplicación. Para aplicaciones grandes, puedes desear crear múltiples proveedores de servicios, cada uno que estructure componentes de una manera más granular.
