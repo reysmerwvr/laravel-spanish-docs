@@ -29,10 +29,17 @@ La configuración de redis para tu aplicación está ubicada en el archivo de co
         'client' => 'predis',
 
         'default' => [
-            'host' => env('REDIS_HOST', 'localhost'),
+            'host' => env('REDIS_HOST', '127.0.0.1'),
             'password' => env('REDIS_PASSWORD', null),
             'port' => env('REDIS_PORT', 6379),
-            'database' => 0,
+            'database' => env('REDIS_DB', 0),
+        ],
+
+        'cache' => [
+            'host' => env('REDIS_HOST', '127.0.0.1'),
+            'password' => env('REDIS_PASSWORD', null),
+            'port' => env('REDIS_PORT', 6379),
+            'database' => env('REDIS_CACHE_DB', 1),
         ],
 
     ],
@@ -60,7 +67,7 @@ Si tu aplicación está utilizando un cluster de servidores Redis, debes definir
 
     ],
 
-Por defecto, los clusters realizarán la división del lado del cliente en sus nodos, permitiendote agrupar nodos y crear una gran cantidad de RAM disponible. Sin embargo, ten en cuenta que la división del lado del cliente no gestiona el failover; por lo tanto, es principalmente adecuado para datos en caché que estén disponibles desde otro almacenamiento de datos primario. Su deseas utilizar el agrupamiento nativo de Redis, debes especificarlo en la clave `options` de tu configuración de Redis:
+Por defecto, los clusters realizarán la división del lado del cliente en sus nodos, permitiéndote agrupar nodos y crear una gran cantidad de RAM disponible. Sin embargo, ten en cuenta que la división del lado del cliente no gestiona el failover; por lo tanto, es principalmente adecuado para datos en caché que estén disponibles desde otro almacenamiento de datos primario. Su deseas utilizar el agrupamiento nativo de Redis, debes especificarlo en la clave `options` de tu configuración de Redis:
 
     'redis' => [
 
@@ -79,7 +86,7 @@ Por defecto, los clusters realizarán la división del lado del cliente en sus n
 <a name="predis"></a>
 ### Predis
 
-Además de las opciones predeterminadas de la configuración del servidor `host`, `port`, `database` y `password`, Predis admite [parámetros de conexión](https://github.com/nrk/predis/wiki/Connection-Parameters) adicionales que pueden ser definidos para cada uno de tus servidores de Redis. Para utilizar estas opciones de configuración adicionales, agregalos a la configuración del servidor de Redis en el archivo de configuración `config/database.php`:
+Además de las opciones predeterminadas de la configuración del servidor `host`, `port`, `database` y `password`, Predis admite [parámetros de conexión](https://github.com/nrk/predis/wiki/Connection-Parameters) adicionales que pueden ser definidos para cada uno de tus servidores de Redis. Para utilizar estas opciones de configuración adicionales, agrégalos a la configuración del servidor de Redis en el archivo de configuración `config/database.php`:
 
     'default' => [
         'host' => env('REDIS_HOST', 'localhost'),
@@ -101,7 +108,7 @@ Para utilizar la extensión PhpRedis, deberás cambiar la opción `client` de tu
         // Resto de la configuración de Redis...
     ],
 
-Además de las opciones predeterminadas de configuración del servidor `host`, `port`, `database`, y `password`, PhpRedis admite los siguientes parametros de conexión adicionales: `persistent`, `prefix`, `read_timeout` y `timeout`. Puedes agregar cualquiera de estas opciones a la configuración del servidor de Redis en el archivo de configuración `config/database.php`:
+Además de las opciones predeterminadas de configuración del servidor `host`, `port`, `database` y `password`, PhpRedis admite los siguientes parametros de conexión adicionales: `persistent`, `prefix`, `read_timeout` y `timeout`. Puedes agregar cualquiera de estas opciones a la configuración del servidor de Redis en el archivo de configuración `config/database.php`:
 
     'default' => [
         'host' => env('REDIS_HOST', 'localhost'),
@@ -139,13 +146,13 @@ Puedes interactuar con Redis llamando varios métodos en el [facade](/docs/{{ver
         }
     }
 
-Desde luego, como lo mencionamos anteriormente, puedes llamar a cualquier comando de Redis en el facade `Redis`. Laravel utiliza métodos mágicos para pasar los comandos al servidor de Redis, para que pases los argumentos que espera el comando de Redis:
+Como lo mencionamos anteriormente, puedes llamar a cualquier comando de Redis en el facade `Redis`. Laravel utiliza métodos mágicos para pasar los comandos al servidor de Redis, para que pases los argumentos que espera el comando de Redis:
 
     Redis::set('name', 'Taylor');
 
     $values = Redis::lrange('names', 5, 10);
 
-Alternativamente, también puedes pasar comandos al servidor usando el método `command`, el cuál acepta el nombre del comando como primer argumento, y un arreglo de valores como segundo argumento:
+Alternativamente, también puedes pasar comandos al servidor usando el método `command`, el cual acepta el nombre del comando como primer argumento, y un arreglo de valores como segundo argumento:
 
     $values = Redis::command('lrange', ['name', 5, 10]);
 
@@ -162,7 +169,7 @@ Esto te dará una instancia del servidor de Redis predeterminado. También puede
 <a name="pipelining-commands"></a>
 ### Canalizar Comandos
 
-La canalización debe ser utilizada cuando envies muchos comandos al servidor en una sola operación. El método `pipeline` acepta un argumento: un `Closure` que reciba una instancia de Redis. Puedes emitir todos tus comandos a esta instancia de Redis y después éstos serán ejecutados dentro de una sola operación:
+La canalización debe ser utilizada cuando envíes muchos comandos al servidor en una sola operación. El método `pipeline` acepta un argumento: un `Closure` que reciba una instancia de Redis. Puedes emitir todos tus comandos a esta instancia de Redis y después éstos serán ejecutados dentro de una sola operación:
 
     Redis::pipeline(function ($pipe) {
         for ($i = 0; $i < 1000; $i++) {
@@ -223,7 +230,7 @@ Ahora podemos publicar mensajes en el canal usando el método `publish`:
 
 #### Suscripciones De Comodines
 
-Usando el método `psubscribe`, puedes suscribirte a un canal comodín, el cuál puede ser útil para capturar todos los mensajes en todos los canales. El nombre del canal `$channel` será pasado como segundo argumento al callback `Closure` proporcionado:
+Usando el método `psubscribe`, puedes suscribirte a un canal comodín, el cual puede ser útil para capturar todos los mensajes en todos los canales. El nombre del canal `$channel` será pasado como segundo argumento al callback `Closure` proporcionado:
 
     Redis::psubscribe(['*'], function ($message, $channel) {
         echo $message;
