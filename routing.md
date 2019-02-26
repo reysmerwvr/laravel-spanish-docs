@@ -1,4 +1,4 @@
-# Routing
+# Enrutamiento
 
 - [Enrutamiento Básico](#basic-routing)
     - [Redireccionar Rutas](#redirect-routes)
@@ -14,13 +14,13 @@
     - [Enrutamiento de subdominios](#route-group-sub-domain-routing)
     - [Los Prefijos de Ruta](#route-group-prefixes)
     - [Los Prefijos por Nombre de Ruta](#route-group-name-prefixes)
-- [Modelo de Enlaces de Rutas](#route-model-binding)
-    - [Enlaces Implícitos](#implicit-binding)
-    - [Enlaces Explícitos](#explicit-binding)
-- [Fallback Routes](#fallback-routes)
-- [Rate Limiting](#rate-limiting)
-- [La Suplantación de Método del Formulario](#form-method-spoofing)
-- [Accesando la Ruta Actual](#accessing-the-current-route)
+- [Enlazamiento De Modelo De Ruta (Route Model Binding)](#route-model-binding)
+    - [Enlazamiento Implícito](#implicit-binding)
+    - [Enlazamiento Explícito](#explicit-binding)
+- [Rutas Fallback](#fallback-routes)
+- [Límite de Rango](#rate-limiting)
+- [La Suplantación del Método del Formulario](#form-method-spoofing)
+- [Accediendo la Ruta Actual](#accessing-the-current-route)
 
 <a name="basic-routing"></a>
 ## Enrutamiento Básico
@@ -35,11 +35,11 @@ Las rutas de Laravel más básicas aceptan una URI y una `Closure`, proporcionan
 
 Todas las rutas de Laravel están definidas en tus archivos de ruta, los cuales están localizados en el directorio `routes`. Estos archivos son cargados automáticamente por el framework. El archivo `routes\web.php` define rutas que son para tu interface web. Estas rutas son asignadas al grupo de middleware `web`, el cual proporciona características como estado de sesión y protección CSRF. Las rutas en `routes\api.php` son independientes de estado y son asignadas al grupo de middleware `api`.
 
-Para las principales aplicaciones, empezarás definiendo rutas en tu archivo `routes/web.php`. Las rutas definidas en `routes/web.php` pueden ser accesadas colocando la URL de la ruta definida en tu navegador. Por ejemplo, puedes accesar la siguiente ruta al navegar a `http://your-app.dev/user` en tu navegador:
+Para las principales aplicaciones, empezarás definiendo rutas en tu archivo `routes/web.php`. Las rutas definidas en `routes/web.php` pueden ser accedidas colocando la URL de la ruta definida en tu navegador. Por ejemplo, puede acceder a la siguiente ruta al navegar a `http://your-app.dev/user` en tu navegador:
 
     Route::get('/user', 'UserController@index');
 
-Las rutas definidas en el archivo `routes/api.php` son agrupadas dentro de un grupo de ruta por el `RouteServiceProvider`.Dentro de este grupo, el pefijo de URI `/api` es aplicado automáticamente de modo que no sea necesario aplicarlo manualmente para todas las rutas en el archivo. Puedes modificar el prefijo y otras opciones de grupos de ruta al modificar tu clase `RouteServiceProvider`.
+Las rutas definidas en el archivo `routes/api.php` son agrupadas dentro de un grupo de ruta por el `RouteServiceProvider`.Dentro de este grupo, el prefijo de URI `/api` es aplicado automáticamente de modo que no es necesario aplicarlo manualmente en todas las rutas en el archivo. Puedes modificar el prefijo y otras opciones de grupos de ruta al modificar tu clase `RouteServiceProvider`.
 
 #### Métodos Disponibles del Enrutador
 
@@ -52,7 +52,7 @@ El enrutador permite que registres rutas que responden a cualquier verbo HTTP:
     Route::delete($uri, $callback);
     Route::options($uri, $callback);
 
-Algunas veces puede que necesites registrar una ruta que responda a verbos HTTP múltiples. Puedes hacer eso usando el método `match`. También, puedes incluso registrar una ruta que responda a todos los verbos HTTP usando el método `any`:
+Algunas veces puede que necesites registrar una ruta que responda a verbos HTTP múltiples. Puedes hacerlo usando el método `match`. También, puedes incluso registrar una ruta que responda a todos los verbos HTTP usando el método `any`:
 
     Route::match(['get', 'post'], '/', function () {
         //
@@ -64,7 +64,7 @@ Algunas veces puede que necesites registrar una ruta que responda a verbos HTTP 
 
 #### Protección CSRF
 
-Cualquiera de los formularios HTML que apunten a rutas `POST`, `PUT`, or `DELETE` que sean definidas en el archivo de rutas `web` deberían incluir un campo de token CSRF. De otra manera, la solicitud será rechazada. Puedes leer más sobre protección CSRF en la [documentación CSRF](/docs/{{version}}/csrf):
+Cualquiera de los formularios HTML que apunten a rutas `POST`, `PUT`, or `DELETE` que sean definidas en el archivo de rutas `web` deberían incluir un campo de token CSRF. De otra manera, la solicitud será rechazada. Puedes leer más sobre protección CSRF en la [documentación de CSRF](/docs/{{version}}/csrf):
 
     <form method="POST" action="/profile">
         {{ csrf_field() }}
@@ -78,11 +78,11 @@ Si estás definiendo una ruta que redirecciona a otra URI, puedes usar el métod
 
     Route::redirect('/here', '/there');
 
-Por defecto, `Route::redirect` retorna un código de estado `302`. Puedes personalizar el código de estado usando el tercer parametro opcional:
+Por defecto, `Route::redirect` retorna un código de estado `302`. Puedes personalizar el código de estado usando el tercer parámetro opcional:
 
     Route::redirect('/here', '/there', 301);
 	
-Puedes usar el método `Route::permananentRedirect` para retornar un código de estado `301`:
+Puedes usar el método `Route::permanentRedirect` para retornar un código de estado `301`:
 
     Route::permanentRedirect('/here', '/there');
 
@@ -101,7 +101,7 @@ Si tu ruta necesita solamente devolver una vista, puedes usar el método `Route:
 <a name="required-parameters"></a>
 ### Parámetros Requeridos
 
-Ciertamente, con frecuencia necesitarás capturar segmentos de la URI dentro de tu ruta. Por ejemplo, puedes necesitar capturar un ID de usuario de la URL. Puedes hacer eso al definir los parámetros de ruta:
+Con frecuencia necesitarás capturar segmentos de la URI dentro de tu ruta. Por ejemplo, puedes necesitar capturar un ID de usuario de la URL. Puedes hacer eso al definir los parámetros de ruta:
 
     Route::get('user/{id}', function ($id) {
         return 'User '.$id;
@@ -113,7 +113,7 @@ Puedes definir tantos parámetros de ruta como requieras para tu ruta:
         //
     });
 
-Los parámetros de ruta siempre son encerrados dentro de `{}`, deberían consistir de caracteres alfabéticos, y no pueden contener un caracter `-`. En lugar de usar el caracter `-`, use el guión bajo (`_`). Los parámetros de ruta son inyectados dentro de las funciones de retorno de ruta / controlador en base a su orden - los nombres de los argumentos de la función de retorno / controlador no importan.
+Los parámetros de ruta siempre son encerrados dentro de `{}`, deberían consistir de caracteres alfabéticos y no pueden contener un caracter `-`. En lugar de usar el caracter `-`, use el guión bajo (`_`). Los parámetros de ruta son inyectados dentro de las funciones de retorno de ruta / controlador en base a su orden - los nombres de los argumentos de la función de retorno / controlador no importan.
 
 <a name="parameters-optional-parameters"></a>
 ### Parámetros Opcionales
@@ -129,9 +129,9 @@ Ocasionalmente puede que necesites especificar un parámetro de ruta, pero que a
     });
 
 <a name="parameters-regular-expression-constraints"></a>
-### Restricciones de Expresion Regular
+### Restricciones Con Expresiones Regulares
 
-Puedes restringir el formato de tus parámetros de ruta usando el método `where` en una instancia de ruta. El método `where` acepta el nombre del parámetro y una expresión regular que defina como el parámetro debería estar conformado:
+Puedes restringir el formato de tus parámetros de ruta usando el método `where` en una instancia de ruta. El método `where` acepta el nombre del parámetro y una expresión regular que defina cómo el parámetro debería estar conformado:
 
     Route::get('user/{name}', function ($name) {
         //
@@ -171,7 +171,7 @@ Una vez que el patrón ha sido definido, es aplicado automáticamente a todas la
 <a name="parameters-encoded-forward-slashes"></a>
 #### Slashes Codificados
 	
-El componente de rutas de Laravel permite todos los caracteres excepto `/`. Debes explicitamente permitir que `/` sea parte de tu placeholder usando una expresión regular de la condición `where`:
+El componente de rutas de Laravel permite todos los caracteres excepto `/`. Debes explícitamente permitir que `/` sea parte de tu placeholder usando una expresión regular de la condición `where`:
 
     Route::get('search/{search}', function ($search) {
         return $search;
@@ -212,7 +212,7 @@ Si la ruta nombrada posee parámetros, puedes pasar los parámetros como el segu
 
 #### Inspeccionando la Ruta Actual
 
-Si requieres determinar si la solicitud actual fue enrutada por una ruta nombrada dada, puedes usar el método `named` en una instancia de Ruta. Por ejemplo, puedes chequear el nombre de ruta actual desde el middleware de una ruta
+Si requieres determinar si la solicitud actual fue enrutada por una ruta nombrada dada, puedes usar el método `named` en una instancia de Ruta. Por ejemplo, puedes verficar el nombre de ruta actual desde el middleware de una ruta.
 
     /**
      * Manejar una solicitud entrante.
@@ -235,7 +235,7 @@ Si requieres determinar si la solicitud actual fue enrutada por una ruta nombrad
 
 Los grupos de ruta permiten que tu compartas atributos de ruta, tales como los middleware o los espacios de nombres, a través de un número grande de rutas sin necesidad de definir esos atributos en cada ruta individual. Los atributos compartidos son especificados en un formato de arreglo como el primer parámetro al método `Route::group`.
 
-Los grupos anidados intentan "fusionar" de forma inteligente los atributos al grupo de sus padres. Los middlewares y condiciones `where` son fusionados mientras que los nombres, nombres de espacio y prefijos son agregados. Las delimitaciones de nombres de espacio y los slashes en los prefijos de URLs son automáticamente agregados cuando es apropiado.
+Los grupos anidados intentan "fusionar" de forma inteligente los atributos al grupo de sus padres. Los middleware y condiciones `where` son mezcladas (merged) mientras que los nombres, nombres de espacio y prefijos son agregados (appended). Las delimitaciones de nombres de espacio y los slashes en los prefijos de URLs son automáticamente agregados cuando es apropiado.
 
 <a name="route-group-middleware"></a>
 ### Los Middleware
@@ -261,7 +261,7 @@ Otro uso común para los grupos de ruta es la asignación del mismo espacio de n
         // Controladores dentro del espacio de nombre "App\Http\Controllers\Admin"
     });
 
-Recuerda, de forma predeterminada, el `RouteServiceProvider`, incluye tus archivos de ruta dentro de un grupo de espacio de nombre, permitiendote que registres rutas de controlador sin especificar el prefijo de espacio de nombre `App\Http\Controllers` completo. Así, puedes necesitar especificar solamente la porción del espacio de nombre que viene después del espacio de nombre App\Http\Controllers` base.
+Recuerda que por defecto, el `RouteServiceProvider` incluye tus archivos de ruta dentro de un grupo de espacio de nombre, permitiéndote que registres rutas de controlador sin especificar el prefijo de espacio de nombre `App\Http\Controllers` completo. Así, puedes necesitar especificar solamente la porción del espacio de nombre que viene después del espacio de nombre `App\Http\Controllers` base.
 
 <a name="route-group-sub-domain-routing"></a>
 ### El Enrutamiento de Sub-Dominio
@@ -275,9 +275,9 @@ Los grupos de ruta también pueden ser usados para manejar enrutamiento de sub-d
     });
 
 <a name="route-group-prefixes"></a>
-### Route Prefixes
+### Prefijos de Rutas
 
-El método `prefix` puede ser usado para poner prefijo a cada ruta en el grupo con una URI dada. Por ejemplo, puedes desear poner un prefijo a todas las URIs de ruta dentro del grupo con `admin`
+El método `prefix` puede ser usado para poner un prefijo a cada ruta en el grupo con una URI dada. Por ejemplo, puedes desear poner un prefijo a todas las URIs de ruta dentro del grupo con `admin`:
 
     Route::prefix('admin')->group(function () {
         Route::get('users', function () {
@@ -288,7 +288,7 @@ El método `prefix` puede ser usado para poner prefijo a cada ruta en el grupo c
 <a name="route-group-name-prefixes"></a>
 ### Los Prefijos de Nombre de Ruta
 
-El método `name` puede ser usado para poner prefijo a cada nombre de ruta en el grupo con una cadena dada. Por ejemplo, puedes desear poner prefijo a todos los nombres de ruta agrupados con `admin`. La cadena dada es prefijada al nombre de ruta exactamente como es especificada, así que nos aseguraremos de proporcionar el caracter de terminación `.` en el prefijo:
+El método `name` puede ser usado para poner prefijo a cada nombre de ruta en el grupo con una cadena dada. Por ejemplo, puedes desear poner prefijo a todos los nombres de ruta agrupados con `admin`. La cadena dada es prefijada al nombre de ruta exactamente cómo es especificada, así que nos aseguraremos de proporcionar el caracter de terminación `.` en el prefijo:
 
     Route::name('admin.')->group(function () {
         Route::get('users', function () {
@@ -297,12 +297,12 @@ El método `name` puede ser usado para poner prefijo a cada nombre de ruta en el
     });
 
 <a name="route-model-binding"></a>
-## El Modelo de Enlazamiento de Ruta
+## Enlazamiento De Modelo De Ruta (Route Model Binding)
 
-Cuando estamos inyectando un ID de modelo a una ruta o acción de controlador, usualmente consultarás para obtener el modelo que corresponde a esa ID. El modelo de enlazamiento de ruta de Laravel proporciona una forma conveniente de inyectar directamente las instancias del modelo en tus rutas. Por ejemplo, en lugar de inyectar un ID de usuario, puedes inyectar la instancia del modelo `User` completa que coincida con el ID dado.
+Cuando estamos inyectando un ID de modelo a una ruta o acción de controlador, usualmente consultarás para obtener el modelo que corresponde a esa ID. El enlazamiento de modelo de ruta de Laravel proporciona una forma conveniente de inyectar directamente las instancias del modelo en tus rutas. Por ejemplo, en lugar de inyectar un ID de usuario, puedes inyectar la instancia del modelo `User` completa que coincida con el ID dado.
 
 <a name="implicit-binding"></a>
-### El Enlazamiento Implícito
+### Enlazamiento Implícito
 
 Laravel resuelve automáticamente los modelos de Eloquent en rutas o acciones de controlador cuyos nombres de variables declaradas coincidan con un nombre de segmento de ruta. Por ejemplo:
 
@@ -314,7 +314,7 @@ Debido a que la variable `$user` está declarada como el modelo de Eloquent `App
 
 #### Personalizando el Nombre de Clave
 
-Si prefieres que el modelo de enlazamiento use una columna de base de datos distinta del `id` cuando estás obteniendo una clase de modelo dada, puedes sobreescribir el método `getRouteKeyName` en el módelo de Eloquent:
+Si prefieres que el enlazamiento del modelo use una columna de base de datos distinta del `id` cuando estás obteniendo una clase de modelo dada, puedes sobreescribir el método `getRouteKeyName` en el módelo de Eloquent:
 
     /**
      * Obtener la clave de la ruta para el modelo.
@@ -327,9 +327,9 @@ Si prefieres que el modelo de enlazamiento use una columna de base de datos dist
     }
 
 <a name="explicit-binding"></a>
-### El Enlazamiento Explícito
+### Enlazamiento Explícito
 
-Para registrar un enlazamiento explícito, usa el método `model` del enrutador para especificar la clase para un parámetro dado. Deberías definir tu modelo de enlazamiento explícito en el método `boot` de la clase `RouteServiceProvider`:
+Para registrar un enlazamiento explícito, usa el método `model` del enrutador para especificar la clase para un parámetro dado. Deberías definir tu enlazamiento del modelo explícito en el método `boot` de la clase `RouteServiceProvider`:
 
     public function boot()
     {
@@ -350,8 +350,13 @@ Si una instancia de modelo que coincida no es encontrada en la base de datos, un
 
 #### Personalizando la Lógica de Resolución
 
-Si deseas usar tu propia lógica de resolución, puedes usar el método `Route::bind`. La `Closure` que pases al método bind recibirá el valor del segmento de URI y debería devolver la instancia de la clase que debería ser inyectada dentro de la ruta:
+Si deseas usar tu propia lógica de resolución, puedes usar el método `Route::bind`. La `Closure` que pases al método `bind` recibirá el valor del segmento de URI y debería devolver la instancia de la clase que debería ser inyectada dentro de la ruta:
 
+    /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
     public function boot()
     {
         parent::boot();
@@ -361,10 +366,23 @@ Si deseas usar tu propia lógica de resolución, puedes usar el método `Route::
         });
     }
 
-<a name="fallback-routes"></a>
-## Fallback Routes
+Como alternativa, puedes sobreescribir el método `resolveRouteBinding` en tu modelo Eloquent. Este método recibirá el valor del segmento URI y debe devolver la instancia de la clase que se debe inyectar en la ruta:
 
-Usando el método `Route::fallback`, puedes definirr una ruta que será ejecutada cuando ninguna otra ruta coincida con la petición entrante. Típicamente, las peticiones sin manejar automáticamente renderizarán una página 404 mediante el handler de excepciones de tu aplicación. Sin embargo, como se puede definir la ruta `fallback` dentro de tu archivo `routes/web.php` file, todo middleware en el grupo `web` aplicará a la ruta. Por supuesto, eres libre de añadir middleware adicional a esta ruta de ser necesario:
+    /**
+     * Retrieve the model for a bound value.
+     *
+     * @param  mixed  $value
+     * @return \Illuminate\Database\Eloquent\Model|null
+     */
+    public function resolveRouteBinding($value)
+    {
+        return $this->where('name', $value)->first() ?? abort(404);
+    }
+
+<a name="fallback-routes"></a>
+## Rutas Fallback
+
+Usando el método `Route::fallback`, puedes definir una ruta que será ejecutada cuando ninguna otra ruta coincida con la petición entrante. Típicamente, las peticiones no gestionadas automáticamente mostrarán una página 404 a través del manejador de excepciones de tu aplicación. Sin embargo, ya que puedes definir la ruta `fallback` dentro de tu archivo `routes/web.php`, todo middleware en el grupo `web` aplicará a la ruta. Eres libre de añadir middleware adicionales a esta ruta de ser necesario:
 
     Route::fallback(function () {
         //
@@ -373,9 +391,9 @@ Usando el método `Route::fallback`, puedes definirr una ruta que será ejecutad
 > {note} La ruta alternativa siempre debe ser la última ruta registrada por tu aplicación.
 
 <a name="rate-limiting"></a>
-## Limite de Rango
+## Límite de Rango
 
-Laravel incluye un [middleware](/docs/{{version}}/middleware) para limitar el rango de acceso a rutas dentro de tu aplicación. Para empezar, asigna el middleware `throttle` a una ruta o grupo de rutas. EL middleware `throttle` acepta dos parámetros que determinan el máximo número de peticiones que pueden hacerse en un número de minutos dado. Por ejemplo, especifiquemos que un usuario autenticado puede acceder al siguiente grupo de rutas sesenta veces por minuto:
+Laravel incluye un [middleware](/docs/{{version}}/middleware) para limitar el rango de acceso a rutas dentro de tu aplicación. Para empezar, asigna el middleware `throttle` a una ruta o grupo de rutas. EL middleware `throttle` acepta dos parámetros que determinan el máximo número de peticiones que pueden hacerse en un número de minutos dado. Por ejemplo, específiquemos que un usuario autenticado puede acceder al siguiente grupo de rutas sesenta veces por minuto:
 
     Route::middleware('auth:api', 'throttle:60,1')->group(function () {
         Route::get('/user', function () {
@@ -385,7 +403,7 @@ Laravel incluye un [middleware](/docs/{{version}}/middleware) para limitar el ra
 
 #### Limite de Rango Dinámico
 
-Puedes especificar un máximo de peticiones dinámicas basado en un atribto del modelo `User` autenticado. POr ejemplo, si tu modelo `User` contiene un atributo `rate_limit`, puedes pasar el nombre del atributo al middleware `throttle` de modo que sea usado para calcular el conteo máximo de peticiones:
+Puedes especificar un máximo de peticiones dinámicas basado en un atribto del modelo `User` autenticado. Por ejemplo, si tu modelo `User` contiene un atributo `rate_limit`, puedes pasar el nombre del atributo al middleware `throttle` de modo que sea usado para calcular el conteo máximo de peticiones:
 
     Route::middleware('auth:api', 'throttle:rate_limit,1')->group(function () {
         Route::get('/user', function () {
@@ -421,4 +439,4 @@ Puedes usar los métodos `current`, `currentRouteName`, y `currentRouteAction` e
 
     $action = Route::currentRouteAction();
 
-Refierete a la documentación de la API sobre [Clase subyacente de la clase facade de Ruta](https://laravel.com/api/{{version}}/Illuminate/Routing/Router.html) e [Instancia de ruta](https://laravel.com/api/{{version}}/Illuminate/Routing/Route.html) para revisar todos los métodos accesibles.
+Consulta la documentación de la API sobre la [clase subyacente de la clase facade `Route`](https://laravel.com/api/{{version}}/Illuminate/Routing/Router.html) y la [instancia de ruta](https://laravel.com/api/{{version}}/Illuminate/Routing/Route.html) para revisar todos los métodos disponibles.
