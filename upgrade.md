@@ -68,7 +68,7 @@ Luego, actualizar cualquier referencia a los viejos directorios en tu archivo `w
 
 Se agregó el nuevo directorio, `svg`, al directorio `public`. Este contiene cuatro archivos svg: `403.svg`, `404.svg`, `500.svg` y `503.svg`, los cuales son mostrados en sus respectivas páginas de error.
 
-Puedes obtener los archivos [de GitHub](https://github.com/laravel/laravel/tree/master/public/svg).
+Puedes obtener los archivos [de GitHub](https://github.com/laravel/laravel/tree/5.7/public/svg).
 
 ### Autenticación
 
@@ -334,7 +334,7 @@ A partir de Laravel 5.7, estos valores se convertirán a las constantes de PHP `
 
 **Probabilidad de impacto: Opcional**
 
-Si eliges utilizar los nuevos [servicios de verificación de correo electrónico de Laravel](/docs/{{version}}/verification), necesitarás agregar scaffolding adicionales a tu aplicación. Primero, agrega el `VerificationController` a tu aplicación: [App\Http\Controllers\Auth\VerificationController](https://github.com/laravel/laravel/blob/master/app/Http/Controllers/Auth/VerificationController.php).
+Si eliges utilizar los nuevos [servicios de verificación de correo electrónico de Laravel](/docs/{{version}}/verification), necesitarás agregar scaffolding adicionales a tu aplicación. Primero, agrega el `VerificationController` a tu aplicación: [App\Http\Controllers\Auth\VerificationController](https://github.com/laravel/laravel/blob/5.7/app/Http/Controllers/Auth/VerificationController.php).
 
 También deberás modificar tu modelo `App\User` para implementar el contrato` MustVerifyEmail`:
 
@@ -373,7 +373,7 @@ Después, tu tabla de usuario debe contener una columna `email_verified_at` para
 
     $table->timestamp('email_verified_at')->nullable();
 
-Para enviar el correo electrónico cuando un usuario es registrado, debes registrar los siguientes eventos y oyentes en tu clase [App\Providers\EventServiceProvider](https://github.com/laravel/laravel/blob/master/app/Providers/EventServiceProvider.php):
+Para enviar el correo electrónico cuando un usuario es registrado, debes registrar los siguientes eventos y oyentes en tu clase [App\Providers\EventServiceProvider](https://github.com/laravel/laravel/blob/5.7/app/Providers/EventServiceProvider.php):
 
     use Illuminate\Auth\Events\Registered;
     use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -506,4 +506,4 @@ Laravel 5.7 introduce herramientas de prueba mejoradas para los comandos de Arti
 
 ### Misceláneo
 
-También te animamos a ver los cambios en el `laravel/laravel` [repositorio de GitHub](https://github.com/laravel/laravel). Si bien muchos de estos cambios no son necesarios, es posible que desees mantener estos archivos sincronizados con tu aplicación. Algunos de estos cambios se tratarán en esta guía de actualización, pero otros, como los cambios en los archivos de configuración o los comentarios, no lo estarán. Puede ver fácilmente los cambios con la [herramienta de comparación GitHub](https://github.com/laravel/laravel/compare/5.6...master) y eligir qué actualizaciones son importantes para ti.
+También te animamos a ver los cambios en el `laravel/laravel` [repositorio de GitHub](https://github.com/laravel/laravel). Si bien muchos de estos cambios no son necesarios, es posible que desees mantener estos archivos sincronizados con tu aplicación. Algunos de estos cambios se tratarán en esta guía de actualización, pero otros, como los cambios en los archivos de configuración o los comentarios, no lo estarán. Puede ver fácilmente los cambios con la [herramienta de comparación GitHub](https://github.com/laravel/laravel/compare/5.6...5.7) y eligir qué actualizaciones son importantes para ti.
