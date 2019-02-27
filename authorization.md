@@ -186,6 +186,20 @@ Una vez que la política exista, ésta necesita ser registrada. La clase `AuthSe
         }
     }
 
+#### Política De Auto-Descubrimiento
+
+En lugar de registrar manualmente politicas de modelos, Laravel puede auto-descubrir politicas siempre y cuando el modelo y la politica sigan la convención de nombre estándar de Laravel. Especificamente, las politicas deben estar en un directorio `Policies` dentro del directorio que contiene los modelos. Así que, por ejemplo, los modelos pueden ser ubicados en el directorio `app` mientras que las politicas pueden tener un sufijo. Así que, un modelo `User` corresponderá a una clase `UserPolicy`.
+
+Si te gustaría proporcionar tu propia lógica para descubrir politicas, puedes registar un callback personalizado usando el método `Gate::guessPolicyNamesUsing`. Típicamente, este método debe ser llamado desde el método `boot` del `AuthServiceProvider` de tu aplicación:
+
+	use Illuminate\Support\Facades\Gate;
+
+	Gate::guessPolicyNamesUsing(function ($modelClass) {
+		// return policy class name...
+	});
+
+> {note} Cualquier politica que está explicitamente mapeada en tu `AuthServiceProvider` tendrá precendencia sobre cualquier posible politica auto-descubierta.
+
 <a name="writing-policies"></a>
 ## Escribiendo Políticas
 
