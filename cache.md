@@ -1,4 +1,4 @@
-# Cache
+# Caché
 
 - [Configuración](#configuration)
     - [Prerrequisitos Del Controlador](#driver-prerequisites)
@@ -124,7 +124,7 @@ Incluso puedes pasar una `Closure` como valor predeterminado. El resultado del `
 
 #### Comprobar La Existencia De Un Elemento
 
-El método `has` se puede utilizar para determinar la existencia de un elemento en caché. Este método devolverá `false` si el valor es `null` o `false`:
+El método `has` se puede utilizar para determinar la existencia de un elemento en caché. Este método devolverá `false` si el valor es `null`:
 
     if (Cache::has('key')) {
         //
@@ -132,7 +132,7 @@ El método `has` se puede utilizar para determinar la existencia de un elemento 
 
 #### Incrementando / Decrementando Valores
 
-Los métodos `increment` y `decrement` se pueden usar para ajustar el valor de los elementos enteros en caché. Ambos métodos aceptan un segundo parámetro opcional que indica la cantidad por la cuál incrementar o disminuir el valor del elemento:
+Los métodos `increment` y `decrement` se pueden usar para ajustar el valor de los elementos enteros en caché. Ambos métodos aceptan un segundo parámetro opcional que indica la cantidad por la cual incrementar o disminuir el valor del elemento:
 
     Cache::increment('key');
     Cache::increment('key', $amount);
@@ -155,7 +155,7 @@ Puedes utilizar el método `rememberForever` para recuperar un elemento del cach
         return DB::table('users')->get();
     });
 
-#### Recuperar y eliminar
+#### Recuperar Y Eliminar
 
 Si necesitas recuperar un elemento del caché y después eliminarlo, puedes utilizar el método `pull`. Al igual que el método `get`, se devolverá `null` si el elemento no existe en la memoria caché:
 
@@ -189,7 +189,7 @@ El método `forever` puede ser utilizado para almacenar un elemento en la memori
 > {tip} Si utilizas el controlador de Memcached, los elementos almacenados "permanentemente" podrán ser eliminados una vez que la caché alcance su tamaño límite.
 
 <a name="removing-items-from-the-cache"></a>
-### Eliminar Elementos De Caché
+### Eliminar Elementos De La Caché
 
 Puedes eliminar elementos de caché utilizando el método `forget`:
 
@@ -202,12 +202,11 @@ Puedes borrar todo el caché utilizando el método `flush`:
 > {note} La limpieza de caché no respeta el prefijo del caché y borrará todas las entradas del caché. Considera esto cuidadosamente cuando borres un caché que sea compartido por otras aplicaciones.
 
 <a name="atomic-locks"></a>
-### Atomic Locks
+### Bloqueos Atómicos
 
-> {note} Para usar esta característica, tu aplicación debe estar haciendo uso de los drivers de cache `memcached` o `redis` como el driver de cache por defecto de tu aplicación. Adicionalmente, todos los servidores deben estar comunicandose con el mismo servidor de cache central.
+> {note} Para usar esta característica, tu aplicación debe estar haciendo uso de los drivers de caché `memcached` o `redis` como el driver de caché por defecto de tu aplicación. Adicionalmente, todos los servidores deben estar comunicandose con el mismo servidor de caché central.
 
-Los cierres atómicos permiten la manipulación de cierres distribuidos sin que tengas que preocuparte sobre las condiciones de la carrera. Por ejemplo, [Laravel Forge](https://forge.laravel.com) usa cierres atómicos para asegurarse de que sólo una tarea remota está siendo ejecutada en un servidor a la vez. Puedes crear y administrar cierres usando el método `Cache::lock`:
-
+Los bloqueos atómicos permiten la manipulación de bloqueos distribuidos sin que tengas que preocuparte sobre las condiciones de la carrera. Por ejemplo, [Laravel Forge](https://forge.laravel.com) usa bloqueos atómicos para asegurarse de que sólo una tarea remota está siendo ejecutada en un servidor a la vez. Puedes crear y administrar bloqueos usando el método `Cache::lock`:
 
     if (Cache::lock('foo', 10)->get()) {
         // Lock acquired for 10 seconds...
@@ -221,10 +220,16 @@ El método `get` también acepta una Closure. Luego de que la Closure sea ejecut
         // Lock acquired indefinitely and automatically released...
     });
 
-Si el cierre no está disponible en el momento en que lo solicitas, puedes instruir a Laravel para que espere un número determinado de segundos. Si el cierre no puede ser adquirido dentro del tiempo limite especificado, una excepción `Illuminate\Contracts\Cache\LockTimeoutException` será mostrada:
+Si el bloqueo no está disponible en el momento en que lo solicitas, puedes instruir a Laravel para que espere un número determinado de segundos. Si el bloqueo no puede ser adquirido dentro del tiempo límite especificado, una excepción `Illuminate\Contracts\Cache\LockTimeoutException` será mostrada:
 
-    if (Cache::lock('foo', 10)->block(5)) {
+    use Illuminate\Contracts\Cache\LockTimeoutException;
+
+    try {
+        Cache::lock('foo', 10)->block(5);
+
         // Lock acquired after waiting maximum of 5 seconds...
+    } catch (LockTimeoutException $e) {
+        // Unable to acquire lock...
     }
 
     Cache::lock('foo', 10)->block(5, function () {
@@ -234,7 +239,7 @@ Si el cierre no está disponible en el momento en que lo solicitas, puedes instr
 <a name="the-cache-helper"></a>
 ### El Helper Cache
 
-Además de usar el facade `Cache` o [cache contract](/docs/{{version}}/contracts), también puedes usar la función global `cache` para recuperar y almacenar información a través del caché. Cuando se llama a la función `cache` con un solo argumento, devolverá el valor de la clave dada:
+Además de usar el facade `Cache` o [el contrato de caché](/docs/{{version}}/contracts), también puedes usar la función global `cache` para recuperar y almacenar información a través del caché. Cuando se llama a la función `cache` con un solo argumento, devolverá el valor de la clave dada:
 
     $value = cache('key');
 
@@ -244,7 +249,7 @@ Si proporcionas un arreglo de pares clave / valor y su tiempo de expiración a l
 
     cache(['key' => 'value'], now()->addSeconds(10));
 
-Cuando la función `cache` es llamada sin ningún argumento, esta retorna una instancia de la implementación `Illuminate\Contracts\Cache\Factory`, permitiendote llamar a otros métodos de cacheo:
+Cuando la función `cache` es llamada sin ningún argumento, ésta retorna una instancia de la implementación `Illuminate\Contracts\Cache\Factory`, permitiéndote llamar a otros métodos de almacenamiento en caché:
 
     cache()->remember('users', $minutes, function () {
         return DB::table('users')->get();
@@ -255,7 +260,7 @@ Cuando la función `cache` es llamada sin ningún argumento, esta retorna una in
 <a name="cache-tags"></a>
 ## Cache Tags
 
-> {note} Las etiquetas de caché no son compatibles cuando usas los controladores de caché `file` o `database`. Además, cuando se utilicen múltiples etiquetas con cachés que son almacenados "permanentemente", el rendimiento será mejor si utilizas un controlador como `memcached`, el cuál automaticamente purga los registros obsoletos.
+> {note} Las etiquetas de caché no son compatibles cuando usas los controladores de caché `file` o `database`. Además, cuando se utilicen múltiples etiquetas con cachés que son almacenados "permanentemente", el rendimiento será mejor si utilizas un controlador como `memcached`, el cual automaticamente purga los registros obsoletos.
 
 <a name="storing-tagged-cache-items"></a>
 ### Almacenar Elementos De Caché Etiquetados
@@ -314,7 +319,7 @@ Para crear el controlador de caché, primero se debe implementar el [contract](/
         public function getPrefix() {}
     }
 
-Solo se necesita implementar cada uno de estos métodos utilizando una conexión de MongoDB. Para tener un ejemplo de cómo implementar cada uno de estos métodos, puedes echar un vistazo a `Illuminate\Cache\MemcachedStore` en el código fuente del framework. Una vez que completes la implementación, puedes finalizar con el registro de tu controlador personalizado.
+Solo necesitas implementar cada uno de estos métodos utilizando una conexión de MongoDB. Para tener un ejemplo de cómo implementar cada uno de estos métodos, puedes echar un vistazo a `Illuminate\Cache\MemcachedStore` en el código fuente del framework. Una vez que completes la implementación, puedes finalizar con el registro de tu controlador personalizado.
 
     Cache::extend('mongo', function ($app) {
         return Cache::repository(new MongoStore);
@@ -325,7 +330,7 @@ Solo se necesita implementar cada uno de estos métodos utilizando una conexión
 <a name="registering-the-driver"></a>
 ### Registrando El Driver
 
-Para registrar el controlador de caché personalizado con Laravel, debes utilizar el método `extend` en el facade `Cache`. La llamada a `Cache::extend` puede hacerse en el método `boot` del `App\Providers\AppServiceProvider` predeterminado que contiene cada aplicación nueva de Laravel, o puedes crear tu propio service provider para alojar la extensión - solo recuerda registrar el proveedor en el arreglo de proveedores en `config/app.php`:
+Para registrar el controlador de caché personalizado con Laravel, debes utilizar el método `extend` en el facade `Cache`. La llamada a `Cache::extend` puede hacerse en el método `boot` del `App\Providers\AppServiceProvider` predeterminado que contiene cada aplicación nueva de Laravel, o puedes crear tu propio proveedor de servicios para alojar la extensión - solo recuerda registrar el proveedor en el arreglo de proveedores en `config/app.php`:
 
     <?php
 
