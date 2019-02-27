@@ -1,11 +1,11 @@
-# Base de datos: Query Builder
+# Base de datos: Constructor de Consultas (Query Builder)
 
 - [Introducción](#introduction)
 - [Obteniendo los Resultados](#retrieving-results)
-    - [Particionando los Resultados](#chunking-results)
+    - [Particionando Los Resultados](#chunking-results)
     - [Agrupamientos](#aggregates)
 - [Selects](#selects)
-- [Expresiones sin procesar](#raw-expressions)
+- [Expresiones Sin Procesar (Raw)](#raw-expressions)
 - [Joins](#joins)
 - [Uniones](#unions)
 - [Cláusulas Where](#where-clauses)
@@ -17,23 +17,23 @@
 - [Inserciones](#inserts)
 - [Actualizaciones](#updates)
     - [Actualizando Columnas JSON](#updating-json-columns)
-    - [Incremento & Decremento](#increment-and-decrement)
+    - [Incremento Y Decremento](#increment-and-decrement)
 - [Eliminaciones](#deletes)
 - [Bloqueo Pesimista](#pessimistic-locking)
 
 <a name="introduction"></a>
-## Introduction
+## Introducción
 
-El constructor de consultas de Base de datos de Laravel, proporciona una interface fluida, conveniente para la creación y ejecución de consultas de bases de datos. Puede ser usada para ejecutar las principales operaciones de bases de datos en tu aplicación y funciona en todos los sistemas de bases de datos soportados.
+El constructor de consultas (query builder) de Base de datos de Laravel, proporciona una interface fluida y conveniente para la creación y ejecución de consultas de bases de datos. Puede ser usado para ejecutar las principales operaciones de bases de datos en tu aplicación y funciona en todos los sistemas de bases de datos soportados.
 
-El query builder de Laravel usa enlazamiento de parámetros PDO para proteger tu aplicación contra ataques de inyección SQL. No hay necesidad de limpiar cadenas que están siendo pasadas como enlaces.
+El constructor de consultas de Laravel usa enlazamiento de parámetros PDO para proteger tu aplicación contra ataques de inyección SQL. No hay necesidad de limpiar cadenas que están siendo pasadas como enlaces.
 
 <a name="retrieving-results"></a>
-## Obteniendo los Resultados
+## Obteniendo Los Resultados
 
-#### Obteniendo Todas las Filas de una Tabla
+#### Obteniendo Todas Las Filas De Una Tabla
 
-Puedes usar el método `table` de la clase facade `DB` para empezar una consulta. El método `table` devuelve una instancia para construir consultas fáciles de entender para la tabla dada, permitiendo que tu encadenes más restricciones dentro de la consulta y recibas finalmente los resultados usando el método `get`:
+Puedes usar el método `table` de la clase facade `DB` para empezar una consulta. El método `table` devuelve una instancia para construir consultas fáciles de entender para la tabla dada, permitiendo que encadenes más restricciones dentro de la consulta y recibas finalmente los resultados usando el método `get`:
 
     <?php
 
@@ -63,7 +63,7 @@ El método `get` devuelve una colección de la clase `Illuminate\Support\Collect
         echo $user->name;
     }
 
-#### Obteniendo una sola fila / Columna de una Tabla
+#### Obteniendo Una Sola Fila / Columna De Una Tabla
 
 Si solamente necesitas recuperar una sola fila de la tabla de la base de datos, puedes usar el método `first`. Este método devolverá un solo objeto `StdClass`:
 
@@ -77,7 +77,7 @@ Si no necesitas una fila completa, puedes extraer un solo valor de un registro u
 
 #### Obteniendo una Lista de Valores de Columna
 
-Si prefieres obtener una Colección que contiene los valores de una sola columna, puedes usar el método `pluck`. En el siguiente ejemplo, obtendrémos una colección de títulos de rol:
+Si prefieres obtener una Colección que contenga los valores de una sola columna, puedes usar el método `pluck`. En el siguiente ejemplo, obtendrémos una colección de títulos de rol:
 
     $titles = DB::table('roles')->pluck('title');
 
@@ -104,7 +104,7 @@ Si nececesitas trabajar con miles de registros de bases de datos, considera usar
         }
     });
 
-Puedes dejar de obtener particiones para que no sean procesadas al devolver `false` en el código `Closure`:
+Puedes parar de obtener particiones para que no sean procesadas al devolver `false` en el código `Closure`:
 
     DB::table('users')->orderBy('id')->chunk(100, function ($users) {
         // Process the records...
@@ -112,7 +112,7 @@ Puedes dejar de obtener particiones para que no sean procesadas al devolver `fal
         return false;
     });
 
-si estás actualizando registros de base de datos mientras particionas resultados, los resultados de particiones podrían cambiar en formas inesperadas. Entonces, cuando se actualicen os registros mientras se particiona, siempre es mejor usar el método `chunkById` en su lugar. Este método paginará automáticamente los resultados basándose en la llave primaria del registro:
+Si estás actualizando registros de base de datos mientras particionas resultados, los resultados de particiones podrían cambiar en formas inesperadas. Entonces, cuando se actualicen los registros mientras se particiona, siempre es mejor usar el método `chunkById` en su lugar. Este método paginará automáticamente los resultados basándose en la llave primaria del registro:
 
     DB::table('users')->where('active', false)
         ->chunkById(100, function ($users) {
@@ -123,7 +123,7 @@ si estás actualizando registros de base de datos mientras particionas resultado
             }
         });
 
-> {note} When updating or deleting records inside the chunk callback, any changes to the primary key or foreign keys could affect the chunk query. This could potentially result in records not being included in the chunked results.
+> {note} Al actualizar o eliminar registros dentro del callback de la partición, cualquier cambio en la clave primaria o claves foráneas podría afectar a la consulta de la partición. Esto podría potencialmente dar lugar a que los registros no se incluyan en los resultados particionados.
 
 <a name="aggregates"></a>
 ### Agrupamientos
@@ -134,13 +134,13 @@ El constructor de consultas también proporciona una variedad de métodos de agr
 
     $price = DB::table('orders')->max('price');
 
-También, puedes combinar estos métodos con otras cláusulas:
+Puedes combinar estos métodos con otras cláusulas:
 
     $price = DB::table('orders')
                     ->where('finalized', 1)
                     ->avg('price');
 
-#### Determinando si existen registros
+#### Determinando Si Existen Registros
 
 EN vez de usar el método `count` para determinar si existen registros que coincidan con los límites de tu consulta, puedes usar los métodos `exists` y `doesntExist`:
 
@@ -153,24 +153,24 @@ EN vez de usar el método `count` para determinar si existen registros que coinc
 
 #### Especificando una Cláusula Select
 
-Ciertamente, no siempre desearás seleccionar todas las columnas de una tabla de la base de datos. Usando el método `select`, puedes especificar una cláusula `select` personalizada para la consulta:
+No siempre desearás seleccionar todas las columnas de una tabla de la base de datos. Usando el método `select`, puedes especificar una cláusula `select` personalizada para la consulta:
 
     $users = DB::table('users')->select('name', 'email as user_email')->get();
 
-El método distinct te permite forzar la consulta para que devuelva solamente resultados que sean distintos:
+El método `distinct` te permite forzar la consulta para que devuelva solamente resultados que sean distintos:
 
     $users = DB::table('users')->distinct()->get();
 
-Si ya tienes una instancia del constructor de consultas y deseas añadir una columna a su cláusula select existente, puedes usar el método `addSelect`:
+Si ya tienes una instancia del constructor de consultas y deseas añadir una columna a su cláusula `select` existente, puedes usar el método `addSelect`:
 
     $query = DB::table('users')->select('name');
 
     $users = $query->addSelect('age')->get();
 
 <a name="raw-expressions"></a>
-## Expresiones Sin Procesar
+## Expresiones Sin Procesar (Raw)
 
-Algunas veces puede que necesites usar una expresión sin procesar en una consulta. Para crear una expresión sin procesar, puedes usar el método `DB::raw`:
+Algunas veces puedes necesitar usar una expresión sin procesar en una consulta. Para crear una expresión sin procesar, puedes usar el método `DB::raw`:
 
     $users = DB::table('users')
                          ->select(DB::raw('count(*) as user_count, status'))
@@ -181,7 +181,7 @@ Algunas veces puede que necesites usar una expresión sin procesar en una consul
 > {note} Las instrucciones sin procesar serán inyectadas dentro de la consulta como cadenas, así que deberías ser extremadamente cuidadoso para no crear vulnerabilidades de inyección SQL.
 
 <a name="raw-methods"></a>
-### Métodos que usan Expresiones Sin Procesar
+### Métodos Raw
 
 En lugar de usar `DB::raw`, también puedes usar los siguientes métodos para insertar una expresión sin procesar dentro de varias partes de tu consulta.
 
@@ -219,7 +219,6 @@ El método `orderByRaw` puede ser usado para establecer una cadena sin procesar 
                     ->orderByRaw('updated_at - created_at DESC')
                     ->get();
 
-
 <a name="joins"></a>
 ## Joins
 
@@ -233,12 +232,16 @@ El constructor de consultas también puede ser usado para escribir instrucciones
                 ->select('users.*', 'contacts.phone', 'orders.price')
                 ->get();
 
-#### Cláusula Left Join
+#### Cláusula Left Join / Right Join
 
-Si prefieres ejecutar un "left join" en vez de un "inner join", usa el método `leftJoin`. El método `LeftJoin` tiene la misma forma de uso de los argumentos que el método `join`:
+Si prefieres ejecutar un "left join" o un "right join" en vez de un "inner join", usa los métodos `leftJoin` o `rightJoin`. Estos métodos tienen la misma forma de uso de los argumentos que el método `join`:
 
     $users = DB::table('users')
                 ->leftJoin('posts', 'users.id', '=', 'posts.user_id')
+                ->get();
+
+    $users = DB::table('users')
+                ->rightJoin('posts', 'users.id', '=', 'posts.user_id')
                 ->get();
 
 #### Cláusula Cross Join
@@ -268,6 +271,20 @@ Si prefieres usar una cláusula estilo "where" en tus joins, puedes usar los mé
             })
             ->get();
 
+#### Subconsultas Joins
+
+Puedes utilizar los métodos `joinSub`, `leftJoinSub` y `rightJoinSub` para unir una consulta a una subconsulta. Cada uno de estos métodos recibe tres argumentos: la subconsulta, su alias de tabla y una Closure que define las columnas relacionadas:
+
+    $latestPosts = DB::table('posts')
+                       ->select('user_id', DB::raw('MAX(created_at) as last_post_created_at'))
+                       ->where('is_published', true)
+                       ->groupBy('user_id');
+
+    $users = DB::table('users')
+            ->joinSub($latestPosts, 'latest_posts', function ($join) {
+                $join->on('users.id', '=', 'latest_posts.user_id');
+            })->get();
+
 <a name="unions"></a>
 ## Uniones
 
@@ -286,7 +303,7 @@ El constructor de consultas también proporciona una forma rápida para "unir" d
 <a name="where-clauses"></a>
 ## Cláusulas Where
 
-#### Simple Where
+#### Cláusula Where Simple
 
 Puedes usar el método `where` en una instancia del constructor de consultas para añadir cláusulas `where` a la consulta. La ejecución más básica de `where` requiere tres argumentos. El primer argumento es el nombre de la columna. El segundo argumento es un operador, el cual puede ser cualquiera de los operadores soportados por la base de datos. Finalmente, el tercer argumento es el valor a evaluar contra la columna.
 
@@ -298,7 +315,7 @@ Por conveniencia, si quieres verificar que una columna sea igual a un valor dado
 
     $users = DB::table('users')->where('votes', 100)->get();
 
-Ciertamente, puedes usar otros operadores cuando estés escribiendo una cláusula `where`:
+Puedes usar otros operadores cuando estés escribiendo una cláusula `where`:
 
     $users = DB::table('users')
                     ->where('votes', '>=', 100)
@@ -328,7 +345,7 @@ Puedes encadenar en conjunto las restricciones where así como añadir cláusula
                         ->orWhere('name', 'John')
                         ->get();
 
-#### Additional Where Clauses
+#### Cláusulas Where Adicionales
 
 **whereBetween**
 
@@ -421,7 +438,6 @@ También puedes pasar un operador de comparación al método:
 
 Al método `whereColumn` también le puede ser pasado un arreglo de condiciones múltiples. Estas condiciones serán juntadas usando el operador `and`:
 
-
     $users = DB::table('users')
                     ->whereColumn([
                         ['first_name', '=', 'last_name'],
@@ -431,7 +447,7 @@ Al método `whereColumn` también le puede ser pasado un arreglo de condiciones 
 <a name="parameter-grouping"></a>
 ### Agrupando Parámetros
 
-Algunas veces puedes necesitar crear cláusulas where más avanzadas como cláusulas "where exists" o grupos de parámetros anidados. El constructor de consultas de Laravel puede manejar estos también. Para empezar, vamos a mirar un ejemplo de grupos de restricciones encerrado por llaves:
+Algunas veces puedes necesitar crear cláusulas where más avanzadas como cláusulas "where exists" o grupos de parámetros anidados. El constructor de consultas de Laravel puede manejar éstos también. Para empezar, vamos a mirar un ejemplo de grupos de restricciones encerrado por llaves:
 
     DB::table('users')
                 ->where('name', '=', 'John')
@@ -448,7 +464,7 @@ Como puedes ver, al pasar una `Closure` dentro del método `orWhere`, instruyes 
 > {tip} Siempre debes agrupar llamadas `orWhere` para evitar comportamiento inesperado cuando se apliquen alcances globales.
 
 <a name="where-exists-clauses"></a>
-### Where Exists Clauses
+### Cláusulas Where Exists
 
 El método `whereExists` permite que escribas cláusulas de SQL `whereExists`. El método `whereExists` acepta un argumento de tipo `Closure`, el cual recibirá una instancia del constructor de consultas permitiendo que definas la consulta que debería ser puesta dentro de la cláusula "exists":
 
@@ -460,7 +476,7 @@ El método `whereExists` permite que escribas cláusulas de SQL `whereExists`. E
                 })
                 ->get();
 
-The query above will produce the following SQL:
+La consulta anterior producirá el siguiente SQL:
 
     select * from users
     where exists (
@@ -468,9 +484,9 @@ The query above will produce the following SQL:
     )
 
 <a name="json-where-clauses"></a>
-### Cláusulas Where de JSON
+### Cláusulas Where JSON
 
-Laravel también soporta consultar tipos de columna JSON en bases de datos que proporcionan soporte para tipos de columna JSON. Actualmente, esto incluye MySQL 5.7, PostgresSQL, SQL Server 2016, y SQLite 3.9.0 (with the [JSON1 extension](https://www.sqlite.org/json1.html)). Para consultar una columna JSON, usa el operador `->`:
+Laravel también soporta consultar tipos de columna JSON en bases de datos que proporcionan soporte para tipos de columna JSON. Actualmente, esto incluye MySQL 5.7, PostgresSQL, SQL Server 2016, y SQLite 3.9.0 (con la [extensión JSON1](https://www.sqlite.org/json1.html)). Para consultar una columna JSON, usa el operador `->`:
 
     $users = DB::table('users')
                     ->where('options->language', 'en')
@@ -545,7 +561,7 @@ Puedes pasar argumentos múltiples al método `groupBy` para agrupar por múltip
                     ->having('account_id', '>', 100)
                     ->get();
 
-Para instrucciones `having` mas avanzadas, echa un vistazo al método [`havingRaw`](#raw-methods).
+Para instrucciones `having` más avanzadas, echa un vistazo al método [`havingRaw`](#raw-methods).
 
 #### skip / take
 
@@ -575,7 +591,7 @@ Algunas podrías querer que las cláusulas apliquen solamente a una consulta cua
 
 El método `when` ejecuta solamente la Closure dada cuando el primer parámetro es `true`. Si el primer parámetro es `false`, la Closure no será ejecutada.
 
-Puedes pasar otra Closure como tercer parámetro del método `when`. Esta Closure se ejecutará si el primer parámetro se evalúa como `false`. Para ilustrar como esta característica puede ser usada, la usaremos para configurar el ordenamiento predeterminado de una consulta:
+Puedes pasar otra Closure como tercer parámetro del método `when`. Esta Closure se ejecutará si el primer parámetro se evalúa como `false`. Para ilustrar cómo esta característica puede ser usada, la usaremos para configurar el ordenamiento predeterminado de una consulta:
 
     $sortBy = null;
 
@@ -616,11 +632,23 @@ Si la tabla tiene un id de auto-incremento, usa el método `insertGetId` para in
 <a name="updates"></a>
 ## Actualizaciones
 
-Ciertamente, además de insertar registros dentro de la base de datos, el constructor de consultas también puede actualizar registros existentes usando el método `update`. El método `update`, como el método `insert`, acepta un arreglo de pares de columna y valor que contienen las columnas a ser actualizadas. Puedes restringir la consulta `update` usando cláusulas `where`:
+Además de insertar registros dentro de la base de datos, el constructor de consultas también puede actualizar registros existentes usando el método `update`. El método `update`, como el método `insert`, acepta un arreglo de pares de columna y valor que contienen las columnas a ser actualizadas. Puedes restringir la consulta `update` usando cláusulas `where`:
 
     DB::table('users')
                 ->where('id', 1)
                 ->update(['votes' => 1]);
+
+#### Actualizar o Insertar
+
+A veces es posible que desees actualizar un registro existente en la base de datos o crearlo si no existe un registro coincidente. En este escenario, se puede usar el método `updateOrInsert`. El método `updateOrInsert` acepta dos argumentos: un arreglo de condiciones para encontrar el registro y un arreglo de columnas y pares de valores que contienen las columnas que se actualizarán.
+
+El método `updateOrInsert` intentará primero buscar un registro de base de datos que coincida con los pares de columna y valor del primer argumento. Si el registro existe, se actualizará con los valores del segundo argumento. Si no se encuentra el registro, se insertará un nuevo registro con los atributos combinados de ambos argumentos:
+
+    DB::table('users')
+        ->updateOrInsert(
+            ['email' => 'john@example.com', 'name' => 'John'],
+            ['votes' => '2']
+        );
 
 <a name="updating-json-columns"></a>
 ## Actualizando Columnas JSON
@@ -632,9 +660,9 @@ Cuando estamos actualizando una columna JSON, deberías usar la sintaxis `->` pa
                 ->update(['options->enabled' => true]);
 
 <a name="increment-and-decrement"></a>
-### Incremento & Decremento
+### Incremento Y Decremento
 
-El constructor de consultas también proporciona métodos convenientes para incrementar o decrementar el valor de una columna dada. Esto es una abreviatura, proporcionando una interfaz mas expresiva y concisa en comparación a escribir manualmente la instrucción `update`.
+El constructor de consultas también proporciona métodos convenientes para incrementar o decrementar el valor de una columna dada. Esto es un atajo, que proporciona una interfaz más expresiva y concisa en comparación con la escritura manual de la declaración `update`.
 
 Ambos métodos aceptan al menos un argumento: la columna a modificar. Un segundo argumento puede ser pasado opcionalmente para controlar la cantidad con la cual la columna debería ser incrementada o decrementada:
 
@@ -646,7 +674,7 @@ Ambos métodos aceptan al menos un argumento: la columna a modificar. Un segundo
 
     DB::table('users')->decrement('votes', 5);
 
-You may also specify additional columns to update during the operation:
+También puedes especificar columnas adicionales para actualizar durante la operación:
 
     DB::table('users')->increment('votes', 1, ['name' => 'John']);
 
@@ -666,10 +694,10 @@ Si deseas truncar la tabla completa, lo cual remueve todas las filas y reinicia 
 <a name="pessimistic-locking"></a>
 ## Bloqueo Pesimista
 
-El constructor de consultas también incluye unas cuantas funciones que ayudan a que hagas el "bloqueo pesimista" en tus instrucciones `select`. Para ejecutar la instrucción con un "bloqueo compartido", puedes usar el método `sharedLock` en una consulta. Un bloqueo compartido previene las filas seleccionadas para que no sean modificadas hasta que tu transacción se confirme:
+El constructor de consultas también incluye algunas funciones que ayudan a que hagas el "bloqueo pesimista" en tus instrucciones `select`. Para ejecutar la instrucción con un "bloqueo compartido", puedes usar el método `sharedLock` en una consulta. Un bloqueo compartido previene las filas seleccionadas para que no sean modificadas hasta que tu transacción se confirme:
 
     DB::table('users')->where('votes', '>', 100)->sharedLock()->get();
 
-Alternativamente, puedes usar el método `lockForUpdate`. Un bloqueo "for update" previene que las filas no sean modificadas o seleccionadas con otro bloqueo compartido:
+Alternativamente, puedes usar el método `lockForUpdate`. Un bloqueo "para actualización" evita que las filas se modifiquen o que se seleccionen con otro bloqueo compartido:
 
     DB::table('users')->where('votes', '>', 100)->lockForUpdate()->get();
