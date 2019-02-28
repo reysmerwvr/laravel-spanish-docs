@@ -11,6 +11,7 @@
     - [Confirmar Ejecución De Tarea](#confirming-task-execution)
 - [Notificaciones](#notifications)
     - [Slack](#slack)
+    - [Discord](#discord)
 
 <a name="introduction"></a>
 ## Introducción
@@ -176,3 +177,12 @@ Puedes proporcionar uno de los siguientes como el argumento del canal:
 - Para enviar notificaciones a un canal: `#canal`
 - Para enviar notificaciones a un usuario: `@usuario`
 </div>
+
+<a name="discord"></a>
+### Discord
+
+Envoy tambien soporta el envio de notificaciones a [Discord](https://discord.com) despues de que cada tarea es ejecutada. La Dirctiva `@discord` acepta una URL de gancho (URL WebHook) y un mensaje de Discord. Tu podrias recuperar tu URL webhook creando una "Webhook" en los ajustes de tu servidor y seleccionando en cual canal deberia publicar la webhook. Tambien se deberia pasar la URL de Webhook completa en la directiva `@discord`:  
+
+    @finished
+        @discord('discord-webhook-url')
+    @endfinished
