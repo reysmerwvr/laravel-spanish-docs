@@ -1,23 +1,24 @@
-# Contribution Guide
+# Guía de contribución
 
-- [Bug Reports](#bug-reports)
-- [Core Development Discussion](#core-development-discussion)
-- [Which Branch?](#which-branch)
-- [Security Vulnerabilities](#security-vulnerabilities)
-- [Coding Style](#coding-style)
+- [Reporte de errores](#bug-reports)
+- [Discusión de desarrollo de código](#core-development-discussion)
+- [¿Cual rama?](#which-branch)
+- [Assets compilados](#compiled-assets)
+- [Vulnerabilidades de seguridad](#security-vulnerabilities)
+- [Estilo de código](#coding-style)
     - [PHPDoc](#phpdoc)
     - [StyleCI](#styleci)
 
 <a name="bug-reports"></a>
-## Bug Reports
+## Reportes de errores
 
-To encourage active collaboration, Laravel strongly encourages pull requests, not just bug reports. "Bug reports" may also be sent in the form of a pull request containing a failing test.
+Para fomentar la colaboración activa, Laravel alenta fuertemente el uso de pull requests, no solo reportes de errores. "Los reportes de errores" pueden además ser enviados en el formulario de un pull request que contenga un test fallido.
 
-However, if you file a bug report, your issue should contain a title and a clear description of the issue. You should also include as much relevant information as possible and a code sample that demonstrates the issue. The goal of a bug report is to make it easy for yourself - and others - to replicate the bug and develop a fix.
+Sin embargo, si tu archivo reportar un error, tu issue debería contener un título y una clara descripción del problema. Deberías además incluir tanta información relevante como sea posible y un ejemplo de código que demuestre el problema. La meta de un reporte de error es hacerlo fácil para ti mismo - y para otros - para replicar el error y desarrollar una solución.
 
-Remember, bug reports are created in the hope that others with the same problem will be able to collaborate with you on solving it. Do not expect that the bug report will automatically see any activity or that others will jump to fix it. Creating a bug report serves to help yourself and others start on the path of fixing the problem.
+Recuerda, los reportes de errores son creados con la esperanza de que otros con el mismo problema sean capáz de colaborar contigo en la solución. No esperes que el reporte del error automáticamente verá cualquier actividad o que los otros saltarán a repararlo. Crear un reporte de error sirve para ayudarte a ti mismo y a otros a iniciar el camino de reparar el problema.
 
-The Laravel source code is managed on GitHub, and there are repositories for each of the Laravel projects:
+El código fuente de Laravel es manejado en GitHub, y allí están los repositorios para cada uno de los proyectos de Laravel:
 
 <div class="content-list" markdown="1">
 - [Laravel Application](https://github.com/laravel/laravel)
@@ -38,37 +39,44 @@ The Laravel source code is managed on GitHub, and there are repositories for eac
 </div>
 
 <a name="core-development-discussion"></a>
-## Core Development Discussion
+## Discusión de desarrollo de código
 
-You may propose new features or improvements of existing Laravel behavior in the Laravel Ideas [issue board](https://github.com/laravel/ideas/issues). If you propose a new feature, please be willing to implement at least some of the code that would be needed to complete the feature.
+Tu puedes proponer nuevas funcionalidades o mejoras del comportamiento existente de Laravel en el [tablero de problemas](https://github.com/laravel/ideas/issues) de ídeas de Laravel. Si tu propones una nueva funcionalidad, por favor estés disponible para implementar al menos alguno de los códigos que podrían ser necesitados para completar la funcionalidad.
 
-Informal discussion regarding bugs, new features, and implementation of existing features takes place in the `#internals` channel of the [Laravel Discord server](https://discordapp.com/invite/mPZNm7A). Taylor Otwell, the maintainer of Laravel, is typically present in the channel on weekdays from 8am-5pm (UTC-06:00 or America/Chicago), and sporadically present in the channel at other times.
+Discusiones informales sobre errores, nuevas funcionalidades e implementación de existentes funcionalidades toman lugar en el canal `#internals` del [Servidor Discord de Laravel](https://discordapp.com/invite/mPZNm7A). Taylor Otwell, el encargado de Laravel, está comunmente presente en el canal los días de semana de 8:00am-5:00pm (UTC-06:00 o América/Chicago) y esporádicamente está presente en el canal a otras horas.
 
 <a name="which-branch"></a>
-## Which Branch?
+## ¿Cual rama?
 
-**All** bug fixes should be sent to the latest stable branch or to the [current LTS branch](/docs/{{version}}/releases#support-policy). Bug fixes should **never** be sent to the `master` branch unless they fix features that exist only in the upcoming release.
+**Todas** las correcciones de errores deben ser enviadas a la última rama estable o a la [actual rama LTS](/docs/{{version}}/releases#support-policy). Las correcciones de errores **nunca** deben ser enviadas a la rama `master` a menos que ellos reparen funcionalidades que existan solo en los próximos lanzamientos.
 
-**Minor** features that are **fully backwards compatible** with the current Laravel release may be sent to the latest stable branch.
+Funcionalidades **menores** que son **totalmente compatible** con la versión actual de Laravel pueden enviarse a la última rama estable.
 
-**Major** new features should always be sent to the `master` branch, which contains the upcoming Laravel release.
+Las nuevas funcionalidades **mayores** deben siempre ser enviadas a la rama `master`, la cual contiene el próximo lanzamiento de Laravel.
 
-If you are unsure if your feature qualifies as a major or minor, please ask Taylor Otwell in the `#internals` channel of the [Laravel Discord server](https://discordapp.com/invite/mPZNm7A).
+Si no estás seguro si tu funcionalidad califica como mayor o menor, por favor pregúntale a Taylor Otwell en el canal `#internals` del [servidor Discord de Laravel](https://discordapp.com/invite/mPZNm7A).
+
+<a name="compiled-assets"></a>
+
+## Assets compilados
+
+Si estás enviando un cambio que afectará un archivo compilado, tal como muchos de los archivos en `resources/sass` o `resources/js` del repositorio `laravel/laravel`, no hagas commit de los archivos compilados. Debido a su gran tamaño, ellos no pueden realistamente ser revisado por el encargado. Esto podría ser usado como una forma de inyectar código malicioso dentro de Laravel. En orden para defensivamente prevenir esto, todos los archivos compilados serán generados y comiteados por los encargados de Laravel.
 
 <a name="security-vulnerabilities"></a>
-## Security Vulnerabilities
 
-If you discover a security vulnerability within Laravel, please send an email to Taylor Otwell at <a href="mailto:taylor@laravel.com">taylor@laravel.com</a>. All security vulnerabilities will be promptly addressed.
+## Vulnerabilidades de seguridad
+
+Si tu descubres una vulnerabilidad de seguridad dentro de Laravel, por favor envía un email a Taylor Otwell a [taylor@laravel.com](<a href="mailto:taylor@laravel.com">). Todas las vulnerabilidades de seguridad serán redirigidad prontamente.
 
 <a name="coding-style"></a>
-## Coding Style
+## Estilo de código
 
-Laravel follows the [PSR-2](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md) coding standard and the [PSR-4](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader.md) autoloading standard.
+Laravel sigue el estandar de código [PSR-2](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md) y el estandar de auto carga [PSR-4](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader.md).
 
 <a name="phpdoc"></a>
 ### PHPDoc
 
-Below is an example of a valid Laravel documentation block. Note that the `@param` attribute is followed by two spaces, the argument type, two more spaces, and finally the variable name:
+Abajo está un ejemplo de un bloque de documentación válido de Laravel. Nota que el atributo `@param` es seguido por dos espacios, el tipo de argumento, dos espacios más y finalmente el nombre de la variable:
 
     /**
      * Register a binding with the container.
@@ -88,4 +96,4 @@ Below is an example of a valid Laravel documentation block. Note that the `@para
 <a name="styleci"></a>
 ### StyleCI
 
-Don't worry if your code styling isn't perfect! [StyleCI](https://styleci.io/) will automatically merge any style fixes into the Laravel repository after pull requests are merged. This allows us to focus on the content of the contribution and not the code style.
+¡No te preocupes si el estilo de tu código no es perfecto! [StyleCI](https://styleci.io/) automáticamente fusionará cualquier arreglo dentro del repositorio de Laravel después de que los pull requests son fusionados. Esto nos permite enfocarnos en el contenido de la contribución y no en el estilo de código.
