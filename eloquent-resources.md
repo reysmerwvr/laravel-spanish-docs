@@ -130,7 +130,7 @@ Después de definir tu colección de recursos, ésta la puedes devolver desde un
 
 #### Preservando La Colección De LLaves
 
-Cuando se retorna un recurso de colección desde una ruta, Laravel reinicia las llaves de la colección para que estas esten en un simple orden numerico. Sin Embargo usted prodia añadir una propiedad `preserveKeys` a su clase de recurso indicando si esta colección de llaves deberia preservarse: 
+Cuando se retorna un recurso de colección desde una ruta, Laravel reinicia las llaves de la colección para que éstas estén en un simple orden numérico. Sin embargo, puedes añadir una propiedad `preserveKeys` a tu clase de recurso indicando si esta colección de llaves debería preservarse:
 
     <?php
 
@@ -148,7 +148,7 @@ Cuando se retorna un recurso de colección desde una ruta, Laravel reinicia las 
         public $preserveKeys = true;
     }
 
-Cuando la propiedad `preserveKeys` es colocada en `true`, la collección de llaves sera preservada:
+Cuando la propiedad `preserveKeys` es colocada en `true`, la colección de llaves será preservada:
 
     use App\User;
     use App\Http\Resources\User as UserResource;

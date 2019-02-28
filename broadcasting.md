@@ -367,7 +367,7 @@ Igual que las rutas HTTP, las rutas de los canales pueden tomar ventaja de [mode
 
 #### Autenticación del callback de autorización
 
-Los canales privados y de presencia autentican al usuario actual a traves de la protección de autenticación por defecto de la aplicacion. Si el usuario no es autenticado, la autorizacion del canal es automaticamente negada y el llamado de retorno de autorización nunca se ejecuta. Sin embargo, puedes asignar múltiples protecciones personalizadas que deben autenticar la solicitud entrante si es necesario:
+Los canales privados y de presencia autentican al usuario actual a través de la protección de autenticación por defecto de la aplicacion. Si el usuario no está autenticado, la autorizacion del canal es automáticamente negada y el callback de autorización nunca se ejecuta. Sin embargo, puedes asignar múltiples protecciones personalizadas que deben autenticar la solicitud entrante si es necesario:
 
     Broadcast::channel('channel', function() {
         // ...

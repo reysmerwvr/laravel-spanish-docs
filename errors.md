@@ -154,7 +154,7 @@ En lugar de hacer verificaciones por tipo de excepciones en los métodos `report
         }
     }
 
-> {tip} Puede teclear cualquier dependencia requerida del método `report` y el [service container](/docs/{{version}}/container) las inyectará automáticamente en el método.
+> {tip} Puedes declarar el tipo de cualquier dependencia requerida en el método `report` y el [contenedor de servicios](/docs/{{version}}/container) las inyectará automáticamente en el método.
 
 <a name="http-exceptions"></a>
 ## Excepciones HTTP

@@ -181,7 +181,7 @@ Puedes proporcionar uno de los siguientes como el argumento del canal:
 <a name="discord"></a>
 ### Discord
 
-Envoy tambien soporta el envio de notificaciones a [Discord](https://discord.com) despues de que cada tarea es ejecutada. La Dirctiva `@discord` acepta una URL de gancho (URL WebHook) y un mensaje de Discord. Tu podrias recuperar tu URL webhook creando una "Webhook" en los ajustes de tu servidor y seleccionando en cual canal deberia publicar la webhook. Tambien se deberia pasar la URL de Webhook completa en la directiva `@discord`:  
+Envoy también soporta el envío de notificaciones a [Discord](https://discord.com) después de que cada tarea es ejecutada. La dirctiva `@discord` acepta una URL WebHook y un mensaje de Discord. Puedes recuperar tu URL webhook creando una "Webhook" en los ajustes de tu servidor y seleccionando en cuál canal publicar la webhook. También deberías pasar la URL de Webhook completa en la directiva `@discord`:  
 
     @finished
         @discord('discord-webhook-url')
