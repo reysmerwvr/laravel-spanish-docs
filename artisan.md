@@ -427,6 +427,11 @@ En ocasiones, es posible que desees ejecutar un comando de Artisan fuera de la i
         //
     });
 
+
+Alternativamente, puedes pasar todo el comando de Artisan para el metodo `call` como una cadena: 
+
+    Artisan::call('email:send 1 --queue=default');
+
 Usando el método `queue` en el facade `Artisan`, puedes incluso poner en cola comandos Artisan para ser procesados en segundo plano por tus [queue workers](/docs/{{version}}/queues). Antes de usar este método, asegurate que tengas configurado tu cola y se esté ejecutando un oyente de cola (queue listener):
 
     Route::get('/foo', function () {
