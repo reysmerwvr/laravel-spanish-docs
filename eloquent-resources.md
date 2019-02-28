@@ -3,6 +3,7 @@
 - [Introducción](#introduction)
 - [Generación de Recursos](#generating-resources)
 - [Descripción General del Concepto](#concept-overview)
+    - [Colecciones de Recursos](#resource-collections)
 - [Escritura de Recursos](#writing-resources)
     - [Envoltura de datos](#data-wrapping)
     - [Paginación](#pagination)
@@ -75,6 +76,7 @@ Cada clase de recurso define un método `toArray` que devuelve el arreglo de atr
         return new UserResource(User::find(1));
     });
 
+<a name="resource-collections"></a>
 ### Colecciones de Recurso
 
 Si estás devolviendo una colección de recursos o una respuesta paginada, puedes usar el método `collection` al crear la instancia de recursos en tu ruta o controlador:
@@ -124,6 +126,35 @@ Después de definir tu colección de recursos, ésta la puedes devolver desde un
 
     Route::get('/users', function () {
         return new UserCollection(User::all());
+    });
+
+#### Preservando La Colección De LLaves
+
+Cuando se retorna un recurso de colección desde una ruta, Laravel reinicia las llaves de la colección para que estas esten en un simple orden numerico. Sin Embargo usted prodia añadir una propiedad `preserveKeys` a su clase de recurso indicando si esta colección de llaves deberia preservarse: 
+
+    <?php
+
+    namespace App\Http\Resources;
+
+    use Illuminate\Http\Resources\Json\JsonResource;
+
+    class User extends JsonResource
+    {
+        /**
+         * Indicates if the resource's collection keys should be preserved.
+         *
+         * @var bool
+         */
+        public $preserveKeys = true;
+    }
+
+Cuando la propiedad `preserveKeys` es colocada en `true`, la collección de llaves sera preservada:
+
+    use App\User;
+    use App\Http\Resources\User as UserResource;
+
+    Route::get('/user', function () {
+        return UserResource::collection(User::all()->keyBy->id);
     });
 
 #### Personalización de la Clase de Recurso Subyacente
