@@ -50,6 +50,22 @@ Por ejemplo, si necesitas reportar distintos tipos de excepciones en diferentes 
 
 > {tip} En lugar de hacer uso de muchos `instanceof` en tu método `report`, considera usar [excepciones reportables](/docs/{{version}}/errors#renderable-exceptions)
 
+#### Contexto De Log Global
+
+De estar disponible, Laravel automáticamente agrega el ID y correo electrónico del usuario actual al mensaje de log de cada excepción como datos contextuales. Puedes definir tus propios datos contextuales sobrescribiendo el método `context` de la clase `App\Exceptions\Handler` de tu aplicación. Esta información será incluida en cada mensaje de log de excepción escrito por tu aplicación:
+    
+    /**
+     * Get the default context variables for logging.
+     *
+     * @return array
+     */
+    protected function context()
+    {
+        return array_merge(parent::context(), [
+            'foo' => 'bar',
+        ]);
+    }
+
 #### Helper `report`
 
 Algunas veces puede que necesites reportar una execpción pero continuar manejando la solicitud actual. La función helper `report` permite que reportes rápidamente una excepción usando el método `report` de tu manejador de excepción sin renderizar una página de error:
@@ -137,6 +153,8 @@ En lugar de hacer verificaciones por tipo de excepciones en los métodos `report
             return response(...);
         }
     }
+
+> {tip} Puede teclear cualquier dependencia requerida del método `report` y el [service container](/docs/{{version}}/container) las inyectará automáticamente en el método.
 
 <a name="http-exceptions"></a>
 ## Excepciones HTTP
