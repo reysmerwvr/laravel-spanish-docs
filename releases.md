@@ -127,6 +127,10 @@ Sin embargo, esto puede volverse engorroso y repetitivo si estás especificando 
         return 'America/Chicago';
     }
 
+### Tabla intermedia / Eventos con Modelo Pivote
+
+En versiones anteriores de Laravel, los eventos del modelo Eloquent no se distribuían al adjuntar, separar o sincronizar modelos de tabla intermedia / pivote personalizados de una relación de muchos a muchos. Cuando usas [modelos personalizados para tablas intermedias](/docs/{{version}}/eloquent-relationships#defining-custom-intermediate-table-models) en Laravel 5.8, estos eventos ahora serán enviados.
+
 ### Mejoras al metodo Call de Artisan
 
 Laravel te permite invocar comandos de Artisan a través del método `Artisan::call`. En versiones anteriores de Laravel, las opciones del comando se pasan a través de un arreglo como el segundo parámetro del método.
