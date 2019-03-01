@@ -69,6 +69,10 @@ Con el fin de hacer que los objetos de "mocking" (burla) sean más convenientes,
         $mock->shouldReceive('process')->once();
     });
 
+### Mapeo de Archivos Blade
+
+Al compilar plantillas Blade, Laravel ahora agrega un comentario en la parte superior del archivo compilado que contiene la ruta a la plantilla Blade original.
+
 ### Soporte para Carbon 2.0
 
 Laravel 5.8 proporciona soporte para la versión `~ 2.0` de la biblioteca de manipulación de fechas Carbon.
