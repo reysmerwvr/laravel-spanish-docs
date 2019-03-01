@@ -119,7 +119,11 @@ Con el fin de hacer que los objetos de "mocking" (burla) sean más convenientes,
     $this->mock(Service::class, function ($mock) {
         $mock->shouldReceive('process')->once();
     });
-    
+
+### Mejoras al comando Artisan Serve
+
+En versiones anteriores de Laravel, el comando `serve` de Artisan levantaría su aplicación en el puerto `8000`. Si otro proceso del comando `serve` ya estaba escuchando en este puerto, un intento de levantar una segunda aplicación a través de `serve` fallaría. A partir de Laravel 5.8, `serve` ahora buscará los puertos disponibles hasta el puerto `8009`, lo que le permite levantar múltiples aplicaciones a la vez.
+
 ### Mapeo de Archivos Blade
 
 Al compilar plantillas Blade, Laravel ahora agrega un comentario en la parte superior del archivo compilado que contiene la ruta a la plantilla Blade original.
