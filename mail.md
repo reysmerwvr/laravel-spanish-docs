@@ -383,7 +383,7 @@ La incrustación de imágenes en línea en sus correos electrónicos suele ser e
         <img src="{{ $message->embed($pathToImage) }}">
     </body>
 
-> {note} La variable `$message` no está disponible en los mensajes de tipo markdown.
+> {note} La variable `$message` no está disponible en los mensajes ya que los mensajes de texto plano (plain-text) no utilizan archivos adjuntos en línea.
 
 #### Incrustar Datos Adjuntos de la Memoria
 
@@ -494,7 +494,7 @@ Puedes exportar todos los componentes de correo Markdown a su propia aplicación
 
     php artisan vendor:publish --tag=laravel-mail
 
-Este comando publicará los componentes de correo Markdown en el directorio `resources/views/vendor/mail`. El directorio `mail` contendrá un directorio` html` y `markdown`, cada uno con sus respectivas representaciones de cada componente disponible. Los componentes en el directorio `html` son usados para generar la versión HTML de tu correo electrónico y sus contrapartes en el directorio `markdown` son usados para generar la versión de texto plano. Eres libre de personalizar estos componentes como desees.
+Este comando publicará los componentes de correo Markdown en el directorio `resources/views/vendor/mail`. El directorio `mail` contendrá un directorio` html` y `text`, cada uno con sus respectivas representaciones de cada componente disponible. Eres libre de personalizar estos componentes como desees.
 
 #### Personalizar el CSS
 
