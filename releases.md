@@ -77,6 +77,10 @@ Laravel 5.8 introduce mejoras en la lógica de validación de correos electróni
 
 Al compilar plantillas Blade, Laravel ahora agrega un comentario en la parte superior del archivo compilado que contiene la ruta a la plantilla Blade original.
 
+### DynamoDB Cache / Drivers de Sesión
+
+Laravel 5.8 introduce [DynamoDB](https://aws.amazon.com/dynamodb/) drivers de cache y sesión. DynamoDB es una base de datos NoSQL sin servidor proporcionada por Amazon Web Services. La configuración predeterminada para el controlador de caché `dynamodb` se puede encontrar en el [archivo de configuración para cache](https://github.com/laravel/laravel/blob/master/config/cache.php) de Laravel 5.8.
+
 ### Soporte para Carbon 2.0
 
 Laravel 5.8 proporciona soporte para la versión `~ 2.0` de la biblioteca de manipulación de fechas Carbon.
