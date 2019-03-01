@@ -47,6 +47,21 @@ Eloquent ahora proporciona soporte para el tipo de relación `hasOneThrough`. Po
         return $this->hasOneThrough(AccountHistory::class, Account::class);
     }
 
+### Cumplimiento de la caché PSR-16
+
+Para permitir un tiempo de caducidad más granular al almacenar elementos y cumplir con el estándar de almacenamiento en caché PSR-16, el tiempo de vida del elemento de caché ha cambiado de minutos a segundos. Los métodos `put`, `putMany`, `add`, `remember` y `setDefaultCacheTime` de la clase `Illuminate\Cache\Repository` y sus clases extendidas, así como el método `put` de cada almacén de caché se actualizaron con este comportamiento modificado. Visite el [PR relacionado](https://github.com/laravel/framework/pull/27276) para más información.
+
+Si le está pasando un número entero a cualquiera de estos métodos, debe actualizar su código para asegurarse de que ahora está pasando la cantidad de segundos que desea que el elemento permanezca en el caché. Alternativamente, puede pasar una instancia de `DateTime` que indique cuándo debe expirar el elemento:
+
+    // Laravel 5.7 - Store item for 30 minutes...
+    Cache::put('foo', 'bar', 30);
+
+    // Laravel 5.8 - Store item for 30 seconds...
+    Cache::put('foo', 'bar', 30);
+
+    // Laravel 5.7 / 5.8 - Store item for 30 seconds...
+    Cache::put('foo', 'bar', now()->addSeconds(30));
+
 ### Multiples Guards de Autentificación para Broadcast
 
 En versiones anteriores de Laravel, los canales de transmisión privados y de presencia autenticaron al usuario a través de la protección de autenticación predeterminada de su aplicación. A partir de Laravel 5.8, ahora puede asignar múltiples "guards" (guardias) que deben autenticar la solicitud entrante:
@@ -54,20 +69,6 @@ En versiones anteriores de Laravel, los canales de transmisión privados y de pr
     Broadcast::channel('channel', function() {
         // ...
     }, ['guards' => ['web', 'admin']])
-
-### Métodos de pruebas Mock y Spy
-
-Con el fin de hacer que los objetos de "mocking" (burla) sean más convenientes, se han agregado los nuevos métodos `mock` y` spy` a la clase de prueba base de Laravel. Estos métodos vinculan automáticamente la clase simulada en el contenedor. Por ejemplo: 
-
-    // Laravel 5.7
-    $this->instance(Service::class, Mockery::mock(Service::class, function ($mock) {
-        $mock->shouldReceive('process')->once();
-    }));
-
-    // Laravel 5.8
-    $this->mock(Service::class, function ($mock) {
-        $mock->shouldReceive('process')->once();
-    });
 
 ### Mejoras a la Validación de Correos Electronicos
 
@@ -104,6 +105,20 @@ Laravel te permite invocar comandos de Artisan a través del método `Artisan::c
 Sin embargo, Laravel 5.8 le permite pasar el comando completo, incluidas las opciones, en el primer parámetro del método con una cadena:
 
     Artisan::call('migrate:install --database=foo');
+
+### Métodos de pruebas Mock y Spy
+
+Con el fin de hacer que los objetos de "mocking" (burla) sean más convenientes, se han agregado los nuevos métodos `mock` y` spy` a la clase de prueba base de Laravel. Estos métodos vinculan automáticamente la clase simulada en el contenedor. Por ejemplo: 
+
+    // Laravel 5.7
+    $this->instance(Service::class, Mockery::mock(Service::class, function ($mock) {
+        $mock->shouldReceive('process')->once();
+    }));
+
+    // Laravel 5.8
+    $this->mock(Service::class, function ($mock) {
+        $mock->shouldReceive('process')->once();
+    });
     
 ### Mapeo de Archivos Blade
 
