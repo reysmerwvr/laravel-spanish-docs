@@ -55,4 +55,4 @@ Una vez que la prueba ha sido generada, puedes definir métodos de pruebas como 
         }
     }
 
-> {note} Si defines tu propio método `setUp` dentro de una clase de prueba, asegurate de ejecutar `parent::setUp()`.
+> {note} Si defines tus propios métodos `setUp` / `tearDown` dentro de una clase de prueba, asegurate de ejecutar los respectivos `parent::setUp()` / `parent::tearDown()` metodos en la clase padre.
