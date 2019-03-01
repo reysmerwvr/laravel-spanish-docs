@@ -162,16 +162,14 @@ Cuando la propiedad `preserveKeys` se establece en `true`, las llaves de colecci
 
 En versiones anteriores de Laravel, la combinación de múltiples ámbitos del modelo Eloquent a través de un operador de consulta `or` requería el uso de Closure callbacks:
 
-    // scopeFoo, scopeBar, scopeBaz methods defined on User model...
-    User::foo()->orWhere(function (Builder $query) {
-        $query->bar();
-    })->orWhere(function (Builder $query) {
-        $query->baz();
-    });
+    // scopePopular and scopeActive methods defined on the User model...
+    $users = App\User::popular()->orWhere(function (Builder $query) {
+        $query->active();
+    })->get();
 
 Laravel 5.8 introduce un método de "orden superior" `orWhere` que te permite encadenar estos ámbitos con fluidez sin el uso de Clousures:
 
-    User::foo()->orWhere->bar()->orWhere->baz();
+    $users = App\User::popular()->orWhere->active()->get();
 
 ### Mejoras al comando Artisan Serve
 
