@@ -93,6 +93,18 @@ Sin embargo, esto puede volverse engorroso y repetitivo si está especificando l
         return 'America/Chicago';
     }
 
+### Mejoras al metodo Call de Artisan
+
+Laravel te permite invocar comandos de Artisan a través del método `Artisan::call`. En versiones anteriores de Laravel, las opciones del comando se pasan a través de un arreglo como el segundo parámetro del método.
+
+    use Illuminate\Support\Facades\Artisan;
+
+    Artisan::call('migrate:install', ['database' => 'foo']);
+
+Sin embargo, Laravel 5.8 le permite pasar el comando completo, incluidas las opciones, en el primer parámetro del método con una cadena:
+
+    Artisan::call('migrate:install --database=foo');
+    
 ### Mapeo de Archivos Blade
 
 Al compilar plantillas Blade, Laravel ahora agrega un comentario en la parte superior del archivo compilado que contiene la ruta a la plantilla Blade original.
