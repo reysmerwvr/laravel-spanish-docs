@@ -47,6 +47,14 @@ Eloquent ahora proporciona soporte para el tipo de relación `hasOneThrough`. Po
         return $this->hasOneThrough(AccountHistory::class, Account::class);
     }
 
+### Multiples Guards de Autentificación para Broadcast
+
+En versiones anteriores de Laravel, los canales de transmisión privados y de presencia autenticaron al usuario a través de la protección de autenticación predeterminada de su aplicación. A partir de Laravel 5.8, ahora puede asignar múltiples "guards" (guardias) que deben autenticar la solicitud entrante:
+
+    Broadcast::channel('channel', function() {
+        // ...
+    }, ['guards' => ['web', 'admin']])
+
 ### Métodos de pruebas Mock y Spy
 
 Con el fin de hacer que los objetos de "mocking" (burla) sean más convenientes, se han agregado los nuevos métodos `mock` y` spy` a la clase de prueba base de Laravel. Estos métodos vinculan automáticamente la clase simulada en el contenedor. Por ejemplo: 
