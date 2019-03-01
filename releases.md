@@ -73,6 +73,26 @@ Con el fin de hacer que los objetos de "mocking" (burla) sean más convenientes,
 
 Laravel 5.8 introduce mejoras en la lógica de validación de correos electrónicos subyacente del validador al adoptar el paquete `egulias/email-validator` utilizado por SwiftMailer. La lógica de validación de correos electrónicos anterior de Laravel a veces se considera que los correos electrónicos válidos, como `example@bär.se`, no son válidos.
 
+### Zona horaria predetermina para las tareas programadas
+
+Laravel te permite personalizar la zona horaria de una tarea programada usando el método `timezone`:
+
+    $schedule->command('inspire')
+             ->hourly()
+             ->timezone('America/Chicago');
+
+Sin embargo, esto puede volverse engorroso y repetitivo si está especificando la misma zona horaria para todas sus tareas programadas. Por esa razón, ahora puede definir un método `scheduleTimezone` en su archivo `app/Console/Kernel.php`. Este método debe devolver la zona horaria predeterminada que debe asignarse a todas las tareas programadas:
+
+    /**
+     * Get the timezone that should be used by default for scheduled events.
+     *
+     * @return \DateTimeZone|string|null
+     */
+    protected function scheduleTimezone()
+    {
+        return 'America/Chicago';
+    }
+
 ### Mapeo de Archivos Blade
 
 Al compilar plantillas Blade, Laravel ahora agrega un comentario en la parte superior del archivo compilado que contiene la ruta a la plantilla Blade original.
