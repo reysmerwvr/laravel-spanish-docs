@@ -69,6 +69,10 @@ Con el fin de hacer que los objetos de "mocking" (burla) sean más convenientes,
         $mock->shouldReceive('process')->once();
     });
 
+### Mejoras a la Validación de Correos Electronicos
+
+Laravel 5.8 introduce mejoras en la lógica de validación de correos electrónicos subyacente del validador al adoptar el paquete `egulias/email-validator` utilizado por SwiftMailer. La lógica de validación de correos electrónicos anterior de Laravel a veces se considera que los correos electrónicos válidos, como `example@bär.se`, no son válidos.
+
 ### Mapeo de Archivos Blade
 
 Al compilar plantillas Blade, Laravel ahora agrega un comentario en la parte superior del archivo compilado que contiene la ruta a la plantilla Blade original.
