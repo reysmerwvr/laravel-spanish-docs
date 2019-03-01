@@ -47,6 +47,33 @@ Eloquent ahora proporciona soporte para el tipo de relación `hasOneThrough`. Po
         return $this->hasOneThrough(AccountHistory::class, Account::class);
     }
 
+### Autodescubrimiento de Politicas de Autorización
+
+Cuando se utiliza Laravel 5.7, cada [política de autorización](/docs/{{version}}/authorization#creating-policies) debía ser asociada explícitamente y registrada en el `AuthServiceProvider` de tu aplicación:
+
+    /**
+     * The policy mappings for the application.
+     *
+     * @var array
+     */
+    protected $policies = [
+        'App\User' => 'App\Policies\UserPolicy',
+    ];
+
+Laravel 5.8 introduce el autodescubrimiento de políticas siempre que el modelo y la política sigan las convenciones estándar de nomenclatura de Laravel. Específicamente, las políticas deben estar en un directorio `Policies` debajo del directorio que contiene los modelos. Así, por ejemplo, los modelos pueden colocarse en el directorio `app` mientras que las políticas pueden ubicarse en el directorio `app/Policies`. Además, el nombre de la política debe coincidir con el nombre del modelo y tener un sufijo `Policy`. Entonces, un modelo `User` correspondería a una clase` UserPolicy`.
+
+If you would like to provide your own policy discovery logic, you may register a custom callback using the `Gate::guessPolicyNamesUsing` method. Typically, this method should be called from your application's `AuthServiceProvider`:
+
+Si deseas proporcionar tu propia lógica para el descubrimiento de políticas, puedes registrar un callback personalizado utilizando el método `Gate::guessPolicyNamesUsing`. Normalmente, este método debe llamarse desde el `AuthServiceProvider` de tu aplicación:
+
+    use Illuminate\Support\Facades\Gate;
+
+    Gate::guessPolicyNamesUsing(function ($modelClass) {
+        // return policy class name...
+    });
+
+> {note} Cualquier política que se asigne explícitamente en su `AuthServiceProvider` tendrá prioridad sobre cualquier posible política de autodescubrimiento.
+
 ### Cumplimiento de la caché PSR-16
 
 Para permitir un tiempo de caducidad más granular al almacenar elementos y cumplir con el estándar de almacenamiento en caché PSR-16, el tiempo de vida del elemento de caché ha cambiado de minutos a segundos. Los métodos `put`, `putMany`, `add`, `remember` y `setDefaultCacheTime` de la clase `Illuminate\Cache\Repository` y sus clases extendidas, así como el método `put` de cada almacén de caché se actualizaron con este comportamiento modificado. Visita el [PR relacionado](https://github.com/laravel/framework/pull/27276) para más información.
