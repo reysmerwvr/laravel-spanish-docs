@@ -1,4 +1,4 @@
-# API Authentication
+# Autenticación de API
 
 - [Introducción](#introduction)
 - [Configuración](#configuration)
@@ -6,7 +6,7 @@
 - [Generando Tokens](#generating-tokens)
     - [Hashing Tokens](#hashing-tokens)
 - [Protegiendo Rutas](#protecting-routes)
-- [Pasando Tokens En Peticioens](#passing-tokens-in-requests)
+- [Pasando Tokens En Peticiones](#passing-tokens-in-requests)
 
 <a name="introduction"></a>
 ## Introducción
@@ -105,7 +105,7 @@ Por ejemplo, un método de controlador que inicializa / refresca el token para u
 <a name="protecting-routes"></a>
 ## Protegiendo Rutas
 
-Laravel incluye un [guard de autenticación](/docs/{{version}}/authentication#adding-custom-guards) que validará automáticamente tokens de API en peticiones entrantes. Sólo necesitas especificar el middleware `auth:api` en cualquier ruta que requiera un token valido de acceso:
+Laravel incluye un [guard de autenticación](/docs/{{version}}/authentication#adding-custom-guards) que validará automáticamente tokens de API en peticiones entrantes. Sólo necesitas especificar el middleware `auth:api` en cualquier ruta que requiera un token de acceso válido:
 
     use Illuminate\Http\Request;
 
@@ -116,7 +116,7 @@ Laravel incluye un [guard de autenticación](/docs/{{version}}/authentication#ad
 <a name="passing-tokens-in-requests"></a>
 ## Pasando Tokens En Peticiones
 
-Hay muchas formas de pasar el token de la API a tu aplicación. Discutiremos cada una de esas formas mientras usamos la librería HTTP Guzzle para demostrar su uso. Puedes elegir cualquiera de estas formas dependiendo de las necesidades de tu aplicación.
+Hay muchas formas de pasar el token de la API a tu aplicación. Discutiremos cada una de esas formas mientras usamos el paquete HTTP Guzzle para demostrar su uso. Puedes elegir cualquiera de estas formas dependiendo de las necesidades de tu aplicación.
 
 #### Query String
 
