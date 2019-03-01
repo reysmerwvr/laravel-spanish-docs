@@ -348,7 +348,7 @@ Si estás usando PHP FastCGI, la Autentincación Básica HTTP podría no funcion
 <a name="stateless-http-basic-authentication"></a>
 ### Autenticación HTTP Básica Sin Estado
 
-También puedes utilizar la Autenticación HTTP Básica sin establecer una cookie de identificación en la sesión, esto es particularmente útil para la autenticacíon API. Para hacer esto [define un middleware](/docs/{{version}}/middleware) que llame al método `onceBasic`. Si el método no devuelve ninguna respuesta, la petición puede pasarse a la aplicación:
+También puedes utilizar la Autenticación HTTP Básica sin establecer una cookie de identificación en la sesión, esto es particularmente útil para la autenticacíon API. Para hacer esto [define un middleware](/docs/{{version}}/middleware) que llame al método `onceBasic`. Si el método no lanza ninguna excepción, la petición puede pasarse a la aplicación:
 
     <?php
 
