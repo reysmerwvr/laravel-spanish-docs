@@ -1030,6 +1030,10 @@ Para instruir al validador para que ignore el ID del usuario, usaremos la clase 
         ],
     ]);
 
+En lugar de pasar el valor de la clave del modelo al método `ignore`, puedes pasar la instancia completa del modelo. Laravel automáticamente extraerá la clave del modelo:
+
+    Rule::unique('users')->ignore($user)
+
 Si tu tabla usa un nombre de columna de clave primaria en vez de `id`, puedes especificar el nombre de la columna al momento de llamar al método `ignore`:
 
     Rule::unique('users')->ignore($user->id, 'user_id')
