@@ -47,6 +47,7 @@ Asegurate de colocar el directorio `vendor/bin` en tu `$PATH` para que el ejecut
 <div class="content-list" markdown="1">
 - macOS: `$HOME/.composer/vendor/bin`
 - GNU / Distribuciones Linux: `$HOME/.config/composer/vendor/bin`
+- Windows: `%USERPROFILE%\AppData\Roaming\Composer\vendor\bin`
 </div>
 
 Una vez instalado, el comando `laravel new` creará una nueva instalación de Laravel en el directorio que especifiques. Por ejemplo, `laravel new blog` creará un directorio `blog` que contendrá una nueva instalación de Laravel con todas las dependiencias de Laravel ya instaladas:
