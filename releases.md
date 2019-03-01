@@ -37,7 +37,7 @@ Laravel 5.8 continúa las mejoras realizadas en Laravel 5.7 con la introducción
 
 ### Relaciones `HasOneThrough` de Eloquent
 
-Eloquent ahora proporciona soporte para el tipo de relación `hasOneThrough`. Por ejemplo, imagine un modelo Supplier `hasOne` de un modelo Account, y un modelo Account tiene un modelo AccountHistory. Puede usar una relación `hasOneThrough` para acceder al historial de cuenta de un proveedor a través del modelo Account:
+Eloquent ahora proporciona soporte para el tipo de relación `hasOneThrough`. Por ejemplo, imagine un modelo Supplier `hasOne` de un modelo Account, y un modelo Account tiene un modelo AccountHistory. Puedes usar una relación `hasOneThrough` para acceder al historial de cuenta de un proveedor a través del modelo Account:
 
     /**
      * Get the account history for the supplier.
@@ -49,9 +49,9 @@ Eloquent ahora proporciona soporte para el tipo de relación `hasOneThrough`. Po
 
 ### Cumplimiento de la caché PSR-16
 
-Para permitir un tiempo de caducidad más granular al almacenar elementos y cumplir con el estándar de almacenamiento en caché PSR-16, el tiempo de vida del elemento de caché ha cambiado de minutos a segundos. Los métodos `put`, `putMany`, `add`, `remember` y `setDefaultCacheTime` de la clase `Illuminate\Cache\Repository` y sus clases extendidas, así como el método `put` de cada almacén de caché se actualizaron con este comportamiento modificado. Visite el [PR relacionado](https://github.com/laravel/framework/pull/27276) para más información.
+Para permitir un tiempo de caducidad más granular al almacenar elementos y cumplir con el estándar de almacenamiento en caché PSR-16, el tiempo de vida del elemento de caché ha cambiado de minutos a segundos. Los métodos `put`, `putMany`, `add`, `remember` y `setDefaultCacheTime` de la clase `Illuminate\Cache\Repository` y sus clases extendidas, así como el método `put` de cada almacén de caché se actualizaron con este comportamiento modificado. Visita el [PR relacionado](https://github.com/laravel/framework/pull/27276) para más información.
 
-Si le está pasando un número entero a cualquiera de estos métodos, debe actualizar su código para asegurarse de que ahora está pasando la cantidad de segundos que desea que el elemento permanezca en el caché. Alternativamente, puede pasar una instancia de `DateTime` que indique cuándo debe expirar el elemento:
+Si estás pasando un número entero a cualquiera de estos métodos, debes actualizar tu código para asegurarte de que ahora está pasando la cantidad de segundos que desea que el elemento permanezca en el caché. Alternativamente, puede pasar una instancia de `DateTime` que indique cuándo debe expirar el elemento:
 
     // Laravel 5.7 - Store item for 30 minutes...
     Cache::put('foo', 'bar', 30);
@@ -64,7 +64,7 @@ Si le está pasando un número entero a cualquiera de estos métodos, debe actua
 
 ### Multiples Guards de Autentificación para Broadcast
 
-En versiones anteriores de Laravel, los canales de transmisión privados y de presencia autenticaron al usuario a través de la protección de autenticación predeterminada de su aplicación. A partir de Laravel 5.8, ahora puede asignar múltiples "guards" (guardias) que deben autenticar la solicitud entrante:
+En versiones anteriores de Laravel, los canales de transmisión privados y de presencia autenticaron al usuario a través de la protección de autenticación predeterminada de su aplicación. A partir de Laravel 5.8, ahora puedes asignar múltiples "guards" (guardias) que deben autenticar la solicitud entrante:
 
     Broadcast::channel('channel', function() {
         // ...
@@ -82,7 +82,7 @@ Laravel te permite personalizar la zona horaria de una tarea programada usando e
              ->hourly()
              ->timezone('America/Chicago');
 
-Sin embargo, esto puede volverse engorroso y repetitivo si está especificando la misma zona horaria para todas sus tareas programadas. Por esa razón, ahora puede definir un método `scheduleTimezone` en su archivo `app/Console/Kernel.php`. Este método debe devolver la zona horaria predeterminada que debe asignarse a todas las tareas programadas:
+Sin embargo, esto puede volverse engorroso y repetitivo si estás especificando la misma zona horaria para todas sus tareas programadas. Por esa razón, ahora puede definir un método `scheduleTimezone` en su archivo `app/Console/Kernel.php`. Este método debe devolver la zona horaria predeterminada que debe asignarse a todas las tareas programadas:
 
     /**
      * Get the timezone that should be used by default for scheduled events.
@@ -108,7 +108,7 @@ Sin embargo, Laravel 5.8 le permite pasar el comando completo, incluidas las opc
 
 ### Métodos de pruebas Mock y Spy
 
-Con el fin de hacer que los objetos de "mocking" (burla) sean más convenientes, se han agregado los nuevos métodos `mock` y` spy` a la clase de prueba base de Laravel. Estos métodos vinculan automáticamente la clase simulada en el contenedor. Por ejemplo: 
+Con el fin de hacer que los objetos de mocking sean más convenientes, se han agregado los nuevos métodos `mock` y` spy` a la clase de prueba base de Laravel. Estos métodos vinculan automáticamente la clase simulada en el contenedor. Por ejemplo: 
 
     // Laravel 5.7
     $this->instance(Service::class, Mockery::mock(Service::class, function ($mock) {
@@ -131,7 +131,7 @@ Al devolver una [colección de recursos Eloquent](/docs/{{version}}/eloquent-res
         return UserResource::collection(User::all());
     });
 
-Cuando use Laravel 5.8, puede agregar una propiedad `preserveKeys` a su clase de recurso que indica si se deben conservar las llaves de recopilación. De forma predeterminada, y para mantener la coherencia con las versiones anteriores de Laravel, las llaves se restablecerán de forma predeterminada:
+Al usar Laravel 5.8, puedes agregar una propiedad `preserveKeys` a tu clase de recurso que indica si se deben conservar las llaves de recopilación. De forma predeterminada, y para mantener la coherencia con las versiones anteriores de Laravel, las llaves se restablecerán de forma predeterminada:
 
     <?php
 
@@ -158,9 +158,24 @@ Cuando la propiedad `preserveKeys` se establece en `true`, las llaves de colecci
         return UserResource::collection(User::all()->keyBy->id);
     });
 
+### Método de orden superior `orWhere` para Eloquent
+
+En versiones anteriores de Laravel, la combinación de múltiples ámbitos del modelo Eloquent a través de un operador de consulta `or` requería el uso de Closure callbacks:
+
+    // scopeFoo, scopeBar, scopeBaz methods defined on User model...
+    User::foo()->orWhere(function (Builder $query) {
+        $query->bar();
+    })->orWhere(function (Builder $query) {
+        $query->baz();
+    });
+
+Laravel 5.8 introduce un método de "orden superior" `orWhere` que te permite encadenar estos ámbitos con fluidez sin el uso de Clousures:
+
+    User::foo()->orWhere->bar()->orWhere->baz();
+
 ### Mejoras al comando Artisan Serve
 
-En versiones anteriores de Laravel, el comando `serve` de Artisan levantaría su aplicación en el puerto `8000`. Si otro proceso del comando `serve` ya estaba escuchando en este puerto, un intento de levantar una segunda aplicación a través de `serve` fallaría. A partir de Laravel 5.8, `serve` ahora buscará los puertos disponibles hasta el puerto `8009`, lo que le permite levantar múltiples aplicaciones a la vez.
+En versiones anteriores de Laravel, el comando `serve` de Artisan levantaría tu aplicación en el puerto `8000`. Si otro proceso del comando `serve` ya estaba escuchando en este puerto, un intento de levantar una segunda aplicación a través de `serve` fallaría. A partir de Laravel 5.8, `serve` ahora buscará los puertos disponibles hasta el puerto `8009`, lo que te permite levantar múltiples aplicaciones a la vez.
 
 ### Mapeo de Archivos Blade
 
