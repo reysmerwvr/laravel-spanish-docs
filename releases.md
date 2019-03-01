@@ -120,6 +120,44 @@ Con el fin de hacer que los objetos de "mocking" (burla) sean más convenientes,
         $mock->shouldReceive('process')->once();
     });
 
+### Preservación de Llaves para Recursos Eloquent
+
+Al devolver una [colección de recursos Eloquent](/docs/{{version}}/eloquent-resources) desde una ruta, Laravel restablece las llaves de la colección para que estén en orden numérico simple:
+
+    use App\User;
+    use App\Http\Resources\User as UserResource;
+
+    Route::get('/user', function () {
+        return UserResource::collection(User::all());
+    });
+
+Cuando use Laravel 5.8, puede agregar una propiedad `preserveKeys` a su clase de recurso que indica si se deben conservar las llaves de recopilación. De forma predeterminada, y para mantener la coherencia con las versiones anteriores de Laravel, las llaves se restablecerán de forma predeterminada:
+
+    <?php
+
+    namespace App\Http\Resources;
+
+    use Illuminate\Http\Resources\Json\JsonResource;
+
+    class User extends JsonResource
+    {
+        /**
+         * Indicates if the resource's collection keys should be preserved.
+         *
+         * @var bool
+         */
+        public $preserveKeys = true;
+    }
+
+Cuando la propiedad `preserveKeys` se establece en `true`, las llaves de colección se conservarán:
+
+    use App\User;
+    use App\Http\Resources\User as UserResource;
+
+    Route::get('/user', function () {
+        return UserResource::collection(User::all()->keyBy->id);
+    });
+
 ### Mejoras al comando Artisan Serve
 
 En versiones anteriores de Laravel, el comando `serve` de Artisan levantaría su aplicación en el puerto `8000`. Si otro proceso del comando `serve` ya estaba escuchando en este puerto, un intento de levantar una segunda aplicación a través de `serve` fallaría. A partir de Laravel 5.8, `serve` ahora buscará los puertos disponibles hasta el puerto `8009`, lo que le permite levantar múltiples aplicaciones a la vez.
