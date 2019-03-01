@@ -3,33 +3,33 @@
 - [Introducción](#introduction)
 - [Instalación](#installation)
     - [Configuración](#configuration)
-    - [Remover Datos de Entradas de Telescope](#data-pruning)
-    - [Personalizar la Migración](#migration-customization)
-- [Autorización para el Panel de Control](#dashboard-authorization)
+    - [Remover Datos De Entradas De Telescope](#data-pruning)
+    - [Personalizar La Migración](#migration-customization)
+- [Autorización Para El Panel De Control](#dashboard-authorization)
 - [Filtros](#filtering)
     - [Entradas](#filtering-entries)
     - [Lotes](#filtering-batches)
 - [Observadores Disponibles](#available-watchers)
-    - [Observador de Caché](#cache-watcher)
-    - [Observador de Comandos](#command-watcher)
-    - [Observador de Variables](#dump-watcher)
-    - [Observador de Eventos](#event-watcher)
-    - [Observador de Excepciones](#exception-watcher)
-    - [Observador de Compuertas](#gate-watcher)
-    - [Observador de Trabajos](#job-watcher)
-    - [Observador de Registros de Log](#log-watcher)
-    - [Observador de Correos](#mail-watcher)
-    - [Observador de Modelos de Eloquent](#model-watcher)
-    - [Observador de Notificaciones](#notification-watcher)
-    - [Observador de Consultas de Bases de Datos](#query-watcher)
-    - [Observador de Redis](#redis-watcher)
-    - [Observador de Solicitudes](#request-watcher)
-    - [Observador de Tareas Programadas](#schedule-watcher)
+    - [Observador De Caché](#cache-watcher)
+    - [Observador De Comandos](#command-watcher)
+    - [Observador De Variables](#dump-watcher)
+    - [Observador De Eventos](#event-watcher)
+    - [Observador De Excepciones](#exception-watcher)
+    - [Observador De Gates](#gate-watcher)
+    - [Observador De Trabajos](#job-watcher)
+    - [Observador De Registros (Log)](#log-watcher)
+    - [Observador De Correos](#mail-watcher)
+    - [Observador De Modelos](#model-watcher)
+    - [Observador De Notificaciones](#notification-watcher)
+    - [Observador De Consultas De Bases De Datos](#query-watcher)
+    - [Observador De Redis](#redis-watcher)
+    - [Observador De Solicitudes (Request)](#request-watcher)
+    - [Observador De Tareas Programadas](#schedule-watcher)
 
 <a name="introduction"></a>
 ## Introducción
 
-Telescope de Laravel es un elegante asistente para depurar código para el framework de Laravel. Telescope proporciona información detallada de las solicitudes entrantes de tu aplicación, excepciones, entradas de log, consultas de bases de datos, trabajos en cola, correos, notificaciones, operaciones de cache, tareas programadas, valores de variables y mucho más. Telescope acompaña maravillosamente tu entorno de desarrollo de Laravel.
+Telescope de Laravel es un elegante asistente para depurar código para el framework de Laravel. Telescope proporciona información detallada de las solicitudes entrantes de tu aplicación, excepciones, entradas de log, consultas de bases de datos, trabajos en cola, correos, notificaciones, operaciones de caché, tareas programadas, valores de variables y mucho más. Telescope acompaña maravillosamente tu entorno de desarrollo de Laravel.
 
 <p align="center">
 <img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1539110860/Screen_Shot_2018-10-09_at_1.47.23_PM.png" width="600" height="347">
@@ -56,7 +56,7 @@ Si haces una actualización de Telescope, deberías volver a publicar los recurs
 
     php artisan telescope:publish
 
-### Instalando Únicamente en Entornos Específicos
+### Instalando Únicamente En Entornos Específicos
 
 Si planeas usar Telescope solamente para apoyar tu desarrollo local, puedes instalar Telescope usando la bandera `--dev`:
 
@@ -79,7 +79,7 @@ Después de ejecutar `telescope:install`, deberías remover el registro de prove
     }
 
 <a name="migration-customization"></a>
-### Personalización de la Migración
+### Personalización De La Migración
 
 Si no vas a usar las migraciones predeterminadas de Telescope, deberías ejecutar el método `Telescope::ignoreMigrations` en el método `register` de tu `AppServiceProvider`. Puedes exportar las migraciones predeterminadas usando el comando `php artisan vendor:publish --tag=telescope-migrations`.
 
@@ -93,20 +93,20 @@ Si lo deseas, puedes deshabilitar completamente la colección de datos de Telesc
     'enabled' => env('TELESCOPE_ENABLED', true),
 
 <a name="data-pruning"></a>
-### Remover Datos de Entradas de Telescope
+### Remover Datos De Entradas De Telescope
 
 Sin la remoción, la tabla `telescope_entries` puede acumular registros muy rápidamente. Para mitigar esto, deberías programar el comando `telescope:prune` para que se ejecute diariamente:
 
     $schedule->command('telescope:prune')->daily();
 
-De forma predeterminada, aquellas entradas con más de 24 horas serán removidas. Puedes usar la opción `hours` al momento de ejecutar el comando para indicar cuanto tiempo retiene los datos Telescope. Por ejemplo, el siguiente comando eliminará todos los registros con más de 48 horas desde que fueron creados.
+De forma predeterminada, aquellas entradas con más de 24 horas serán removidas. Puedes usar la opción `hours` al momento de ejecutar el comando para indicar cuánto tiempo retiene los datos Telescope. Por ejemplo, el siguiente comando eliminará todos los registros con más de 48 horas desde que fueron creados.
 
     $schedule->command('telescope:prune --hours=48')->daily();
 
 <a name="dashboard-authorization"></a>
-## Autorización para el Panel de Control
+## Autorización Para El Panel De Control
 
-Telescope viene con un panel de control en `/telescope`. De forma predeterminada, solamente serás capaz de acceder este panel de control en el entorno `local`. Dentro de tu archivo `app/Providers/TelescopeServiceProvider.php`, hay un método `gate`. Esta compuerta de autorización controla el acceso a Telescope en los entornos **que no son locales**. Siéntete libre de modificar esta compuerta de acuerdo a tus necesidades para restringir el acceso a tu instalación de Telescope:
+Telescope viene con un panel de control en `/telescope`. De forma predeterminada, solamente serás capaz de acceder este panel de control en el entorno `local`. Dentro de tu archivo `app/Providers/TelescopeServiceProvider.php`, hay un método `gate`. Esta gate de autorización controla el acceso a Telescope en los entornos **que no son locales**. Eres libre de modificar este gate de acuerdo a tus necesidades para restringir el acceso a tu instalación de Telescope:
 
     /**
      * Register the Telescope gate.
@@ -205,14 +205,14 @@ Algunos observadores también permiten que agregues opciones de personalización
     ],
 
 <a name="cache-watcher"></a>
-### Observador de Caché
+### Observador De Caché
 
 El observador de caché (Cache Watcher) guarda datos cuando una clave está presente, falta, es actualizada u olvidada en caché.
 
 <a name="command-watcher"></a>
-### Observador de Comandos
+### Observador De Comandos
 
-El observador de comandos (command watcher) guarda los argumentos, opciones, códigos de salida, información enviada a la pantalla en cualquier parte que un comando Artisan sea ejecutado. Si deseas excluir ciertos comandos para que no sean grabados por el observador, puedes especificar el comando junto con la opción `ignore` en tu archivo `config/telescope.php`:
+El observador de comandos (command watcher) guarda los argumentos, opciones, códigos de salida, información enviada a la pantalla cada vez que se ejecuta un comando Artisan. Si deseas excluir ciertos comandos para que no sean grabados por el observador, puedes especificar el comando junto con la opción `ignore` en tu archivo `config/telescope.php`:
 
     'watchers' => [
         Watchers\CommandWatcher::class => [
@@ -223,24 +223,24 @@ El observador de comandos (command watcher) guarda los argumentos, opciones, có
     ],
 
 <a name="dump-watcher"></a>
-### Observador de Variables
+### Observador De Variables
 
 El observador de variables (dump watcher) guarda y muestra los valores de tus variables en Telescope. Al momento de usar Laravel, los valores de las variables pueden ser mostrados usando la función global `dump`. La pestaña del observador de variables debe estar abierta en un navegador para que los valores sean guardados, de lo contrario serán ignorados por el observador.
 
 <a name="event-watcher"></a>
-### Observador de Eventos
+### Observador De Eventos
 
-El observador de eventos (event watcher) guarda la porción de los datos, oyentes (listeners), y los datos de difusión (broadcast) para cualquier evento que sea despachado por tu aplicación. Los eventos internos del framework de Laravel son ignorados por el observador de eventos.
+El observador de eventos (event watcher) guarda la carga, oyentes (listeners) y los datos de difusión (broadcast) para cualquier evento que sea despachado por tu aplicación. Los eventos internos del framework de Laravel son ignorados por el observador de eventos.
 
 <a name="exception-watcher"></a>
-### Observador de Excepciones
+### Observador De Excepciones
 
-El observador de excepciones (exception watcher) guarda los datos y los valores del stack durante la ejecución del programa para cualquiera de las excepciones que sean lanzadas por tu aplicación que se puedan reportar.
+El observador de excepciones (exception watcher) guarda los datos y el seguimiento de la pila para cualquier excepción reportable que sea lanzada por tu aplicación.
 
 <a name="gate-watcher"></a>
-### Observador de Compuertas
+### Observador De Gates
 
-El observador de compuertas (gate watcher) guarda los datos y el resultado de verificaciones de política y de compuerta hechos por tu aplicación. Si deseas excluir ciertas capacidades para que no sean guardadas por el observador, puedes especificar aquellas en la opción `ignore_abilities` en tu archivo `config/telescope.php`:
+El observador de gate (gate watcher) guarda los datos y el resultado de verificaciones de gates y políticas hechas por tu aplicación. Si deseas excluir ciertas habilidades para que no sean guardadas por el observador, puedes especificar aquellas en la opción `ignore_abilities` en tu archivo `config/telescope.php`:
 
     'watchers' => [
         Watchers\GateWatcher::class => [
@@ -251,24 +251,24 @@ El observador de compuertas (gate watcher) guarda los datos y el resultado de ve
     ],
 
 <a name="job-watcher"></a>
-### Observador de Trabajos
+### Observador De Trabajos
 
-El observador de trabajos (job watcher) guarda los datos y estado de algunos trabajos despachados por tu aplicación.
+El observador de trabajos (job watcher) guarda los datos y estado de los trabajos despachado por tu aplicación.
 
 <a name="log-watcher"></a>
-### Observador de Registros de Log
+### Observador De Registros
 
-El observador de registros de log (log watcher) guarda datos de log para algunos logs escritos por tu aplicación.
+El observador de registros (log watcher) guarda datos de los registros escritos por tu aplicación.
 
 <a name="mail-watcher"></a>
-### Observador de Correos
+### Observador De Correos
 
 El observador de correos (mail watcher) permite que veas una pre-visualización en el navegador de los correos junto con sus datos adjuntados. También puedes descargar los correos como un archivo `.eml`.
 
 <a name="model-watcher"></a>
-### Observador de Modelos de Eloquent
+### Observador De Modelos
 
-El observador de modelos de Eloquent (model watcher) guarda cambios que hacen los modelos en cualquier parte que un evento `created`, `updated`, `restored`, o `deleted` de Eloquent sea despachado. Puedes especificar cuáles eventos de modelos deberían ser guardados por medio de la opción `events` del observador:
+El observador de modelos (model watcher) guarda los cambios del modelo cada vez que se despacha un evento `created`, `updated`, `restored`, o `deleted` de Eloquent. Puedes especificar cuáles eventos de modelos deberían ser guardados por medio de la opción `events` del observador:
 
     'watchers' => [
         Watchers\ModelWatcher::class => [
@@ -279,12 +279,12 @@ El observador de modelos de Eloquent (model watcher) guarda cambios que hacen lo
     ],
 
 <a name="notification-watcher"></a>
-### Observador de Notificaciones
+### Observador De Notificaciones
 
 El observador de notificaciones (notification watcher) guarda todas las notificaciones enviadas por tu aplicación. Si la notificación dispara un correo y tienes el observador de correos habilitado, el correo también estará disponible para pre-visualizar en la pantalla del observador de correos.
 
 <a name="query-watcher"></a>
-### Observador de Consultas de Bases de Datos
+### Observador De Consultas De Bases De Datos
 
 El observador de consultas de bases de datos (query watcher) guarda los comandos SQL, enlaces, y tiempo de ejecución para todas las consultas de bases de datos que sean ejecutadas por tu aplicación. El observador también coloca una etiqueta `slow` a las consultas más lentas, aquellas que tardan más de 100 micro segundos. Puedes personalizar el umbral para las consultas lentas usando la opción `slow` del observador:
 
@@ -297,16 +297,16 @@ El observador de consultas de bases de datos (query watcher) guarda los comandos
     ],
 
 <a name="redis-watcher"></a>
-### Observador de Redis
+### Observador De Redis
 
 > {note} Los eventos de Redis deben ser habilitados por el observador de Redis (Redis watcher) para que funcione de forma correcta. Puedes habilitar los eventos de Redis ejecutando `Redis::enableEvents()` en el método `boot` de tu archivo `app/Providers/AppServiceProvider.php`.
 
-El observador de Redis guarda todos los comandos de Redis ejecutados por tu aplicación. Si estás usando Redis para cachear, también los comandos de cache serán guardados por el observador de Redis.
+El observador de Redis (redis watcher) guarda todos los comandos de Redis ejecutados por tu aplicación. Si estás usando Redis para el almacenamiento de caché, también los comandos de caché serán guardados por el observador de Redis.
 
 <a name="request-watcher"></a>
 ### Observador de Solicitudes
 
-El observador de solicitudes (request watcher) guarda la solicitud, encabezados, sesión y los datos de respuesta asociados con algunas solicitudes manejadas por la aplicación. Puedes limitar tus datos de respuesta por medio de la opción `size_limit` (en KB):
+El observador de solicitudes (request watcher) guarda la solicitud, encabezados, la sesión y los datos de respuesta asociados con las solicitudes manejadas por la aplicación. Puedes limitar tus datos de respuesta por medio de la opción `size_limit` (en KB):
 
     'watchers' => [
         Watchers\RequestWatcher::class => [
@@ -317,6 +317,6 @@ El observador de solicitudes (request watcher) guarda la solicitud, encabezados,
     ],
 
 <a name="schedule-watcher"></a>
-### Observador de Tareas Programadas
+### Observador De Tareas Programadas
 
-El observador de tareas programadas (schedule watcher) guarda el comando y la información enviada a la pantalla de cualquiera de las tareas programadas que ejecuta tu aplicación.
+El observador de tareas programadas (schedule watcher) guarda el comando y la información enviada a la pantalla de las tareas programadas que ejecuta tu aplicación.
