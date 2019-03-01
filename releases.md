@@ -2,7 +2,7 @@
 
 - [Esquema de Versiones](#versioning-scheme)
 - [Política de Soporte](#support-policy)
-- [Laravel 5.7](#laravel-5.7)
+- [Laravel 5.8](#laravel-5.8)
 
 <a name="versioning-scheme"></a>
 ## Esquema de Versiones
@@ -16,7 +16,7 @@ Los lanzamientos de cambios de paradigma están separados por muchos años y rep
 <a name="support-policy"></a>
 ## Política de Soporte
 
-Para las versiones LTS, como Laravel 5.5, se proporcionan correcciones de errores durante 2 años y correcciones de seguridad por 3 años. Estas versiones proporcionan la ventana más larga de soporte y mantenimiento. Para las versiones generales, las correcciones de errores se proporcionan durante 6 meses y las correcciones de seguridad durante 1 año.  Para todas las librerías adicionales, incluyendo Lumen, solo la última versión recibe correcciones de errores.
+Para las versiones LTS, como Laravel 5.5, se proporcionan correcciones de errores durante 2 años y correcciones de seguridad por 3 años. Estas versiones proporcionan la ventana más larga de soporte y mantenimiento. Para las versiones generales, las correcciones de errores se proporcionan durante 6 meses y las correcciones de seguridad durante 1 año.
 
 | Versión | Lanzamiento | Corrección de errores hasta | Correcciones de seguridad hasta |
 | --- | --- | --- | --- |
@@ -28,122 +28,202 @@ Para las versiones LTS, como Laravel 5.5, se proporcionan correcciones de errore
 | 5.5 (LTS) | 30 de agosto, 2017 | 30 de agosto, 2019 | 30 de agosto, 2020 |
 | 5.6 | 7 de febrero, 2018 | 7 de agosto, 2018 | 7 de febrero, 2019 |
 | 5.7 | 4 de septiembre, 2018 | 4 de marzo, 2019 | 4 de septiembre, 2019 |
+| 5.8 | 26 de febrero, 2019 | 26 de agosto, 2019 | 26 de febrero, 2020 |
 
-<a name="laravel-5.7"></a>
-## Laravel 5.7
+<a name="laravel-5.8"></a>
+## Laravel 5.8
 
-Laravel 5.7 continúa las mejoras hechas en Laravel 5.6 al introducir [Laravel Nova](https://nova.laravel.com), verificación de correo electrónico opcional para el scaffolding de autenticación, soporte de Gates y políticas de autorización para usuarios invitados, mejoras en pruebas de consola, integración de `dump-server` de Symfony, configuración regional de notificaciones y una variedad de otras correcciones de errores y mejoras de usabilidad.
+Laravel 5.8 continúa las mejoras realizadas en Laravel 5.7 con la introducción de relaciones "has-one-through" (uno a través) en Eloquent,, mejoras a la validación de correos electronicos, registro automático de políticas de autorización basado en convenciones, memoria caché y los controladores de sesión de DynamoDB, mejoras a la configuración de la zona horaria para las tareas programadas, soporte para asignar transmisiones de autenticación a múltiples canales, conformidad con el controlador de caché PSR-16, mejoras al comando `artisan serve`, soporte para PHPUnit 8.0, soporte para Carbon 2.0, soporte para Pheanstalk 4.0 y una variedad de otras correcciones de errores y mejoras de usabilidad.
 
-### Laravel Nova
+### Relaciones `HasOneThrough` de Eloquent
 
-[Laravel Nova](https://nova.laravel.com) es un hermoso panel de administración y el mejor en su clase para aplicaciones de Laravel. La característica principal de Nova es la capacidad de administrar sus registros de base de datos subyacentes utilizando Eloquent. Además, Nova ofrece soporte para filtros, lentes, acciones, acciones en cola, métricas, autorización, herramientas personalizadas, tarjetas personalizadas, campos personalizados y más.
+Eloquent ahora proporciona soporte para el tipo de relación `hasOneThrough`. Por ejemplo, imagine un modelo Supplier `hasOne` de un modelo Account, y un modelo Account tiene un modelo AccountHistory. Puedes usar una relación `hasOneThrough` para acceder al historial de cuenta de un proveedor a través del modelo Account:
 
-Para obtener más información sobre Laravel Nova, visite el [sitio web de Nova](https://nova.laravel.com).
+    /**
+     * Get the account history for the supplier.
+     */
+    public function accountHistory()
+    {
+        return $this->hasOneThrough(AccountHistory::class, Account::class);
+    }
 
-### Verificación de Correo Electrónico
+### Autodescubrimiento de Politicas de Autorización
 
-Laravel 5.7 introduce verificación de correo electrónico opcional para el scaffolding de autenticación incluido en el framework. Para adaptar esta característica, una columna de marca de tiempo `email_verified_at` ha sido añadida a la migración de la tabla `users` que se incluye en el framework por defecto.
+Cuando se utiliza Laravel 5.7, cada [política de autorización](/docs/{{version}}/authorization#creating-policies) debía ser asociada explícitamente y registrada en el `AuthServiceProvider` de tu aplicación:
 
-Para solicitar a los usuarios recién registrados que verifiquen su correo electrónico, el modelo `User` debe implementar la interfaz` MustVerifyEmail`:
+    /**
+     * The policy mappings for the application.
+     *
+     * @var array
+     */
+    protected $policies = [
+        'App\User' => 'App\Policies\UserPolicy',
+    ];
+
+Laravel 5.8 introduce el autodescubrimiento de políticas siempre que el modelo y la política sigan las convenciones estándar de nomenclatura de Laravel. Específicamente, las políticas deben estar en un directorio `Policies` debajo del directorio que contiene los modelos. Así, por ejemplo, los modelos pueden colocarse en el directorio `app` mientras que las políticas pueden ubicarse en el directorio `app/Policies`. Además, el nombre de la política debe coincidir con el nombre del modelo y tener un sufijo `Policy`. Entonces, un modelo `User` correspondería a una clase` UserPolicy`.
+
+If you would like to provide your own policy discovery logic, you may register a custom callback using the `Gate::guessPolicyNamesUsing` method. Typically, this method should be called from your application's `AuthServiceProvider`:
+
+Si deseas proporcionar tu propia lógica para el descubrimiento de políticas, puedes registrar un callback personalizado utilizando el método `Gate::guessPolicyNamesUsing`. Normalmente, este método debe llamarse desde el `AuthServiceProvider` de tu aplicación:
+
+    use Illuminate\Support\Facades\Gate;
+
+    Gate::guessPolicyNamesUsing(function ($modelClass) {
+        // return policy class name...
+    });
+
+> {note} Cualquier política que se asigne explícitamente en su `AuthServiceProvider` tendrá prioridad sobre cualquier posible política de autodescubrimiento.
+
+### Cumplimiento de la caché PSR-16
+
+Para permitir un tiempo de caducidad más granular al almacenar elementos y cumplir con el estándar de almacenamiento en caché PSR-16, el tiempo de vida del elemento de caché ha cambiado de minutos a segundos. Los métodos `put`, `putMany`, `add`, `remember` y `setDefaultCacheTime` de la clase `Illuminate\Cache\Repository` y sus clases extendidas, así como el método `put` de cada almacén de caché se actualizaron con este comportamiento modificado. Visita el [PR relacionado](https://github.com/laravel/framework/pull/27276) para más información.
+
+Si estás pasando un número entero a cualquiera de estos métodos, debes actualizar tu código para asegurarte de que ahora está pasando la cantidad de segundos que desea que el elemento permanezca en el caché. Alternativamente, puede pasar una instancia de `DateTime` que indique cuándo debe expirar el elemento:
+
+    // Laravel 5.7 - Store item for 30 minutes...
+    Cache::put('foo', 'bar', 30);
+
+    // Laravel 5.8 - Store item for 30 seconds...
+    Cache::put('foo', 'bar', 30);
+
+    // Laravel 5.7 / 5.8 - Store item for 30 seconds...
+    Cache::put('foo', 'bar', now()->addSeconds(30));
+
+### Multiples Guards de Autentificación para Broadcast
+
+En versiones anteriores de Laravel, los canales de transmisión privados y de presencia autenticaron al usuario a través de la protección de autenticación predeterminada de su aplicación. A partir de Laravel 5.8, ahora puedes asignar múltiples "guards" (guardias) que deben autenticar la solicitud entrante:
+
+    Broadcast::channel('channel', function() {
+        // ...
+    }, ['guards' => ['web', 'admin']])
+
+### Token Guard Token Hashing
+
+El `token` guard de Laravel, que proporciona autenticación de API básica, ahora admite el almacenamiento de tokens de API como hashes SHA-256. Esto proporciona una seguridad mejorada sobre el almacenamiento de tokens de texto sin formato. Para obtener más información sobre los tokens con hash, revisa la [documentación de autenticación API](/docs/{{version}}/api-authentication).
+
+> **Nota:** Si bien Laravel se entrega con una protección de autenticación simple basada en token, te recomendamos encarecidamente que consideres usar [Laravel Passport](/docs/{{version}}/passport) Para aplicaciones de producción robustas que ofrecen autenticación API.
+
+### Mejoras a la Validación de Correos Electronicos
+
+Laravel 5.8 introduce mejoras en la lógica de validación de correos electrónicos subyacente del validador al adoptar el paquete `egulias/email-validator` utilizado por SwiftMailer. La lógica de validación de correos electrónicos anterior de Laravel a veces se considera que los correos electrónicos válidos, como `example@bär.se`, no son válidos.
+
+### Zona horaria predetermina para las tareas programadas
+
+Laravel te permite personalizar la zona horaria de una tarea programada usando el método `timezone`:
+
+    $schedule->command('inspire')
+             ->hourly()
+             ->timezone('America/Chicago');
+
+Sin embargo, esto puede volverse engorroso y repetitivo si estás especificando la misma zona horaria para todas sus tareas programadas. Por esa razón, ahora puede definir un método `scheduleTimezone` en su archivo `app/Console/Kernel.php`. Este método debe devolver la zona horaria predeterminada que debe asignarse a todas las tareas programadas:
+
+    /**
+     * Get the timezone that should be used by default for scheduled events.
+     *
+     * @return \DateTimeZone|string|null
+     */
+    protected function scheduleTimezone()
+    {
+        return 'America/Chicago';
+    }
+
+### Tabla intermedia / Eventos con Modelo Pivote
+
+En versiones anteriores de Laravel, los eventos del modelo Eloquent no se distribuían al adjuntar, separar o sincronizar modelos de tabla intermedia / pivote personalizados de una relación de muchos a muchos. Cuando usas [modelos personalizados para tablas intermedias](/docs/{{version}}/eloquent-relationships#defining-custom-intermediate-table-models) en Laravel 5.8, estos eventos ahora serán enviados.
+
+### Mejoras al metodo Call de Artisan
+
+Laravel te permite invocar comandos de Artisan a través del método `Artisan::call`. En versiones anteriores de Laravel, las opciones del comando se pasan a través de un arreglo como el segundo parámetro del método.
+
+    use Illuminate\Support\Facades\Artisan;
+
+    Artisan::call('migrate:install', ['database' => 'foo']);
+
+Sin embargo, Laravel 5.8 le permite pasar el comando completo, incluidas las opciones, en el primer parámetro del método con una cadena:
+
+    Artisan::call('migrate:install --database=foo');
+
+### Métodos de pruebas Mock y Spy
+
+Con el fin de hacer que los objetos de mocking sean más convenientes, se han agregado los nuevos métodos `mock` y` spy` a la clase de prueba base de Laravel. Estos métodos vinculan automáticamente la clase simulada en el contenedor. Por ejemplo: 
+
+    // Laravel 5.7
+    $this->instance(Service::class, Mockery::mock(Service::class, function ($mock) {
+        $mock->shouldReceive('process')->once();
+    }));
+
+    // Laravel 5.8
+    $this->mock(Service::class, function ($mock) {
+        $mock->shouldReceive('process')->once();
+    });
+
+### Preservación de Llaves para Recursos Eloquent
+
+Al devolver una [colección de recursos Eloquent](/docs/{{version}}/eloquent-resources) desde una ruta, Laravel restablece las llaves de la colección para que estén en orden numérico simple:
+
+    use App\User;
+    use App\Http\Resources\User as UserResource;
+
+    Route::get('/user', function () {
+        return UserResource::collection(User::all());
+    });
+
+Al usar Laravel 5.8, puedes agregar una propiedad `preserveKeys` a tu clase de recurso que indica si se deben conservar las llaves de recopilación. De forma predeterminada, y para mantener la coherencia con las versiones anteriores de Laravel, las llaves se restablecerán de forma predeterminada:
 
     <?php
 
-    namespace App;
+    namespace App\Http\Resources;
 
-    use Illuminate\Notifications\Notifiable;
-    use Illuminate\Contracts\Auth\MustVerifyEmail;
-    use Illuminate\Foundation\Auth\User as Authenticatable;
+    use Illuminate\Http\Resources\Json\JsonResource;
 
-    class User extends Authenticatable implements MustVerifyEmail
+    class User extends JsonResource
     {
-        // ...
+        /**
+         * Indicates if the resource's collection keys should be preserved.
+         *
+         * @var bool
+         */
+        public $preserveKeys = true;
     }
 
-Una vez que el modelo `User` tenga implementada la interfaz`MustVerifyEmail`, los usuarios recién registrados recibirán un correo electrónico con un enlace de verificación firmado. Una vez que el usuario haga clic en este enlace, Laravel registrará automáticamente el tiempo de verificación en la base de datos y redirigirá a los usuarios a una ubicación de su elección.
+Cuando la propiedad `preserveKeys` se establece en `true`, las llaves de colección se conservarán:
 
-Se ha agregado un middleware `verified` al kernel HTTP por defecto de la aplicación. Este middleware puede adjuntarse a rutas que solo deberían permitir usuarios verificados:
+    use App\User;
+    use App\Http\Resources\User as UserResource;
 
-    'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-
-> {tip} Para obtener más información sobre la verificación de correo electrónico, consulte la [documentación completa](/docs/{{version}}/verification).
-
-### Políticas y Gates para Usuarios Visitantes
-
-En versiones anteriores de Laravel, las Gates y las políticas de autorización automáticamente devolvían "falso" a los visitantes no autenticados de tu aplicación. Sin embargo, ahora puedes permitir que los invitados pasen por las verificaciones de autorización declarando una declaración de tipo "opcional" o suministrando un valor por defecto `null` para la definición del argumento del usuario:
-
-    Gate::define('update-post', function (?User $user, Post $post) {
-        // ...
+    Route::get('/user', function () {
+        return UserResource::collection(User::all()->keyBy->id);
     });
 
-### Dump Server de Symfony
+### Método de orden superior `orWhere` para Eloquent
 
-Laravel 5.7 ofrece integración con el comando `dump-server` de Symfony a través de [un paquete de Marcel Pociot](https://github.com/beyondcode/laravel-dump-server). Para comenzar, ejecuta el comando Artisan `dump-server`:
+En versiones anteriores de Laravel, la combinación de múltiples ámbitos del modelo Eloquent a través de un operador de consulta `or` requería el uso de Closure callbacks:
 
-    php artisan dump-server
+    // scopePopular and scopeActive methods defined on the User model...
+    $users = App\User::popular()->orWhere(function (Builder $query) {
+        $query->active();
+    })->get();
 
-Una vez que el servidor se haya iniciado, todas las llamadas a `dump` se mostrarán en la ventana de la consola `dump-server` en lugar de hacerlo en tu navegador, lo que te permitirá inspeccionar los valores sin alterar tu salida de respuesta HTTP.
+Laravel 5.8 introduce un método de "orden superior" `orWhere` que te permite encadenar estos ámbitos con fluidez sin el uso de Clousures:
 
-### Configuración Regional en Notificaciones
+    $users = App\User::popular()->orWhere->active()->get();
 
-Laravel ahora te permite enviar notificaciones en una configuración regional distinta del idioma actual, e incluso recordará esta configuración regional si la notificación está en cola.
+### Mejoras al comando Artisan Serve
 
-Para lograr esto, la clase `Illuminate\Notifications\Notification` ahora ofrece un método` locale` para configurar el idioma deseado. La aplicación cambiará a esta configuración regional cuando se formatee la notificación y luego volverá a la configuración regional anterior cuando se complete el formateo:
+En versiones anteriores de Laravel, el comando `serve` de Artisan levantaría tu aplicación en el puerto `8000`. Si otro proceso del comando `serve` ya estaba escuchando en este puerto, un intento de levantar una segunda aplicación a través de `serve` fallaría. A partir de Laravel 5.8, `serve` ahora buscará los puertos disponibles hasta el puerto `8009`, lo que te permite levantar múltiples aplicaciones a la vez.
 
-    $user->notify((new InvoicePaid($invoice))->locale('es'));
+### Mapeo de Archivos Blade
 
-La configuración regional de múltiples entradas de notificaciones notificables también se puede lograr a través de la facade `Notificación`:
+Al compilar plantillas Blade, Laravel ahora agrega un comentario en la parte superior del archivo compilado que contiene la ruta a la plantilla Blade original.
 
-    Notification::locale('es')->send($users, new InvoicePaid($invoice));
+### DynamoDB Cache / Drivers de Sesión
 
-### Pruebas de Consola
+Laravel 5.8 introduce [DynamoDB](https://aws.amazon.com/dynamodb/) drivers de cache y sesión. DynamoDB es una base de datos NoSQL sin servidor proporcionada por Amazon Web Services. La configuración predeterminada para el controlador de caché `dynamodb` se puede encontrar en el [archivo de configuración para cache](https://github.com/laravel/laravel/blob/master/config/cache.php) de Laravel 5.8.
 
-Laravel 5.7 te permite "simular" fácilmente las entradas de usuario para tus comandos de consola utilizando el método `expectsQuestion`. Además, puedes especificar el código de salida y el texto que esperas que genere el comando de la consola utilizando los métodos `assertExitCode` y `expectsOutput`. Por ejemplo, considera el siguiente comando de consola:
+### Soporte para Carbon 2.0
 
-    Artisan::command('question', function () {
-        $name = $this->ask('What is your name?');
+Laravel 5.8 proporciona soporte para la versión `~ 2.0` de la biblioteca de manipulación de fechas Carbon.
 
-        $language = $this->choice('Which language do you program in?', [
-            'PHP',
-            'Ruby',
-            'Python',
-        ]);
+### Soporte para Pheanstalk 4.0
 
-        $this->line('Your name is '.$name.' and you program in '.$language.'.');
-    });
-
-Puedes probar este comando con la siguiente prueba que utiliza los métodos `expectsQuestion`, `expectsOutput` y `assertExitCode`:
-
-    /**
-     * Test a console command.
-     *
-     * @return void
-     */
-    public function test_console_command()
-    {
-        $this->artisan('question')
-             ->expectsQuestion('What is your name?', 'Taylor Otwell')
-             ->expectsQuestion('Which language do you program in?', 'PHP')
-             ->expectsOutput('Your name is Taylor Otwell and you program in PHP.')
-             ->assertExitCode(0);
-    }
-
-### Generador de URL y la Sintaxis Callable
-
-En lugar de solo aceptar cadenas, el generador de URL de Laravel ahora acepta la sintaxis "callable" al generar URL para las acciones del controlador:
-
-    action([UserController::class, 'index']);
-
-### Enlaces del Paginador
-
-Laravel 5.7 te permite controlar cuántos enlaces adicionales se muestran a cada lado de la "ventana" de la URL del paginador. De forma predeterminada, se muestran tres enlaces en cada lado de los enlaces del paginador principal. Sin embargo, puedes controlar este número usando el método `onEachSide`:
-
-    {{ $paginator->onEachSide(5)->links() }}
-
-### Secuencias de lectura / escritura del sistema de archivos
-
-Laravel Flysystem ahora ofrece los métodos `readStream` y `writeStream`:
-
-    Storage::disk('s3')->writeStream(
-        'remote-file.zip',
-        Storage::disk('local')->readStream('local-file.zip')
-    );
+Laravel 5.8 proporciona soporte para la versión `~ 4.0` de la biblioteca de colas Pheanstalk. Si está utilizando la biblioteca Pheanstalk en su aplicación, actualice su biblioteca a la versión `~ 4.0` a través de Composer.    
