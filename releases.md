@@ -68,4 +68,11 @@ Con el fin de hacer que los objetos de "mocking" (burla) sean más convenientes,
     $this->mock(Service::class, function ($mock) {
         $mock->shouldReceive('process')->once();
     });
-    
+
+### Soporte para Carbon 2.0
+
+Laravel 5.8 proporciona soporte para la versión `~ 2.0` de la biblioteca de manipulación de fechas Carbon.
+
+### Soporte para Pheanstalk 4.0
+
+Laravel 5.8 proporciona soporte para la versión `~ 4.0` de la biblioteca de colas Pheanstalk. Si está utilizando la biblioteca Pheanstalk en su aplicación, actualice su biblioteca a la versión `~ 4.0` a través de Composer.    
