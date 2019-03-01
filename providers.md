@@ -152,7 +152,7 @@ Si tu proveedor **sólo** está registrando enlaces en el [contenedor de servici
 
 Laravel compila y almacena una lista de todos los servicios suministrados por proveedores de servicios diferidos, junto con el nombre de clase de su proveedor de servicio. Luego, sólo cuando intentas resolver uno de estos servicios Laravel carga el proveedor de servicio.
 
-Para diferir la carga de un proveedor, establece la propiedad `defer` a `true` y define un método `provides`. El método `provides` debe retornar los enlaces del contenedor de servicio registrados por el proveedor:
+Para diferir la carga de un proveedor, Implementa la interfaz `\Illuminate\Contracts\Support\DeferrableProvider` y define un método `provides`. El método `provides` debe retornar los enlaces del contenedor de servicio registrados por el proveedor:
 
     <?php
 
@@ -160,16 +160,10 @@ Para diferir la carga de un proveedor, establece la propiedad `defer` a `true` y
 
     use Riak\Connection;
     use Illuminate\Support\ServiceProvider;
+    use Illuminate\Contracts\Support\DeferrableProvider;
 
-    class RiakServiceProvider extends ServiceProvider
+    class RiakServiceProvider extends ServiceProvider implements DeferrableProvider
     {
-        /**
-         * Indicates if loading of the provider is deferred.
-         *
-         * @var bool
-         */
-        protected $defer = true;
-
         /**
          * Register the service provider.
          *
