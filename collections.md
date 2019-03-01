@@ -1,15 +1,15 @@
-# Collections
+# Collecciones
 
-- [Introduction](#introduction)
-    - [Creating Collections](#creating-collections)
-    - [Extending Collections](#extending-collections)
-- [Available Methods](#available-methods)
-- [Higher Order Messages](#higher-order-messages)
+- [Introducción](#introduction)
+    - [Creando Collecciones](#creating-collections)
+    - [Extendiendo Collecciones](#extending-collections)
+- [Métodos Disponibles](#available-methods)
+- [Mensajes De Orden Superior](#higher-order-messages)
 
 <a name="introduction"></a>
 ## Introducción
 
-La clase `Illuminate\Support\Collection` proporciona fluidez, lo cual es muy conveniente para trabajar con arreglos de datos. Por ejemplo, mira el siguiente código. Usaremos el helper `collect` para crear una nueva instacia de `Collection` pasando un arreglo como parametro, se ejecuta la función `strtoupper` en cada elemento y luego elimina todos los elementos vacíos:
+La clase `Illuminate\Support\Collection` provee una interfaz fluida y conveniente para trabajar con arreglos de datos. Por ejemplo, mira el siguiente código. Usaremos la función helper `collect` para crear una nueva instancia de `Collection` pasando un arreglo como parámetro, se ejecuta la función `strtoupper` en cada elemento y luego elimina todos los elementos vacíos:
 
     $collection = collect(['taylor', 'abigail', null])->map(function ($name) {
         return strtoupper($name);
@@ -18,7 +18,7 @@ La clase `Illuminate\Support\Collection` proporciona fluidez, lo cual es muy con
         return empty($name);
     });
 
-Como puedes ver, la clase `Collection` te permite encadenar sus métodos para realizar un mapeo fluido y reducir la matriz subyacente. En general, las colecciones son inmutables, es decir, cada método de `Collection` retorna una nueva instancia de `Collection`.
+Como puedes ver, la clase `Collection` te permite encadenar sus métodos para realizar un mapeo fluido y reducir el arreglo subyacente. En general, las colecciones son inmutables, es decir, cada método de `Collection` retorna una nueva instancia de `Collection`.
 
 <a name="creating-collections"></a>
 ### Creando Colecciones
@@ -32,7 +32,7 @@ Como se ha mencionado más arriba, el helper `collect` retorna una nueva instanc
 <a name="extending-collections"></a>
 ### Extendiendo Colecciones
 
-Las colecciones son "macroactivables", lo que te permite agregar métodos adicionales a la clase `Collection` en tiempo de ejecución. Por ejemplo, el siguiente código agrega un método `toUpper` a la clase `Collection`:
+Las colecciones son "macroable", es decir, te permite agregar métodos adicionales a la clase `Collection` en tiempo de ejecución. Por ejemplo, el siguiente código agrega un método `toUpper` a la clase `Collection`:
 
     use Illuminate\Support\Str;
 
@@ -48,7 +48,7 @@ Las colecciones son "macroactivables", lo que te permite agregar métodos adicio
 
     // ['FIRST', 'SECOND']
 
-Por lo general, los macros para una colección se declaran en un [Service Provider](/docs/{{version}}/providers).
+Por lo general, los macros para una colección se declaran en un [proveedor de servicios](/docs/{{version}}/providers).
 
 <a name="available-methods"></a>
 ## Métodos Disponibles
@@ -157,14 +157,20 @@ Por el resto de esta documentación, discutiremos cada método disponible en la 
 [unique](#method-unique)
 [uniqueStrict](#method-uniquestrict)
 [unless](#method-unless)
+[unlessEmpty](#method-unlessempty)
+[unlessNotEmpty](#method-unlessnotempty)
 [unwrap](#method-unwrap)
 [values](#method-values)
 [when](#method-when)
+[whenEmpty](#method-whenempty)
+[whenNotEmpty](#method-whennotempty)
 [where](#method-where)
 [whereStrict](#method-wherestrict)
+[whereBetween](#method-wherebetween)
 [whereIn](#method-wherein)
 [whereInStrict](#method-whereinstrict)
 [whereInstanceOf](#method-whereinstanceof)
+[whereNotBetween](#method-wherenotbetween)
 [whereNotIn](#method-wherenotin)
 [whereNotInStrict](#method-wherenotinstrict)
 [wrap](#method-wrap)
@@ -173,7 +179,7 @@ Por el resto de esta documentación, discutiremos cada método disponible en la 
 </div>
 
 <a name="method-listing"></a>
-## Method Listing
+## Lista de Métodos
 
 <style>
     #collection-method code {
@@ -238,7 +244,7 @@ Este método es especialmente útil en las [vistas](/docs/{{version}}/views) cua
 <a name="method-collapse"></a>
 #### `collapse()` {#collection-method}
 
-El método `collapse` colapsa una colección de arreglos en una sola colección plana:
+El método `collapse` contrae una colección de arreglos en una sola colección plana:
 
     $collection = collect([[1, 2, 3], [4, 5, 6], [7, 8, 9]]);
 
@@ -300,7 +306,7 @@ También puedes pasar la llave y el valor al método `contains`, que determinar�
 
     // false
 
-Finalmente, también puedes pasar una función anónima al método `contains` para realizar tu propia comprobación:
+Finalmente, también puedes pasar una función de retorno al método `contains` para realizar tu propia comprobación:
 
     $collection = collect([1, 2, 3, 4, 5]);
 
@@ -310,7 +316,7 @@ Finalmente, también puedes pasar una función anónima al método `contains` pa
 
     // false
 
-El método `contains` utiliza comparaciones "livianas" al verificar valores de elementos, lo que significa que una cadena con un valor entero se considerará igual a un entero del mismo valor. Usa el método [`containsStrict`](#method-containsstrict) si deseas una comparación "estricta".
+El método `contains` utiliza comparaciones "flexibles" (loose) al verificar valores de elementos, lo que significa que una cadena con un valor entero se considerará igual a un entero del mismo valor. Usa el método [`containsStrict`](#method-containsstrict) si deseas una comparación "estricta".
 
 <a name="method-containsstrict"></a>
 #### `containsStrict()` {#collection-method}
@@ -331,7 +337,7 @@ El método `count` devuelve la cantidad total de elementos en la colección:
 <a name="method-crossjoin"></a>
 #### `crossJoin()` {#collection-method}
 
-El método `crossJoin` se une a los valores de la colección entre los arreglos o colecciones dadas, devolviendo un producto cartesiano con todas las permutaciones posibles:
+El método `crossJoin` realiza un join cruzado entre los valores de la colección y los arreglos o colecciones dadas, devolviendo un producto cartesiano con todas las permutaciones posibles:
 
     $collection = collect([1, 2]);
 
@@ -385,7 +391,7 @@ El método `dd` muestra los elementos de la colección y finaliza la ejecución 
         }
     */
 
-Si no quieres dejar de ejecutar el script, use el método [`dump`](#method-dump).
+Si no quieres dejar de ejecutar el script, usa el método [`dump`](#method-dump).
 
 <a name="method-diff"></a>
 #### `diff()` {#collection-method}
@@ -469,13 +475,13 @@ Si deseas detener la ejecución del script después de volcar la colección, use
 <a name="method-each"></a>
 #### `each()` {#collection-method}
 
-El método `each` itera sobre los elementos de la colección y pasa cada elemento a una función anónima:
+El método `each` itera sobre los elementos de la colección y pasa cada elemento a una función de retorno (callback):
 
     $collection->each(function ($item, $key) {
         //
     });
 
-Si deseas detener la iteración a través de los elementos, puedes devolver `false` en la función anónima:
+Si deseas detener la iteración a través de los elementos, puedes devolver `false` en la función de retorno (callback):
 
     $collection->each(function ($item, $key) {
         if (/* some condition */) {
@@ -486,7 +492,7 @@ Si deseas detener la iteración a través de los elementos, puedes devolver `fal
 <a name="method-eachspread"></a>
 #### `eachSpread()` {#collection-method}
 
-El método `eachSpread` itera sobre los elementos de la colección, pasando cada valor de elemento anidado a la función anónima:
+El método `eachSpread` itera sobre los elementos de la colección, pasando cada valor de elemento anidado a la función de retorno (callback):
 
     $collection = collect([['John Doe', 35], ['Jane Doe', 33]]);
 
@@ -494,7 +500,7 @@ El método `eachSpread` itera sobre los elementos de la colección, pasando cada
         //
     });
 
-Puedes detener la iteración a través de los elementos al devolver `false` en la función anónima:
+Puedes detener la iteración a través de los elementos al devolver `false` en la función de retorno (callback):
 
     $collection->eachSpread(function ($name, $age) {
         return false;
@@ -503,13 +509,23 @@ Puedes detener la iteración a través de los elementos al devolver `false` en l
 <a name="method-every"></a>
 #### `every()` {#collection-method}
 
-El método `every` se puede usar para verificar que todos los elementos de una colección pasen una comprobación dada a través de una función anónima:
+El método `every` se puede usar para verificar que todos los elementos de una colección pasen una comprobación dada a través de una función de retorno (callback):
 
     collect([1, 2, 3, 4])->every(function ($value, $key) {
         return $value > 2;
     });
 
     // false
+
+Si la colección está vacía, `every` devolverá true:
+
+    $collection = collect([]);
+
+    $collection->every(function($value, $key) {
+        return $value > 2;
+    });
+
+    // true
 
 <a name="method-except"></a>
 #### `except()` {#collection-method}
@@ -529,7 +545,7 @@ Para hacer lo contrario a `except`, vea el método [only](#method-only).
 <a name="method-filter"></a>
 #### `filter()` {#collection-method}
 
-El método `filter` filtra la colección usando una función anónima, manteniendo solo los elementos que pasan la comprobación dada:
+El método `filter` filtra la colección usando una función de retorno (callback), manteniendo solo los elementos que pasan la comprobación dada:
 
     $collection = collect([1, 2, 3, 4]);
 
@@ -541,7 +557,7 @@ El método `filter` filtra la colección usando una función anónima, mantenien
 
     // [3, 4]
 
-Si no se proporciona una función anónima, se eliminarán todos los elementos de la colección que son equivalentes a `false`:
+Si no se proporciona una función de retorno, se eliminarán todos los elementos de la colección que son equivalentes a `false`:
 
     $collection = collect([1, 2, 3, null, false, '', 0, []]);
 
@@ -554,7 +570,7 @@ Para hacer lo contrario a `filter`, echa un vistazo al método [reject](#method-
 <a name="method-first"></a>
 #### `first()` {#collection-method}
 
-El método `first` devuelve el primer elemento de la colección que pasa la comprobación en una función anónima dada:
+El método `first` devuelve el primer elemento de la colección que pasa la comprobación en una función de retorno (callback) dada:
 
     collect([1, 2, 3, 4])->first(function ($value, $key) {
         return $value > 2;
@@ -593,7 +609,7 @@ También puedes llamar al método `firstWhere` con un operador:
 <a name="method-flatmap"></a>
 #### `flatMap()` {#collection-method}
 
-El método `flatMap` itera a través de la colección y pasa cada valor a una función anónima. La función anónima es libre de modificar el elemento y devolverlo, formando así una nueva colección de elementos modificados. Entonces, el arreglo se aplana a un solo nivel:
+El método `flatMap` itera a través de la colección y pasa cada valor a una función de retorno (callback). La función de retorno es libre de modificar el elemento y devolverlo, formando así una nueva colección de elementos modificados. Entonces, el arreglo se aplana a un solo nivel:
 
     $collection = collect([
         ['name' => 'Sally'],
@@ -612,7 +628,7 @@ El método `flatMap` itera a través de la colección y pasa cada valor a una fu
 <a name="method-flatten"></a>
 #### `flatten()` {#collection-method}
 
-El método `flatten` aplana una colección multidimensional en una sola dimensión:
+El método `flatten` aplana una colección multidimensional en una de una sola dimensión:
 
     $collection = collect(['name' => 'taylor', 'languages' => ['php', 'javascript']]);
 
@@ -622,7 +638,7 @@ El método `flatten` aplana una colección multidimensional en una sola dimensi�
 
     // ['taylor', 'php', 'javascript'];
 
-    Opcionalmente, puedes pasarle a la función un argumento de "profundidad":
+Opcionalmente, puedes pasarle a la función un argumento de "profundidad":
 
     $collection = collect([
         'Apple' => [
@@ -644,7 +660,7 @@ El método `flatten` aplana una colección multidimensional en una sola dimensi�
         ]
     */
 
-En este ejemplo, al llamar a `flatten` sin proporcionar la profundidad también se aplanarían las matrices anidadas, lo que da como resultado` ['iPhone 6S', 'Apple', 'Galaxy S7', 'Samsung']`. Proporcionar una profundidad te permite restringir los niveles de matrices anidadas que se aplanarán.
+En este ejemplo, al llamar a `flatten` sin proporcionar la profundidad también se aplanarían los arreglos anidados, lo que da como resultado` ['iPhone 6S', 'Apple', 'Galaxy S7', 'Samsung']`. Proporcionar una profundidad te permite restringir los niveles de arreglos anidados que se aplanarán.
 
 <a name="method-flip"></a>
 #### `flip()` {#collection-method}
@@ -706,7 +722,7 @@ Opcionalmente, puedes pasar un valor predeterminado como segundo argumento:
 
     // default-value
 
-Incluso puedes pasar una función anónima como el valor predeterminado. El resultado de la función anónima se devolverá si la clave especificada no existe:
+Incluso puedes pasar una función de retorno (callback) como el valor por defecto. El resultado de la función de retorno se devolverá si la clave especificada no existe:
 
     $collection->get('email', function () {
         return 'default-value';
@@ -741,7 +757,7 @@ El método `groupBy` agrupa los elementos de la colección con una clave determi
         ]
     */
 
-Además de pasar una clave, también puedes pasar una función anónima. La función anónima debe devolver el valor que desea el grupo de claves:
+Además de pasar una clave, también puedes pasar una función de retorno (callback). La función de retorno debe devolver el valor de la clave por la que deseas agrupar:
 
     $grouped = $collection->groupBy(function ($item, $key) {
         return substr($item['account_id'], -3);
@@ -761,7 +777,7 @@ Además de pasar una clave, también puedes pasar una función anónima. La func
         ]
     */
 
-Además de pasar una clave, también puedes pasar una función anónima. La función anónima debe devolver el valor que desea el grupo de claves:
+Además de pasar una clave, también puedes pasar una función de retorno (callback). La función de retorno debe devolver el valor de la clave por la que deseas agrupar:
 
     $data = new Collection([
         10 => ['user' => 1, 'skill' => 1, 'roles' => ['Role_1', 'Role_3']],
@@ -824,7 +840,7 @@ El método `has` determina si existe una clave dada en la colección:
 <a name="method-implode"></a>
 #### `implode()` {#collection-method}
 
-El método `implode` se une a los elementos de una colección. Sus argumentos dependen del tipo de elemento en la colección. Si la colección contiene arreglos u objetos, debes pasar la clave de los atributos que deseas unir y la cadena que deseas colocar entre los valores:
+El método `implode` une a los elementos de una colección. Sus argumentos dependen del tipo de elemento en la colección. Si la colección contiene arreglos u objetos, debes pasar la clave de los atributos que deseas unir y la cadena que deseas colocar entre los valores:
 
     $collection = collect([
         ['account_id' => 1, 'product' => 'Desk'],
@@ -910,7 +926,7 @@ El método `keyBy` agrupa una colección por claves indicando una clave como pá
         ]
     */
 
-También puedes pasar una función anónima al método. La función debe devolver el valor de la clave de la colección:
+También puedes pasar una función de retorno (callback) al método. La función debe devolver el valor de la clave de la colección:
 
     $keyed = $collection->keyBy(function ($item) {
         return strtoupper($item['product_id']);
@@ -944,7 +960,7 @@ El método `keys` devuelve todas las claves de la colección:
 <a name="method-last"></a>
 #### `last()` {#collection-method}
 
-El método `last` devuelve el último elemento de la colección que pasa una condición dentro de una función anónima:
+El método `last` devuelve el último elemento de la colección que pasa una condición dentro de una función de retorno (callback):
 
     collect([1, 2, 3, 4])->last(function ($value, $key) {
         return $value < 3;
@@ -971,7 +987,7 @@ El método estático `make` crea una nueva instancia de `Collection`. Más infor
 <a name="method-map"></a>
 #### `map()` {#collection-method}
 
-El método `map` itera a través de la colección y pasa cada valor a una función anónima. La función anónima es libre de modificar el elemento y devolverlo, formando así una nueva colección de elementos modificados:
+El método `map` itera a través de la colección y pasa cada valor a una función de retorno. La función de retorno es libre de modificar el elemento y devolverlo, formando así una nueva colección de elementos modificados:
 
     $collection = collect([1, 2, 3, 4, 5]);
 
@@ -1015,14 +1031,14 @@ El método `mapInto()` itera sobre la colección, creando una nueva instancia de
 <a name="method-mapspread"></a>
 #### `mapSpread()` {#collection-method}
 
-El método `mapSpread` itera sobre los elementos de la colección, pasando cada valor de elemento anidado a la función anónima pasada como parámetro. La función anónima es libre de modificar el elemento y devolverlo, formando así una nueva colección de elementos modificados:
+El método `mapSpread` itera sobre los elementos de la colección, pasando cada valor de elemento anidado a la función de retorno pasada como parámetro. La función de retorno es libre de modificar el elemento y devolverlo, formando así una nueva colección de elementos modificados:
 
     $collection = collect([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
 
     $chunks = $collection->chunk(2);
 
-    $sequence = $chunks->mapSpread(function ($odd, $even) {
-        return $odd + $even;
+    $sequence = $chunks->mapSpread(function ($even, $odd) {
+        return $even + $odd;
     });
 
     $sequence->all();
@@ -1032,7 +1048,7 @@ El método `mapSpread` itera sobre los elementos de la colección, pasando cada 
 <a name="method-maptogroups"></a>
 #### `mapToGroups()` {#collection-method}
 
-El método `mapToGroups` agrupa los elementos de la colección por la función anónima dada. La función anónima debería devolver un arreglo asociativo que contenga una única clave / valor, formando así una nueva colección de valores agrupados:
+El método `mapToGroups` agrupa los elementos de la colección por la función de retorno dada. La función de retorno debería devolver un arreglo asociativo que contenga una única clave / valor, formando así una nueva colección de valores agrupados:
 
     $collection = collect([
         [
@@ -1069,7 +1085,7 @@ El método `mapToGroups` agrupa los elementos de la colección por la función a
 <a name="method-mapwithkeys"></a>
 #### `mapWithKeys()` {#collection-method}
 
-El método `mapWithKeys` itera a través de la colección y pasa cada valor a la función anónima dada. La función anónima debe devolver un arreglo asociativo que contiene una unica clave / valor:
+El método `mapWithKeys` itera a través de la colección y pasa cada valor a la función de retorno dada. La función de retorno debe devolver un arreglo asociativo que contiene una unica clave / valor:
 
     $collection = collect([
         [
@@ -1247,7 +1263,7 @@ El método `partition` se puede combinar con la función PHP `list` para separar
 <a name="method-pipe"></a>
 #### `pipe()` {#collection-method}
 
-El método `pipe` pasa la colección a una función anónima y devuelve el resultado:
+El método `pipe` pasa la colección a una función de retorno y devuelve el resultado:
 
     $collection = collect([1, 2, 3]);
 
@@ -1420,7 +1436,7 @@ El valor de `$carry` en la primera iteración es `null`; sin embargo, puedes esp
 <a name="method-reject"></a>
 #### `reject()` {#collection-method}
 
-El método `reject` filtra la colección usando una función anónima. La función anónima debe devolver `true` si el elemento debe eliminarse de la colección resultante:
+El método `reject` filtra la colección usando una función de retorno. La función de retorno debe devolver `true` si el elemento debe eliminarse de la colección resultante:
 
     $collection = collect([1, 2, 3, 4]);
 
@@ -1432,7 +1448,7 @@ El método `reject` filtra la colección usando una función anónima. La funci�
 
     // [1, 2]
 
-For the inverse of the `reject` method, see the [`filter`](#method-filter) method.
+Para el inverso del método `reject`, ve el método [`filter`](#method-filter).
 
 <a name="method-reverse"></a>
 #### `reverse()` {#collection-method}
@@ -1466,13 +1482,13 @@ El método `search` busca en la colección el valor dado y devuelve su clave si 
 
     // 1
 
-La búsqueda se realiza usando una comparación "ligera", lo que significa que una cadena con un valor entero se considerará igual a un número entero del mismo valor. Para usar una comparación "estricta", pasa `true` como segundo parámetro del método:
+La búsqueda se realiza usando una comparación "flexible" (loose), lo que significa que una cadena con un valor entero se considerará igual a un número entero del mismo valor. Para usar una comparación "estricta", pasa `true` como segundo parámetro del método:
 
     $collection->search('4', true);
 
     // false
 
-Alternativamente, puedes pasar tu propia función anónima para buscar el primer elemento que pase la validación:
+Alternativamente, puedes pasar tu propia función de retorno para buscar el primer elemento que pase la validación:
 
     $collection->search(function ($item, $key) {
         return $item > 5;
@@ -1534,12 +1550,12 @@ El segmento devuelto conservará las claves de forma predeterminada. Si no desea
 <a name="method-some"></a>
 #### `some()` {#collection-method}
 
-Alias for the [`contains`](#method-contains) method.
+Alias para el método [`contains`](#method-contains).
 
 <a name="method-sort"></a>
 #### `sort()` {#collection-method}
 
-El método `sort` ordena la colección. La colección ordenada conserva las claves del arreglo original, por lo que en este ejemplo utilizaremos el método [`values`](#method-values) para resetear las claves de los índices numerados consecutivamente:
+El método `sort` ordena la colección. La colección ordenada conserva las claves del arreglo original, por lo que en este ejemplo utilizaremos el método [`values`](#method-values) para restablecer las claves de los índices numerados consecutivamente:
 
     $collection = collect([5, 3, 1, 2, 4]);
 
@@ -1549,14 +1565,14 @@ El método `sort` ordena la colección. La colección ordenada conserva las clav
 
     // [1, 2, 3, 4, 5]
 
-Si tus necesidades de ordenamiento son más avanzadas, puedes pasar una funión anónima a `sort` con tu propio algoritmo. Consulta la documentación de PHP en [`uasort`](https://secure.php.net/manual/en/function.uasort.php#refsect1-function.uasort-parameters), que es lo que llama el método `sort` de la colección.
+Si tus necesidades de ordenamiento son más avanzadas, puedes pasar una funión de retorno a `sort` con tu propio algoritmo. Consulta la documentación de PHP en [`uasort`](https://secure.php.net/manual/en/function.uasort.php#refsect1-function.uasort-parameters), que es lo que llama el método `sort` de la colección.
 
 > {tip} Si necesitas ordenar una colección de matrices u objetos anidados, consulta los métodos [`sortBy`](#method-sortby) y [`sortByDesc`](#method-sortbydesc).
 
 <a name="method-sortby"></a>
 #### `sortBy()` {#collection-method}
 
-El método `sortBy` ordena la colección con la clave dada. La colección ordenada conserva las claves del arreglo original, por lo que en este ejemplo utilizaremos el método [`values`](#method-values) para resetear las claves de los índices numerados consecutivamente:
+El método `sortBy` ordena la colección con la clave dada. La colección ordenada conserva las claves del arreglo original, por lo que en este ejemplo utilizaremos el método [`values`](#method-values) para restablecer las claves de los índices numerados consecutivamente:
 
     $collection = collect([
         ['name' => 'Desk', 'price' => 200],
@@ -1576,7 +1592,7 @@ El método `sortBy` ordena la colección con la clave dada. La colección ordena
         ]
     */
 
-You can also pass your own callback to determine how to sort the collection values:
+Puedes también pasar tu propia función de retorno para determinar como ordenar los valores de la colección:
 
     $collection = collect([
         ['name' => 'Desk', 'colors' => ['Black', 'Mahogany']],
@@ -1709,7 +1725,7 @@ Si la colección contiene arreglos u objetos anidados, debes pasar una clave par
 
     // 1272
 
-Además, puedes pasar una función anónima para determinar qué valores de la colección sumar:
+Además, puedes pasar una función de retorno para determinar qué valores de la colección sumar:
 
     $collection = collect([
         ['name' => 'Chair', 'colors' => ['Black']],
@@ -1749,7 +1765,7 @@ También puedes pasar un número entero negativo para tomar la cantidad especifi
 <a name="method-tap"></a>
 #### `tap()` {#collection-method}
 
-The `tap` method passes the collection to the given callback, allowing you to "tap" into the collection at a specific point and do something with the items while not affecting the collection itself:
+El método `tap` pasa la colección a la función de retorno dada, lo que te permite "aprovechar" la colección en un punto específico y hacer algo con los elementos sin afectar a la propia colección:
 
     collect([2, 4, 3, 1, 5])
         ->sort()
@@ -1763,7 +1779,7 @@ The `tap` method passes the collection to the given callback, allowing you to "t
 <a name="method-times"></a>
 #### `times()` {#collection-method}
 
-El método estático `times` crea una nueva colección invocando una función anónima y la cantidad determinada de veces:
+El método estático `times` crea una nueva colección invocando una función de retorno y la cantidad determinada de veces:
 
     $collection = Collection::times(10, function ($number) {
         return $number * 9;
@@ -1776,7 +1792,7 @@ El método estático `times` crea una nueva colección invocando una función an
 Este método puede ser útil cuando se combina con Factories para crear modelos [Eloquent](/docs/{{version}}/eloquent):
 
     $categories = Collection::times(3, function ($number) {
-        return factory(Category::class)->create(['name' => 'Category #'.$number]);
+        return factory(Category::class)->create(['name' => "Category No. $number"]);
     });
 
     $categories->all();
@@ -1809,7 +1825,7 @@ El método `toArray` convierte la colección en un simple `array` de PHP. Si los
 <a name="method-tojson"></a>
 #### `toJson()` {#collection-method}
 
-The `toJson` method converts the collection into a JSON serialized string:
+El método `toJson` convierte la colección en una cadena serializada JSON:
 
     $collection = collect(['name' => 'Desk', 'price' => 200]);
 
@@ -1820,7 +1836,7 @@ The `toJson` method converts the collection into a JSON serialized string:
 <a name="method-transform"></a>
 #### `transform()` {#collection-method}
 
-El método `transform` itera sobre la colección y llama a la función anónima dada con cada elemento de la colección. Los elementos en la colección serán reemplazados por los valores devueltos de la función anónima:
+El método `transform` itera sobre la colección y llama a la función de retorno dada con cada elemento de la colección. Los elementos en la colección serán reemplazados por los valores devueltos de la función de retorno:
 
     $collection = collect([1, 2, 3, 4, 5]);
 
@@ -1850,7 +1866,7 @@ El método `union` agrega el arreglo dado a la colección. Si el arreglo contien
 <a name="method-unique"></a>
 #### `unique()` {#collection-method}
 
-El método `unique` devuelve todos los elementos únicos en la colección. La colección devuelta conserva las claves del arreglo original, por lo que en este ejemplo utilizaremos el método [`values`](#method-values) para resetear las llaves de los índices numerados consecutivamente:
+El método `unique` devuelve todos los elementos únicos en la colección. La colección devuelta conserva las claves del arreglo original, por lo que en este ejemplo utilizaremos el método [`values`](#method-values) para restablecer las llaves de los índices numerados consecutivamente:
 
     $collection = collect([1, 1, 2, 2, 3, 4, 2]);
 
@@ -1881,7 +1897,7 @@ Al tratar con arreglos u objetos anidados, puedes especificar la clave utilizada
         ]
     */
 
-También puedes pasar una función anónima para determinar la singularidad del elemento:
+También puedes pasar una función de retorno para determinar la singularidad del elemento:
 
     $unique = $collection->unique(function ($item) {
         return $item['brand'].$item['type'];
@@ -1898,7 +1914,7 @@ También puedes pasar una función anónima para determinar la singularidad del 
         ]
     */
 
-El método `unique` utiliza comparaciones "ligeras" al verificar valores de elementos, lo que significa que una cadena con un valor entero se considerará igual a un entero del mismo valor. Usa el método [`uniqueStrict`](#method-uniquestrict) para filtrar usando una comparación "estricta".
+El método `unique` utiliza comparaciones "flexibles" (loose) al verificar valores de elementos, lo que significa que una cadena con un valor entero se considerará igual a un entero del mismo valor. Usa el método [`uniqueStrict`](#method-uniquestrict) para filtrar usando una comparación "estricta".
 
 <a name="method-uniquestrict"></a>
 #### `uniqueStrict()` {#collection-method}
@@ -1908,7 +1924,7 @@ Este método tiene la misma funcionalidad que el método [`unique`](#method-uniq
 <a name="method-unless"></a>
 #### `unless()` {#collection-method}
 
-El método `unless` ejecutará una función anónima a menos que el primer argumento dado al método se evalúe como `true`:
+El método `unless` ejecutará una función de retorno a menos que el primer argumento dado al método se evalúe como `true`:
 
     $collection = collect([1, 2, 3]);
 
@@ -1925,6 +1941,16 @@ El método `unless` ejecutará una función anónima a menos que el primer argum
     // [1, 2, 3, 5]
 
 Para hacer lo inverso a `unless`, usa el método [`when`](#method-when).
+
+<a name="method-unlessempty"></a>
+#### `unlessEmpty()` {#collection-method}
+
+Alias para el método [`whenNotEmpty`](#method-whennotempty).
+
+<a name="method-unlessnotempty"></a>
+#### `unlessNotEmpty()` {#collection-method}
+
+Alias para el método [`whenEmpty`](#method-whenempty).
 
 <a name="method-unwrap"></a>
 #### `unwrap()` {#collection-method}
@@ -1967,7 +1993,7 @@ El método `values` devuelve una nueva colección con las claves restablecidas e
 <a name="method-when"></a>
 #### `when()` {#collection-method}
 
-El método `when` ejecutará una función anónima cuando el primer argumento dado al método se evalúa como `true`:
+El método `when` ejecutará una función de retorno cuando el primer argumento dado al método se evalúa como `true`:
 
     $collection = collect([1, 2, 3]);
 
@@ -1984,6 +2010,88 @@ El método `when` ejecutará una función anónima cuando el primer argumento da
     // [1, 2, 3, 4]
 
 Para hacer lo inverso a `when`, usa el método [`unless`](#method-unless).
+
+<a name="method-whenempty"></a>
+#### `whenEmpty()` {#collection-method}
+
+El método `whenEmpty` ejecutará la función de retorno dada cuando la colección esté vacía:
+
+    $collection = collect(['michael', 'tom']);
+
+    $collection->whenEmpty(function ($collection) {
+        return $collection->push('adam');
+    });
+
+    $collection->all();
+
+    // ['michael', 'tom']
+
+
+    $collection = collect();
+
+    $collection->whenEmpty(function ($collection) {
+        return $collection->push('adam');
+    });
+
+    $collection->all();
+
+    // ['adam']
+
+
+    $collection = collect(['michael', 'tom']);
+
+    $collection->whenEmpty(function($collection) {
+        return $collection->push('adam');
+    }, function($collection) {
+        return $collection->push('taylor');
+    });
+
+    $collection->all();
+
+    // ['michael', 'tom', 'taylor']
+
+Para el inverso de `whenEmpty`, ve el método [`whenNotEmpty`](#method-whennotempty).
+
+<a name="method-whennotempty"></a>
+#### `whenNotEmpty()` {#collection-method}
+
+El método `whenNotEmpty` ejecutará la función de retorno dada cuando la colección no esté vacía:
+
+    $collection = collect(['michael', 'tom']);
+
+    $collection->whenNotEmpty(function ($collection) {
+        return $collection->push('adam');
+    });
+
+    $collection->all();
+
+    // ['michael', 'tom', 'adam']
+
+
+    $collection = collect();
+
+    $collection->whenNotEmpty(function ($collection) {
+        return $collection->push('adam');
+    });
+
+    $collection->all();
+
+    // []
+
+
+    $collection = collect();
+
+    $collection->whenNotEmpty(function($collection) {
+        return $collection->push('adam');
+    }, function($collection) {
+        return $collection->push('taylor');
+    });
+
+    $collection->all();
+
+    // ['taylor']
+
+Para el inverso de `whenNotEmpty`, ve el método [`whenEmpty`](#method-whenempty).
 
 <a name="method-where"></a>
 #### `where()` {#collection-method}
@@ -2008,12 +2116,37 @@ El método `where` filtra la colección por clave y valor pasados como parámetr
         ]
     */
 
-El método `where` usa comparaciones "ligeras" al verificar valores de elementos, lo que significa que una cadena con un valor entero se considerará igual a un entero del mismo valor. Usa el método [`whereStrict`](#method-wherestrict) para hacer comparaciones "estrictas".
+El método `where` usa comparaciones "flexibles" (loose) al verificar valores de elementos, lo que significa que una cadena con un valor entero se considerará igual a un entero del mismo valor. Usa el método [`whereStrict`](#method-wherestrict) para hacer comparaciones "estrictas".
 
 <a name="method-wherestrict"></a>
 #### `whereStrict()` {#collection-method}
 
 Este método tiene la misma funcionalidad que el método [`where`](#method-where); sin embargo, todos los valores se comparan utilizando comparaciones "estrictas".
+
+<a name="method-wherebetween"></a>
+#### `whereBetween()` {#collection-method}
+
+El método `whereBetween` filtra la colección dentro de un rango dado:
+
+    $collection = collect([
+        ['product' => 'Desk', 'price' => 200],
+        ['product' => 'Chair', 'price' => 80],
+        ['product' => 'Bookcase', 'price' => 150],
+        ['product' => 'Pencil', 'price' => 30],
+        ['product' => 'Door', 'price' => 100],
+    ]);
+
+    $filtered = $collection->whereBetween('price', [100, 200]);
+
+    $filtered->all();
+
+    /*
+        [
+            ['product' => 'Desk', 'price' => 200],
+            ['product' => 'Bookcase', 'price' => 150],
+            ['product' => 'Door', 'price' => 100],
+        ]
+    */
 
 <a name="method-wherein"></a>
 #### `whereIn()` {#collection-method}
@@ -2038,7 +2171,7 @@ El método `whereIn` filtra la colección por una clave / valor contenida dentro
         ]
     */
 
-El método `whereIn` usa comparaciones "ligeras" al verificar valores de elementos, lo que significa que una cadena con un valor entero se considerará igual a un número entero del mismo valor. Usa el método  [`whereInStrict`](#method-whereinstrict) para hacer comparaciones "estrictas".
+El método `whereIn` usa comparaciones "flexibles" (loose) al verificar valores de elementos, lo que significa que una cadena con un valor entero se considerará igual a un número entero del mismo valor. Usa el método  [`whereInStrict`](#method-whereinstrict) para hacer comparaciones "estrictas".
 
 <a name="method-whereinstrict"></a>
 #### `whereInStrict()` {#collection-method}
@@ -2057,6 +2190,30 @@ El método `whereInstanceOf` filtra la colección por un tipo de clase dado:
     ]);
 
     return $collection->whereInstanceOf(User::class);
+
+<a name="method-wherenotbetween"></a>
+#### `whereNotBetween()` {#collection-method}
+
+El método `whereNotBetween` filtra la colección fuera de un rango dado:
+
+    $collection = collect([
+        ['product' => 'Desk', 'price' => 200],
+        ['product' => 'Chair', 'price' => 80],
+        ['product' => 'Bookcase', 'price' => 150],
+        ['product' => 'Pencil', 'price' => 30],
+        ['product' => 'Door', 'price' => 100],
+    ]);
+
+    $filtered = $collection->whereNotBetween('price', [100, 200]);
+
+    $filtered->all();
+
+    /*
+        [
+            ['product' => 'Chair', 'price' => 80],
+            ['product' => 'Pencil', 'price' => 30],
+        ]
+    */
 
 <a name="method-wherenotin"></a>
 #### `whereNotIn()` {#collection-method}
@@ -2081,7 +2238,7 @@ El método `whereNotIn` filtra la colección por una clave / valor que no está 
         ]
     */
 
-El método `whereNotIn` utiliza comparaciones "ligeras" cuando se comprueban los valores de los elementos, lo que significa que una cadena con un valor entero se considerará igual a un número entero del mismo valor. Usa el método [`whereNotInStrict`](#method-wherenotinstrict) para hacer comparaciones "estrictas".
+El método `whereNotIn` utiliza comparaciones "flexibles" (loose) cuando se comprueban los valores de los elementos, lo que significa que una cadena con un valor entero se considerará igual a un número entero del mismo valor. Usa el método [`whereNotInStrict`](#method-wherenotinstrict) para hacer comparaciones "estrictas".
 
 <a name="method-wherenotinstrict"></a>
 #### `whereNotInStrict()` {#collection-method}
