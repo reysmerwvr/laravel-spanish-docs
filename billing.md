@@ -266,6 +266,12 @@ El método `subscribedToPlan` puede ser usado para determinar si el usuario est�
         //
     }
 
+El método `recurring` puede ser usado para determinar si el usuario está actualmente suscrito y ya no está dentro de su periodo de prueba:
+
+	if ($user->subscription('main')->recurring()) {
+		//
+	}
+
 #### Estado de Suscripción Cancelada
 
 Para determinar si el usuario fue alguna vez un suscriptor activo, pero que ha cancelado su suscripción, puedes usar el método `cancelled`:
@@ -279,6 +285,12 @@ También puedes determinar si un usuario ha cancelado su suscripción, pero toda
     if ($user->subscription('main')->onGracePeriod()) {
         //
     }
+
+Para determinar si el usuario que ha cancelado su suscripción ya no está dentro del "periodo de gracia", puedes usar el método `ended`:
+
+	if ($user->subscription('main')->ended()) {
+		//
+	}
 
 <a name="changing-plans"></a>
 ### Cambiando los Planes
