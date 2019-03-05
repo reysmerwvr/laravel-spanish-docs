@@ -216,10 +216,12 @@ Puedes borrar todo el caché utilizando el método `flush`:
 
 Los bloqueos atómicos permiten la manipulación de bloqueos distribuidos sin que tengas que preocuparte sobre las condiciones de la carrera. Por ejemplo, [Laravel Forge](https://forge.laravel.com) usa bloqueos atómicos para asegurarse de que sólo una tarea remota está siendo ejecutada en un servidor a la vez. Puedes crear y administrar bloqueos usando el método `Cache::lock`:
 
-    if (Cache::lock('foo', 10)->get()) {
+    use Illuminate\Support\Facades\Cache;
+
+    if ($lock = Cache::lock('foo', 10)->get()) {
         // Lock acquired for 10 seconds...
 
-        Cache::lock('foo')->release();
+        $lock->release();
     }
 
 El método `get` también acepta una Closure. Luego de que la Closure sea ejecutada, Laravel automáticamente liberará el cierre:
@@ -230,19 +232,33 @@ El método `get` también acepta una Closure. Luego de que la Closure sea ejecut
 
 Si el bloqueo no está disponible en el momento en que lo solicitas, puedes instruir a Laravel para que espere un número determinado de segundos. Si el bloqueo no puede ser adquirido dentro del tiempo límite especificado, una excepción `Illuminate\Contracts\Cache\LockTimeoutException` será mostrada:
 
-    use Illuminate\Contracts\Cache\LockTimeoutException;
-
-    try {
-        Cache::lock('foo', 10)->block(5);
-
+    if ($lock = Cache::lock('foo', 10)->block(5)) {
         // Lock acquired after waiting maximum of 5 seconds...
-    } catch (LockTimeoutException $e) {
-        // Unable to acquire lock...
+
+        $lock->release();
     }
 
     Cache::lock('foo', 10)->block(5, function () {
         // Lock acquired after waiting maximum of 5 seconds...
     });
+
+#### Administrando Bloqueos A Través de Procesos
+
+Algunas veces, necesitarás adquirir un bloqueo en un proceso para liberarlo en otro proceso distinto más adelante. Por ejemplo, podemos solicitar un bloqueo durante la ejecución de un proceso que hace una solicitud web pero queremos liberarlo después que se ejecute un trabajo que es despachado donde se hizo la solicitud a una cola de trabajos. En un escenario como éste, necesitaríamos tomar la identificación del propietario del bloqueo (owner token) en el ámbito donde se produce el mismo y pasarlo al trabajo que va a la cola de trabajos de modo que pueda volver a instanciar el bloqueo usando ese identificador.
+
+    // Within Controller...
+    $podcast = Podcast::find($id);
+
+    if ($lock = Cache::lock('foo', 120)->get()) {
+        ProcessPodcast::dispatch($podcast, $lock->owner());
+    }
+
+    // Within ProcessPodcast Job...
+    Cache::restoreLock('foo', $this->owner)->release();
+
+Si prefieres liberar un bloqueo sin necesidad de indicar su propietario, puedes usar el método `forceRelease`:
+
+    Cache::lock('foo')->forceRelease();
 
 <a name="the-cache-helper"></a>
 ### El Helper Cache
