@@ -164,19 +164,17 @@ Si necesitas recuperar un elemento del caché y después eliminarlo, puedes util
 <a name="storing-items-in-the-cache"></a>
 ### Almacenar Elementos En Caché
 
-Puedes utilizar el método `put` en el facade `Cache` para almacenar elementos en caché. Esto almacenará el elemento indefinidamente: 
-
-    Cache::put('key', 'value');
-
-Cuando coloques un elemento en la memoria caché, necesitarás especificar el número de segundos durante los cuales el valor deberá ser almacenado en caché:
+Puedes utilizar el método `put` en el facade `Cache` para almacenar elementos en caché: 
 
     Cache::put('key', 'value', $seconds);
 
+Si el tiempo de almacenamiento no es pasado al método `put`, el elemento será almacenado indefinidamente:
+
+    Cache::put('key', 'value');
+
 En lugar de pasar el número de segundos como un entero, también puedes pasar una instancia de `DateTime` que represente el tiempo de expiración del elemento almacenado en caché:
 
-    $expiresAt = now()->addMinutes(10);
-
-    Cache::put('key', 'value', $expiresAt);
+    Cache::put('key', 'value', now()->addMinutes(10));
 
 #### Almacenar Si No Está Presente
 
@@ -214,7 +212,7 @@ Puedes borrar todo el caché utilizando el método `flush`:
 <a name="atomic-locks"></a>
 ### Bloqueos Atómicos
 
-> {note} Para usar esta característica, tu aplicación debe estar haciendo uso de los drivers de caché `memcached`, `dynamodb` o `redis` como el driver de caché por defecto de tu aplicación. Adicionalmente, todos los servidores deben estar comunicándose con el mismo servidor de caché central.
+> {note} Para usar esta característica, tu aplicación debe estar haciendo uso de los drivers de caché `memcached`, `dynamodb`, o `redis` como el driver de caché por defecto de tu aplicación. Adicionalmente, todos los servidores deben estar comunicándose con el mismo servidor de caché central.
 
 Los bloqueos atómicos permiten la manipulación de bloqueos distribuidos sin que tengas que preocuparte sobre las condiciones de la carrera. Por ejemplo, [Laravel Forge](https://forge.laravel.com) usa bloqueos atómicos para asegurarse de que sólo una tarea remota está siendo ejecutada en un servidor a la vez. Puedes crear y administrar bloqueos usando el método `Cache::lock`:
 
