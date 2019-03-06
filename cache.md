@@ -232,10 +232,16 @@ El método `get` también acepta una Closure. Luego de que la Closure sea ejecut
 
 Si el bloqueo no está disponible en el momento en que lo solicitas, puedes instruir a Laravel para que espere un número determinado de segundos. Si el bloqueo no puede ser adquirido dentro del tiempo límite especificado, una excepción `Illuminate\Contracts\Cache\LockTimeoutException` será mostrada:
 
-    if ($lock = Cache::lock('foo', 10)->block(5)) {
-        // Lock acquired after waiting maximum of 5 seconds...
+    use Illuminate\Contracts\Cache\LockTimeoutException;
 
-        $lock->release();
+    try {
+        $lock = Cache::lock('foo', 10)->block(5));
+        
+        // Lock acquired after waiting maximum of 5 seconds...
+    } catch (LockTimeoutException $e) {
+        // Unable to acquire lock...
+    } finally {
+        optional($lock)->release();
     }
 
     Cache::lock('foo', 10)->block(5, function () {
