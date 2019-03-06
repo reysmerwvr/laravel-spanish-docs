@@ -54,7 +54,7 @@
     - [Notificaciones](/docs/{{version}}/notifications)
     - [Desarrollo de Paquetes](/docs/{{version}}/packages)
     - [Colas](/docs/{{version}}/queues)
-    - [Task Scheduling](/docs/{{version}}/scheduling)
+    - [Programación de tareas](/docs/{{version}}/scheduling)
 - ## Base De Datos
     - [Empezando](/docs/{{version}}/database)
     - [Constructor De Consultas](/docs/{{version}}/queries)
