@@ -218,7 +218,9 @@ Los bloqueos atómicos permiten la manipulación de bloqueos distribuidos sin qu
 
     use Illuminate\Support\Facades\Cache;
 
-    if ($lock = Cache::lock('foo', 10)->get()) {
+    $lock = Cache::lock('foo', 10);
+
+    if ($lock->get()) {
         // Lock acquired for 10 seconds...
 
         $lock->release();
@@ -234,8 +236,10 @@ Si el bloqueo no está disponible en el momento en que lo solicitas, puedes inst
 
     use Illuminate\Contracts\Cache\LockTimeoutException;
 
+    $lock = Cache::lock('foo', 10);
+
     try {
-        $lock = Cache::lock('foo', 10)->block(5);
+        $lock->block(5);
         
         // Lock acquired after waiting maximum of 5 seconds...
     } catch (LockTimeoutException $e) {
@@ -255,7 +259,9 @@ Algunas veces, necesitarás adquirir un bloqueo en un proceso para liberarlo en 
     // Within Controller...
     $podcast = Podcast::find($id);
 
-    if ($lock = Cache::lock('foo', 120)->get()) {
+    $lock = Cache::lock('foo', 120);
+    
+    if ($lock = $lock->get()) {
         ProcessPodcast::dispatch($podcast, $lock->owner());
     }
 
