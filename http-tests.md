@@ -2,9 +2,9 @@
 
 - [Introducción](#introduction)
     - [Personalizando Encabezados de Solicitud](#customizing-request-headers)
-- [Sesión / Autenticación](#session-and-authentication)
+- [Sesión Y Autenticación](#session-and-authentication)
 - [Probando APIs JSON](#testing-json-apis)
-- [Probando las Subidas de Archivos](#testing-file-uploads)
+- [Probando Subidas De Archivos](#testing-file-uploads)
 - [Aserciones Disponibles](#available-assertions)
     - [Aserciones de Respuesta](#response-assertions)
     - [Aserciones de Autenticación](#authentication-assertions)
@@ -12,7 +12,7 @@
 <a name="introduction"></a>
 ## Introducción
 
-Laravel proporciona una API muy fluida para hacer solicitudes HTTP a tu aplicación y examinar la salida. Por ejemplo, echemos un vistazo a la prueba definida debajo:
+Laravel proporciona una API muy fluida para hacer solicitudes HTTP a tu aplicación y examinar la salida. Por ejemplo, echemos un vistazo a la prueba definida a continuación:
 
     <?php
 
@@ -37,12 +37,12 @@ Laravel proporciona una API muy fluida para hacer solicitudes HTTP a tu aplicaci
         }
     }
 
-El método `get` simula una solicitud `GET` dentro de la aplicación, mientras que el método `assertStatus` comprueba que la respuesta devuelta debería tener el código de estado HTTP dado. Además de esta sencilla aserción, Laravel también contiene una variedad de aserciones para inspeccionar los encabezados, contenidos, estructura JSON y más de la respuesta.
+El método `get` simula una solicitud `GET` dentro de la aplicación, mientras que el método `assertStatus` comprueba que la respuesta devuelta debería tener el código de estado HTTP dado. Además de esta sencilla aserción, Laravel también contiene una variedad de aserciones para inspeccionar de la respuesta los encabezados, contenidos, estructura JSON y más.
 
 <a name="customizing-request-headers"></a>
 ### Personalizando Encabezados de Solicitud
 
-Puedes usar el método `withHeaders` para personalzar los encabezados de la solicitud antes que sea enviada a la aplicación. Esto permitirá que agregues algunos encabezados personalizados de tu preferencia a la solicitud:
+Puedes usar el método `withHeaders` para personalzar los encabezados de la solicitud antes que sean enviados a la aplicación. Esto permitirá que agregues algunos encabezados personalizados de tu preferencia a la solicitud:
 
     <?php
 
@@ -67,12 +67,12 @@ Puedes usar el método `withHeaders` para personalzar los encabezados de la soli
         }
     }
 
-> {tip} The CSRF middleware is automatically disabled when running tests.
+> {tip} El middleware CSRF es automáticamente deshabilitado cuando se ejecutan las pruebas.
 
 <a name="session-and-authentication"></a>
-## Sesión / Autenticación
+## Sesión Y Autenticación
 
-Laravel proporciona varios helpers para trabajar con la sesión durante las pruebas HTTP. Primero, puedes colocar los datos de la sesión en un arreglo dado usando el método `withSession`. Esto es útil para cargar la sesión con los datos antes de realizar una solicitud a tu aplicación:
+Laravel proporciona varias funciones helper para trabajar con la sesión durante las pruebas HTTP. Primero, puedes colocar los datos de la sesión en un arreglo dado usando el método `withSession`. Esto es útil para cargar la sesión con los datos antes de realizar una solicitud a tu aplicación:
 
     <?php
 
@@ -85,7 +85,7 @@ Laravel proporciona varios helpers para trabajar con la sesión durante las prue
         }
     }
 
-Ciertamente, un uso común de la sesión es para mantener el estado del usuario autenticado. El método helper `actingAs` proporciona una foma sencilla de autenticar un usuario dado con el usuario actual. Por ejemplo, podemos usar un [model factorie](/docs/{{version}}/database-testing#writing-factories) para generar y autenticar un usuario:
+Un uso común de la sesión es para mantener el estado del usuario autenticado. El método helper `actingAs` proporciona una foma sencilla de autenticar un usuario dado como el usuario actual. Por ejemplo, podemos usar un [model factory](/docs/{{version}}/database-testing#writing-factories) para generar y autenticar un usuario:
 
     <?php
 
@@ -103,14 +103,14 @@ Ciertamente, un uso común de la sesión es para mantener el estado del usuario 
         }
     }
 
-También puedes especificar que guard debería ser usado para autenticar el usuario dado al pasar el nombre del guard como segundo argumento del método `actingAs`:
+También puedes especificar que "guard" debe ser usado para autenticar el usuario dado al pasar el nombre del guard como segundo argumento del método `actingAs`:
 
     $this->actingAs($user, 'api')
 
 <a name="testing-json-apis"></a>
 ## Probando APIs JSON
 
-Laravel también proporciona varios helpers para probar APIs JSOn y sus respuestas. Por ejemplo, los métodos `json`, `get`, `post`, `put`, `patch` y `delete` pueden ser usados para suministrar solicitudes con varios verbos HTTP. También puedes pasar datos y encabezados fácilmente a estos métodos. Para empezar, vamos a escribir una prueba para hacer una solicitud `POST` a `/user` y comprobar que los datos esperados fueron devueltos:
+Laravel también proporciona varios helpers para probar APIs JSON y sus respuestas. Por ejemplo, los métodos `json`, `get`, `post`, `put`, `patch` y `delete` pueden ser usados para hacer solicitudes con varios verbos HTTP. También puedes pasar datos y encabezados fácilmente a estos métodos. Para empezar, vamos a escribir una prueba para hacer una solicitud `POST` a `/user` y comprobar que los datos esperados fueron devueltos:
 
     <?php
 
@@ -162,7 +162,7 @@ Si prefieres verificar que el arreglo dado esté contenido **exactamente** en la
     }
 
 <a name="testing-file-uploads"></a>
-## Probando las Subidas de Archivos
+## Probando Subidas De Archivos
 
 La clase `Illuminate\Http\UploadedFile` proporciona un método `fake` el cual puede ser usado para generar archivos de prueba o imágenes para prueba. Esto, combinado con el método `fake` de la clase facade `Storage` simplifica grandemente la prueba de subidas de archivos. Por ejemplo, puedes combinar estas dos características para probar fácilmente un formulario de subida de un avatar:
 
@@ -196,7 +196,7 @@ La clase `Illuminate\Http\UploadedFile` proporciona un método `fake` el cual pu
         }
     }
 
-#### Personalización de Archivo Fake
+#### Personalización De Archivo Fake
 
 Al momento de crear archivos usando el método `fake`, puedes especificar el ancho, la altura y el tamaño de la imagen con el propósito de probar mejor tus reglas de validación:
 
@@ -216,7 +216,7 @@ Laravel proporciona una variedad de métodos de aserción personalizados para tu
 
 <style>
     .collection-method-list > p {
-        column-count: 3; -moz-column-count: 3; -webkit-column-count: 3;
+        column-count: 2; -moz-column-count: 2; -webkit-column-count: 2;
         column-gap: 2em; -moz-column-gap: 2em; -webkit-column-gap: 2em;
     }
 
@@ -242,6 +242,7 @@ Laravel proporciona una variedad de métodos de aserción personalizados para tu
 [assertJsonFragment](#assert-json-fragment)
 [assertJsonMissing](#assert-json-missing)
 [assertJsonMissingExact](#assert-json-missing-exact)
+[assertJsonMissingValidationErrors](#assert-json-missing-validation-errors)
 [assertJsonStructure](#assert-json-structure)
 [assertJsonValidationErrors](#assert-json-validation-errors)
 [assertLocation](#assert-location)
@@ -258,6 +259,7 @@ Laravel proporciona una variedad de métodos de aserción personalizados para tu
 [assertSessionHasErrors](#assert-session-has-errors)
 [assertSessionHasErrorsIn](#assert-session-has-errors-in)
 [assertSessionHasNoErrors](#assert-session-has-no-errors)
+[assertSessionDoesntHaveErrors](#assert-session-doesnt-have-errors)
 [assertSessionMissing](#assert-session-missing)
 [assertStatus](#assert-status)
 [assertSuccessful](#assert-successful)
@@ -373,6 +375,13 @@ Comprueba que la respuesta no contenga el fragmento exacto JSON:
 
     $response->assertJsonMissingExact(array $data);
 
+<a name="assert-json-missing-validation-errors"></a>
+#### assertJsonMissingValidationErrors
+
+Comprueba que la respuesta no contenga errores de validación JSON para la llaves dadas:
+
+    $response->assertJsonMissingValidationErrors($keys);
+
 <a name="assert-json-structure"></a>
 #### assertJsonStructure
 
@@ -383,21 +392,21 @@ Comprueba que la respuesta tenga una estructura JSON dada:
 <a name="assert-json-validation-errors"></a>
 #### assertJsonValidationErrors
 
-Comprueba que la respuesta tenga los errores de validación de JSON dados para las claves dadas:
+Comprueba que la respuesta tenga los errores de validación JSON dados para las claves dadas:
 
     $response->assertJsonValidationErrors($keys);
 
 <a name="assert-location"></a>
 #### assertLocation
 
-COmprueba que la respuesta tenga el valor URI dado en el encabezado `Location`:
+Comprueba que la respuesta tenga el valor URI dado en el encabezado `Location`:
 
     $response->assertLocation($uri);
 
 <a name="assert-not-found"></a>
 #### assertNotFound
 
-Comrueba que la respuesta tenga un código de estado "no encontrado":
+Comprueba que la respuesta tenga un código de estado "no encontrado":
 
     $response->assertNotFound();
 
@@ -448,7 +457,7 @@ Comprueba que la cadena dada esté contenida dentro del texto de la respuesta:
 
 Comprueba que las cadenas dadas estén en orden dentro del texto de respuesta:
 
-    $response->assertSeeTAssert that the given strings are contained in order within the response text:extInOrder(array $values);
+    $response->assertSeeTextInOrder(array $values);
 
 <a name="assert-session-has"></a>
 #### assertSessionHas
@@ -485,10 +494,17 @@ Comprueba que la sesión no contenga errores:
 
     $response->assertSessionHasNoErrors();
 
+<a name="assert-session-doesnt-have-errors"></a>
+#### assertSessionDoesntHaveErrors
+
+Comprueba que la sesión no contenga errores para las llaves dadas:
+
+    $response->assertSessionDoesntHaveErrors($keys = [], $format = null, $errorBag = 'default');
+
 <a name="assert-session-missing"></a>
 #### assertSessionMissing
 
-Comprueba que la sesión no contenga la clave dada:
+Comprueba que la sesión no contenga la llave dada:
 
     $response->assertSessionMissing($key);
 
@@ -523,14 +539,14 @@ Comprueba que la vista de la respuesta tiene una lista de datos:
 <a name="assert-view-is"></a>
 #### assertViewIs
 
-Comprueba que la vista dada fué retornada por la ruta:
+Comprueba que la vista dada fue retornada por la ruta:
 
     $response->assertViewIs($value);
 
 <a name="assert-view-missing"></a>
 #### assertViewMissing
 
-Comprueba que a la vista de la respuesta le está faltando una porción de datos enlazada:
+Comprueba que a la vista de la respuesta le está faltando una porción de datos enlazados:
 
     $response->assertViewMissing($key);
 
