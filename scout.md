@@ -2,33 +2,33 @@
 
 - [Introducción](#introduction)
 - [Instalación](#installation)
-    - [Encolando](#queueing)
-    - [Prerrequisitos del Driver](#driver-prerequisites)
+    - [Colas](#queueing)
+    - [Requisitos Previos Del Driver](#driver-prerequisites)
 - [Configuración](#configuration)
-    - [Configurando Índices de Modelo](#configuring-model-indexes)
-    - [Configurando Datos de Búsqueda](#configuring-searchable-data)
-    - [Configurando la ID del MOdelo](#configuring-the-model-id)
+    - [Configurando Índices De Modelo](#configuring-model-indexes)
+    - [Configurando Datos De Búsqueda](#configuring-searchable-data)
+    - [Configurando La ID Del Modelo](#configuring-the-model-id)
 - [Indexando](#indexing)
-    - [Importar Lote](#batch-import)
+    - [Importación en Lote (Batch)](#batch-import)
     - [Agregando Registros](#adding-records)
     - [Actualizando Registros](#updating-records)
     - [Eliminando Registros](#removing-records)
     - [Pausando Indexamiento](#pausing-indexing)
-    - [Conditionally Searchable Model Instances](#conditionally-searchable-model-instances)
-- [Buscando](#searching)
+    - [Instancias De Modelos Searchable Condicionales](#conditionally-searchable-model-instances)
+- [Búsqueda](#searching)
     - [Cláusulas Where](#where-clauses)
     - [Paginación](#pagination)
     - [Eliminación Lógica](#soft-deleting)
-    - [Personalizando las Búsquedas del Motor](#customizing-engine-searches)
+    - [Personalizando Motores De Búsqueda](#customizing-engine-searches)
 - [Motores Personalizados](#custom-engines)
-- [Macros Builder](#builder-macros)
+- [Macros De Constructor (Builder)](#builder-macros)
 
 <a name="introduction"></a>
 ## Introducción
 
-Scout para Laravel proporciona una sencilla solución para agregar búsquedas de texto completo a tus [modelos Eloquent](/docs/{{version}}/eloquent). Usando observadores de modelo, Scout mantendrá automáticamente tus índices de búsqueda sincronizados con tus registros de Eloquent.
+Laravel Scout proporciona una sencilla solución para agregar búsquedas de texto completo a tus [modelos Eloquent](/docs/{{version}}/eloquent). Usando observadores de modelo, Scout mantendrá automáticamente tus índices de búsqueda sincronizados con tus registros de Eloquent.
 
-Actualmente, Scout viene con un manejador [Algolia](https://www.algolia.com/); sin embargo, la escritura de manejadores personalizados en sencillo y eres libre de extender Scout con tus propias implementaciones de búsqueda.
+Actualmente, Scout viene con el controlador (driver) [Algolia](https://www.algolia.com/); sin embargo, la escritura de controladores personalizados es simple y eres libre de extender Scout con tus propias implementaciones de búsqueda.
 
 <a name="installation"></a>
 ## Instalación
@@ -37,11 +37,11 @@ Primero, instala Scout por medio del paquete administrador de Composer:
 
     composer require laravel/scout
 
-Después de instalar Scout, deberías publicar la configuración de Scout usando el comando Artisan `vendor:publish`. Este comando publicará el archivo de configuración `scout.php` en tu directorio `config`:
+Después de instalar Scout, debes publicar la configuración de Scout usando el comando Artisan `vendor:publish`. Este comando publicará el archivo de configuración `scout.php` en tu directorio `config`:
 
     php artisan vendor:publish --provider="Laravel\Scout\ScoutServiceProvider"
 
-Finalmente, agrega la característica `Laravel\Scout\Searchable` al modelo en el que te gustaría hacer las búsquedas. Esta característica registrará un observador de modelo para mantener sincronizado con tu manejador de búsqueda:
+Finalmente, agrega el trait `Laravel\Scout\Searchable` al modelo en el que te gustaría hacer búsquedas. Este trait registrará un observador de modelo para mantener sincronizado con tu controlador de búsqueda:
 
     <?php
 
@@ -56,30 +56,30 @@ Finalmente, agrega la característica `Laravel\Scout\Searchable` al modelo en el
     }
 
 <a name="queueing"></a>
-### Encolando
+### Colas
 
-Mientras no es requerido estrictamente para usar Scout, deberías considerar fuertemente configurar un [manejador de cola](/docs/{{version}}/queues) antes de usar la librería. Ejecutar un worker de cola permitirá que Scout encole todas las operaciones que sincronizan la información de tu modelo con tus índices de búsqueda, proporcionando tiempos de respuesta mucho mejores para la interfaz web de tu aplicación.
+Aunque no es estrictamente necesario para usar Scout, deberías considerar fuertemente configurar un [controlador de cola](/docs/{{version}}/queues) antes de usar el paquete. La ejecución de un trabajador (worker) de cola permitirá a Scout poner en cola todas las operaciones que sincronizan la información de tu modelo con tus índices de búsqueda, proporcionando mejores tiempos de respuesta para la interfaz web de tu aplicación.
 
-Una vez que hayas configurado tu manejador de cola, establece el valor de la opción `queue` en tu archivo de configuración `config/scout.php` a `true`:
+Una vez que hayas configurado tu controlador de cola, establece el valor de la opción `queue` en tu archivo de configuración `config/scout.php` a `true`:
 
     'queue' => true,
 
 <a name="driver-prerequisites"></a>
-### Prerrequisitos del Manejador
+### Requisitos Previos Del Driver
 
 #### Algolia
 
-Al momento de usar el manejador de Algolia, deberías configurar tus credenciales `id` y `secret` en tu archivo de configuración `config/scout.php`. Una vez que tus credenciales han sido configuradas, también necesitarás instalar Algolia PHP SDK por medio del administrador de paquetes Composer:
+Al usar el controlador Algolia, debes configurar tus credenciales `id` y `secret` en tu archivo de configuración `config/scout.php`. Una vez que tus credenciales han sido configuradas, también necesitarás instalar Algolia PHP SDK por medio del gestor de paquetes Composer:
 
-    composer require algolia/algoliasearch-client-php
+    composer require algolia/algoliasearch-client-php:^2.2
 
 <a name="configuration"></a>
 ## Configuración
 
 <a name="configuring-model-indexes"></a>
-### Configurando Índices de Modelo
+### Configurando Índices De Modelo
 
-Cada modelo Eloquent es sincronizado con un "índice" de búsqueda dado, el cuál contiene todos los registros que pueden ser encontrados para ese modelo. En otras palabras, puedes pensar en cada índice como una tabla MySQL. De forma predeterminada, cada modelo será persistido en un índice que coincida con el típico nombre de la "tabla" del modelo. Típicamente, esta es la forma plural del nombre del modelo; sin embargo, eres libre de personalizar el índice del modelo sobrescribiendo el método `searchableAs` en el modelo:
+Cada modelo Eloquent es sincronizado con un "índice" de búsqueda dado, el cual contiene todos los registros que pueden ser encontrados para ese modelo. En otras palabras, puedes pensar en cada índice como una tabla MySQL. De forma predeterminada, cada modelo será persistido en un índice que coincida con el típico nombre de la "tabla" del modelo. Típicamente, esta es la forma plural del nombre del modelo; sin embargo, eres libre de personalizar el índice del modelo sobrescribiendo el método `searchableAs` en el modelo:
 
     <?php
 
@@ -104,7 +104,7 @@ Cada modelo Eloquent es sincronizado con un "índice" de búsqueda dado, el cuá
     }
 
 <a name="configuring-searchable-data"></a>
-### Configurando Datos Que pueden Ser Encontrados
+### Configuración De Datos De Búsqueda
 
 De forma predeterminada, la forma `toArray` completa de un modelo dado será persistida en su índice de búsqueda. Si prefieres personalizar los datos que son sincronizados en el índice de búsqueda, puedes sobrescribir el método `toSearchableArray` en el modelo:
 
@@ -135,9 +135,9 @@ De forma predeterminada, la forma `toArray` completa de un modelo dado será per
     }
 
 <a name="configuring-the-model-id"></a>
-### Configurando el ID del Modelo
+### Configurando El ID Del Modelo
 
-Por defecto, Scout usará la clave primaria del modelo como su ID única, almacenada en el índice de búsqueda. Si necesitas personalizar este comportamiento, se puede anular el método `getScoutKey` en el modelo:
+Por defecto, Scout usará la clave primaria del modelo como su ID única, almacenada en el índice de búsqueda. Si necesitas personalizar este comportamiento, se puede sobrescribir el método `getScoutKey` en el modelo:
 
     <?php
 
@@ -165,16 +165,20 @@ Por defecto, Scout usará la clave primaria del modelo como su ID única, almace
 ## Indexando
 
 <a name="batch-import"></a>
-### Importar Lote
+### Importación en Lote (Batch)
 
 Si estás instalando Scout en un proyecto existente, puede que ya tengas registros de base de datos que necesites importar dentro de tu manejador de búsqueda. Scout proporciona un comando Artisan `import` que puedes usar para importar todos tus registros existentes a tus índices de búsqueda:
 
     php artisan scout:import "App\Post"
 
+The `flush` command may be used to remove all of a model's records from your search indexes:
+
+    php artisan scout:flush "App\Post"
+
 <a name="adding-records"></a>
 ### Agregando Registros
 
-Una vez que has agregado la característica `Laravel\Scout\Searchable` a tu modelo, todo lo que necesitas hacer es llamar a `save` en una instancia de modelo y será agregada automáticamente a tu índice de búsqueda. Si has configurado Scout para [usar colas](#queueing) esta operación será ejecutada en segundo plano por tu worker de cola:
+Una vez que has agregado el trait `Laravel\Scout\Searchable` a tu modelo, todo lo que necesitas hacer es llamar a `save` en una instancia de modelo y será agregada automáticamente a tu índice de búsqueda. Si has configurado Scout para [usar colas](#queueing) esta operación será ejecutada en segundo plano por tu worker de cola:
 
     $order = new App\Order;
 
@@ -184,15 +188,15 @@ Una vez que has agregado la característica `Laravel\Scout\Searchable` a tu mode
 
 #### Agregando Por Medio de Consulta
 
-Si prefieres agregar una colección de modelos a tu índice de búsqueda por medio de una consulta Eloquent, puedes encadenar el método `searchable` con una consulta Eloquent. El método `searchable` [dividirá los resultados](/docs/{{version}}/eloquent#chunking-results) de la consulta y agregará los registros a tu índice de búsqueda. Otra vez, si has configurado Scout para usar colas, todos estas porciones seran agregadas en segundo plano por tus workers de cola:
+Si prefieres agregar una colección de modelos a tu índice de búsqueda por medio de una consulta Eloquent, puedes encadenar el método `searchable` con una consulta Eloquent. El método `searchable` [dividirá (chunk) los resultados](/docs/{{version}}/eloquent#chunking-results) de la consulta y agregará los registros a tu índice de búsqueda. Otra vez, si has configurado Scout para usar colas, todos estas porciones serán agregadas en segundo plano por tus workers de cola:
 
-    // Adding via Eloquent query...
+    // Agregando Por Medio de consulta Eloquent...
     App\Order::where('price', '>', 100)->searchable();
 
-    // You may also add records via relationships...
+    // Puedes también agregar registros a través de relaciones...
     $user->orders()->searchable();
 
-    // You may also add records via collections...
+    // Puedes también agregar registros a través de colecciones...
     $orders->searchable();
 
 El método `searchable` puede ser considerado una operación "upsert". En otras palabras, si el registro del modelo ya está en tu índice, será actualizado. Si no existe en el índice de búsqueda, será agregado al índice.
@@ -200,7 +204,7 @@ El método `searchable` puede ser considerado una operación "upsert". En otras 
 <a name="updating-records"></a>
 ### Actualizando Registros
 
-Para actualizar un modelo buscable, sólo necesitas actualizar las propiedades de la instancia del modelo y llamar a `save` en el modelo en tu base de datos. Scout persistirá automáticamente los cambios en tu índice de búsqueda:
+Para actualizar un modelo searchable, sólo necesitas actualizar las propiedades de la instancia del modelo y llamar a `save` en el modelo en tu base de datos. Scout persistirá automáticamente los cambios en tu índice de búsqueda:
 
     $order = App\Order::find(1);
 
@@ -210,13 +214,13 @@ Para actualizar un modelo buscable, sólo necesitas actualizar las propiedades d
 
 También puedes usar el método `searchable` en una consulta Eloquent para actualizar una colección de modelos. Si los modelos no existen en tu índice de búsqueda, serán creados:
 
-    // Updating via Eloquent query...
+    // Actualizando a través de consulta de Eloquent...
     App\Order::where('price', '>', 100)->searchable();
 
-    // You may also update via relationships...
+    // Puedes actualizar por medio de relaciones...
     $user->orders()->searchable();
 
-    // You may also update via collections...
+    // También puedes actualizar a través de colecciones...
     $orders->searchable();
 
 <a name="removing-records"></a>
@@ -248,10 +252,34 @@ Algunas veces puedes necesitar ejecutar un lote de operaciones de Eloquent en un
         // Perform model actions...
     });
 
-<a name="searching"></a>
-## Buscando
+<a name="conditionally-searchable-model-instances"></a>
+### Instancias De Modelos Searchable Condicionales
 
-Puedes empezar a buscar un modelo usando el método `search`. El método "search" acepta una sola cadena que será usada para buscar tus modelos. Luego deberías encadenar el método `get` con la consulta de búsqueda para obtener los modelos Eloquent que coincidan con la consulta de búsqueda dada:
+A veces es posible que solo tengas que hacer que un modelo searchable bajo ciertas condiciones. Por ejemplo, imagina que tienes el modelo `App\Post` que puede estar en uno de dos estados: " borrador (draft)" y "publicado (published)". Es posible que solo desees permitir que las publicaciones "publicadas" puedan buscarse. Para lograr esto, puede definir un método `shouldBeSearchable` en su modelo:
+
+    public function shouldBeSearchable()
+    {
+        return $this->isPublished();
+    }
+
+El método `shouldBeSearchable` solo se aplica cuando se manipulan modelos a través del método `save`, las consultas o las relaciones. Puedes hacer que los modelos o las colecciones se puedan buscar directamente utilizando el método `searchable` que sobrescribirá el resultado del método` shouldBeSearchable`:
+
+    // Respetará "shouldBeSearchable"...
+    App\Order::where('price', '>', 100)->searchable();
+
+    $user->orders()->searchable();
+
+    $order->save();
+
+    // Sobrescribirá "shouldBeSearchable"...
+    $orders->searchable();
+
+    $order->searchable();
+
+<a name="searching"></a>
+## Búsqueda
+
+Puedes empezar a buscar un modelo usando el método `search`. Este método acepta una sola cadena que será usada para buscar tus modelos. Luego debes encadenar el método `get` con la consulta de búsqueda para obtener los modelos Eloquent que coincidan con la consulta de búsqueda dada:
 
     $orders = App\Order::search('Star Trek')->get();
 
@@ -263,7 +291,7 @@ Ya que las búsquedas de Scout devuelven una colección de modelos, incluso pued
         return App\Order::search($request->search)->get();
     });
 
-Si prefieres obtener los resultados crudos antes de que sean convertidos a modelos de Eloquent, deberías usar el método `raw`:
+Si prefieres obtener los resultados crudos (raw) antes de que sean convertidos a modelos de Eloquent, deberías usar el método `raw`:
 
     $orders = App\Order::search('Star Trek')->raw();
 
@@ -319,13 +347,13 @@ Cuando esta opción de configuración es `true`, Scout no removerá del índice 
 > {tip} Cuando un modelo eliminado lógicamente es eliminado permanentemente utilizando `forceDelete`, Scout lo removerá del índice de búsqueda automáticamente.
 
 <a name="customizing-engine-searches"></a>
-### Personalizando las Búsquedas del Motor
+### Personalizando Motores de Búsqueda
 
-Si necesitas personalizar el comportamiento de búsqueda de un motor, puedes pasar una función anónima como el segundo argumento al método `search`. Por ejemplo, podrías usar esta función anónima para añadir datos de geolocalización a tus opciones de búsqueda antes de que la consulta de búsqueda sea pasada a Algolia: 
+Si necesitas personalizar el comportamiento de un motor de búsqueda, puedes pasar una función de retorno (callback) como el segundo argumento al método `search`. Por ejemplo, podrías usar este callback para añadir datos de geolocalización a tus opciones de búsqueda antes de que la consulta de búsqueda sea pasada a Algolia: 
 
-    use AlgoliaSearch\Index;
+    use Algolia\AlgoliaSearch\SearchIndex;
 
-    App\Order::search('Star Trek', function (Index $algolia, string $query, array $options) {
+    App\Order::search('Star Trek', function (SearchIndex $algolia, string $query, array $options) {
         $options['body']['query']['bool']['filter']['geo_distance'] = [
             'distance' => '1000km',
             'location' => ['lat' => 36, 'lon' => 111],
@@ -337,9 +365,9 @@ Si necesitas personalizar el comportamiento de búsqueda de un motor, puedes pas
 <a name="custom-engines"></a>
 ## Motores Personalizados
 
-#### Escribiendo el Motor
+#### Escribiendo El Motor
 
-Si ninguno de los motores integrados de búsqueda de Scout no se ajustan a tus necesidades, puedes escribir tu propio motor personalizado y registrarlo con Scout. Tu motor debería extender la clase abstracta `Laravel\Scout\Engines\Engine`. Esta clase abstracta contiene siete métodos que tu motor personalizado de búsqueda debe implementar:
+Si ninguno de los motores de búsqueda integrados en Scout no se ajustan a tus necesidades, puedes escribir tu propio motor personalizado y registrarlo con Scout. Tu motor debería extender la clase abstracta `Laravel\Scout\Engines\Engine`. Esta clase abstracta contiene siete métodos que tu motor de búsqueda personalizado debe implementar:
 
     use Laravel\Scout\Builder;
 
@@ -350,10 +378,11 @@ Si ninguno de los motores integrados de búsqueda de Scout no se ajustan a tus n
     abstract public function mapIds($results);
     abstract public function map($results, $model);
     abstract public function getTotalCount($results);
+    abstract public function flush($model);
 
-Puedes encontrar útil revisar las implementaciones de estos métodos en la clase `Laravel\Scout\Engines\AlgoliaEngine`. Esta clase te proporcionará un buen punto de inicio para aprender como implementar cada uno de estos métodos en tu propio motor.
+Puedes encontrar útil revisar las implementaciones de estos métodos en la clase `Laravel\Scout\Engines\AlgoliaEngine`. Esta clase te proporcionará un buen punto de inicio para aprender cómo implementar cada uno de estos métodos en tu propio motor.
 
-#### Registrando el Motor
+#### Registrando El Motor
 
 Una vez que hayas escrito tu motor personalizado, puedes registrarlo con Scout usando el método `extend` del administrador de motor de Scout. Deberías ejecutar el método `extend` desde el método `boot` de tu `AppServiceProvider` o cualquier otro proveedor de servicio usado por tu aplicación. Por ejemplo, si has escrito un `MySqlSearchEngine`, puedes registrarlo como sigue:
 
@@ -376,9 +405,9 @@ Una vez que tu motor ha sido registrado, puedes especificarlo como tu `driver` p
     'driver' => 'mysql',
 
 <a name="builder-macros"></a>
-## Macros Builder
+## Macros De Constructor (Builder)
 
-Si deseas definir un método builder personalizado, puedes usar el método `macro` en la clase `Laravel\Scout\Builder`. Típicamente, las "macros" deben ser definidas dentro de un método `boot` de un [proveedor de servicios](/docs/{{version}}/providers):
+Si deseas definir un método constructor personalizado, puedes usar el método `macro` en la clase `Laravel\Scout\Builder`. Típicamente, las "macros" deben ser definidas dentro de un método `boot` de un [proveedor de servicios](/docs/{{version}}/providers):
 
     <?php
 
@@ -405,6 +434,6 @@ Si deseas definir un método builder personalizado, puedes usar el método `macr
         }
     }
 
-La función `macro` acepta un nombre como su primer argumento, y un Closure como el segundo. El CLosure del macro será ejecutado al momento de llamar el nombre del macro desde una implementación `Laravel\Scout\Builder`:
+La función `macro` acepta un nombre como su primer argumento y un Closure como el segundo. El CLosure del macro será ejecutado al momento de llamar el nombre del macro desde una implementación `Laravel\Scout\Builder`:
 
     App\Order::search('Star Trek')->count();
