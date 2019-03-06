@@ -105,7 +105,7 @@ Usando el facade `Cache`, puedes acceder a varios almacenamientos de caché a tr
 
     $value = Cache::store('file')->get('foo');
 
-    Cache::store('redis')->put('bar', 'baz', 10);
+    Cache::store('redis')->put('bar', 'baz', 600); // 10 Minutes
 
 <a name="retrieving-items-from-the-cache"></a>
 ### Recuperar Elementos De Caché
@@ -143,7 +143,7 @@ Los métodos `increment` y `decrement` se pueden usar para ajustar el valor de l
 
 En ocasiones, es posible que desees recuperar un elemento de la memoria caché, pero también almacenar un valor predeterminado si el elemento no existe. Por ejemplo, puede que desees recuperar todos los usuarios de la memoria caché o, si no existen, recuperarlos desde la base de datos y agregarlos a la caché. Puedes hacer esto utilizando el método `Cache::remember`:
 
-    $value = Cache::remember('users', $minutes, function () {
+    $value = Cache::remember('users', $seconds, function () {
         return DB::table('users')->get();
     });
 
@@ -164,21 +164,23 @@ Si necesitas recuperar un elemento del caché y después eliminarlo, puedes util
 <a name="storing-items-in-the-cache"></a>
 ### Almacenar Elementos En Caché
 
-Puedes utilizar el método `put` en el facade `Cache` para almacenar elementos en caché. Cuando coloques un elemento en la memoria caché, necesitarás especificar el número de minutos durante los cuales el valor deberá ser almacenado en caché:
+Puedes utilizar el método `put` en el facade `Cache` para almacenar elementos en caché: 
 
-    Cache::put('key', 'value', $minutes);
+    Cache::put('key', 'value', $seconds);
 
-En lugar de pasar el número de minutos como un entero, también puedes pasar una instancia de `DateTime` que reprecente el tiempo de expiración del elemento almacenado en caché:
+Si el tiempo de almacenamiento no es pasado al método `put`, el elemento será almacenado indefinidamente:
 
-    $expiresAt = now()->addMinutes(10);
+    Cache::put('key', 'value');
 
-    Cache::put('key', 'value', $expiresAt);
+En lugar de pasar el número de segundos como un entero, también puedes pasar una instancia de `DateTime` que represente el tiempo de expiración del elemento almacenado en caché:
+
+    Cache::put('key', 'value', now()->addMinutes(10));
 
 #### Almacenar Si No Está Presente
 
 El método `add` solo agregará el elemento a caché si éste no existe todavia en la memoria caché. El metodo va a regresar `true` si el elemento realmente se agregó a la caché. De otra manera, el método va a regresar `false`:
 
-    Cache::add('key', 'value', $minutes);
+    Cache::add('key', 'value', $seconds);
 
 #### Almacenar Elementos Para Siempre
 
@@ -195,6 +197,12 @@ Puedes eliminar elementos de caché utilizando el método `forget`:
 
     Cache::forget('key');
 
+También puedes eliminar elementos de caché especificando un TTL cero o negativo:
+
+    Cache::put('key', 'value', 0);
+
+    Cache::put('key', 'value', -5);
+
 Puedes borrar todo el caché utilizando el método `flush`:
 
     Cache::flush();
@@ -204,14 +212,16 @@ Puedes borrar todo el caché utilizando el método `flush`:
 <a name="atomic-locks"></a>
 ### Bloqueos Atómicos
 
-> {note} Para usar esta característica, tu aplicación debe estar haciendo uso de los drivers de caché `memcached` o `redis` como el driver de caché por defecto de tu aplicación. Adicionalmente, todos los servidores deben estar comunicandose con el mismo servidor de caché central.
+> {note} Para usar esta característica, tu aplicación debe estar haciendo uso de los drivers de caché `memcached`, `dynamodb`, o `redis` como el driver de caché por defecto de tu aplicación. Adicionalmente, todos los servidores deben estar comunicándose con el mismo servidor de caché central.
 
 Los bloqueos atómicos permiten la manipulación de bloqueos distribuidos sin que tengas que preocuparte sobre las condiciones de la carrera. Por ejemplo, [Laravel Forge](https://forge.laravel.com) usa bloqueos atómicos para asegurarse de que sólo una tarea remota está siendo ejecutada en un servidor a la vez. Puedes crear y administrar bloqueos usando el método `Cache::lock`:
 
-    if (Cache::lock('foo', 10)->get()) {
+    use Illuminate\Support\Facades\Cache;
+
+    if ($lock = Cache::lock('foo', 10)->get()) {
         // Lock acquired for 10 seconds...
 
-        Cache::lock('foo')->release();
+        $lock->release();
     }
 
 El método `get` también acepta una Closure. Luego de que la Closure sea ejecutada, Laravel automáticamente liberará el cierre:
@@ -225,16 +235,36 @@ Si el bloqueo no está disponible en el momento en que lo solicitas, puedes inst
     use Illuminate\Contracts\Cache\LockTimeoutException;
 
     try {
-        Cache::lock('foo', 10)->block(5);
-
+        $lock = Cache::lock('foo', 10)->block(5);
+        
         // Lock acquired after waiting maximum of 5 seconds...
     } catch (LockTimeoutException $e) {
         // Unable to acquire lock...
+    } finally {
+        optional($lock)->release();
     }
 
     Cache::lock('foo', 10)->block(5, function () {
         // Lock acquired after waiting maximum of 5 seconds...
     });
+
+#### Administrando Bloqueos A Través de Procesos
+
+Algunas veces, necesitarás adquirir un bloqueo en un proceso para liberarlo en otro proceso distinto más adelante. Por ejemplo, podemos solicitar un bloqueo durante la ejecución de un proceso que hace una solicitud web pero queremos liberarlo después que se ejecute un trabajo que es despachado donde se hizo la solicitud a una cola de trabajos. En un escenario como éste, necesitaríamos tomar la identificación del propietario del bloqueo (owner token) en el ámbito donde se produce el mismo y pasarlo al trabajo que va a la cola de trabajos de modo que pueda volver a instanciar el bloqueo usando ese identificador.
+
+    // Within Controller...
+    $podcast = Podcast::find($id);
+
+    if ($lock = Cache::lock('foo', 120)->get()) {
+        ProcessPodcast::dispatch($podcast, $lock->owner());
+    }
+
+    // Within ProcessPodcast Job...
+    Cache::restoreLock('foo', $this->owner)->release();
+
+Si prefieres liberar un bloqueo sin necesidad de indicar su propietario, puedes usar el método `forceRelease`:
+
+    Cache::lock('foo')->forceRelease();
 
 <a name="the-cache-helper"></a>
 ### El Helper Cache
@@ -245,13 +275,13 @@ Además de usar el facade `Cache` o [el contrato de caché](/docs/{{version}}/co
 
 Si proporcionas un arreglo de pares clave / valor y su tiempo de expiración a la función, almacenará los valores en caché durante la duración especificada:
 
-    cache(['key' => 'value'], $minutes);
+    cache(['key' => 'value'], $seconds);
 
-    cache(['key' => 'value'], now()->addSeconds(10));
+    cache(['key' => 'value'], now()->addMinutes(10));
 
 Cuando la función `cache` es llamada sin ningún argumento, ésta retorna una instancia de la implementación `Illuminate\Contracts\Cache\Factory`, permitiéndote llamar a otros métodos de almacenamiento en caché:
 
-    cache()->remember('users', $minutes, function () {
+    cache()->remember('users', $seconds, function () {
         return DB::table('users')->get();
     });
 
@@ -267,9 +297,9 @@ Cuando la función `cache` es llamada sin ningún argumento, ésta retorna una i
 
 Las etiquetas de caché te permiten etiquetar elementos relacionados en caché y después limpiar todos los valores almacenados en caché asignados a una etiqueta dada. Puedes acceder a un caché etiquetado al pasar un arreglo ordenado de nombres de etiquetas. Por ejemplo, vamos a acceder a un caché etiquetado y al valor `put` en el caché:
 
-    Cache::tags(['people', 'artists'])->put('John', $john, $minutes);
+    Cache::tags(['people', 'artists'])->put('John', $john, $seconds);
 
-    Cache::tags(['people', 'authors'])->put('Anne', $anne, $minutes);
+    Cache::tags(['people', 'authors'])->put('Anne', $anne, $seconds);
 
 <a name="accessing-tagged-cache-items"></a>
 ### Acceder A Elementos De Caché Etiquetados
@@ -309,8 +339,8 @@ Para crear el controlador de caché, primero se debe implementar el [contract](/
     {
         public function get($key) {}
         public function many(array $keys);
-        public function put($key, $value, $minutes) {}
-        public function putMany(array $values, $minutes);
+        public function put($key, $value, $seconds) {}
+        public function putMany(array $values, $seconds);
         public function increment($key, $value = 1) {}
         public function decrement($key, $value = 1) {}
         public function forever($key, $value) {}
