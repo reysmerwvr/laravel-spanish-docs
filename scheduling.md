@@ -201,6 +201,18 @@ Usando el método `timezone`, puedes especificar que el tiempo de una tarea prog
              ->timezone('America/New_York')
              ->at('02:00')
 
+Si estás asignando la misma zona horaria a todas tus tareas programadas, puedes desear definir un método `scheduleTimezone` en tu archivo `app/Console/Kernel.php`. Este método debería retornar la zona horaria por defecto que debe ser asignada a todas las tareas programadas.
+
+    /**
+     * Get the timezone that should be used by default for scheduled events.
+     *
+     * @return \DateTimeZone|string|null
+     */
+    protected function scheduleTimezone()
+    {
+        return 'America/Chicago';
+    }
+
 > {note} Recuerda que algunas zonas horarias usan horario de verano. Cuando ocurren cambios por horario de verano, tu tarea programada puede ejecutarse dos veces o puede no ser ejecutada. Por esto, recomendamos evitar programación con zona horaria en la medida de lo posible.
 
 <a name="preventing-task-overlaps"></a>
