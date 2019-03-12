@@ -724,6 +724,16 @@ Una vez que el scope ha sido definido, puedes ejecutar los métodos de scope al 
 
     $users = App\User::popular()->active()->orderBy('created_at')->get();
 
+La combinación de múltiples scopes de modelo Eloquent a través de un operador de consulta `or` puede requerir el uso de funciones de retorno Closure como:
+
+    $users = App\User::popular()->orWhere(function (Builder $query) {
+        $query->active();
+    })->get();
+
+Sin embargo, dado que esto puede ser engorroso, Laravel proporciona un método de "orden superior" `orWhere` que te permite encadenar estos scopes con fluidez sin el uso de Closure:
+
+    $users = App\User::popular()->orWhere->active()->get();
+
 #### Scopes Dinámicos
 
 Algunas veces, puedes desear definir un scope que acepte parámetros. Para empezar, sólo agrega tus parámetros adicionales a tu scope. Los parámetros de scope deben ser definidos después del parámetro `$query`:
