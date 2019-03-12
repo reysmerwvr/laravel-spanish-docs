@@ -6,6 +6,8 @@
     - [Uno A Muchos](#one-to-many)
     - [Uno A Muchos (Inverso)](#one-to-many-inverse)
     - [Muchos A Muchos](#many-to-many)
+    - [Definiendo Modelos de Tabla Intermedia Personalizados](#defining-custom-intermediate-table-models)
+    - [Tiene Uno A Través De](#has-one-through)
     - [Tiene Muchos a Través de](#has-many-through)
 - [Relaciones Polimórficas](#polymorphic-relationships)
     - [Uno A Uno](#one-to-one-polymorphic-relations)
@@ -36,6 +38,7 @@ Las tablas de base de datos frecuentemente están relacionadas a otra tabla. Por
 - [Uno a Uno](#one-to-one)
 - [Uno a Muchos](#one-to-many)
 - [Muchos a Muchos](#many-to-many)
+- [Uno a Través de](#has-one-through)
 - [Muchos a Través de](#has-many-through)
 - [Uno a Uno (Polimórfica)](#one-to-one-polymorphic-relations)
 - [Uno a Muchos (Polimórfica)](#one-to-many-polymorphic-relations)
@@ -329,7 +332,8 @@ También puedes filtrar los resultados devueltos por `belongsToMany` usando los 
 
     return $this->belongsToMany('App\Role')->wherePivotIn('priority', [1, 2]);
 
-#### Definiendo Modelos De Tablas Intermedias Personalizadas
+<a name="defining-custom-intermediate-table-models"></a>
+### Definiendo Modelos De Tabla Intermedia Personalizados
 
 Si prefieres definir un modelo personalizado para representar la tabla intermedia o pivote de tu relación, puedes ejecutar el método `using` al momento de definir la relación. Los modelos de tablas intermedias de muchos-a-muchos personalizados deben extender la clase `Illuminate\Database\Eloquent\Relations\Pivot` mientras que los modelos polimórficos muchos-a-muchos deben extender la clase `Illuminate\Database\Eloquent\Relations\MorphPivot`. Por ejemplo, podemos definir un `Role` que use un modelo pivote `UserRole` personalizado:
 
@@ -385,7 +389,76 @@ Puedes combinar `using` y `withPivot` para retornar columnas de la tabla interme
                                 'updated_by'
                             ]);
         }
-    }    
+    }
+
+#### Modelos De Pivote Personalizados E IDs Incrementales
+
+Si has definido una relación de muchos a muchos que usa un modelo de pivote personalizado, y ese modelo de pivote tiene una clave primaria de incremento automático, debes asegurarte de que su clase de modelo de pivote personalizado defina una propiedad `incrementing` que se establece en` true `.
+
+    /**
+     * Indicates if the IDs are auto-incrementing.
+     *
+     * @var bool
+     */
+    public $incrementing = true;
+
+<a name="has-one-through"></a>
+### Tiene Uno A Través De (hasOneThrough)
+
+La relación "tiene uno a través" vincula los modelos a través de una única relación intermedia. 
+Por ejemplo, si cada proveedor (supplier) tiene un usuario (user) y cada usuario está asociado con un registro del historial (history) de usuarios, entonces el modelo del proveedor puede acceder al historial del usuario _a través_ del usuario. Veamos las tablas de base de datos necesarias para definir esta relación:
+
+    users
+        id - integer
+        supplier_id - integer
+
+    suppliers
+        id - integer
+
+    history
+        id - integer
+        user_id - integer
+
+Aunque la tabla `history` no contiene una columna` supplier_id`, la relación `hasOneThrough` puede proporcionar acceso al historial del usuario desde el modelo del proveedor. Ahora que hemos examinado la estructura de la tabla para la relación, vamos a definirla en el modelo `Supplier`:
+
+    <?php
+
+    namespace App;
+
+    use Illuminate\Database\Eloquent\Model;
+
+    class Supplier extends Model
+    {
+        /**
+         * Get the user's history.
+         */
+        public function userHistory()
+        {
+            return $this->hasOneThrough('App\History', 'App\User');
+        }
+    }
+
+El primer argumento pasado al método `hasOneThrough` es el nombre del modelo final al que queremos acceder, mientras que el segundo argumento es el nombre del modelo intermedio.
+
+Se utilizarán las convenciones típicas de clave foránea de Eloquent al realizar las consultas de la relación. Si deseas personalizar las claves de la relación, puedes pasarlas como el tercer y cuarto argumento al método `hasOneThrough`. El tercer argumento es el nombre de la clave foránea en el modelo intermedio. El cuarto argumento es el nombre de la clave foránea en el modelo final. El quinto argumento es la clave local, mientras que el sexto argumento es la clave local del modelo intermedio:
+
+    class Supplier extends Model
+    {
+        /**
+         * Get the user's history.
+         */
+        public function userHistory()
+        {
+            return $this->hasOneThrough(
+                'App\History',
+                'App\User',
+                'supplier_id', // Foreign key on users table...
+                'user_id', // Foreign key on history table...
+                'id', // Local key on suppliers table...
+                'id' // Local key on users table...
+            );
+        }
+    }   
 
 <a name="has-many-through"></a>
 ### Tiene Muchos A Través De (hasManyThrough)
@@ -788,13 +861,15 @@ Las instrucciones `has` anidadas también pueden ser construidas usando la notac
 
 Incluso si necesitas más potencia, puedes usar los métodos `whereHas` y `orWhereHas` para poner condiciones "where" en tus consultas `has`. Estos métodos permiten que agregues restricciones personalizadas a una restricción de relación, tal como verificar el contenido de un comentario:
 
+    use Illuminate\Database\Eloquent\Builder;
+
     // Retrieve posts with at least one comment containing words like foo%
-    $posts = App\Post::whereHas('comments', function ($query) {
+    $posts = App\Post::whereHas('comments', function (Builder $query) {
         $query->where('content', 'like', 'foo%');
     })->get();
 
     // Retrieve posts with at least ten comments containing words like foo%
-    $posts = App\Post::whereHas('comments', function ($query) {
+    $posts = App\Post::whereHas('comments', function (Builder $query) {
         $query->where('content', 'like', 'foo%');
     }, '>=', 10)->get();
 
@@ -807,13 +882,17 @@ Al momento de acceder a los registros de un modelo, puedes desear limitar tus re
 
 Incluso si necesitas más potencia, puedes usar los métodos `whereDoesntHave` y `orWhereDoesntHave` para poner condiciones "where" en tus consultas `doesntHave`. Estos métodos permiten que agregues restricciones personalizadas a una restricción de relación, tal como verificar el contenido de un comentario:
 
-    $posts = Post::whereDoesntHave('comments', function ($query) {
+    use Illuminate\Database\Eloquent\Builder;
+
+    $posts = Post::whereDoesntHave('comments', function (Builder $query) {
         $query->where('content', 'like', 'foo%');
     })->get();
 
 Puedes usar notación "de puntos" para ejecutar una consulta contra una relación anidada. Por ejemplo, la siguiente consulta entregará todos los posts con comentarios de autores que no están vetados:
+    
+    use Illuminate\Database\Eloquent\Builder;
 
-    $posts = App\Post::whereDoesntHave('comments.author', function ($query) {
+    $posts = App\Post::whereDoesntHave('comments.author', function (Builder $query) {
         $query->where('banned', 1);
     })->get();
 
@@ -852,7 +931,7 @@ También puedes poner un alias al resultado de la cuenta de la relación, permit
 
 Si estás combinando `withCount` con una instrucción `select`, asegúrate de llamar a `withCount` después del método `select`:
 
-    $query = App\Post::select(['title', 'body'])->withCount('comments');
+    $posts = App\Post::select(['title', 'body'])->withCount('comments');
 
     echo $posts[0]->title;
     echo $posts[0]->body;
@@ -969,6 +1048,39 @@ Para cargar una relación solo cuando aún no se ha cargado, usa el método `loa
             'author' => $book->author->name
         ];
     }
+
+#### Carga Previa Diferida Anidada Y `morphTo`
+
+Si deseas cargar previamente una relación `morphTo`, así como relaciones anidadas en las diversas entidades que pueden ser devueltas por esa relación, puedes usar el método` loadMorph`.
+
+Este método acepta el nombre de la relación `morphTo` como su primer argumento, y un arreglo de pares modelo / relación como su segundo argumento. Para ayudar a ilustrar este método, consideremos el siguiente modelo:
+
+    <?php
+
+    use Illuminate\Database\Eloquent\Model;
+
+    class ActivityFeed extends Model
+    {
+        /**
+         * Get the parent of the activity feed record.
+         */
+        public function parentable()
+        {
+            return $this->morphTo();
+        }
+    }
+
+En este ejemplo, asumamos que los modelos `Event`, `Photo` y `Post` pueden crear modelos `ActivityFeed`. Además, supongamos que los modelos `Event` pertenecen a un modelo `Calendar`, los modelos `Photo` están asociados con los modelos `Tag` y los modelos `Post` pertenecen a un modelo` Author`.
+
+Usando estas definiciones y relaciones de modelo, podemos recuperar instancias de modelo `ActivityFeed` y cargar previamente todos los modelos `parentables` y sus respectivas relaciones anidadas:
+
+    $activities = ActivityFeed::with('parentable')
+        ->get()
+        ->loadMorph('parentable', [
+            Event::class => ['calendar'],
+            Photo::class => ['tags'],
+            Post::class => ['author'],
+        ]);
 
 <a name="inserting-and-updating-related-models"></a>
 ## Insertando Y Actualizando Modelos Relacionados
