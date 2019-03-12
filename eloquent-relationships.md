@@ -1034,6 +1034,39 @@ Para cargar una relación solo cuando aún no se ha cargado, usa el método `loa
         ];
     }
 
+#### Carga Previa Diferida Anidada Y `morphTo`
+
+Si deseas cargar previamente una relación `morphTo`, así como relaciones anidadas en las diversas entidades que pueden ser devueltas por esa relación, puedes usar el método` loadMorph`.
+
+Este método acepta el nombre de la relación `morphTo` como su primer argumento, y un arreglo de pares modelo / relación como su segundo argumento. Para ayudar a ilustrar este método, consideremos el siguiente modelo:
+
+    <?php
+
+    use Illuminate\Database\Eloquent\Model;
+
+    class ActivityFeed extends Model
+    {
+        /**
+         * Get the parent of the activity feed record.
+         */
+        public function parentable()
+        {
+            return $this->morphTo();
+        }
+    }
+
+En este ejemplo, asumamos que los modelos `Event`, `Photo` y `Post` pueden crear modelos `ActivityFeed`. Además, supongamos que los modelos `Event` pertenecen a un modelo `Calendar`, los modelos `Photo` están asociados con los modelos `Tag` y los modelos `Post` pertenecen a un modelo` Author`.
+
+Usando estas definiciones y relaciones de modelo, podemos recuperar instancias de modelo `ActivityFeed` y cargar previamente todos los modelos `parentables` y sus respectivas relaciones anidadas:
+
+    $activities = ActivityFeed::with('parentable')
+        ->get()
+        ->loadMorph('parentable', [
+            Event::class => ['calendar'],
+            Photo::class => ['tags'],
+            Post::class => ['author'],
+        ]);
+
 <a name="inserting-and-updating-related-models"></a>
 ## Insertando Y Actualizando Modelos Relacionados
 
