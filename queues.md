@@ -93,15 +93,13 @@ Ajustar este valor en la carga de cola puede ser más eficiente que consultar co
         'block_for' => 5,
     ],
 
-> {note} Blocking pop es una característica experimental. Hay una pequeña posibilidad de que un trabajo en cola pueda perderse si el servidor o worker Redis fallan al mismo tiempo que el trabajo es entregado.
-
 #### Requisitos Previos Para Otros Controladores
 
 Las siguientes dependencias son necesarias para sus controladores respectivos:
 
 <div class="content-list" markdown="1">
 - Amazon SQS: `aws/aws-sdk-php ~3.0`
-- Beanstalkd: `pda/pheanstalk ~3.0`
+- Beanstalkd: `pda/pheanstalk ~4.0`
 - Redis: `predis/predis ~1.0`
 </div>
 
@@ -679,6 +677,16 @@ Si quieres registrar un evento para ser llamado cuando un trabajo falle, puedes 
     class AppServiceProvider extends ServiceProvider
     {
         /**
+         * Register the service provider.
+         *
+         * @return void
+         */
+        public function register()
+        {
+            //
+        }
+
+        /**
          * Bootstrap any application services.
          *
          * @return void
@@ -690,16 +698,6 @@ Si quieres registrar un evento para ser llamado cuando un trabajo falle, puedes 
                 // $event->job
                 // $event->exception
             });
-        }
-
-        /**
-         * Register the service provider.
-         *
-         * @return void
-         */
-        public function register()
-        {
-            //
         }
     }
 
