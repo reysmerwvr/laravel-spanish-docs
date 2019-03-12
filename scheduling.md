@@ -76,9 +76,9 @@ Además de programar usando Closures, también puedes usar [objetos invocables](
 
 Además de programador llamadas a Closures, también puedes programar [comandos de Artisan](/docs/{{version}}/artisan) y comandos del sistema operativo. Por ejemplo, puedes usar el método `command` para programar un comando de Artisan usando ya sea el nombre del comando o de la clase:
 
-    $schedule->command('emails:send --force')->daily();
+    $schedule->command('emails:send Taylor --force')->daily();
 
-    $schedule->command(EmailsCommand::class, ['--force'])->daily();
+    $schedule->command(EmailsCommand::class, ['Taylor', '--force'])->daily();
 
 <a name="scheduling-queued-jobs"></a>
 ### Programando Trabajos En Colas
@@ -200,6 +200,18 @@ Usando el método `timezone`, puedes especificar que el tiempo de una tarea prog
     $schedule->command('report:generate')
              ->timezone('America/New_York')
              ->at('02:00')
+
+Si estás asignando la misma zona horaria a todas tus tareas programadas, puedes desear definir un método `scheduleTimezone` en tu archivo `app/Console/Kernel.php`. Este método debería retornar la zona horaria por defecto que debe ser asignada a todas las tareas programadas.
+
+    /**
+     * Get the timezone that should be used by default for scheduled events.
+     *
+     * @return \DateTimeZone|string|null
+     */
+    protected function scheduleTimezone()
+    {
+        return 'America/Chicago';
+    }
 
 > {note} Recuerda que algunas zonas horarias usan horario de verano. Cuando ocurren cambios por horario de verano, tu tarea programada puede ejecutarse dos veces o puede no ser ejecutada. Por esto, recomendamos evitar programación con zona horaria en la medida de lo posible.
 
