@@ -99,7 +99,7 @@ Las siguientes dependencias son necesarias para sus controladores respectivos:
 
 <div class="content-list" markdown="1">
 - Amazon SQS: `aws/aws-sdk-php ~3.0`
-- Beanstalkd: `pda/pheanstalk ~3.0`
+- Beanstalkd: `pda/pheanstalk ~4.0`
 - Redis: `predis/predis ~1.0`
 </div>
 
