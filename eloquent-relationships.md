@@ -6,6 +6,7 @@
     - [Uno A Muchos](#one-to-many)
     - [Uno A Muchos (Inverso)](#one-to-many-inverse)
     - [Muchos A Muchos](#many-to-many)
+    - [Definiendo Modelos de Tabla Intermedia Personalizados](#defining-custom-intermediate-table-models)
     - [Tiene Uno A Través De](#has-one-through)
     - [Tiene Muchos a Través de](#has-many-through)
 - [Relaciones Polimórficas](#polymorphic-relationships)
@@ -330,7 +331,8 @@ También puedes filtrar los resultados devueltos por `belongsToMany` usando los 
 
     return $this->belongsToMany('App\Role')->wherePivotIn('priority', [1, 2]);
 
-#### Definiendo Modelos De Tablas Intermedias Personalizadas
+<a name="defining-custom-intermediate-table-models"></a>
+### Definiendo Modelos De Tabla Intermedia Personalizados
 
 Si prefieres definir un modelo personalizado para representar la tabla intermedia o pivote de tu relación, puedes ejecutar el método `using` al momento de definir la relación. Los modelos de tablas intermedias de muchos-a-muchos personalizados deben extender la clase `Illuminate\Database\Eloquent\Relations\Pivot` mientras que los modelos polimórficos muchos-a-muchos deben extender la clase `Illuminate\Database\Eloquent\Relations\MorphPivot`. Por ejemplo, podemos definir un `Role` que use un modelo pivote `UserRole` personalizado:
 
@@ -387,6 +389,17 @@ Puedes combinar `using` y `withPivot` para retornar columnas de la tabla interme
                             ]);
         }
     }
+
+#### Modelos De Pivote Personalizados E IDs Incrementales
+
+Si has definido una relación de muchos a muchos que usa un modelo de pivote personalizado, y ese modelo de pivote tiene una clave primaria de incremento automático, debes asegurarte de que su clase de modelo de pivote personalizado defina una propiedad `incrementing` que se establece en` true `.
+
+    /**
+     * Indicates if the IDs are auto-incrementing.
+     *
+     * @var bool
+     */
+    public $incrementing = true;
 
 <a name="has-one-through"></a>
 ### Tiene Uno A Través De
