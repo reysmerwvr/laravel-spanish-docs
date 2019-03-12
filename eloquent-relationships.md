@@ -846,13 +846,15 @@ Las instrucciones `has` anidadas también pueden ser construidas usando la notac
 
 Incluso si necesitas más potencia, puedes usar los métodos `whereHas` y `orWhereHas` para poner condiciones "where" en tus consultas `has`. Estos métodos permiten que agregues restricciones personalizadas a una restricción de relación, tal como verificar el contenido de un comentario:
 
+    use Illuminate\Database\Eloquent\Builder;
+
     // Retrieve posts with at least one comment containing words like foo%
-    $posts = App\Post::whereHas('comments', function ($query) {
+    $posts = App\Post::whereHas('comments', function (Builder $query) {
         $query->where('content', 'like', 'foo%');
     })->get();
 
     // Retrieve posts with at least ten comments containing words like foo%
-    $posts = App\Post::whereHas('comments', function ($query) {
+    $posts = App\Post::whereHas('comments', function (Builder $query) {
         $query->where('content', 'like', 'foo%');
     }, '>=', 10)->get();
 
@@ -865,13 +867,17 @@ Al momento de acceder a los registros de un modelo, puedes desear limitar tus re
 
 Incluso si necesitas más potencia, puedes usar los métodos `whereDoesntHave` y `orWhereDoesntHave` para poner condiciones "where" en tus consultas `doesntHave`. Estos métodos permiten que agregues restricciones personalizadas a una restricción de relación, tal como verificar el contenido de un comentario:
 
-    $posts = Post::whereDoesntHave('comments', function ($query) {
+    use Illuminate\Database\Eloquent\Builder;
+
+    $posts = Post::whereDoesntHave('comments', function (Builder $query) {
         $query->where('content', 'like', 'foo%');
     })->get();
 
 Puedes usar notación "de puntos" para ejecutar una consulta contra una relación anidada. Por ejemplo, la siguiente consulta entregará todos los posts con comentarios de autores que no están vetados:
+    
+    use Illuminate\Database\Eloquent\Builder;
 
-    $posts = App\Post::whereDoesntHave('comments.author', function ($query) {
+    $posts = App\Post::whereDoesntHave('comments.author', function (Builder $query) {
         $query->where('banned', 1);
     })->get();
 
