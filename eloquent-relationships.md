@@ -38,6 +38,7 @@ Las tablas de base de datos frecuentemente están relacionadas a otra tabla. Por
 - [Uno a Uno](#one-to-one)
 - [Uno a Muchos](#one-to-many)
 - [Muchos a Muchos](#many-to-many)
+- [Uno a Través de](#has-one-through)
 - [Muchos a Través de](#has-many-through)
 - [Uno a Uno (Polimórfica)](#one-to-one-polymorphic-relations)
 - [Uno a Muchos (Polimórfica)](#one-to-many-polymorphic-relations)
@@ -402,9 +403,10 @@ Si has definido una relación de muchos a muchos que usa un modelo de pivote per
     public $incrementing = true;
 
 <a name="has-one-through"></a>
-### Tiene Uno A Través De
+### Tiene Uno A Través De (hasOneThrough)
 
-La relación "tiene uno a través" vincula los modelos a través de una única relación intermedia. Por ejemplo, si cada proveedor (supplier) tiene un usuario (user) y cada usuario está asociado con un registro del historial (history) de usuarios, entonces el modelo del proveedor puede acceder al historial del usuario _a través_ del usuario. Veamos las tablas de base de datos necesarias para definir esta relación:
+La relación "tiene uno a través" vincula los modelos a través de una única relación intermedia. 
+Por ejemplo, si cada proveedor (supplier) tiene un usuario (user) y cada usuario está asociado con un registro del historial (history) de usuarios, entonces el modelo del proveedor puede acceder al historial del usuario _a través_ del usuario. Veamos las tablas de base de datos necesarias para definir esta relación:
 
     users
         id - integer
