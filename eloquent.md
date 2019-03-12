@@ -486,7 +486,7 @@ También puedes ejecutar una instrucción de eliminar en un conjunto de modelos.
 <a name="soft-deleting"></a>
 ### Eliminación Lógica (Soft Deleting)
 
-Además de eliminar realmente los registros de tu base de datos, Eloquent también puede "eliminar lógicamente" los modelos. Cuando los modelos son borrados lógicamente, no son removidos realmente de tu base de datos. En lugar de eso, un atributo `deleted_at` es establecido en el modelo e insertado en la base de datos. Si un modelo tiene un valor `deleted_at` no nulo, el modelo ha sido eliminado lógicamente. Para habilitar eliminaciones lógicas en un modelo, usa el trait `Illuminate\Database\Eloquent\SoftDeletes` en el modelo y añade la columna `deleted_at` a tu propiedad `$dates`:
+Además de eliminar realmente los registros de tu base de datos, Eloquent también puede "eliminar lógicamente" los modelos. Cuando los modelos son borrados lógicamente, no son removidos realmente de tu base de datos. En lugar de eso, un atributo `deleted_at` es establecido en el modelo e insertado en la base de datos. Si un modelo tiene un valor `deleted_at` no nulo, el modelo ha sido eliminado lógicamente. Para habilitar eliminaciones lógicas en un modelo, usa el trait `Illuminate\Database\Eloquent\SoftDeletes` en el modelo:
 
     <?php
 
@@ -498,14 +498,9 @@ Además de eliminar realmente los registros de tu base de datos, Eloquent tambi�
     class Flight extends Model
     {
         use SoftDeletes;
-
-        /**
-         * The attributes that should be mutated to dates.
-         *
-         * @var array
-         */
-        protected $dates = ['deleted_at'];
     }
+
+> {tip} El trait `SoftDeletes` convertirá (cast) automáticamente el atributo `deleted_at` a una instancia de `DateTime` / `Carbon` para ti.
 
 Debes añadir la columna `deleted_at` a tu tabla de base de datos. El [constructor de esquemas](/docs/{{version}}/migrations) de Laravel contiene un método helper para crear esta columna:
 
