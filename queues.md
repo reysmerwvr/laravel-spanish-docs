@@ -677,6 +677,16 @@ Si quieres registrar un evento para ser llamado cuando un trabajo falle, puedes 
     class AppServiceProvider extends ServiceProvider
     {
         /**
+         * Register the service provider.
+         *
+         * @return void
+         */
+        public function register()
+        {
+            //
+        }
+
+        /**
          * Bootstrap any application services.
          *
          * @return void
@@ -688,16 +698,6 @@ Si quieres registrar un evento para ser llamado cuando un trabajo falle, puedes 
                 // $event->job
                 // $event->exception
             });
-        }
-
-        /**
-         * Register the service provider.
-         *
-         * @return void
-         */
-        public function register()
-        {
-            //
         }
     }
 
