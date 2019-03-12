@@ -93,8 +93,6 @@ Ajustar este valor en la carga de cola puede ser más eficiente que consultar co
         'block_for' => 5,
     ],
 
-> {note} Blocking pop es una característica experimental. Hay una pequeña posibilidad de que un trabajo en cola pueda perderse si el servidor o worker Redis fallan al mismo tiempo que el trabajo es entregado.
-
 #### Requisitos Previos Para Otros Controladores
 
 Las siguientes dependencias son necesarias para sus controladores respectivos:
