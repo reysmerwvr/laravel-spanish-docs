@@ -1,4 +1,4 @@
-# Autenticación de API (Passport)
+# Laravel Passport
 
 - [Introducción](#introduction)
 - [Instalación](#installation)
@@ -213,8 +213,8 @@ De forma predeterminada, Passport emite tokens de acceso de larga duración que 
 Eres en libre de extender los modelos usados internamente por Passport. A continuación, puedes indicarle a Passport que utilice tus modelos personalizados a través de la clase `Passport`:
 
     use App\Models\Passport\Client;
+    use App\Models\Passport\Token;
     use App\Models\Passport\AuthCode;
-    use App\Models\Passport\TokenModel;
     use App\Models\Passport\PersonalAccessClient;
 
     /**
@@ -228,8 +228,8 @@ Eres en libre de extender los modelos usados internamente por Passport. A contin
 
         Passport::routes();
 
+        Passport::useTokenModel(Token::class);
         Passport::useClientModel(Client::class);
-        Passport::useTokenModel(TokenModel::class);
         Passport::useAuthCodeModel(AuthCode::class);
         Passport::usePersonalAccessClientModel(PersonalAccessClient::class);
     }
@@ -293,7 +293,7 @@ Cuando un cliente es creado, le será suministrado un ID de cliente y una clave 
             console.log(response.data);
         })
         .catch (response => {
-            // List errors on response...
+            // Listado de errores en la respuesta...
         });
 
 #### `PUT /oauth/clients/{client-id}`
@@ -310,7 +310,7 @@ Esta ruta es usada para actualizar clientes. Requiere dos porciones de datos: el
             console.log(response.data);
         })
         .catch (response => {
-            // List errors on response...
+            // Listado de errores en la respuesta...
         });
 
 #### `DELETE /oauth/clients/{client-id}`
@@ -591,10 +591,10 @@ Una vez que has creado un cliente de acceso personal, puedes emitir tokens para 
 
     $user = App\User::find(1);
 
-    // Creating a token without scopes...
+    // Creación de un token sin scopes...
     $token = $user->createToken('Token Name')->accessToken;
 
-    // Creating a token with scopes...
+    // Creación de un token con scopes...
     $token = $user->createToken('My Token', ['place-orders'])->accessToken;
 
 #### API JSON
@@ -637,7 +637,7 @@ Esta ruta crea nuevos token de acceso personal. Requiere dos porciones de datos:
             console.log(response.data.accessToken);
         })
         .catch (response => {
-            // List errors on response...
+            // Listado de errores en la respuesta...
         });
 
 #### `DELETE /oauth/personal-access-tokens/{token-id}`
@@ -736,7 +736,7 @@ Passport incluye dos middleware que pueden ser usados para verificar que una sol
 El middleware `scopes` puede ser asignado a una ruta para verificar que el token de acceso de la solicitud entrante tiene *todos* los alcances listados:
 
     Route::get('/orders', function () {
-        // Access token has both "check-status" and "place-orders" scopes...
+        // El token de acceso tiene tanto el scope "check-status" como el scope "place-orders"...
     })->middleware('scopes:check-status,place-orders');
 
 #### Verifica Algunos Alcances
@@ -744,7 +744,7 @@ El middleware `scopes` puede ser asignado a una ruta para verificar que el token
 El middleware `scope` puede ser asignado a una ruta para verificar que el token de acceso de la solicitud entrante tiene *al menos uno* de los alcances listados:
 
     Route::get('/orders', function () {
-        // Access token has either "check-status" or "place-orders" scope...
+        // El token de acceso tiene el scope "check-status" o el scope "place-orders"...
     })->middleware('scope:check-status,place-orders');
 
 #### Verificando Alcances en una Instancia de Token
@@ -820,10 +820,10 @@ De ser necesario, puedes personalizar el nombre de la cookie `laravel_token` usa
 
 Al usar este método de autenticación, el scaffolding por defecto de JavaSript en Laravel le indica a Axios que siempre envíe los encabezados `X-CSRF-TOKEN` y `X-Requested-With`. Sin embargo, es necesario asegurate de incluir tu token CSRF en un [etiqueta meta de HTML](/docs/{{version}}/csrf#csrf-x-csrf-token):
 
-    // In your application layout...
+    // En el layout de tu aplicación...
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    // Laravel's JavaScript scaffolding...
+    // Scaffolding de JavaScript de Laravel...
     window.axios.defaults.headers.common = {
         'X-Requested-With': 'XMLHttpRequest',
     };
