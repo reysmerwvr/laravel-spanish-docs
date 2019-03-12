@@ -6,6 +6,7 @@
     - [Uno A Muchos](#one-to-many)
     - [Uno A Muchos (Inverso)](#one-to-many-inverse)
     - [Muchos A Muchos](#many-to-many)
+    - [Tiene Uno A Través De](#has-one-through)
     - [Tiene Muchos a Través de](#has-many-through)
 - [Relaciones Polimórficas](#polymorphic-relationships)
     - [Uno A Uno](#one-to-one-polymorphic-relations)
@@ -385,7 +386,64 @@ Puedes combinar `using` y `withPivot` para retornar columnas de la tabla interme
                                 'updated_by'
                             ]);
         }
-    }    
+    }
+
+<a name="has-one-through"></a>
+### Tiene Uno A Través De
+
+La relación "tiene uno a través" vincula los modelos a través de una única relación intermedia. Por ejemplo, si cada proveedor (supplier) tiene un usuario (user) y cada usuario está asociado con un registro del historial (history) de usuarios, entonces el modelo del proveedor puede acceder al historial del usuario _a través_ del usuario. Veamos las tablas de base de datos necesarias para definir esta relación:
+
+    users
+        id - integer
+        supplier_id - integer
+
+    suppliers
+        id - integer
+
+    history
+        id - integer
+        user_id - integer
+
+Aunque la tabla `history` no contiene una columna` supplier_id`, la relación `hasOneThrough` puede proporcionar acceso al historial del usuario desde el modelo del proveedor. Ahora que hemos examinado la estructura de la tabla para la relación, vamos a definirla en el modelo `Supplier`:
+
+    <?php
+
+    namespace App;
+
+    use Illuminate\Database\Eloquent\Model;
+
+    class Supplier extends Model
+    {
+        /**
+         * Get the user's history.
+         */
+        public function userHistory()
+        {
+            return $this->hasOneThrough('App\History', 'App\User');
+        }
+    }
+
+El primer argumento pasado al método `hasOneThrough` es el nombre del modelo final al que queremos acceder, mientras que el segundo argumento es el nombre del modelo intermedio.
+
+Se utilizarán las convenciones típicas de clave foránea de Eloquent al realizar las consultas de la relación. Si deseas personalizar las claves de la relación, puedes pasarlas como el tercer y cuarto argumento al método `hasOneThrough`. El tercer argumento es el nombre de la clave foránea en el modelo intermedio. El cuarto argumento es el nombre de la clave foránea en el modelo final. El quinto argumento es la clave local, mientras que el sexto argumento es la clave local del modelo intermedio:
+
+    class Supplier extends Model
+    {
+        /**
+         * Get the user's history.
+         */
+        public function userHistory()
+        {
+            return $this->hasOneThrough(
+                'App\History',
+                'App\User',
+                'supplier_id', // Foreign key on users table...
+                'user_id', // Foreign key on history table...
+                'id', // Local key on suppliers table...
+                'id' // Local key on users table...
+            );
+        }
+    }   
 
 <a name="has-many-through"></a>
 ### Tiene Muchos A Través De (hasManyThrough)
