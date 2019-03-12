@@ -262,10 +262,10 @@ El método `cursor` permite que iteres a través de registros de tu base de dato
 
 Además de obtener todos los registros de una tabla dada, también puedes obtener registros individuales usando `find` o `first`. En lugar de devolver una colección de modelos, estos métodos devuelven una única instancia de modelo:
 
-    // Retrieve a model by its primary key...
+    // Recupera un modelo por su clave primaria...
     $flight = App\Flight::find(1);
 
-    // Retrieve the first model matching the query constraints...
+    // Recupera el primer modelo que coincida con las restricciones de consulta...
     $flight = App\Flight::where('active', 1)->first();
 
 También puedes ejecutar el método `find` con un arreglo de claves primarias, el cual devolverá una colección de los registros que coincidan:
@@ -427,19 +427,19 @@ Hay otros dos métodos que puedes usar para crear modelos con atributos de asign
 
 El método `firstOrNew`, al igual que `firstOrCreate`, intentará localizar un registro en la base de datos que coincida con los atributos dados. Sin embargo, si un modelo no es encontrado, una nueva instancia de modelo será devuelta. Nota que el modelo devuelto por `firstOrNew` todavía no ha sido enviado a la base de datos. Necesitarás ejecutar `save` manualmente para hacerlo persistente:
 
-    // Retrieve flight by name, or create it if it doesn't exist...
+    // Recupera el vuelo por nombre, o lo crea si no existe...
     $flight = App\Flight::firstOrCreate(['name' => 'Flight 10']);
 
-    // Retrieve flight by name, or create it with the name, delayed, and arrival_time attributes...
+    // Recupera vuelo por nombre o lo crea con los atributos name, delayed y arrival_time...
     $flight = App\Flight::firstOrCreate(
         ['name' => 'Flight 10'], 
         ['delayed' => 1, 'arrival_time' => '11:30']
     );
 
-    // Retrieve by name, or instantiate...
+    // Recupera por nombre, o instancia...
     $flight = App\Flight::firstOrNew(['name' => 'Flight 10']);
 
-    // Retrieve by name, or instantiate with the name, delayed, and arrival_time attributes...
+    // Recupera por nombre o crea una instancia con los atributos name, delayed y arrival_time...
     $flight = App\Flight::firstOrNew(
         ['name' => 'Flight 10'], 
         ['delayed' => 1, 'arrival_time' => '11:30']
@@ -449,8 +449,8 @@ El método `firstOrNew`, al igual que `firstOrCreate`, intentará localizar un r
 
 También puedes encontrar situaciones donde quieras actualizar un modelo existente o crear un nuevo modelo si no existe. Laravel proporciona un  método `updateOrCreate` para hacer esto en un paso. Al igual que el método `firstOrCreate`, `updateOrCreate` persiste el modelo, para que no haya necesidad de ejecutar `save()`:
 
-    // If there's a flight from Oakland to San Diego, set the price to $99.
-    // If no matching model exists, create one.
+    // Si hay un vuelo desde Oakland a San Diego, establece el precio a $99.
+    // Si no existe un modelo que coincida, crea uno.
     $flight = App\Flight::updateOrCreate(
         ['departure' => 'Oakland', 'destination' => 'San Diego'],
         ['price' => 99, 'discounted' => 1]
@@ -561,10 +561,10 @@ Al igual que con el método `withTrashed`, el método `restore` también puede s
 
 Algunas veces puedes necesitar eliminar verdaderamente un modelo de tu base de datos. Para remover permanentemente un modelo eliminado lógicamente de la base de datos, usa el método `forceDelete`:
 
-    // Force deleting a single model instance...
+    // Obliga la eliminación de una instancia de un solo modelo...
     $flight->forceDelete();
 
-    // Force deleting all related models...
+    // Obliga la eliminación de todos los modelos relacionados...
     $flight->history()->forceDelete();
 
 <a name="query-scopes"></a>
@@ -674,10 +674,10 @@ O, si definiste el scope global usando un Closure:
 
 Si prefieres eliminar varios o incluso todos los scopes globales, puedes usar el método `withoutGlobalScopes`:
 
-    // Remove all of the global scopes...
+    // Elimina todos los scopes globales...
     User::withoutGlobalScopes()->get();
 
-    // Remove some of the global scopes...
+    // Elimina algunos de los scopes globales...
     User::withoutGlobalScopes([
         FirstScope::class, SecondScope::class
     ])->get();
