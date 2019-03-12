@@ -213,8 +213,8 @@ De forma predeterminada, Passport emite tokens de acceso de larga duración que 
 Eres en libre de extender los modelos usados internamente por Passport. A continuación, puedes indicarle a Passport que utilice tus modelos personalizados a través de la clase `Passport`:
 
     use App\Models\Passport\Client;
+    use App\Models\Passport\Token;
     use App\Models\Passport\AuthCode;
-    use App\Models\Passport\TokenModel;
     use App\Models\Passport\PersonalAccessClient;
 
     /**
@@ -228,8 +228,8 @@ Eres en libre de extender los modelos usados internamente por Passport. A contin
 
         Passport::routes();
 
+        Passport::useTokenModel(Token::class);
         Passport::useClientModel(Client::class);
-        Passport::useTokenModel(TokenModel::class);
         Passport::useAuthCodeModel(AuthCode::class);
         Passport::usePersonalAccessClientModel(PersonalAccessClient::class);
     }
