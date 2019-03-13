@@ -536,8 +536,8 @@ Nuevo comportamiento:
 
 Los métodos `setUp` y` tearDown` ahora requieren un tipo de retorno nulo:
 
-    public function setUp(): void
-    public function tearDown(): void
+    protected function setUp(): void
+    protected function tearDown(): void
 
 #### PHPUnit 8
 
