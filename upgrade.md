@@ -530,7 +530,7 @@ Nuevo comportamiento:
 <a name="testing"></a>
 ### Pruebas
 
-#### `setUp` Y `tearDown`
+#### Los metodos `setUp` Y `tearDown`
 
 Los métodos `setUp` y` tearDown` ahora requieren un tipo de retorno nulo:
 
