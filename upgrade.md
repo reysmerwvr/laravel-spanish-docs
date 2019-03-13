@@ -470,11 +470,11 @@ El impacto de este cambio se ha marcado como "medio" desde que las funciones hel
 
 La propiedad booleana `defer` en el proveedor de servicios que se usa para indicar si un proveedor está diferido [ha quedado en desuso](https://github.com/laravel/framework/pull/27067). Para marcar el proveedor de servicios como diferido, debes implementar el contrato `Illuminate\Contracts\Support\DeferrableProvider`.
 
-#### Helper De Sólo Lectura env
+#### Helper De Sólo Lectura `env`
 
 **Probabilidad De Impacto: Bajo**
 
-El helper `env` previamente podia retornar valores desde variables de entorno que fueron cambiadas en tiempo de ejecución. El nuevo comportamiento hace al helper `env` inmutable y sólo le permite retornar valores establecidos antes de que una solicitud sea procesada. Si quieres cambiar los valores establecidos mediante variables de entorno debes tratar de capturarlas en una archivo de configuración y cambiar esas en su lugar.
+Anteriormente, el helper `env` podia retornar valores de variables de entorno que eran cambiadas en tiempo de ejecución. En Laravel 5.8, el helper `env` trata a las variables de entorno como inmutables. Si quisieras cambiar una variable de entorno en tiempo de ejecución, considera usar un valor de configuración que puede ser retornado usando el helper `config`:
 
 Comportamiento anterior:
 
