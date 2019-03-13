@@ -492,6 +492,29 @@ Nuevo comportamiento:
 
     dump(env('APP_ENV')); // local
 
+#### Valores de los archivos de entorno
+
+**Probabilidad de Impacto: Bajo**
+
+El paquete [phpdotenv](https://github.com/vlucas/phpdotenv) que es usado para parsear archivos .env ha tenido una actualización de versión importante, que podría impactar en los resultados retornados desde el helper `env`. Notablemente, el caracter `#` en un valor sin comillas ahora será comentado, en lugar de ser parte del valor como tal.
+
+Comportamiento anterior:
+
+    ENV_VALUE=foo#bar
+    env('ENV_VALUE'); // foo#bar
+
+Nuevo comportamiento:
+
+    ENV_VALUE=foo#bar
+    env('ENV_VALUE'); // foo
+
+La solución para esto es envolver los valores de entorno en comillas:
+
+    ENV_VALUE="foo#bar"
+    env('ENV_VALUE'); // foo#bar
+
+Hay otros casos pocos comunes donde un error descriptivo puede ser mostrado luego de cargar el archivo de entorno. Puedes leer más sobre eso en la [guía de actualización de phpdotenv](https://github.com/vlucas/phpdotenv/blob/master/UPGRADING.md)
+
 <a name="testing"></a>
 ### Pruebas
 
