@@ -78,6 +78,7 @@ Por el resto de esta documentación, discutiremos cada método disponible en la 
 [contains](#method-contains)
 [containsStrict](#method-containsstrict)
 [count](#method-count)
+[countBy](#method-countBy)
 [crossJoin](#method-crossjoin)
 [dd](#method-dd)
 [diff](#method-diff)
@@ -104,6 +105,7 @@ Por el resto de esta documentación, discutiremos cada método disponible en la 
 [intersectByKeys](#method-intersectbykeys)
 [isEmpty](#method-isempty)
 [isNotEmpty](#method-isnotempty)
+[join](#method-join)
 [keyBy](#method-keyby)
 [keys](#method-keys)
 [last](#method-last)
@@ -333,6 +335,31 @@ El método `count` devuelve la cantidad total de elementos en la colección:
     $collection->count();
 
     // 4
+
+<a name="method-countBy"></a>
+#### `countBy()` {#collection-method}
+
+El método `count By` cuenta las ocurrencias de valores en la colección. Por defecto, el método cuenta las ocurrencias de cada elemento:
+
+    $collection = collect([1, 2, 2, 2, 3]);
+
+    $counted = $collection->countBy();
+
+    $counted->all();
+
+    // [1 => 1, 2 => 3, 3 => 1]
+
+Sin embargo, puedes pasar una función de retorno (callback) al método `countBy` para contar todos los elementos por un valor personalizado:
+
+    $collection = collect(['alice@gmail.com', 'bob@yahoo.com', 'carlos@gmail.com']);
+
+    $counted = $collection->countBy(function ($email) {
+        return substr(strrchr($email, "@"), 1);
+    });
+
+    $counted->all();
+
+    // [1 => 1, 2 => 3, 3 => 1]
 
 <a name="method-crossjoin"></a>
 #### `crossJoin()` {#collection-method}
@@ -910,6 +937,17 @@ El método `isNotEmpty` devuelve `true` si la colección no está vacía; de lo 
     collect([])->isNotEmpty();
 
     // false
+
+<a name="method-join"></a>
+#### `join()` {#collection-method}
+
+El método `join` une los valores de la colección con una cadena:
+
+    collect(['a', 'b', 'c'])->join(', '); // 'a, b, c'
+    collect(['a', 'b', 'c'])->join(', ', ', and '); // 'a, b, and c'
+    collect(['a', 'b'])->join(', ', ' and '); // 'a and b'
+    collect(['a'])->join(', ', ' and '); // 'a'
+    collect([])->join(', ', ' and '); // ''
 
 <a name="method-keyby"></a>
 #### `keyBy()` {#collection-method}
@@ -1826,7 +1864,7 @@ El método `toArray` convierte la colección en un simple `array` de PHP. Si los
         ]
     */
 
-> {note} `toArray` también convierte todos los objetos anidados de la colección en un arreglo. Si deseas obtener el arreglo subyacente sin procesar, usa el método [`all`](#method-all).
+> {note} `toArray` también convierte todos los objetos anidados de la colección que son una instancia de `Arrayable` en un arreglo. En cambio, si deseas obtener el arreglo subyacente sin procesar, usa el método [`all`](#method-all).
 
 <a name="method-tojson"></a>
 #### `toJson()` {#collection-method}
