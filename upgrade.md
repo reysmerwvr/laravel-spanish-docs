@@ -82,6 +82,12 @@ Pero cuando se usa Laravel 5.8, el token se pasa al helper `route` como un pará
 
 Por lo tanto, si estás definiendo tu propia ruta `password.reset`, debes asegurarte de que contenga un parámetro` {token} `en tu URI.
 
+#### Nueva Longitud De Contraseña Por Defecto
+
+**Probabilidad De Impacto: Baja**
+
+La longitud de la contraseña requerida al elegir o restablecer una contraseña se [cambió a al menos ocho caracteres](https://github.com/laravel/framework/pull/25957).
+
 <a name="cache"></a>
 ### Caché
 
