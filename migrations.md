@@ -443,7 +443,7 @@ Si pasas un arreglo de columnas dentro de un método que elimina los índices, e
 Laravel también proporciona soporte para la creación de restricciones de clave foránea, las cuales son usadas para forzar la integridad referencial a nivel de base de datos.  Por ejemplo, vamos a definir una columna `user_id` en la tabla `posts` que referencia la columna `id` en una tabla `users`:
 
     Schema::table('posts', function (Blueprint $table) {
-        $table->unsignedInteger('user_id');
+        $table->unsignedBigInteger('user_id');
 
         $table->foreign('user_id')->references('id')->on('users');
     });
