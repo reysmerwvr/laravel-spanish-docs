@@ -8,6 +8,7 @@
 <div class="content-list" markdown="1">
 - [TTL De Caché En Segundos](#cache-ttl-in-seconds)
 - [Cache Lock Safety Improvements](#cache-lock-safety-improvements)
+- [Parseo De Variables De Entorno](#environment-variable-parsing)
 - [Markdown File Directory Change](#markdown-file-directory-change)
 - [Nexmo / Slack Notification Channels](#nexmo-slack-notification-channels)
 </div>
@@ -109,7 +110,7 @@ Si estás pasando un número entero a cualquiera de estos métodos, debes actual
 
 **Probabilidad De Impacto: Media**
 
-Además de los cambios de valor de retorno de arriba, el argumento TTL de los métodos `put`,` putMany` y `add` de la clase `Illuminate\Cache\Repository` se actualizó para cumplir mejor con la especificación del PSR-16. El nuevo comportamiento proporciona un valor predeterminado de `null`, por lo que una llamada sin especificar un TTL dará como resultado el almacenamiento del elemento de caché para siempre. Además, el almacenamiento de elementos de caché con un TTL de 0 o inferior eliminará los elementos del caché. Vea el [PR Relacionado](https://github.com/laravel/framework/pull/27217) Para más información.
+Además de [los cambios de valor de retorno de arriba](#the-repository-and-store-contracts), el argumento TTL de los métodos `put`,` putMany` y `add` de la clase `Illuminate\Cache\Repository` se actualizó para cumplir mejor con la especificación del PSR-16. El nuevo comportamiento proporciona un valor predeterminado de `null`, por lo que una llamada sin especificar un TTL dará como resultado el almacenamiento del elemento de caché para siempre. Además, el almacenamiento de elementos de caché con un TTL de 0 o inferior eliminará los elementos del caché. Vea el [PR Relacionado](https://github.com/laravel/framework/pull/27217) Para más información.
 
 El evento `KeyWritten` [también fue actualizado](https://github.com/laravel/framework/pull/27265) con esos cambios.
 
@@ -154,6 +155,7 @@ Si deseas liberar un bloqueo sin respetar a su propietario actual, puedes usar e
 
     Cache::lock('foo')->forceRelease();
 
+<a name="the-repository-and-store-contracts"></a>
 ####  Los Contratos `Repository` Y `Store`
 
 **Probabilidad De Impacto: Muy Baja**
@@ -306,6 +308,30 @@ La propiedad `deleted_at` [ahora se convertirá automáticamente](https://github
 **Probabilidad De Impacto: Baja**
 
 Los métodos `getForeignKey` y` getQualifiedForeignKey` de la relación `BelongsTo` han sido renombrados a `getForeignKeyName` y `getQualifiedForeignKeyName` respectivamente, haciendo que los nombres de los métodos sean consistentes con las otras relaciones ofrecidas por Laravel.
+
+<a name="#environment-variable-parsing"></a>
+### Parseo De Variables De Entorno
+
+**Probabilidad de Impacto: Alto**
+
+El paquete [phpdotenv](https://github.com/vlucas/phpdotenv) que es usado para parsear archivos .env ha liberado una nueva versión, que podría impactar en los resultados retornados desde el helper `env`. Especificamente, el caracter `#` en un valor sin comillas ahora será considerado como un comentario en lugar de parte del valor.
+
+Comportamiento anterior:
+
+    ENV_VALUE=foo#bar
+    env('ENV_VALUE'); // foo#bar
+
+Nuevo comportamiento:
+
+    ENV_VALUE=foo#bar
+    env('ENV_VALUE'); // foo
+
+Para mantener el comportamiento anterior, puedes envolver los valores de entorno en comillas:
+
+    ENV_VALUE="foo#bar"
+    env('ENV_VALUE'); // foo#bar
+
+Para más información, por favor revisa la [guía de actualización de phpdotenv](https://github.com/vlucas/phpdotenv/blob/master/UPGRADING.md)
 
 <a name="events"></a>
 ### Eventos
@@ -468,6 +494,28 @@ El impacto de este cambio se ha marcado como "medio" desde que las funciones hel
 **Probabilidad De Impacto: Media**
 
 La propiedad booleana `defer` en el proveedor de servicios que se usa para indicar si un proveedor está diferido [ha quedado en desuso](https://github.com/laravel/framework/pull/27067). Para marcar el proveedor de servicios como diferido, debes implementar el contrato `Illuminate\Contracts\Support\DeferrableProvider`.
+
+#### Helper De Sólo Lectura `env`
+
+**Probabilidad De Impacto: Bajo**
+
+Anteriormente, el helper `env` podia retornar valores de variables de entorno que eran cambiadas en tiempo de ejecución. En Laravel 5.8, el helper `env` trata a las variables de entorno como inmutables. Si quisieras cambiar una variable de entorno en tiempo de ejecución, considera usar un valor de configuración que puede ser retornado usando el helper `config`:
+
+Comportamiento anterior:
+
+    dump(env('APP_ENV')); // local
+
+    putenv('APP_ENV=staging');
+
+    dump(env('APP_ENV')); // staging
+
+Nuevo comportamiento:
+
+    dump(env('APP_ENV')); // local
+
+    putenv('APP_ENV=staging');
+
+    dump(env('APP_ENV')); // local
 
 <a name="testing"></a>
 ### Pruebas
