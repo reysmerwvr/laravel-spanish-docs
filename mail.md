@@ -53,7 +53,11 @@ Si no estás usando la [región de Mailgun](https://documentation.mailgun.com/en
 
 #### Driver Postmark
 
-Para usar el driver de Postmark, primero instala Guzzle, luego establece la opción `driver` en tu archivo de configuración `config/mail.php` a `postmark`. Luego, verifica que tu archivo de configuración `config/services.php` contiene las siguientes opciones:
+Para usar el driver de Postmark, instala el transporte de SwiftMailer de Postmark mediante Composer:
+
+    composer require wildbit/swiftmailer-postmark
+
+Luego, instala Guzzle y establece la opción `driver` en tu archivo de configuración `config/mail.php` a `postmark`. Finalmente, verifica que tu archivo de configuración `config/services.php` contiene las siguientes opciones:
 
     'postmark' => [
         'token' => 'your-postmark-token',
