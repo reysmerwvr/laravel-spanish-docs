@@ -78,6 +78,7 @@ Por el resto de esta documentación, discutiremos cada método disponible en la 
 [contains](#method-contains)
 [containsStrict](#method-containsstrict)
 [count](#method-count)
+[countBy](#method-countBy)
 [crossJoin](#method-crossjoin)
 [dd](#method-dd)
 [diff](#method-diff)
@@ -333,6 +334,27 @@ El método `count` devuelve la cantidad total de elementos en la colección:
     $collection->count();
 
     // 4
+
+<a name="method-countBy"></a>
+#### `countBy()` {#collection-method}
+
+El método `count By` cuenta las ocurrencias de valores en la colección. Por defecto, el método cuenta las ocurrencias de cada elemento:
+
+    $collection = collect([1, 2, 2, 2, 3]);
+
+    $collection->countBy();
+
+    // collect([1 => 1, 2 => 3, 3 => 1])
+
+Sin embargo, puedes pasar una función de retorno (callback) al método `countBy` para contar todos los elementos por un valor personalizado:
+
+    $collection = collect(['alice@gmail.com', 'bob@yahoo.com', 'carlos@gmail.com']);
+
+    $collection->countBy(function ($email) {
+        return substr(strrchr($email, "@"), 1);
+    });
+
+    // collect(['gmail.com' => 2, 'yahoo.com' => 1])
 
 <a name="method-crossjoin"></a>
 #### `crossJoin()` {#collection-method}
