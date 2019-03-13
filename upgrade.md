@@ -23,6 +23,7 @@
 - [Deferred Service Providers](#deferred-service-providers)
 - [PSR-16 Conformity](#psr-16-conformity)
 - [Model Names Ending With Irregular Plurals](#model-names-ending-with-irregular-plurals)
+- [Modelos Personalizados Para Pivote Con IDs Incrementales](#custom-pivot-models-with-incrementing-ids)
 - [Pheanstalk 4.0](#pheanstalk-4)
 </div>
 
@@ -288,6 +289,18 @@ Si tienes un modelo incorrectamente pluralizado, puedes continuar usando el nomb
      * @var string
      */
     protected $table = 'user_feedbacks';
+
+<a name="custom-pivot-models-with-incrementing-ids"></a>
+#### Modelos Personalizados Para Pivote Con IDs Incrementales
+
+Si has definido una relación de muchos a muchos que usa un modelo personalizado para tablas pivote, y ese modelo tiene una clave primaria autoincremental, debes asegurarte de que tu clase de modelo personalizado para pivote defina una propiedad `incrementing` que se establece en `true`:
+
+    /**
+     * Indicates if the IDs are auto-incrementing.
+     *
+     * @var bool
+     */
+    public $incrementing = true;
 
 #### El Método `loadCount` 
 
