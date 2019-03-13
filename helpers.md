@@ -74,19 +74,17 @@ Laravel incluye una variedad de funciones "helpers" globales de PHP. Muchas de e
 <div class="collection-method-list" markdown="1">
 
 [\__](#method-__)
-[Str::camel](#method-camel-case)
 [class_basename](#method-class-basename)
 [e](#method-e)
-[Str::endsWith](#method-ends-with)
-[Str::kebab](#method-kebab-case)
 [preg_replace_array](#method-preg-replace-array)
-[Str::snake](#method-snake-case)
-[Str::startsWith](#method-starts-with)
 [Str::after](#method-str-after)
 [Str::before](#method-str-before)
+[Str::camel](#method-camel-case)
 [Str::contains](#method-str-contains)
+[Str::endsWith](#method-ends-with)
 [Str::finish](#method-str-finish)
 [Str::is](#method-str-is)
+[Str::kebab](#method-kebab-case)
 [Str::limit](#method-str-limit)
 [Str::orderedUuid](#method-str-ordered-uuid)
 [Str::plural](#method-str-plural)
@@ -96,12 +94,14 @@ Laravel incluye una variedad de funciones "helpers" globales de PHP. Muchas de e
 [Str::replaceLast](#method-str-replace-last)
 [Str::singular](#method-str-singular)
 [Str::slug](#method-str-slug)
+[Str::snake](#method-snake-case)
 [Str::start](#method-str-start)
+[Str::startsWith](#method-starts-with)
 [Str::studly](#method-studly-case)
 [Str::title](#method-title-case)
+[Str::uuid](#method-str-uuid)
 [trans](#method-trans)
 [trans_choice](#method-trans-choice)
-[Str::uuid](#method-str-uuid)
 
 </div>
 
@@ -111,8 +111,8 @@ Laravel incluye una variedad de funciones "helpers" globales de PHP. Muchas de e
 
 [action](#method-action)
 [asset](#method-asset)
-[secure_asset](#method-secure-asset)
 [route](#method-route)
+[secure_asset](#method-secure-asset)
 [secure_url](#method-secure-url)
 [url](#method-url)
 
@@ -164,9 +164,9 @@ Laravel incluye una variedad de funciones "helpers" globales de PHP. Muchas de e
 [retry](#method-retry)
 [session](#method-session)
 [tap](#method-tap)
-[today](#method-today)
 [throw_if](#method-throw-if)
 [throw_unless](#method-throw-unless)
+[today](#method-today)
 [trait_uses_recursive](#method-trait-uses-recursive)
 [transform](#method-transform)
 [validator](#method-validator)
@@ -781,17 +781,6 @@ La función `__` traduce la cadena de traducción dada o clave de traducción da
 
 Si la cadena o llave de traducción especificada no existe, la función `__` retornará el valor dado. Así, usando el ejemplo de arriba, la función `__` podría retornar `messages.welcome` si esa clave de traducción no existe.
 
-<a name="method-camel-case"></a>
-#### `Str::camel()` {#collection-method}
-
-La función `Str::camel` convierte la cadena dada a `camelCase`:
-
-	use Illuminate\Support\Str;
-
-    $converted = Str::camel('foo_bar');
-    
-    // fooBar
-
 <a name="method-class-basename"></a>
 #### `class_basename()` {#collection-method}
 
@@ -810,26 +799,6 @@ La función `e` ejecuta la función de PHP `htmlspecialchars` con la opción `do
     
     // &lt;html&gt;foo&lt;/html&gt;
 
-<a name="method-ends-with"></a>
-#### `Str::endsWith()` {#collection-method}
-
-La función `Str::endsWith` determina si la cadena dada finaliza con el valor dado:
-
-    $result = Str::endsWith('This is my name', 'name');
-    
-    // true
-
-<a name="method-kebab-case"></a>
-#### `Str::kebab()` {#collection-method}
-
-La función `Str::kebab` convierte la cadena dada a `kebab-case`:
-
-	use Illuminate\Support\Str;
-
-    $converted = Str::kebab('fooBar');
-    
-    // foo-bar
-
 <a name="method-preg-replace-array"></a>
 #### `preg_replace_array()` {#collection-method}
 
@@ -840,28 +809,6 @@ La función `preg_replace_array` reemplaza un patrón dado en la cadena secuenci
     $replaced = preg_replace_array('/:[a-z_]+/', ['8:30', '9:00'], $string);
     
     // The event will take place between 8:30 and 9:00
-
-<a name="method-snake-case"></a>
-#### `Str::snake()` {#collection-method}
-
-La función `Str::snake()` convierte la cadena dada a `snake_case`:
-
-	use Illuminate\Support\Str;
-
-    $converted = Str::snake('fooBar');
-    
-    // foo_bar
-
-<a name="method-starts-with"></a>
-#### `Str::startsWith()` {#collection-method}
-
-La función `Str::startsWith` determina si la cadena dada comienza con el valor dado:
-
-	use Illuminate\Support\Str;
-
-    $result = Str::startsWith('This is my name', 'This');
-    
-    // true
 
 <a name="method-str-after"></a>
 #### `Str::after()` {#collection-method}
@@ -885,6 +832,17 @@ La función `Str::before` retorna todo antes del valor dado en una cadena:
     
     // 'This is '
 
+<a name="method-camel-case"></a>
+#### `Str::camel()` {#collection-method}
+
+La función `Str::camel` convierte la cadena dada a `camelCase`:
+
+    use Illuminate\Support\Str;
+
+    $converted = Str::camel('foo_bar');
+    
+    // fooBar
+
 <a name="method-str-contains"></a>
 #### `Str::contains()` {#collection-method}
 
@@ -901,6 +859,17 @@ Puedes además pasar un arreglo de valores para determinar si la cadena dada con
 	use Illuminate\Support\Str;
 
     $contains = Str::contains('This is my name', ['my', 'foo']);
+    
+    // true
+
+<a name="method-ends-with"></a>
+#### `Str::endsWith()` {#collection-method}
+
+La función `Str::endsWith` determina si la cadena dada finaliza con el valor dado:
+
+    use Illuminate\Support\Str;
+
+    $result = Str::endsWith('This is my name', 'name');
     
     // true
 
@@ -933,6 +902,17 @@ La función `Str::is` determina si una cadena dada concuerda con un patrón dado
     $matches = Str::is('baz*', 'foobar');
     
     // false
+
+<a name="method-kebab-case"></a>
+#### `Str::kebab()` {#collection-method}
+
+La función `Str::kebab` convierte la cadena dada a `kebab-case`:
+
+    use Illuminate\Support\Str;
+
+    $converted = Str::kebab('fooBar');
+    
+    // foo-bar
 
 <a name="method-str-limit"></a>
 #### `Str::limit()` {#collection-method}
@@ -1059,6 +1039,17 @@ La función `Str::slug` genera una URL amigable con la cadena dada:
     
     // laravel-5-framework
 
+<a name="method-snake-case"></a>
+#### `Str::snake()` {#collection-method}
+
+La función `Str::snake()` convierte la cadena dada a `snake_case`:
+
+    use Illuminate\Support\Str;
+
+    $converted = Str::snake('fooBar');
+    
+    // foo_bar
+
 <a name="method-str-start"></a>
 #### `Str::start()` {#collection-method}
 
@@ -1073,6 +1064,17 @@ La función `Str::start` agrega una instancia individual del valor dado a una ca
     $adjusted = Str::start('/this/string', '/');
     
     // /this/string
+
+<a name="method-starts-with"></a>
+#### `Str::startsWith()` {#collection-method}
+
+La función `Str::startsWith` determina si la cadena dada comienza con el valor dado:
+
+    use Illuminate\Support\Str;
+
+    $result = Str::startsWith('This is my name', 'This');
+    
+    // true
 
 <a name="method-studly-case"></a>
 #### `Str::studly()` {#collection-method}
@@ -1096,6 +1098,15 @@ La función `Str::title` convierte la cadena dada a `Title Case`:
     
     // A Nice Title Uses The Correct Case
 
+<a name="method-str-uuid"></a>
+#### `Str::uuid()` {#collection-method}
+
+El método `Str::uuid` genera un UUID (versión 4):
+
+    use Illuminate\Support\Str;
+
+    return (string) Str::uuid();
+
 <a name="method-trans"></a>
 #### `trans()` {#collection-method}
 
@@ -1113,15 +1124,6 @@ La función `trans_choice` traduce la clave de traducción dada con inflexión:
     echo trans_choice('messages.notifications', $unreadCount);
 
 Si la clave de traducción dada no existe, la función `trans_choice` retornará la clave dada. Así, usando el ejemplo de arriba, la función `trans_choice` podría retornar `messages.notifications` si la clave de traducción no existe.
-
-<a name="method-str-uuid"></a>
-#### `Str::uuid()` {#collection-method}
-
-El método `Str::uuid` genera un UUID (versión 4):
-
-    use Illuminate\Support\Str;
-
-    return (string) Str::uuid();
 
 <a name="urls"></a>
 ## URLs
@@ -1152,13 +1154,6 @@ Puedes configurar la URL host del asset estableciendo la variable `ASSET_URL` en
 
 	$url = asset('img/photo.jpg'); // http://example.com/assets/img/photo.jpg
 
-<a name="method-secure-asset"></a>
-#### `secure_asset()` {#collection-method}
-
-La función `secure_asset` genera una URL para un asset usando HTTPS:
-
-    $url = secure_asset('img/photo.jpg');
-
 <a name="method-route"></a>
 #### `route()` {#collection-method}
 
@@ -1173,6 +1168,13 @@ Si la ruta acepta parámetros, puedes pasarlos como segundo argumento al método
 Por defecto, la función `route` genera una URL absoluta. Si deseas generar una URL relativa, puedes pasar `false` como tercer argumento:
 
     $url = route('routeName', ['id' => 1], false);
+
+<a name="method-secure-asset"></a>
+#### `secure_asset()` {#collection-method}
+
+La función `secure_asset` genera una URL para un asset usando HTTPS:
+
+    $url = secure_asset('img/photo.jpg');
 
 <a name="method-secure-url"></a>
 #### `secure_url()` {#collection-method}
@@ -1270,13 +1272,6 @@ La función `bcrypt` [encripta](/docs/{{version}}/hashing) el valor dado usando 
 
     $password = bcrypt('my-secret-password');
 
-<a name="method-broadcast"></a>
-#### `broadcast()` {#collection-method}
-
-La función `broadcast` [emite](/docs/{{version}}/broadcasting) el [evento](/docs/{{version}}/events) dado a sus listeners:
-
-    broadcast(new UserRegistered($user));
-
 <a name="method-blank"></a>
 #### `blank()` {#collection-method}
 
@@ -1296,6 +1291,13 @@ La función `blank` retorna `true` si el valor dado es "vacío":
     // false
 
 Para lo inverso de `blank`, mira el método [`filled`](#method-filled).
+
+<a name="method-broadcast"></a>
+#### `broadcast()` {#collection-method}
+
+La función `broadcast` [emite](/docs/{{version}}/broadcasting) el [evento](/docs/{{version}}/events) dado a sus listeners:
+
+    broadcast(new UserRegistered($user));
 
 <a name="method-cache"></a>
 #### `cache()` {#collection-method}
@@ -1639,13 +1641,6 @@ Si no hay función de retorno para la función `tap`, puedes llamar cualquier m�
         'email' => $email,
     ]);
 
-<a name="method-today"></a>
-#### `today()` {#collection-method}
-
-La función `today` crea una nueva instancia de `Illuminate\Support\Carbon` para la fecha actual:
-
-    $today = today();
-
 <a name="method-throw-if"></a>
 #### `throw_if()` {#collection-method}
 
@@ -1671,6 +1666,13 @@ La función `throw_unless` arroja la excepción dada si una expresión booleana 
         AuthorizationException::class,
         'You are not allowed to access this page'
     );
+
+<a name="method-today"></a>
+#### `today()` {#collection-method}
+
+La función `today` crea una nueva instancia de `Illuminate\Support\Carbon` para la fecha actual:
+
+    $today = today();
 
 <a name="method-trait-uses-recursive"></a>
 #### `trait_uses_recursive()` {#collection-method}
