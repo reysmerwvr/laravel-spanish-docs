@@ -590,7 +590,7 @@ También puedes llamar al método `first` sin argumentos para obtener el primer 
 El método `firstWhere` devuelve el primer elemento de la colección con la clave y el valor proporcionado:
 
     $collection = collect([
-        ['name' => 'Regena', 'age' => 12],
+        ['name' => 'Regena', 'age' => null],
         ['name' => 'Linda', 'age' => 14],
         ['name' => 'Diego', 'age' => 23],
         ['name' => 'Linda', 'age' => 84],
@@ -605,6 +605,12 @@ También puedes llamar al método `firstWhere` con un operador:
     $collection->firstWhere('age', '>=', 18);
 
     // ['name' => 'Diego', 'age' => 23]
+
+Similar al método [where](#method-where), puedes pasar un argumento al método `firstWhere`. En este escenario, el método `firstWhere` retornará el primer elemento donde el valor de la clave dada es "verídico":
+
+    $collection->firstWhere('age');
+
+    // ['name' => 'Linda', 'age' => 14]
 
 <a name="method-flatmap"></a>
 #### `flatMap()` {#collection-method}
