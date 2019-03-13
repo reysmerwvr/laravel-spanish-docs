@@ -1826,7 +1826,7 @@ El método `toArray` convierte la colección en un simple `array` de PHP. Si los
         ]
     */
 
-> {note} `toArray` también convierte todos los objetos anidados de la colección en un arreglo. Si deseas obtener el arreglo subyacente sin procesar, usa el método [`all`](#method-all).
+> {note} `toArray` también convierte todos los objetos anidados de la colección que son una instancia de `Arrayable` en un arreglo. En cambio, si deseas obtener el arreglo subyacente sin procesar, usa el método [`all`](#method-all).
 
 <a name="method-tojson"></a>
 #### `toJson()` {#collection-method}
