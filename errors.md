@@ -52,7 +52,7 @@ Por ejemplo, si necesitas reportar distintos tipos de excepciones en diferentes 
 
 #### Contexto De Log Global
 
-De estar disponible, Laravel automáticamente agrega el ID y correo electrónico del usuario actual al mensaje de log de cada excepción como datos contextuales. Puedes definir tus propios datos contextuales sobrescribiendo el método `context` de la clase `App\Exceptions\Handler` de tu aplicación. Esta información será incluida en cada mensaje de log de excepción escrito por tu aplicación:
+De estar disponible, Laravel automáticamente agrega el ID del usuario actual al mensaje de log de cada excepción como datos contextuales. Puedes definir tus propios datos contextuales sobrescribiendo el método `context` de la clase `App\Exceptions\Handler` de tu aplicación. Esta información será incluida en cada mensaje de log de excepción escrito por tu aplicación:
     
     /**
      * Get the default context variables for logging.
