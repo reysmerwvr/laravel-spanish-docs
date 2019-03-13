@@ -25,12 +25,12 @@
 <a name="introduction"></a>
 ## Introducción
 
-Laravel proporciona una API limpia y simple sobre la popular biblioteca [SwiftMailer](https://swiftmailer.symfony.com/) con drivers para SMTP, Mailgun, SparkPost, Amazon SES y `sendmail`, permitiéndote comenzar rápidamente a enviar correos a través de un servicio local o en la nube de tu elección.
+Laravel proporciona una API limpia y simple sobre la popular biblioteca [SwiftMailer](https://swiftmailer.symfony.com/) con drivers para SMTP, Mailgun, Postmark, SparkPost, Amazon SES y `sendmail`, permitiéndote comenzar rápidamente a enviar correos a través de un servicio local o en la nube de tu elección.
 
 <a name="driver-prerequisites"></a>
 ### Requisitos Previos
 
-Los drivers basados ​​en una API como Mailgun y SparkPost suelen ser más simples y rápidos que los servidores SMTP. Si es posible, deberías usar uno de estos drivers. Todos los drivers con API requieren la biblioteca Guzzle HTTP, que puede instalarse a través del gestor de paquetes Composer:
+Los drivers basados ​​en una API como Mailgun, SparkPost y Postmark suelen ser más simples y rápidos que los servidores SMTP. Si es posible, deberías usar uno de estos drivers. Todos los drivers con API requieren la biblioteca Guzzle HTTP, que puede instalarse a través del gestor de paquetes Composer:
 
     composer require guzzlehttp/guzzle
 
@@ -50,6 +50,19 @@ Si no estás usando la [región de Mailgun](https://documentation.mailgun.com/en
 		'secret' => 'your-mailgun-key',
 		'endpoint' => 'api.eu.mailgun.net',
 	],
+
+#### Driver Postmark
+
+Para usar el driver de Postmark, instala el transporte de SwiftMailer de Postmark mediante Composer:
+
+    composer require wildbit/swiftmailer-postmark
+
+Luego, instala Guzzle y establece la opción `driver` en tu archivo de configuración `config/mail.php` a `postmark`. Finalmente, verifica que tu archivo de configuración `config/services.php` contiene las siguientes opciones:
+
+    'postmark' => [
+        'token' => 'your-postmark-token',
+    ],
+
 
 #### Driver SparkPost
 
