@@ -385,15 +385,6 @@ La firma del método `renderHttpException` de la clase `Illuminate\Foundation\Ex
      */
     protected function renderHttpException(HttpExceptionInterface $e);
 
-<a name="facades"></a>
-### Facades
-
-#### Resolución De Servicios Facade
-
-**Probabilidad De Impacto: Baja**
-
-El método `getFacadeAccessor` ahora puede [solo devolver el valor de cadena que representa el identificador en el contenedor de servicios](https://github.com/laravel/framework/pull/25525). Anteriormente, éste podía devolver una instancia de objeto.
-
 <a name="mail"></a>
 ### Correo electrónico
 
