@@ -815,6 +815,8 @@ La función `e` ejecuta la función de PHP `htmlspecialchars` con la opción `do
 
 La función `Str::endsWith` determina si la cadena dada finaliza con el valor dado:
 
+    use Illuminate\Support\Str;
+
     $result = Str::endsWith('This is my name', 'name');
     
     // true
