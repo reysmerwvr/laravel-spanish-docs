@@ -109,7 +109,7 @@ Si estás pasando un número entero a cualquiera de estos métodos, debes actual
 
 **Probabilidad De Impacto: Media**
 
-Además de los cambios de valor de retorno de arriba, el argumento TTL de los métodos `put`,` putMany` y `add` de la clase `Illuminate\Cache\Repository` se actualizó para cumplir mejor con la especificación del PSR-16. El nuevo comportamiento proporciona un valor predeterminado de `null`, por lo que una llamada sin especificar un TTL dará como resultado el almacenamiento del elemento de caché para siempre. Además, el almacenamiento de elementos de caché con un TTL de 0 o inferior eliminará los elementos del caché. Vea el [PR Relacionado](https://github.com/laravel/framework/pull/27217) Para más información.
+Además de [los cambios de valor de retorno de arriba](#the-repository-and-store-contracts), el argumento TTL de los métodos `put`,` putMany` y `add` de la clase `Illuminate\Cache\Repository` se actualizó para cumplir mejor con la especificación del PSR-16. El nuevo comportamiento proporciona un valor predeterminado de `null`, por lo que una llamada sin especificar un TTL dará como resultado el almacenamiento del elemento de caché para siempre. Además, el almacenamiento de elementos de caché con un TTL de 0 o inferior eliminará los elementos del caché. Vea el [PR Relacionado](https://github.com/laravel/framework/pull/27217) Para más información.
 
 El evento `KeyWritten` [también fue actualizado](https://github.com/laravel/framework/pull/27265) con esos cambios.
 
@@ -154,6 +154,7 @@ Si deseas liberar un bloqueo sin respetar a su propietario actual, puedes usar e
 
     Cache::lock('foo')->forceRelease();
 
+<a name="the-repository-and-store-contracts"></a>
 ####  Los Contratos `Repository` Y `Store`
 
 **Probabilidad De Impacto: Muy Baja**
