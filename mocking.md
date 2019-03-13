@@ -1,6 +1,7 @@
 # Mocking
 
 - [Introducción](#introduction)
+- [Mocking De Objectos](#mocking-objects)
 - [Fake De Trabajos (Jobs)](#bus-fake)
 - [Fake De Eventos](#event-fake)
     - [Fake De Eventos con Alcance](#scoped-event-fakes)
@@ -13,9 +14,29 @@
 <a name="introduction"></a>
 ## Introducción
 
-Al momento de probar aplicaciones de Laravel, puedes querer "simular" ciertos aspectos de tu aplicación de modo que realmente no sean ejecutados durante una prueba dada. Por ejemplo, al momento de probar un controlador que despacha un evento, puedes querer simular los listeners de eventos de modo que realmente no se ejecuten durante la prueba. Esto te permite probar solamente la respuesta HTTP del controlador sin preocuparte por la ejecución de los listeners de eventos, ya que los listeners de eventos pueden ser evaluados en sus propios casos de prueba.
+Al momento de probar aplicaciones de Laravel, puedes querer "simular" (mock) ciertos aspectos de tu aplicación de modo que realmente no sean ejecutados durante una prueba dada. Por ejemplo, al momento de probar un controlador que despacha un evento, puedes querer simular los listeners de eventos de modo que realmente no se ejecuten durante la prueba. Esto te permite probar solamente la respuesta HTTP del controlador sin preocuparte por la ejecución de los listeners de eventos, ya que los listeners de eventos pueden ser evaluados en sus propios casos de prueba.
 
-Laravel provee funciones helpers para simular eventos, tareas, y clases facades predeterminadas. Estos helpers proporcionan principalmente una capa conveniente sobre la clase Mockery de modo que no tengas que hacer manualmente llamadas complicadas a métodos Mockery. Puedes también usar [Mockery](http://docs.mockery.io/en/latest/) o PHPUnit para crear tus propios mocks o spies.
+Laravel provee funciones helpers para simular eventos, tareas y clases facades predeterminadas. Estos helpers proporcionan principalmente una capa conveniente sobre la clase Mockery de modo que no tengas que hacer manualmente llamadas complicadas a métodos Mockery. Puedes también usar [Mockery](http://docs.mockery.io/en/latest/) o PHPUnit para crear tus propios mocks o spies.
+
+<a name="mocking-objects"></a>
+## Mocking De Objetos
+
+Cuando hagas mocking de un objeto que vas a inyectar en tu aplicación a través del contenedor de servicio de Laravel, debes enlazar tu instancia a la que le has hecho mocking al contenedor como un enlace de `instance`. Esto le indicará al contenedor que use tu instancia "mockeada" del objeto en lugar de construir el propio objeto:
+
+    use Mockery;
+    use App\Service;
+
+    $this->instance(Service::class, Mockery::mock(Service::class, function ($mock) {
+        $mock->shouldReceive('process')->once();
+    }));
+
+Para hacer esto más conveniente, puedes usar el método `mock`, que es proporcionado por la clase TestCase base de Laravel:
+
+    use App\Service;
+
+    $this->mock(Service::class, function ($mock) {
+        $mock->shouldReceive('process')->once();
+    });
 
 <a name="bus-fake"></a>
 ## Fake De Trabajos (Jobs)
@@ -44,7 +65,7 @@ Como una alternativa a mocking, puedes usar el método `fake` de la clase facade
                 return $job->order->id === $order->id;
             });
 
-            // Assert a job was not dispatched...
+            // Comprueba que un trabajo no fue enviado...
             Bus::assertNotDispatched(AnotherJob::class);
         }
     }
@@ -80,15 +101,15 @@ Como una alternativa a mocking, puedes usar el método `fake` de la clase facade
                 return $e->order->id === $order->id;
             });
 
-            // Assert an event was dispatched twice...
+            // Comprueba que un evento fue enviado dos veces...
             Event::assertDispatched(OrderShipped::class, 2);
 
-            // Assert an event was not dispatched...
+            // Comprueba que un evento no fue enviado...
             Event::assertNotDispatched(OrderFailedToShip::class);
         }
     }
 
-> {note} Después de llamar a `Event::fake()`, no se ejecutarán listeners de eventos. Entonces, si tus pruebas usan model factories que dependen de eventos, cómo crear una UUID durante el evento de modelo `creating` event, debes llamar `Event::fake()` **después** de usar tus factories.
+> {note} Después de llamar a `Event::fake()`, no se ejecutarán listeners de eventos. Entonces, si tus pruebas usan model factories que dependen de eventos, cómo crear una UUID durante el evento de modelo `creating`, debes llamar `Event::fake()` **después** de usar tus factories.
 
 #### Haciendo Fake A Un Subconjunto de Eventos
 
@@ -107,7 +128,7 @@ Si sólo si deseas hacer fake a oyentes de eventos para un grupo específico de 
 
         Event::assertDispatched(OrderCreated::class);
 
-        // Other events are dispatched as normal...
+        // Otros eventos se envían de forma normal...
         $order->update([...]);
     }
 
@@ -142,7 +163,7 @@ Si sólo quieres hacer fake a oyentes de eventos para una porción de la prueba,
                 return $order;
             });
 
-            // Events are dispatched as normal and observers will run ...
+            // Los eventos se envían normalmente y los observadores se ejecutarán...
             $order->update([...]);
         }
     }
@@ -168,7 +189,7 @@ Puedes usar el método `fake` de la clase facade `Mail` para prevenir que los co
         {
             Mail::fake();
 
-            // Assert that no mailables were sent...
+            // Comprueba que no se enviaron mailables...
             Mail::assertNothingSent();
 
             // Perform order shipping...
@@ -177,17 +198,17 @@ Puedes usar el método `fake` de la clase facade `Mail` para prevenir que los co
                 return $mail->order->id === $order->id;
             });
 
-            // Assert a message was sent to the given users...
+            // Comprueba que un mensaje fue enviado a los usuarios dados...
             Mail::assertSent(OrderShipped::class, function ($mail) use ($user) {
                 return $mail->hasTo($user->email) &&
                        $mail->hasCc('...') &&
                        $mail->hasBcc('...');
             });
 
-            // Assert a mailable was sent twice...
+            // Comprueba que un correo electrónico fue enviado dos veces...
             Mail::assertSent(OrderShipped::class, 2);
 
-            // Assert a mailable was not sent...
+            // Comprueba que un correo electrónico no fue enviado...
             Mail::assertNotSent(AnotherMailable::class);
         }
     }
@@ -219,7 +240,7 @@ Puedes usar el método `fake` de la clase facade `Notification` para prevenir qu
         {
             Notification::fake();
 
-            // Assert that no notifications were sent...
+            // Comprueba que no se enviaron notificaciones...
             Notification::assertNothingSent();
 
             // Perform order shipping...
@@ -232,20 +253,20 @@ Puedes usar el método `fake` de la clase facade `Notification` para prevenir qu
                 }
             );
 
-            // Assert a notification was sent to the given users...
+            // Comprueba que una notificación fue enviada a los usuarios dados...
             Notification::assertSentTo(
                 [$user], OrderShipped::class
             );
 
-            // Assert a notification was not sent...
+            // Comprueba que una notificación no fue enviada...
             Notification::assertNotSentTo(
                 [$user], AnotherNotification::class
             );
 
-            // Assert a notification was sent via Notification::route() method...
+            // Comprueba que se envió una notificación mediante el método Notification::route ()...
             Notification::assertSentTo(
                 new AnonymousNotifiable, OrderShipped::class
-            );            
+            );
         }
     }
 
@@ -270,7 +291,7 @@ Como alternativa a mocking, puedes usar el método `fake` de la clase facade `Qu
         {
             Queue::fake();
 
-            // Assert that no jobs were pushed...
+            // Comprueba que no se agregaron trabajos...
             Queue::assertNothingPushed();
 
             // Perform order shipping...
@@ -279,16 +300,16 @@ Como alternativa a mocking, puedes usar el método `fake` de la clase facade `Qu
                 return $job->order->id === $order->id;
             });
 
-            // Assert a job was pushed to a given queue...
+            // Comprueba que un trabajo fue agregado a una cola dada...
             Queue::assertPushedOn('queue-name', ShipOrder::class);
 
-            // Assert a job was pushed twice...
+            // Comprueba que un trabajo fue agregado dos veces...
             Queue::assertPushed(ShipOrder::class, 2);
 
-            // Assert a job was not pushed...
+            // Comprueba que un trabajo no fue agregado...
             Queue::assertNotPushed(AnotherJob::class);
 
-            // Assert a job was pushed with a specific chain...
+            // Comprueba que un trabajo fue agregado con una cadena específica...
             Queue::assertPushedWithChain(ShipOrder::class, [
                 AnotherJob::class,
                 FinalJob::class
@@ -321,10 +342,10 @@ El método fake de la clase facade `Storage` permite que generes fácilmente un 
                 'avatar' => UploadedFile::fake()->image('avatar.jpg')
             ]);
 
-            // Assert the file was stored...
+            // Comprueba que el archivo fue almacenado...
             Storage::disk('avatars')->assertExists('avatar.jpg');
 
-            // Assert a file does not exist...
+            // Comprueba que un archivo no existe...
             Storage::disk('avatars')->assertMissing('missing.jpg');
         }
     }
@@ -334,7 +355,7 @@ El método fake de la clase facade `Storage` permite que generes fácilmente un 
 <a name="mocking-facades"></a>
 ## Las Clases Facade
 
-Diferente de las llamadas de métodos estáticos tradicionales, [las clases facade](/docs/{{version}}/facades) pueden ser imitadas (mock). Esto proporciona una gran ventaja sobre los métodos estáticos tradicionales y te concede la misma capacidad de prueba que tendrías si estuvieras usando inyección de dependencias. Al momento de probar, con frecuencia puedes querer imitar una llamada a una clase facade de Laravel en uno de tus controladores. Por ejemplo, considera la siguiente acción de controlador:
+Diferente de las llamadas de métodos estáticos tradicionales, [las clases facade](/docs/{{version}}/facades) pueden ser simuladas (mock). Esto proporciona una gran ventaja sobre los métodos estáticos tradicionales y te concede la misma capacidad de prueba que tendrías si estuvieras usando inyección de dependencias. Al momento de probar, con frecuencia puedes querer simular una llamada a una clase facade de Laravel en uno de tus controladores. Por ejemplo, considera la siguiente acción de controlador:
 
     <?php
 
@@ -357,7 +378,7 @@ Diferente de las llamadas de métodos estáticos tradicionales, [las clases faca
         }
     }
 
-Podemos imitar la ejecución de la clase facade `Cache` usando el método `shouldReceive`, el cual devolverá una instancia mock de la clase [Mockery](https://github.com/padraic/mockery). Ya que las clases facades realmente son resueltas y administradas por el [contenedor de servicios](/docs/{{version}}/container) de Laravel, tendrán mucho más capacidad de prueba que una clase estática típica. Por ejemplo, vamos a imitar nuestra llamada al método `get` de la clase facade `Cache`:
+Podemos simular (mock) la ejecución de la clase facade `Cache` usando el método `shouldReceive`, el cual devolverá una instancia mock de la clase [Mockery](https://github.com/padraic/mockery). Ya que las clases facades realmente son resueltas y administradas por el [contenedor de servicios](/docs/{{version}}/container) de Laravel, tendrán mucho más capacidad de prueba que una clase estática típica. Por ejemplo, vamos a simular (mock) nuestra llamada al método `get` de la clase facade `Cache`:
 
     <?php
 
@@ -383,4 +404,4 @@ Podemos imitar la ejecución de la clase facade `Cache` usando el método `shoul
         }
     }
 
-> {note} No deberías imitar la clase facade `Request`. En lugar de eso, pasa la entrada que deseas dentro de los métodos helper HTTP tales como `get` y `post` al momento de ejecutar tus pruebas. Del mismo modo, en lugar de imitar la clase facade `Config`, ejecuta el método `Config::set` en tus pruebas.
+> {note} No deberías hacer mock a la clase facade `Request`. En lugar de eso, pasa la entrada que deseas dentro de los métodos helper HTTP tales como `get` y `post` al momento de ejecutar tus pruebas. Del mismo modo, en lugar de simular (mock) la clase facade `Config`, ejecuta el método `Config::set` en tus pruebas.
