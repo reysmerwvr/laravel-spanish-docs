@@ -195,7 +195,7 @@ Si prefieres definir manualmente las etiquetas para uno de tus objetos encolable
 <a name="notifications"></a>
 ## Notificaciones
 
-> **Note:** Antes de usar las notificaciones, deberías agregar el paquete de Composer `guzzlehttp/guzzle` a tu proyecto. Al momento de configurar Horizon para enviar notificaciones SMS, también deberías revisar los [prerequisitos para el manejador de notificación Nexmo](https://laravel.com/docs/{{version}}/notifications#sms-notifications).
+> **Note:** Al momento de configurar Horizon para enviar notificaciones de Slack o SMS, también deberías revisar los [prerequisitos para el manejador de notificaciones relevante](https://laravel.com/docs/{{version}}/notifications).
 
 Si prefieres ser notificado cuando una de tus colas tenga un largo tiempo de inactividad, puedes usar los métodos `Horizon::routeMailNotificationsTo`, `Horizon::routeSlackNotificationsTo` y `Horizon::routeSmsNotificationsTo`. Puedes ejecutar estos métodos desde el `HorizonServiceProvider` de tu aplicación:
 
