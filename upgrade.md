@@ -7,22 +7,22 @@
 
 <div class="content-list" markdown="1">
 - [TTL De Caché En Segundos](#cache-ttl-in-seconds)
-- [Cache Lock Safety Improvements](#cache-lock-safety-improvements)
+- [Mejoras De Seguridad De Bloqueo De Caché](#cache-lock-safety-improvements)
 - [Parseo De Variables De Entorno](#environment-variable-parsing)
-- [Markdown File Directory Change](#markdown-file-directory-change)
-- [Nexmo / Slack Notification Channels](#nexmo-slack-notification-channels)
+- [Cambio de Directorio de Archivos Markdown](#markdown-file-directory-change)
+- [Canales De Notificación Nexmo / Slack](#nexmo-slack-notification-channels)
 </div>
 
 <a name="medium-impact-changes"></a>
 ## Cambios De Mediano Impacto
 
 <div class="content-list" markdown="1">
-- [Container Generators & Tagged Services](#container-generators)
-- [SQLite Version Constraints](#sqlite)
-- [Prefer String And Array Classes Over Helpers](#string-and-array-helpers)
-- [Deferred Service Providers](#deferred-service-providers)
-- [PSR-16 Conformity](#psr-16-conformity)
-- [Model Names Ending With Irregular Plurals](#model-names-ending-with-irregular-plurals)
+- [Generadores Y Servicios Etiquetados De Container](#container-generators)
+- [Restricciones de la versión de SQLite](#sqlite)
+- [Preferir Clases String Y Array Sobre Helpers](#string-and-array-helpers)
+- [Proveedores De Servicios Diferidos](#deferred-service-providers)
+- [Cumplimiento de PSR-16](#psr-16-conformity)
+- [Modelos De Nombre Que Terminan Con Plurales Irregulares](#model-names-ending-with-irregular-plurals)
 - [Modelos Personalizados Para Pivote Con IDs Incrementales](#custom-pivot-models-with-incrementing-ids)
 - [Pheanstalk 4.0](#pheanstalk-4)
 </div>
@@ -117,7 +117,7 @@ Si estás pasando un número entero a cualquiera de estos métodos, debes actual
 
 **Probabilidad De Impacto: Media**
 
-Además de [los cambios de valor de retorno de arriba](#the-repository-and-store-contracts), el argumento TTL de los métodos `put`,` putMany` y `add` de la clase `Illuminate\Cache\Repository` se actualizó para cumplir mejor con la especificación del PSR-16. El nuevo comportamiento proporciona un valor predeterminado de `null`, por lo que una llamada sin especificar un TTL dará como resultado el almacenamiento del elemento de caché para siempre. Además, el almacenamiento de elementos de caché con un TTL de 0 o inferior eliminará los elementos del caché. Vea el [PR Relacionado](https://github.com/laravel/framework/pull/27217) Para más información.
+Además de [los cambios de valor de retorno descritos abajo](#the-repository-and-store-contracts), el argumento TTL de los métodos `put`,` putMany` y `add` de la clase `Illuminate\Cache\Repository` se actualizó para cumplir mejor con la especificación del PSR-16. El nuevo comportamiento proporciona un valor predeterminado de `null`, por lo que una llamada sin especificar un TTL dará como resultado el almacenamiento del elemento de caché para siempre. Además, el almacenamiento de elementos de caché con un TTL de 0 o inferior eliminará los elementos del caché. Vea el [PR Relacionado](https://github.com/laravel/framework/pull/27217) Para más información.
 
 El evento `KeyWritten` [también fue actualizado](https://github.com/laravel/framework/pull/27265) con esos cambios.
 
@@ -333,11 +333,12 @@ Los métodos `getForeignKey` y` getQualifiedForeignKey` de la relación `Belongs
 
 **Probabilidad de Impacto: Alto**
 
-El paquete [phpdotenv](https://github.com/vlucas/phpdotenv) que es usado para parsear archivos .env ha liberado una nueva versión, que podría impactar en los resultados retornados desde el helper `env`. Especificamente, el caracter `#` en un valor sin comillas ahora será considerado como un comentario en lugar de parte del valor.
+El paquete [phpdotenv](https://github.com/vlucas/phpdotenv) que es usado para parsear archivos .env ha liberado una nueva versión, que podría impactar en los resultados retornados desde el helper `env`. Especificamente, el carácter `#` en un valor sin comillas ahora será considerado como un comentario en lugar de parte del valor.
 
 Comportamiento anterior:
 
     ENV_VALUE=foo#bar
+
     env('ENV_VALUE'); // foo#bar
 
 Nuevo comportamiento:
@@ -348,6 +349,7 @@ Nuevo comportamiento:
 Para mantener el comportamiento anterior, puedes envolver los valores de entorno en comillas:
 
     ENV_VALUE="foo#bar"
+
     env('ENV_VALUE'); // foo#bar
 
 Para más información, por favor revisa la [guía de actualización de phpdotenv](https://github.com/vlucas/phpdotenv/blob/master/UPGRADING.md)
@@ -541,7 +543,7 @@ Los métodos `setUp` y` tearDown` ahora requieren un tipo de retorno nulo:
 
 **Probabilidad De Impacto: Opcional**
 
-De forma predeterminada, Laravel 5.8 usa PHPUnit 7. Sin embargo, opcionalmente puede actualizar a PHPUnit 8, que requiere PHP> = 7.2. Además, lee la lista completa de cambios en [el anuncio de la versión de PHPUnit 8](https://phpunit.de/announcements/phpunit-8.html).
+De forma predeterminada, Laravel 5.8 usa PHPUnit 7. Sin embargo, opcionalmente puedes actualizar a PHPUnit 8, que requiere PHP> = 7.2. Además, lee la lista completa de cambios en [el anuncio de la versión de PHPUnit 8](https://phpunit.de/announcements/phpunit-8.html).
 
 <a name="validation"></a>
 ### Validación
