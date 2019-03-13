@@ -146,7 +146,7 @@ Por defecto, las tareas serán ejecutadas en cada servidor en serie. En otras pa
 
 Para ejecutar una tarea o historia que esté definida en tu archivo `Envoy.blade.php`, ejecuta el comando de Envoy `run`, pasando el nombre de la tarea o historia que deseas ejecutar. Envoy va a ejecutar la tarea y mostrará el resultado de los servidores mientras se ejecuta la tarea:
 
-    envoy run task
+    envoy run deploy
 
 <a name="confirming-task-execution"></a>
 ### Confirmar Ejecución De Tarea
