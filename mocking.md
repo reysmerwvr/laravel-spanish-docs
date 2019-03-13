@@ -1,6 +1,7 @@
 # Mocking
 
 - [Introducción](#introduction)
+- [Mocking De Objectos](#mocking-objects)
 - [Fake De Trabajos (Jobs)](#bus-fake)
 - [Fake De Eventos](#event-fake)
     - [Fake De Eventos con Alcance](#scoped-event-fakes)
@@ -16,6 +17,26 @@
 Al momento de probar aplicaciones de Laravel, puedes querer "simular" ciertos aspectos de tu aplicación de modo que realmente no sean ejecutados durante una prueba dada. Por ejemplo, al momento de probar un controlador que despacha un evento, puedes querer simular los listeners de eventos de modo que realmente no se ejecuten durante la prueba. Esto te permite probar solamente la respuesta HTTP del controlador sin preocuparte por la ejecución de los listeners de eventos, ya que los listeners de eventos pueden ser evaluados en sus propios casos de prueba.
 
 Laravel provee funciones helpers para simular eventos, tareas, y clases facades predeterminadas. Estos helpers proporcionan principalmente una capa conveniente sobre la clase Mockery de modo que no tengas que hacer manualmente llamadas complicadas a métodos Mockery. Puedes también usar [Mockery](http://docs.mockery.io/en/latest/) o PHPUnit para crear tus propios mocks o spies.
+
+<a name="mocking-objects"></a>
+## Mocking De Objetos
+
+Cuando hagas mocking de un objeto que vas a inyectar en tu aplicación a través del contenedor de servicio de Laravel, debes enlazar tu instancia a la que le has hecho mocking al contenedor como un enlace de `instance`. Esto le indicará al contenedor que use tu instancia "mockeada" del objeto en lugar de construir el propio objeto:
+
+    use Mockery;
+    use App\Service;
+
+    $this->instance(Service::class, Mockery::mock(Service::class, function ($mock) {
+        $mock->shouldReceive('process')->once();
+    }));
+
+Para hacer esto más conveniente, puedes usar el método `mock`, que es proporcionado por la clase TestCase base de Laravel:
+
+    use App\Service;
+
+    $this->mock(Service::class, function ($mock) {
+        $mock->shouldReceive('process')->once();
+    });
 
 <a name="bus-fake"></a>
 ## Fake De Trabajos (Jobs)
@@ -245,7 +266,7 @@ Puedes usar el método `fake` de la clase facade `Notification` para prevenir qu
             // Assert a notification was sent via Notification::route() method...
             Notification::assertSentTo(
                 new AnonymousNotifiable, OrderShipped::class
-            );            
+            );
         }
     }
 
