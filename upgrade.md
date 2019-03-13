@@ -8,6 +8,7 @@
 <div class="content-list" markdown="1">
 - [TTL De Caché En Segundos](#cache-ttl-in-seconds)
 - [Cache Lock Safety Improvements](#cache-lock-safety-improvements)
+- [Entorno](#environment)
 - [Markdown File Directory Change](#markdown-file-directory-change)
 - [Nexmo / Slack Notification Channels](#nexmo-slack-notification-channels)
 </div>
@@ -308,9 +309,10 @@ La propiedad `deleted_at` [ahora se convertirá automáticamente](https://github
 
 Los métodos `getForeignKey` y` getQualifiedForeignKey` de la relación `BelongsTo` han sido renombrados a `getForeignKeyName` y `getQualifiedForeignKeyName` respectivamente, haciendo que los nombres de los métodos sean consistentes con las otras relaciones ofrecidas por Laravel.
 
-#### Valores de los archivos de entorno
+<a name="#environment"></a>
+### Entorno
 
-**Probabilidad de Impacto: Bajo**
+**Probabilidad de Impacto: Alto**
 
 El paquete [phpdotenv](https://github.com/vlucas/phpdotenv) que es usado para parsear archivos .env ha liberado una nueva versión, que podría impactar en los resultados retornados desde el helper `env`. Especificamente, el caracter `#` en un valor sin comillas ahora será considerado como un comentario en lugar de parte del valor.
 
