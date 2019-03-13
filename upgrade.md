@@ -536,7 +536,9 @@ Nuevo comportamiento:
 
 De forma predeterminada, Laravel 5.8 usa PHPUnit 7. Sin embargo, opcionalmente puede actualizar a PHPUnit 8, que requiere PHP> = 7.2. Además, lee la lista completa de cambios en [el anuncio de la versión de PHPUnit 8](https://phpunit.de/announcements/phpunit-8.html).
 
-Cuando se utiliza PHPUnit 8, los métodos `setUp` y` tearDown` requieren un tipo de retorno nulo:
+#### `setUp` Y `tearDown`
+
+Los métodos `setUp` y` tearDown` ahora requieren un tipo de retorno nulo:
 
     public function setUp(): void
     public function tearDown(): void
