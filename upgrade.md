@@ -308,6 +308,29 @@ La propiedad `deleted_at` [ahora se convertirá automáticamente](https://github
 
 Los métodos `getForeignKey` y` getQualifiedForeignKey` de la relación `BelongsTo` han sido renombrados a `getForeignKeyName` y `getQualifiedForeignKeyName` respectivamente, haciendo que los nombres de los métodos sean consistentes con las otras relaciones ofrecidas por Laravel.
 
+#### Valores de los archivos de entorno
+
+**Probabilidad de Impacto: Bajo**
+
+El paquete [phpdotenv](https://github.com/vlucas/phpdotenv) que es usado para parsear archivos .env ha liberado una nueva versión, que podría impactar en los resultados retornados desde el helper `env`. Especificamente, el caracter `#` en un valor sin comillas ahora será considerado como un comentario en lugar de parte del valor.
+
+Comportamiento anterior:
+
+    ENV_VALUE=foo#bar
+    env('ENV_VALUE'); // foo#bar
+
+Nuevo comportamiento:
+
+    ENV_VALUE=foo#bar
+    env('ENV_VALUE'); // foo
+
+Para mantener el comportamiento anterior, puedes envolver los valores de entorno en comillas:
+
+    ENV_VALUE="foo#bar"
+    env('ENV_VALUE'); // foo#bar
+
+Para más información, por favor revisa la [guía de actualización de phpdotenv](https://github.com/vlucas/phpdotenv/blob/master/UPGRADING.md)
+
 <a name="events"></a>
 ### Eventos
 
@@ -491,29 +514,6 @@ Nuevo comportamiento:
     putenv('APP_ENV=staging');
 
     dump(env('APP_ENV')); // local
-
-#### Valores de los archivos de entorno
-
-**Probabilidad de Impacto: Bajo**
-
-El paquete [phpdotenv](https://github.com/vlucas/phpdotenv) que es usado para parsear archivos .env ha tenido una actualización de versión importante, que podría impactar en los resultados retornados desde el helper `env`. Notablemente, el caracter `#` en un valor sin comillas ahora será comentado, en lugar de ser parte del valor como tal.
-
-Comportamiento anterior:
-
-    ENV_VALUE=foo#bar
-    env('ENV_VALUE'); // foo#bar
-
-Nuevo comportamiento:
-
-    ENV_VALUE=foo#bar
-    env('ENV_VALUE'); // foo
-
-La solución para esto es envolver los valores de entorno en comillas:
-
-    ENV_VALUE="foo#bar"
-    env('ENV_VALUE'); // foo#bar
-
-Hay otros casos pocos comunes donde un error descriptivo puede ser mostrado luego de cargar el archivo de entorno. Puedes leer más sobre eso en la [guía de actualización de phpdotenv](https://github.com/vlucas/phpdotenv/blob/master/UPGRADING.md)
 
 <a name="testing"></a>
 ### Pruebas
