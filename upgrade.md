@@ -530,18 +530,18 @@ Nuevo comportamiento:
 <a name="testing"></a>
 ### Pruebas
 
-#### PHPUnit 8
-
-**Probabilidad De Impacto: Opcional**
-
-De forma predeterminada, Laravel 5.8 usa PHPUnit 7. Sin embargo, opcionalmente puede actualizar a PHPUnit 8, que requiere PHP> = 7.2. Además, lee la lista completa de cambios en [el anuncio de la versión de PHPUnit 8](https://phpunit.de/announcements/phpunit-8.html).
-
 #### `setUp` Y `tearDown`
 
 Los métodos `setUp` y` tearDown` ahora requieren un tipo de retorno nulo:
 
     public function setUp(): void
     public function tearDown(): void
+
+#### PHPUnit 8
+
+**Probabilidad De Impacto: Opcional**
+
+De forma predeterminada, Laravel 5.8 usa PHPUnit 7. Sin embargo, opcionalmente puede actualizar a PHPUnit 8, que requiere PHP> = 7.2. Además, lee la lista completa de cambios en [el anuncio de la versión de PHPUnit 8](https://phpunit.de/announcements/phpunit-8.html).
 
 <a name="validation"></a>
 ### Validación
