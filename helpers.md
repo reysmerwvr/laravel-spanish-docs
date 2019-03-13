@@ -867,6 +867,8 @@ Puedes además pasar un arreglo de valores para determinar si la cadena dada con
 
 La función `Str::endsWith` determina si la cadena dada finaliza con el valor dado:
 
+    use Illuminate\Support\Str;
+
     $result = Str::endsWith('This is my name', 'name');
     
     // true
@@ -1638,8 +1640,6 @@ Si no hay función de retorno para la función `tap`, puedes llamar cualquier m�
         'name' => $name,
         'email' => $email,
     ]);
-
-
 
 <a name="method-throw-if"></a>
 #### `throw_if()` {#collection-method}
