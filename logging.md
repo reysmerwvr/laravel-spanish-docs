@@ -4,6 +4,7 @@
 - [Configuración](#configuration)
     - [Construyendo Stacks de Registros](#building-log-stacks)
 - [Escribiendo Mensajes de Registro](#writing-log-messages)
+    - [Contexto Global De Registro](#sglobal-log-context)
     - [Escribiendo a Canales Específicos](#writing-to-specific-channels)
 - [Configuración Avanzada del Canal Monolog](#advanced-monolog-channel-customization)
     - [Personalizando Monolog para Canales](#customizing-monolog-for-channels)
@@ -147,6 +148,23 @@ Así que, podrías llamar a cualquiera de esos métodos para registrar un mensaj
 Un arreglo de datos contextuales puede ser pasado a los métodos de registro. Estos datos contextuales serán formateados y mostrados con el mensaje registrado:
 
     Log::info('User failed to login.', ['id' => $user->id]);
+
+<a name="global-log-context"></a>
+### Contexto Global De Registro
+
+De estar disponible, Laravel automáticamente agrega el ID y correo electrónico del usuario actual a cada mensaje de registro como datos contextuales. Puedes definir tus propios datos contextuales sobrescribiendo el método `context` de la clase `App\Exceptions\Handler` de tu aplicación. Esta información será incluida en cada mensaje de registro escrito por tu aplicación:
+
+    /**
+     * Get the default context variables for logging.
+     *
+     * @return array
+     */
+    protected function context()
+    {
+        return array_merge(parent::context(), [
+            'foo' => 'bar',
+        ]);
+    }
 
 <a name="writing-to-specific-channels"></a>
 ### Escribiendo a Canales Específicos
