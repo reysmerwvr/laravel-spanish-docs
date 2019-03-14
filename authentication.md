@@ -452,7 +452,7 @@ Como puedes ver en el ejemplo anterior, el callback pasado al método `extend` d
 
 La forma más sencilla de implementar un sistema de autenticación basado en peticiones HTTP es usando el método `Auth:viaRequest`. Este método te permite definir rápidamente tu proceso de autenticación usando sólo un Closure.
 
-Para comenzar, llama al método `Auth::viaRequest` dentro del método `boot` de tu `AuthServiceProvider`. El método `viaRequest` acepta el nombre de un guard como su primer argumento. Este nombre puede ser cualquier cadena que describa tu guard personalizado. El segundo argumento pasado al método método debe ser un Closure que reciba la petición HTTP entrante y retorne una instancia de usuario o, si la autenticación falla, `null`:
+Para comenzar, llama al método `Auth::viaRequest` dentro del método `boot` de tu `AuthServiceProvider`. El método `viaRequest` acepta el nombre de un driver de autenticación como su primer argumento. Este nombre puede ser cualquier cadena que describa tu guard personalizado. El segundo argumento pasado al método método debe ser un Closure que reciba la petición HTTP entrante y retorne una instancia de usuario o, si la autenticación falla, `null`:
 
     use App\User;
     use Illuminate\Http\Request;
@@ -472,7 +472,7 @@ Para comenzar, llama al método `Auth::viaRequest` dentro del método `boot` de 
         });
     }
 
-Una vez que tu guard personalizado ha sido definido, puedes usar este guard en la configuración de `guards` de tu archivo de configuración `auth.php`:
+Una vez que tu driver de autenticación personalizado ha sido definido, usalo como un driver dentro de la configuración de `guards` de tu archivo de configuración `auth.php`:
 
     'guards' => [
         'api' => [
