@@ -403,7 +403,7 @@ Una vez que estés listo para crear una suscripción real para el usuario, puede
 	
 Ocasionalmente, puedes desear crear un cliente de Stripe sin iniciar una suscripción. Puedes lograr esto usando el método `createAsStripeCustomer`:
 
-    $user->createAsStripeCustomer($token);
+    $user->createAsStripeCustomer();
 
 Una vez el cliente ha sido creado en Stripe, puedes iniciar una suscripción en una fecha posterior.
 
@@ -496,10 +496,10 @@ Cashier maneja automáticamente la cancelación de suscripción por cargos falli
     class WebhookController extends CashierController
     {
         /**
-         * Handle a Stripe webhook.
+         * Handle invoice payment succeeded.
          *
          * @param  array  $payload
-         * @return Response
+         * @return \Symfony\Component\HttpFoundation\Response
          */
         public function handleInvoicePaymentSucceeded($payload)
         {
@@ -570,8 +570,10 @@ Algunas veces puedes necesitar hacer un cargo único pero también generar una f
 
 La factura será cargada inmediatamente contra la tarjeta de crédito del usuario. El método `invoiceFor` también acepta un arreglo como su tercer argumento. Este arreglo contiene las opciones de facturación para el elemento de la factura. El cuarto argumento aceptado por el método es también un arreglo. Este argumento final acepta las opciones de facturación de la factura en sí:
 
-    $user->invoiceFor('One Time Fee', 500, [
-        'custom-option' => $value,
+    $user->invoiceFor('Stickers', 500, [
+        'quantity' => 50,
+    ], [
+        'tax_percent' => 21,
     ]);
 
 > {note} El método `invoiceFor` creará una factura de Stripe la cual reintentará intentos de facturación fallidos. Si no quieres que las facturas reintenten cargos fallidos, necesitarás cerrarlas usando la API de Stripe después del primer cargo fallido.
