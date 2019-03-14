@@ -359,7 +359,7 @@ Sin embargo, puedes pasar una función de retorno (callback) al método `countBy
 
     $counted->all();
 
-    // [1 => 1, 2 => 3, 3 => 1]
+    // ['gmail.com' => 2, 'yahoo.com' => 1]
 
 <a name="method-crossjoin"></a>
 #### `crossJoin()` {#collection-method}
