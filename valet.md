@@ -9,6 +9,7 @@
     - [El Comando "Link"](#the-link-command)
     - [Asegurar Sitios Con TLS](#securing-sites)
 - [Compartir Sitios](#sharing-sites)
+- [Variables de Entorno Específicas Del Sitio](#site-specific-environment-variables)
 - [Drivers De Valet Personalizados](#custom-valet-drivers)
     - [Drivers Locales](#local-drivers)
 - [Otros Comandos De Valet](#other-valet-commands)
@@ -166,6 +167,17 @@ Valet incluso tiene un comando para compartir tus sitios locales con el mundo, s
 Para compartir un sitio, deberás dirigirte hacia el directorio del sitio desde la terminal y ejecutar el comando `valet share`. Una URL accesible de manera pública será copiada a tu portapapeles y estará lista para que la pegues directamente en tu navegador.
 
 Para detener la ejecución de `share` en tu sitio, presiona `Control + C` para cancelar el proceso.
+
+<a name="site-specific-environment-variables"></a>
+## Variables de Entorno Específicas Del Sitio
+
+Algunas aplicaciones que utilizan otros frameworks pueden depender de las variables de entorno del servidor, pero no proporcionan una manera para que esas variables sean configuradas dentro de tu proyecto. Valet te permite configurar variables de entorno específicas del sitio agregando un archivo `.valet-env.php` dentro de la raíz de tu proyecto. Estas variables se agregarán al arreglo global `$_SERVER`:
+
+    <?php
+
+    return [
+        'WEBSITE_NAME' => 'My Blog',
+    ];
 
 <a name="custom-valet-drivers"></a>
 ## Drivers De Valet Personalizados
