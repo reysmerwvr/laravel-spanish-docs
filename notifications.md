@@ -543,7 +543,11 @@ Si quieres personalizar los canales mediante los cuales una entidad notificable 
 <a name="sms-prerequisites"></a>
 ### Prerrequisitos
 
-Enviar notificaciones por SMS en Laravel trabaja con [Nexmo](https://www.nexmo.com/). Antes de poder enviar notificaciones mediante Nexmo, necesitas instalar el paquete Composer `nexmo/client` y agregar algunas opciones de configuración al archivo `config/services.php`. puedes copiar el ejemplo de configuración siguiente para empezar:
+El envío de notificaciones por SMS en Laravel trabaja con [Nexmo](https://www.nexmo.com/). Antes de poder enviar notificaciones mediante Nexmo, necesitas instalar el paquete Composer `laravel/nexmo-notification-channel`:
+
+    composer require laravel/nexmo-notification-channel
+
+Luego, necesitas agregar algunas opciones de configuración al archivo `config/services.php`. Puedes copiar el ejemplo de configuración siguiente para empezar:
 
     'nexmo' => [
         'key' => env('NEXMO_KEY'),
@@ -639,9 +643,9 @@ Al enviar notificaciones a través del canal `nexmo`, el sistema de notificacion
 <a name="slack-prerequisites"></a>
 ### Prerrequisitos
 
-Antes de poder enviar notificaciones mediante Slack, debes instalar la librería Guzzle HTTP mediante Composer:
+Antes de poder enviar notificaciones mediante Slack, debes instalar el paquete para el canal de notificación mediante Composer:
 
-    composer require guzzlehttp/guzzle
+    composer require laravel/slack-notification-channel
 
 También necesitarás configurar una integración ["Incoming Webhook"](https://api.slack.com/incoming-webhooks) para tu equipo en Slack. Esta integración proveerá una URL utilizable para [enrutamiento de notificaciones de Slack](#routing-slack-notifications).
 
