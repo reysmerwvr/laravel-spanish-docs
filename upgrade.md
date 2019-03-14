@@ -322,11 +322,11 @@ La propiedad `deleted_at` [ahora se convertirá automáticamente](https://github
 
     protected $casts = ['deleted_at' => 'string'];
 
-#### Método De BelongsTo `getForeignKey` 
+#### Métodos `getForeignKey` Y `getOwnerKey` De BelongsTo
 
 **Probabilidad De Impacto: Baja**
 
-Los métodos `getForeignKey` y` getQualifiedForeignKey` de la relación `BelongsTo` han sido renombrados a `getForeignKeyName` y `getQualifiedForeignKeyName` respectivamente, haciendo que los nombres de los métodos sean consistentes con las otras relaciones ofrecidas por Laravel.
+Los métodos `getForeignKey`, `getQualifiedForeignKey` y `getOwnerKey` de la relación `BelongsTo` han sido renombrados a `getForeignKeyName`, `getQualifiedForeignKeyName` y `getOwnerKeyName`  respectivamente, haciendo que los nombres de los métodos sean consistentes con las otras relaciones ofrecidas por Laravel.
 
 <a name="#environment-variable-parsing"></a>
 ### Parseo De Variables De Entorno
