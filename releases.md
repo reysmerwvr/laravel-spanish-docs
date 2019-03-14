@@ -16,7 +16,7 @@ Los lanzamientos de cambios de paradigma están separados por muchos años y rep
 <a name="support-policy"></a>
 ## Política De Soporte
 
-Para las versiones LTS, como Laravel 5.5, se proporcionan correcciones de errores durante 2 años y correcciones de seguridad por 3 años. Estas versiones proporcionan la ventana más larga de soporte y mantenimiento. Para las versiones generales, las correcciones de errores se proporcionan durante 6 meses y las correcciones de seguridad durante 1 año.
+Para las versiones LTS, como Laravel 5.5, se proporcionan correcciones de errores durante 2 años y correcciones de seguridad por 3 años. Estas versiones proporcionan la ventana más larga de soporte y mantenimiento. Para las versiones generales, las correcciones de errores se proporcionan durante 6 meses y las correcciones de seguridad durante 1 año. Para todos los componentes adicionales, incluyendo Lumen, solo la última versión recibe correcciones de errores.
 
 | Versión | Lanzamiento | Corrección de errores hasta | Correcciones de seguridad hasta |
 | --- | --- | --- | --- |
