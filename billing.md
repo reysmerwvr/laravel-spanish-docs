@@ -10,16 +10,16 @@
     - [Configuración de Moneda](#currency-configuration)
 - [Suscripciones](#subscriptions)
     - [Creando Suscripciones](#creating-subscriptions)
-    - [Verificando el Estado de Suscripción](#checking-subscription-status)
+    - [Verificando El Estado De Suscripción](#checking-subscription-status)
     - [Cambiando Planes](#changing-plans)
-    - [Cantidad de Suscripción](#subscription-quantity)
-    - [Impuesto de Suscripción](#subscription-taxes)
-    - [Fecha de Suscripción](#subscription-anchor-date)
+    - [Cantidad De Suscripción](#subscription-quantity)
+    - [Impuestos De Suscripción](#subscription-taxes)
+    - [Fecha De Anclaje De Suscripción](#subscription-anchor-date)
     - [Cancelando Suscripciones](#cancelling-subscriptions)
-    - [Resumiendo Suscripciones](#resuming-subscriptions)
-- [Periodos de Prueba de Suscripción](#subscription-trials)
-    - [Con Tarjeta de Crédito](#with-credit-card-up-front)
-    - [Sin Tarjeta de Crédito](#without-credit-card-up-front)
+    - [Reanudando Suscripciones](#resuming-subscriptions)
+- [Periodos De Prueba De Suscripción](#subscription-trials)
+    - [Con Tarjeta De Crédito](#with-credit-card-up-front)
+    - [Sin Tarjeta De Crédito](#without-credit-card-up-front)
 - [Clientes](#customers)
     - [Creando Clientes](#creating-customers)
 - [Tarjetas](#cards)
@@ -41,7 +41,7 @@
 <a name="introduction"></a>
 ## Introducción
 
-Laravel Cashier proporciona una expresiva interface fluida para los servicios de pagos en línea por suscripción de [Stripe](https://stripe.com). Maneja casi todo el código de pagos en línea por suscripción en plantillas al que estés teniendo pavor de escribir. Además de la gestión de suscripción, Cashier puede manejar cupones, suscripción de intercambio, "cantidades" de suscripción, cancelación de períodos de gracia, e incluso generar PDFs de facturas.
+Laravel Cashier proporciona una expresiva interfaz fluida para los servicios de pagos en línea por suscripción de [Stripe](https://stripe.com). Maneja casi todo el código de facturación de suscripción que estás teniendo pavor de escribir. Además de la gestión de suscripción, Cashier puede manejar cupones, cambio de suscripciones, "cantidades" de suscripción, cancelación de períodos de gracia e incluso generar PDFs de facturas.
 
 > {note} Esta documentación es para la integración de Stripe de Cashier. Si estás utilizando Braintree, consulta la [documentación de integración de Braintree](/docs/{{version}}/braintree).
 
@@ -55,7 +55,7 @@ Al actualizar a una nueva versión mayor de Cashier, es importante que revises c
 <a name="installation"></a>
 ## Instalación
 
-Primero, agrega el paquete de Cashier para Stripe Con Composer:
+Primero, instala el paquete de Cashier para Stripe Con Composer:
 
     composer require laravel/cashier
 
@@ -118,7 +118,7 @@ Finalmente, deberías configurar tu clave de Stripe en tu archivo de configuraci
 <a name="currency-configuration"></a>
 ### Configuración de Moneda
 
-La moneda predeterminada de Cashier es Dólares de USA (USD). Puedes cambiar la moneda predeterminada al ejecutar el método `Cashier::useCurrency` dentro del método `boot` de uno de tus proveedores de servicio. El método `Cashier::useCurrency` acepta dos parámetros de cadena: la moneda y el símbolo de la moneda:
+La moneda predeterminada de Cashier es Dólares estadounidenses (USD). Puedes cambiar la moneda predeterminada al ejecutar el método `Cashier::useCurrency` dentro del método `boot` de uno de tus proveedores de servicio. El método `Cashier::useCurrency` acepta dos parámetros de cadena: la moneda y el símbolo de la moneda:
 
     use Laravel\Cashier\Cashier;
 
@@ -138,11 +138,11 @@ Para crear una suscripción, primero obtén una instancia de tu modelo facturabl
 
 El primer argumento pasado al método `newSubscription` debería ser el nombre de la suscripción. Si tu aplicación sólo ofrece una única suscripción, puedes llamarla `main` o `primary`. El segundo argumento es el plan específico al que el usuario se está suscribiendo. Este valor debería corresponder al identificador del plan en Stripe.
 
-El método `create`, el cual acepta un token de tarjeta de crédito / fuente de Stripe, comenzará la suscripción al igual que actualizará tu base de datos con el ID del cliente y otra información de facturación relevante.
+El método `create` el cual acepta una tarjeta de crédito /  token source de Stripe, comenzará la suscripción al igual que actualizará tu base de datos con el ID del cliente y otra información de facturación relevante.
 
-#### Detalles de Usuario Adicionales
+#### Detalles De Usuario Adicionales
 
-Si prefieres especificar detalles de cliente adicionales, puedes hacer eso pasándolos como segundo argumento del método `create`:
+Si prefieres especificar detalles de cliente adicionales, puedes hacerlo pasándolos como segundo argumento del método `create`:
 
     $user->newSubscription('main', 'monthly')->create($token, [
         'email' => $email,
@@ -159,7 +159,7 @@ Si prefieres aplicar un cupón al momento de crear la suscripción, puedes usar 
          ->create($token);
 
 <a name="checking-subscription-status"></a>
-### Verificando el Estado de la Suscripción
+### Verificando El Estado De La Suscripción
 
 Una vez que un usuario está suscrito a tu aplicación, puedes verificar fácilmente su estado de suscripción usando una variedad conveniente de métodos. Primero, el método `subscribed` devuelve `true` si el usuario tiene una suscripción activa, incluso si la suscripción está actualmente en su período de prueba:
 
@@ -179,13 +179,13 @@ El método `subscribed` también constituye un gran candidato para un [middlewar
         return $next($request);
     }
 
-Si prefieres determinar si un usuario está aún dentro de su período de prueba, puedes usar el método `onTrial`. Este método puede ser útil para mostrar una adevertencia al usuario que ellos aún están o su período de prueba:
+Si prefieres determinar si un usuario está aún dentro de su período de prueba, puedes usar el método `onTrial`. Este método puede ser útil para mostrar una advertencia al usuario que todavía está en su período de prueba:
 
     if ($user->subscription('main')->onTrial()) {
         //
     }
 
-El método `subscribedToPlan` puede ser usado para determinar si el usuario está suscrito a un plan dado basado en un ID de plan Stripe dado. En este ejemplo, determinaremos si la suscripción `main` del usuario está activa para al plan `monthly`:
+El método `subscribedToPlan` puede ser usado para determinar si el usuario está suscrito a un plan dado basado en un ID de plan Stripe proporcionado. En este ejemplo, determinaremos si la suscripción `main` del usuario está activa para al plan `monthly`:
 
     if ($user->subscribedToPlan('monthly', 'main')) {
         //
@@ -218,17 +218,17 @@ Para determinar si el usuario que ha cancelado su suscripción ya no está dentr
 	}
 
 <a name="changing-plans"></a>
-### Cambiando los Planes
+### Cambiando Planes
 
-Después que un usuario esté suscrito en tu aplicación, ocasionalmente puede querer cambiar a un nuevo plan de suscripción. Para intercambiar un usuario a una nueva suscripción, pasa el identificador de plan al método `swap`:
+Después que un usuario esté suscrito en tu aplicación, ocasionalmente puede querer cambiar a un nuevo plan de suscripción. Para cambiar un usuario a una nueva suscripción, pasa el identificador de plan al método `swap`:
 
     $user = App\User::find(1);
 
     $user->subscription('main')->swap('provider-plan-id');
 
-Si el usuario está en período de prueba, el período de prueba será mantenido. También, si una "cantidad" existe para la suscripción esa cantidad también será conservada.
+Si el usuario está en período de prueba, se mantendrá el período de prueba. También, si una "cantidad" existe para la suscripción esa cantidad también será conservada.
 
-Si prefieres intercambiar planes y cancelar cualquier período de prueba en donde esté el usuario actualmente, puedes usar el método `skipTrial`:
+Si prefieres cambiar planes y cancelar cualquier período de prueba en donde esté el usuario actualmente, puedes usar el método `skipTrial`:
 
     $user->subscription('main')
             ->skipTrial()
@@ -282,11 +282,11 @@ Al cambiar el valor retornado por el método `taxPercentage`, las configuracione
     $user->subscription('main')->syncTaxPercentage();
 
 <a name="subscription-anchor-date"></a>
-### Fecha de la Suscripción
+### Fecha De Anclaje De La Suscripción
 
 > {note} Modificar la fecha de suscripción sólo es soportado por la versión de Stripe de Cashier.
 
-Por defecto, el ancla del ciclo de facturación es la fecha en la que la suscripción fue creada o si un periodo de prueba es usado, la fecha en la que la prueba termina. Si deseas modificar la fecha de facturación, puedes usar el método `anchorBillingCycleOn`:
+Por defecto, el anclaje del ciclo de facturación es la fecha en que se creó la suscripción o, si se usa un período de prueba, la fecha en que finaliza la prueba. Si deseas modificar la fecha de anclaje de facturación, puedes usar el método `anchorBillingCycleOn`:
 
     use App\User;
     use Carbon\Carbon;
@@ -308,7 +308,7 @@ Para cancelar una suscripción, ejecuta el método `cancel` en la suscripción d
 
     $user->subscription('main')->cancel();
 
-Cuando una suscripción es cancelada, Cashier establecerá automáticamente la columna `ends_at` en tu base de datos. Esta columna es usada para conocer cuando el método `subscribed` debería empezar devolviendo `false`. Por ejemplo, si un cliente cancela una suscripción el primero de Marzo, pero la suscripción no estaba planificada para finalizar sinó para el 5 de Marzo, el método `subscribed` continuará devolviendo `true` hasta el 5 de Marzo.
+Cuando una suscripción es cancelada, Cashier establecerá automáticamente la columna `ends_at` en tu base de datos. Esta columna es usada para conocer cuando el método `subscribed` debería empezar, devolviendo `false`. Por ejemplo, si un cliente cancela una suscripción el primero de Marzo, pero la suscripción no estaba planificada para finalizar sino para el 5 de Marzo, el método `subscribed` continuará devolviendo `true` hasta el 5 de Marzo.
 
 Puedes determinar si un usuario ha cancelado su suscripción pero aún está en su "período de gracia" usando el método `onGracePeriod`:
 
@@ -321,19 +321,19 @@ Si deseas cancelar una suscripción inmediatamente, ejecuta el método `cancelNo
     $user->subscription('main')->cancelNow();
 
 <a name="resuming-subscriptions"></a>
-### Reanudar Suscripciones
+### Reanudando Suscripciones
 
 Si un usuario ha cancelado su suscripción y deseas reanudarla, usa el método `resume`. El usuario **debe** estár aún en su período de gracia con el propósito de reanudar una suscripción:
 
     $user->subscription('main')->resume();
 
-Si el usuario cancela una suscripción y después reanuda esa suscripción antes que la suscripción haya expirado completamente, no será facturada inmediatamente. En lugar de eso, su suscripción será reactivada, y será facturada en el ciclo de facturación original.
+Si el usuario cancela una suscripción y después reanuda esa suscripción antes que la suscripción haya expirado completamente, no será facturada inmediatamente. En lugar de eso, su suscripción será reactivada y será facturada en el ciclo de facturación original.
 
 <a name="subscription-trials"></a>
-## Períodos de Prueba de Suscripción
+## Períodos de Prueba (Trials) De Suscripción
 
 <a name="with-credit-card-up-front"></a>
-### Con Información Anticipada de la Tarjeta de Crédito
+### Con Información Anticipada De La Tarjeta De Crédito
 
 Si prefieres ofrecer períodos de prueba a tus clientes mientras continuas coleccionando información anticipada del método de pago, deberías usar el método `trialDays` al momento de crear tus suscripciones:
 
@@ -343,7 +343,7 @@ Si prefieres ofrecer períodos de prueba a tus clientes mientras continuas colec
                 ->trialDays(10)
                 ->create($token);
 
-Este método establecerá la fecha de finalización del período de prueba del registro de suscripción dentro de la base de datos, al igual que instruirá a Stripe a no empezar a facturar al cliente hasta después de esta fecha.
+Este método establecerá la fecha de finalización del período de prueba del registro de suscripción dentro de la base de datos, al igual que le indicará a Stripe a no empezar a facturar al cliente hasta después de esta fecha.
 
 > {note} Si la suscripción del cliente no es cancelada antes de la fecha de finalización del período de prueba, será cargada tan pronto como expire el período de prueba, así que deberías asegurarte de notificar a tus usuarios de la fecha de finalización de su período de prueba.
 
@@ -355,7 +355,7 @@ El método `trialUntil` te permite proporcionar una instancia `DateTime` para es
                 ->trialUntil(Carbon::now()->addDays(10))
                 ->create($token);
 
-Puede determinar si el usuario está dentro de su período de prueba utilizando el método `onTrial` de la instancia del usuario o el método` onTrial` de la instancia de suscripción. Los dos ejemplos que siguen son idénticos:
+Puedes determinar si el usuario está dentro de su período de prueba utilizando el método `onTrial` de la instancia del usuario o el método` onTrial` de la instancia de suscripción. Los dos ejemplos que siguen son idénticos:
 
     if ($user->onTrial('main')) {
         //
@@ -411,13 +411,13 @@ Una vez el cliente ha sido creado en Stripe, puedes iniciar una suscripción en 
 ## Tarjetas
 
 <a name="retrieving-credit-cards"></a>
-### Retornando Tarjetas De Crédito
+### Recuperando Tarjetas De Crédito
 
 El método `card` en la instancia del modelo facturable retorna una colección de instancias `Laravel\Cashier\Card`:
 
     $cards = $user->cards();
 
-Para retornar la tarjeta por defecto, el método `defaultCard` puede ser usado:
+Para recuperar la tarjeta por defecto, puedes usar el método `defaultCard`:
 
     $card = $user->defaultCard();
 
@@ -433,7 +433,7 @@ Puedes comprobar si un cliente tiene una tarjeta de credito agregada a su cuenta
 <a name="updating-credit-cards"></a>
 ### Actualizando Tarjetas De Crédito
 
-El método `updateCard` puede ser usado para acutualizar la información de tarjeta de crédito de un cliente. Este método acepta un token de Stripe y asignará la nueva tarjeta de crédito como el método de pago por defecto:
+El método `updateCard` puede ser usado para actualizar la información de tarjeta de crédito de un cliente. Este método acepta un token de Stripe y asignará la nueva tarjeta de crédito como el método de pago por defecto:
 
     $user->updateCard($token);
 
@@ -444,7 +444,7 @@ Para sincronizar tu información de tarjeta con la información de la tarjeta po
 <a name="deleting-credit-cards"></a>
 ### Eliminando Tarjetas De Crédito
 
-Para eliminar una tarjeta, debes primero retornar las tarjetas del cliente con el método `cards`. Luego, puedes llamar al método `delete` en la instancia de la tarjeta que deseas eliminar:
+Para eliminar una tarjeta, debes primero recuperar las tarjetas del cliente con el método `cards`. Luego, puedes llamar al método `delete` en la instancia de la tarjeta que deseas eliminar:
 
     foreach ($user->cards() as $card) {
         $card->delete();
@@ -612,7 +612,7 @@ Al momento de listar las facturas para el cliente, puedes usar los métodos help
 <a name="generating-invoice-pdfs"></a>
 ### Generando PDFs de Facturas
 
-Dentro de una ruta o controlador, usa el método `downloadInvoice` para generar una descarga en PDF de la factura. Este método generará automáticamente la respuesta HTTT apropiada para enviar la descarga al navegador:
+Dentro de una ruta o controlador, usa el método `downloadInvoice` para generar una descarga en PDF de la factura. Este método generará automáticamente la respuesta HTTP apropiada para enviar la descarga al navegador:
 
     use Illuminate\Http\Request;
 
