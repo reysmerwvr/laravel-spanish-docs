@@ -206,12 +206,12 @@ Una vez que has configurado la opción `tap` en tu canal, estás listo para defi
 
 Monolog tiene una variedad de [manejadores disponibles](https://github.com/Seldaek/monolog/tree/master/src/Monolog/Handler). En algunos casos, el tipo de registro que quieres crear es simplemente un driver de Monolog con una instancia de un handler en específico. Estos canales pueden ser creados usando el driver `monolog`.
 
-Al usar el driver `monolog`, la opción de configuración `handler` es usada para especificar que handler será instanciado. Opcionalmente, cualquier parametros del constructor que el handler necesite puede ser especificado usando la opción de configuración `handler_with`:
+Al usar el driver `monolog`, la opción de configuración `handler` es usada para especificar que handler será instanciado. Opcionalmente, cualquier parametros del constructor que el handler necesite puede ser especificado usando la opción de configuración `with`:
 
     'logentries' => [
         'driver'  => 'monolog',
         'handler' => Monolog\Handler\SyslogUdpHandler::class,
-        'handler_with' => [
+        'with' => [
             'host' => 'my.logentries.internal.datahubhost.company.com',
             'port' => '10000',
         ],
