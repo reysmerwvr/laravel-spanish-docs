@@ -2,22 +2,24 @@
 
 - [Introducción](#introduction)
 - [Actualizando Cashier](#upgrading-cashier)
+- [Instalación](#installation)
 - [Configuración](#configuration)
-    - [Stripe](#stripe-configuration)
-    - [Braintree](#braintree-configuration)
+    - [Migraciones De Base De Datos](#database-migrations)
+    - [Modelo Facturable](#billable-model)
+    - [API Keys](#api-keys)
     - [Configuración de Moneda](#currency-configuration)
 - [Suscripciones](#subscriptions)
     - [Creando Suscripciones](#creating-subscriptions)
-    - [Verificando el Estado de Suscripción](#checking-subscription-status)
+    - [Verificando El Estado De Suscripción](#checking-subscription-status)
     - [Cambiando Planes](#changing-plans)
-    - [Cantidad de Suscripción](#subscription-quantity)
-    - [Impuesto de Suscripción](#subscription-taxes)
-    - [Fecha de Suscripción](#subscription-anchor-date)
+    - [Cantidad De Suscripción](#subscription-quantity)
+    - [Impuestos De Suscripción](#subscription-taxes)
+    - [Fecha De Anclaje De Suscripción](#subscription-anchor-date)
     - [Cancelando Suscripciones](#cancelling-subscriptions)
-    - [Resumiendo Suscripciones](#resuming-subscriptions)
-- [Periodos de Prueba de Suscripción](#subscription-trials)
-    - [Con Tarjeta de Crédito](#with-credit-card-up-front)
-    - [Sin Tarjeta de Crédito](#without-credit-card-up-front)
+    - [Reanudando Suscripciones](#resuming-subscriptions)
+- [Periodos De Prueba De Suscripción](#subscription-trials)
+    - [Con Tarjeta De Crédito](#with-credit-card-up-front)
+    - [Sin Tarjeta De Crédito](#without-credit-card-up-front)
 - [Clientes](#customers)
     - [Creando Clientes](#creating-customers)
 - [Tarjetas](#cards)
@@ -29,9 +31,6 @@
     - [Definiendo Manejadores de Eventos Webhooks](#defining-webhook-event-handlers)
     - [Suscripciones Fallidas](#handling-failed-subscriptions)
     - [Verificando las Firmas del Webhook](#verifying-webhook-signatures)
-- [Manejando Webhooks de Braintree](#handling-braintree-webhooks)
-    - [Definiendo Manejadores de Eventos de Webhooks](#defining-braintree-webhook-event-handlers)
-    - [Suscripciones Fallidas](#handling-braintree-failed-subscriptions)
 - [Cargos Únicos](#single-charges)
     - [Carga Simple](#simple-charge)
     - [Carga con Factura](#charge-with-invoice)
@@ -42,28 +41,29 @@
 <a name="introduction"></a>
 ## Introducción
 
-Laravel Cashier proporciona una expresiva interface fluida para los servicios de pagos en línea por suscripción de [Stripe](https://stripe.com) y [Braintree](https://www.braintreepayments.com). Maneja casi todo el código de pagos en línea por suscripción en plantillas al que estés teniendo pavor de escribir. Además de la gestión de suscripción, Cashier puede manejar cupones, suscripción de intercambio, "cantidades" de suscripción, cancelación de períodos de gracia, e incluso generar PDFs de facturas.
+Laravel Cashier proporciona una expresiva interfaz fluida para los servicios de pagos en línea por suscripción de [Stripe](https://stripe.com). Maneja casi todo el código de facturación de suscripción que estás teniendo pavor de escribir. Además de la gestión de suscripción, Cashier puede manejar cupones, cambio de suscripciones, "cantidades" de suscripción, cancelación de períodos de gracia e incluso generar PDFs de facturas.
 
-> {note} Si solamente estás trabajando con cargos de "un pago-único" y no ofreces subscripciones, no deberías usar Cashier. En lugar de eso, usa directamente los SDKs de Stripe y Braintree.
+> {note} Esta documentación es para la integración de Stripe de Cashier. Si estás utilizando Braintree, consulta la [documentación de integración de Braintree](/docs/{{version}}/braintree).
+
+> {note} Si solamente estás trabajando con cargos de "un pago-único" y no ofreces subscripciones, no deberías usar Cashier. En lugar de eso, usa directamente los SDKs de Stripe.
 
 <a name="upgrading-cashier"></a>
 ## Actualizando Cashier
 
 Al actualizar a una nueva versión mayor de Cashier, es importante que revises cuidadosamente [la guía de actualización](https://github.com/laravel/cashier/blob/master/UPGRADE.md).
 
-<a name="configuration"></a>
-## Configuración
+<a name="installation"></a>
+## Instalación
 
-<a name="stripe-configuration"></a>
-### Stripe
-
-#### Composer
-
-Primero, agrega el paquete de Cashier para Stripe en tus dependencias:
+Primero, instala el paquete de Cashier para Stripe Con Composer:
 
     composer require laravel/cashier
 
-#### Migraciones de Bases de Datos
+<a name="configuration"></a>
+## Configuración
+
+<a name="database-migrations"></a>
+### Migraciones de Bases de Datos
 
 Antes de usar Cashier, también necesitaremos [preparar la base de datos](/docs/{{version}}/migrations). Necesitas agregar varias columnas a tu tabla `users` y crear una nueva tabla `subscriptions` para manejar todas las subscripciones de nuestros clientes:
 
@@ -88,9 +88,10 @@ Antes de usar Cashier, también necesitaremos [preparar la base de datos](/docs/
 
 Una vez que las migraciones han sido creadas, ejecuta el comando Artisan `migrate`.
 
+<a name="billable-model"></a>
 #### Modelo Facturable
 
-A continuación, agrega el trait `Billable` a tu definición de modelo. Este trait  proporciona varios métodos para permitir que ejecutes las tareas comunes de facturación, tales como crear subscripciones, aplicar cupones, y actualizar información de la tarjeta de crédito:
+A continuación, agrega el trait `Billable` a tu definición de modelo. Este trait proporciona varios métodos para permitirte realizar tareas comunes de facturación, tales como creación de subscripciones, aplicación de cupones y actualización de la información de la tarjeta de crédito:
 
     use Laravel\Cashier\Billable;
 
@@ -99,7 +100,8 @@ A continuación, agrega el trait `Billable` a tu definición de modelo. Este tra
         use Billable;
     }
 
-#### Claves de API
+<a name="api-keys"></a>
+### Claves de API
 
 Finalmente, deberías configurar tu clave de Stripe en tu archivo de configuración `services.php`. Puedes obtener tus claves de API de Stripe desde el panel de control de Stripe:
 
@@ -107,93 +109,16 @@ Finalmente, deberías configurar tu clave de Stripe en tu archivo de configuraci
         'model'  => App\User::class,
         'key' => env('STRIPE_KEY'),
         'secret' => env('STRIPE_SECRET'),
+        'webhook' => [
+            'secret' => env('STRIPE_WEBHOOK_SECRET'),
+            'tolerance' => env('STRIPE_WEBHOOK_TOLERANCE', 300),
+        ],
     ],
-
-<a name="braintree-configuration"></a>
-### Braintree
-
-#### Advertencias de Braintree
-
-Para muchas operaciones, las implementaciones de Stripe y Braintree de Cashier funcionan igual. Ambos servicios proporcionan facturación por suscripción con tarjetas de crédito excepto que Braintree también soporta pagos por medio de PayPal. Sin embargo, Braintree también carece de algunas características que son soportadas por Stripe. Deberías mantener lo siguiente en mente cuando decidas usar Stripe o Braintree:
-
-<div class="content-list" markdown="1">
-- Braintree soporta PayPal mientras Stripe no.
-- Braintree no soporta los métodos `increment` y `decrement` en subscripciones. Esta es una limitación de Braintree, no una limitación de Cashier.
-- Braintree no soporta descuentos basados en porcentajes. Esta es una limitación de Braintree, no una limitación de Cashier.
-</div>
-
-#### Composer
-
-Primero, agrega el paquete Cashier para Braintree en tus dependencias:
-
-    composer require "laravel/cashier-braintree":"~2.0"
-
-#### Plan Credit Coupon
-
-Antes de usar Cashier con Braintree, necesitarás definir un descuento `plan-credit` en tu panel de control de Braintree. Este descuento será usado para proratear apropiadamente las subscripciones que cambian desde facturación anual a mensual, o desde facturación mensual a anual.
-
-La cantidad de descuento configurada en el panel de control de Braintree puede ser cualquier valor que desees, ya que Cashier sobreescribirá la cantidad definida con nuestra propia cantidad personalizada cada vez que apliquemos el cupón. Este cupón es necesario ya que Braintree no soporta nativamente el prorateo de subscripciones a través de las frecuencias de suscripción.
-
-#### Database Migrations
-
-Antes de usar Cashier, necesitaremos [preparar la base de datos](/docs/{{version}}/migrations). Necesitamos agregar varias columnas a tu tabla `users` y crear una nueva tabla `subscriptions` para manejar las subscripciones de nuestros clientes:
-
-    Schema::table('users', function ($table) {
-        $table->string('braintree_id')->nullable();
-        $table->string('paypal_email')->nullable();
-        $table->string('card_brand')->nullable();
-        $table->string('card_last_four')->nullable();
-        $table->timestamp('trial_ends_at')->nullable();
-    });
-
-    Schema::create('subscriptions', function ($table) {
-        $table->increments('id');
-        $table->unsignedInteger('user_id');
-        $table->string('name');
-        $table->string('braintree_id');
-        $table->string('braintree_plan');
-        $table->integer('quantity');
-        $table->timestamp('trial_ends_at')->nullable();
-        $table->timestamp('ends_at')->nullable();
-        $table->timestamps();
-    });
-
-Una vez que las migraciones han sido creadas, ejecuta el comando Artisan `migrate`.
-
-#### Modelo Facturable
-
-A continuación, agrega el trait `Billable` en tu definición de modelo:
-
-    use Laravel\Cashier\Billable;
-
-    class User extends Authenticatable
-    {
-        use Billable;
-    }
-
-#### Claves de API
-
-A continuación, deberías configurar las siguientes opciones en tu archivo `services.php`:
-
-    'braintree' => [
-        'model'  => App\User::class,
-        'environment' => env('BRAINTREE_ENV'),
-        'merchant_id' => env('BRAINTREE_MERCHANT_ID'),
-        'public_key' => env('BRAINTREE_PUBLIC_KEY'),
-        'private_key' => env('BRAINTREE_PRIVATE_KEY'),
-    ],
-
-Luego, deberías agregar las siguientes llamadas SDK de Braintree en el método `boot` de tu proveedor de servicio `AppServiceProvider`:
-
-    \Braintree_Configuration::environment(config('services.braintree.environment'));
-    \Braintree_Configuration::merchantId(config('services.braintree.merchant_id'));
-    \Braintree_Configuration::publicKey(config('services.braintree.public_key'));
-    \Braintree_Configuration::privateKey(config('services.braintree.private_key'));
 
 <a name="currency-configuration"></a>
 ### Configuración de Moneda
 
-La moneda predeterminada de Cashier es Dólares de USA (USD). Puedes cambiar la moneda predeterminada al ejecutar el método `Cashier::useCurrency` dentro del método `boot` de uno de tus proveedores de servicio. El método `Cashier::useCurrency` acepta dos parámetros de cadena: la moneda y el símbolo de la moneda:
+La moneda predeterminada de Cashier es Dólares estadounidenses (USD). Puedes cambiar la moneda predeterminada al ejecutar el método `Cashier::useCurrency` dentro del método `boot` de uno de tus proveedores de servicio. El método `Cashier::useCurrency` acepta dos parámetros de cadena: la moneda y el símbolo de la moneda:
 
     use Laravel\Cashier\Cashier;
 
@@ -209,21 +134,21 @@ Para crear una suscripción, primero obtén una instancia de tu modelo facturabl
 
     $user = User::find(1);
 
-    $user->newSubscription('main', 'premium')->create($stripeToken);
+    $user->newSubscription('main', 'premium')->create($token);
 
-El primer argumento pasado al método `newSubscription` debería ser el nombre de la suscripción. Si tu aplicación sólo ofrece una única suscripción, puedes llamarla `main` o `primary`. El segundo argumento es el plan de Stripe / Braintree específico al que el usuario se está suscribiendo. Este valor debería corresponder al identificador del plan en Stripe o Braintree.
+El primer argumento pasado al método `newSubscription` debería ser el nombre de la suscripción. Si tu aplicación sólo ofrece una única suscripción, puedes llamarla `main` o `primary`. El segundo argumento es el plan específico al que el usuario se está suscribiendo. Este valor debería corresponder al identificador del plan en Stripe.
 
-El método `create`, el cual acepta un token de tarjeta de crédito / fuente de Stripe, comenzará la suscripción al igual que actualizará tu base de datos con el ID del cliente y otra información de facturación relevante.
+El método `create` el cual acepta una tarjeta de crédito /  token source de Stripe, comenzará la suscripción al igual que actualizará tu base de datos con el ID del cliente y otra información de facturación relevante.
 
-#### Detalles de Usuario Adicionales
+#### Detalles De Usuario Adicionales
 
-Si prefieres especificar detalles de cliente adicionales, puedes hacer eso pasándolos como segundo argumento del método `create`:
+Si prefieres especificar detalles de cliente adicionales, puedes hacerlo pasándolos como segundo argumento del método `create`:
 
-    $user->newSubscription('main', 'monthly')->create($stripeToken, [
+    $user->newSubscription('main', 'monthly')->create($token, [
         'email' => $email,
     ]);
 
-Para aprender más sobre los campos adicionales soportados por Stripe o Braintree, revisa la [documentación sobre la creación de clientes](https://stripe.com/docs/api#create_customer) o la correspondiente [documentación de Braintree](https://developers.braintreepayments.com/reference/request/customer/create/php).
+Para aprender más sobre los campos adicionales soportados por Stripe, revisa la [documentación sobre la creación de clientes](https://stripe.com/docs/api#create_customer).
 
 #### Cupones
 
@@ -231,10 +156,10 @@ Si prefieres aplicar un cupón al momento de crear la suscripción, puedes usar 
 
     $user->newSubscription('main', 'monthly')
          ->withCoupon('code')
-         ->create($stripeToken);
+         ->create($token);
 
 <a name="checking-subscription-status"></a>
-### Verificando el Estado de la Suscripción
+### Verificando El Estado De La Suscripción
 
 Una vez que un usuario está suscrito a tu aplicación, puedes verificar fácilmente su estado de suscripción usando una variedad conveniente de métodos. Primero, el método `subscribed` devuelve `true` si el usuario tiene una suscripción activa, incluso si la suscripción está actualmente en su período de prueba:
 
@@ -254,13 +179,13 @@ El método `subscribed` también constituye un gran candidato para un [middlewar
         return $next($request);
     }
 
-Si prefieres determinar si un usuario está aún dentro de su período de prueba, puedes usar el método `onTrial`. Este método puede ser útil para mostrar una adevertencia al usuario que ellos aún están o su período de prueba:
+Si prefieres determinar si un usuario está aún dentro de su período de prueba, puedes usar el método `onTrial`. Este método puede ser útil para mostrar una advertencia al usuario que todavía está en su período de prueba:
 
     if ($user->subscription('main')->onTrial()) {
         //
     }
 
-El método `subscribedToPlan` puede ser usado para determinar si el usuario está suscrito a un plan dado basado en un ID dado de plan Stripe / Braintree. En este ejemplo, determinaremos si la suscripción `main` del usuario está activa para al plan `monthly`:
+El método `subscribedToPlan` puede ser usado para determinar si el usuario está suscrito a un plan dado basado en un ID de plan Stripe proporcionado. En este ejemplo, determinaremos si la suscripción `main` del usuario está activa para al plan `monthly`:
 
     if ($user->subscribedToPlan('monthly', 'main')) {
         //
@@ -293,26 +218,24 @@ Para determinar si el usuario que ha cancelado su suscripción ya no está dentr
 	}
 
 <a name="changing-plans"></a>
-### Cambiando los Planes
+### Cambiando Planes
 
-Después que un usuario esté suscrito en tu aplicación, ocasionalmente puede querer cambiar a un nuevo plan de suscripción. Para intercambiar un usuario a una nueva suscripción, pasa el identificador de plan al método `swap`:
+Después que un usuario esté suscrito en tu aplicación, ocasionalmente puede querer cambiar a un nuevo plan de suscripción. Para cambiar un usuario a una nueva suscripción, pasa el identificador de plan al método `swap`:
 
     $user = App\User::find(1);
 
     $user->subscription('main')->swap('provider-plan-id');
 
-Si el usuario está en período de prueba, el período de prueba será mantenido. También, si una "cantidad" existe para la suscripción esa cantidad también será conservada.
+Si el usuario está en período de prueba, se mantendrá el período de prueba. También, si una "cantidad" existe para la suscripción esa cantidad también será conservada.
 
-Si prefieres intercambiar planes y cancelar cualquier período de prueba en donde esté el usuario actualmente, puedes usar el método `skipTrial`:
+Si prefieres cambiar planes y cancelar cualquier período de prueba en donde esté el usuario actualmente, puedes usar el método `skipTrial`:
 
     $user->subscription('main')
             ->skipTrial()
             ->swap('provider-plan-id');
 
 <a name="subscription-quantity"></a>
-### Cantidad de la Suscripción
-
-> {note} Las cantidades de suscripción solamente son soportadas por la edición de Stripe de Cashier. Braintree no tiene una característica que corresponda a la "cantidad" de Stripe.
+### Cantidad De La Suscripción
 
 Algunas veces las suscripciones son afectadas por la "cantidad". Por ejemplo, tu aplicación podría cargar 10$ por mes **por usuario** en una cuenta. Para incrementar o disminuir fácilmente tu cantidad de suscripción, usa los métodos `incrementQuantity` y `decrementQuantity`:
 
@@ -341,9 +264,10 @@ Para más información sobre cantidades de suscripción, consulta la [documentac
 <a name="subscription-taxes"></a>
 ### Impuestos de Suscripción
 
-Para especificar el porcentaje de impuesto que un usuario paga en una suscrípción, implementa el método `taxPercentage` en tu modelo facturable, y devuelve un valor numérico entre 0 y 100, sin más de 2 posiciones decimales.
+Para especificar el porcentaje de impuesto que un usuario paga en una suscrípción, implementa el método `taxPercentage` en tu modelo facturable y devuelve un valor numérico entre 0 y 100, sin más de 2 posiciones decimales.
 
-    public function taxPercentage() {
+    public function taxPercentage()
+    {
         return 20;
     }
 
@@ -358,11 +282,11 @@ Al cambiar el valor retornado por el método `taxPercentage`, las configuracione
     $user->subscription('main')->syncTaxPercentage();
 
 <a name="subscription-anchor-date"></a>
-### Fecha de la Suscripción
+### Fecha De Anclaje De La Suscripción
 
 > {note} Modificar la fecha de suscripción sólo es soportado por la versión de Stripe de Cashier.
 
-Por defecto, el ancla del ciclo de facturación es la fecha en la que la suscripción fue creada o si un periodo de prueba es usado, la fecha en la que la prueba termina. Si deseas modificar la fecha de facturación, puedes usar el método `anchorBillingCycleOn`:
+Por defecto, el anclaje del ciclo de facturación es la fecha en que se creó la suscripción o, si se usa un período de prueba, la fecha en que finaliza la prueba. Si deseas modificar la fecha de anclaje de facturación, puedes usar el método `anchorBillingCycleOn`:
 
     use App\User;
     use Carbon\Carbon;
@@ -373,7 +297,7 @@ Por defecto, el ancla del ciclo de facturación es la fecha en la que la suscrip
 
     $user->newSubscription('main', 'premium')
                 ->anchorBillingCycleOn($anchor->startOfDay())
-                ->create($stripeToken);
+                ->create($token);
 
 Para más información sobre administrar ciclos de facturación, consulta la [documentación del ciclo de facturación de Stripe](https://stripe.com/docs/billing/subscriptions/billing-cycle)
 
@@ -384,7 +308,7 @@ Para cancelar una suscripción, ejecuta el método `cancel` en la suscripción d
 
     $user->subscription('main')->cancel();
 
-Cuando una suscripción es cancelada, Cashier establecerá automáticamente la columna `ends_at` en tu base de datos. Esta columna es usada para conocer cuando el método `subscribed` debería empezar devolviendo `false`. Por ejemplo, si un cliente cancela una suscripción el primero de Marzo, pero la suscripción no estaba planificada para finalizar sinó para el 5 de Marzo, el método `subscribed` continuará devolviendo `true` hasta el 5 de Marzo.
+Cuando una suscripción es cancelada, Cashier establecerá automáticamente la columna `ends_at` en tu base de datos. Esta columna es usada para conocer cuando el método `subscribed` debería empezar, devolviendo `false`. Por ejemplo, si un cliente cancela una suscripción el primero de Marzo, pero la suscripción no estaba planificada para finalizar sino para el 5 de Marzo, el método `subscribed` continuará devolviendo `true` hasta el 5 de Marzo.
 
 Puedes determinar si un usuario ha cancelado su suscripción pero aún está en su "período de gracia" usando el método `onGracePeriod`:
 
@@ -397,19 +321,19 @@ Si deseas cancelar una suscripción inmediatamente, ejecuta el método `cancelNo
     $user->subscription('main')->cancelNow();
 
 <a name="resuming-subscriptions"></a>
-### Reanudar Suscripciones
+### Reanudando Suscripciones
 
 Si un usuario ha cancelado su suscripción y deseas reanudarla, usa el método `resume`. El usuario **debe** estár aún en su período de gracia con el propósito de reanudar una suscripción:
 
     $user->subscription('main')->resume();
 
-Si el usuario cancela una suscripción y después reanuda esa suscripción antes que la suscripción haya expirado completamente, no será facturada inmediatamente. En lugar de eso, su suscripción será reactivada, y será facturada en el ciclo de facturación original.
+Si el usuario cancela una suscripción y después reanuda esa suscripción antes que la suscripción haya expirado completamente, no será facturada inmediatamente. En lugar de eso, su suscripción será reactivada y será facturada en el ciclo de facturación original.
 
 <a name="subscription-trials"></a>
-## Períodos de Prueba de Suscripción
+## Períodos de Prueba (Trials) De Suscripción
 
 <a name="with-credit-card-up-front"></a>
-### Con Información Anticipada de la Tarjeta de Crédito
+### Con Información Anticipada De La Tarjeta De Crédito
 
 Si prefieres ofrecer períodos de prueba a tus clientes mientras continuas coleccionando información anticipada del método de pago, deberías usar el método `trialDays` al momento de crear tus suscripciones:
 
@@ -417,9 +341,9 @@ Si prefieres ofrecer períodos de prueba a tus clientes mientras continuas colec
 
     $user->newSubscription('main', 'monthly')
                 ->trialDays(10)
-                ->create($stripeToken);
+                ->create($token);
 
-Este método establecerá la fecha de finalización del período de prueba del registro de suscripción dentro de la base de datos, al igual que instruirá a Stripe / Braintree a no empezar a facturar al cliente hasta después de esta fecha.
+Este método establecerá la fecha de finalización del período de prueba del registro de suscripción dentro de la base de datos, al igual que le indicará a Stripe a no empezar a facturar al cliente hasta después de esta fecha.
 
 > {note} Si la suscripción del cliente no es cancelada antes de la fecha de finalización del período de prueba, será cargada tan pronto como expire el período de prueba, así que deberías asegurarte de notificar a tus usuarios de la fecha de finalización de su período de prueba.
 
@@ -429,9 +353,9 @@ El método `trialUntil` te permite proporcionar una instancia `DateTime` para es
 
     $user->newSubscription('main', 'monthly')
                 ->trialUntil(Carbon::now()->addDays(10))
-                ->create($stripeToken);
+                ->create($token);
 
-Puede determinar si el usuario está dentro de su período de prueba utilizando el método `onTrial` de la instancia del usuario o el método` onTrial` de la instancia de suscripción. Los dos ejemplos que siguen son idénticos:
+Puedes determinar si el usuario está dentro de su período de prueba utilizando el método `onTrial` de la instancia del usuario o el método` onTrial` de la instancia de suscripción. Los dos ejemplos que siguen son idénticos:
 
     if ($user->onTrial('main')) {
         //
@@ -469,7 +393,7 @@ Una vez que estés listo para crear una suscripción real para el usuario, puede
 
     $user = User::find(1);
 
-    $user->newSubscription('main', 'monthly')->create($stripeToken);
+    $user->newSubscription('main', 'monthly')->create($token);
 
 <a name="customers"></a>
 ## Clientes
@@ -479,23 +403,21 @@ Una vez que estés listo para crear una suscripción real para el usuario, puede
 	
 Ocasionalmente, puedes desear crear un cliente de Stripe sin iniciar una suscripción. Puedes lograr esto usando el método `createAsStripeCustomer`:
 
-    $user->createAsStripeCustomer($stripeToken);
+    $user->createAsStripeCustomer();
 
 Una vez el cliente ha sido creado en Stripe, puedes iniciar una suscripción en una fecha posterior.
-
-> {tip} El equivalente de Braintree para este método es el método `createAsBraintreeCustomer`.
 
 <a name="cards"></a>
 ## Tarjetas
 
 <a name="retrieving-credit-cards"></a>
-### Retornando Tarjetas De Crédito
+### Recuperando Tarjetas De Crédito
 
 El método `card` en la instancia del modelo facturable retorna una colección de instancias `Laravel\Cashier\Card`:
 
     $cards = $user->cards();
 
-Para retornar la tarjeta por defecto, el método `defaultCard` puede ser usado:
+Para recuperar la tarjeta por defecto, puedes usar el método `defaultCard`:
 
     $card = $user->defaultCard();
 
@@ -511,9 +433,9 @@ Puedes comprobar si un cliente tiene una tarjeta de credito agregada a su cuenta
 <a name="updating-credit-cards"></a>
 ### Actualizando Tarjetas De Crédito
 
-El método `updateCard` puede ser usado para acutualizar la información de tarjeta de crédito de un cliente. Este método acepta un token de Stripe y asignará la nueva tarjeta de crédito como el método de pago por defecto:
+El método `updateCard` puede ser usado para actualizar la información de tarjeta de crédito de un cliente. Este método acepta un token de Stripe y asignará la nueva tarjeta de crédito como el método de pago por defecto:
 
-    $user->updateCard($stripeToken);
+    $user->updateCard($token);
 
 Para sincronizar tu información de tarjeta con la información de la tarjeta por defecto del cliente en Stripe, puedes usar el método `updateCardFromStripe`:
 
@@ -522,7 +444,7 @@ Para sincronizar tu información de tarjeta con la información de la tarjeta po
 <a name="deleting-credit-cards"></a>
 ### Eliminando Tarjetas De Crédito
 
-Para eliminar una tarjeta, debes primero retornar las tarjetas del cliente con el método `cards`. Luego, puedes llamar al método `delete` en la instancia de la tarjeta que deseas eliminar:
+Para eliminar una tarjeta, debes primero recuperar las tarjetas del cliente con el método `cards`. Luego, puedes llamar al método `delete` en la instancia de la tarjeta que deseas eliminar:
 
     foreach ($user->cards() as $card) {
         $card->delete();
@@ -539,7 +461,7 @@ El método `deleteCards` eliminará toda la información de la tarjeta almacenad
 <a name="handling-stripe-webhooks"></a>
 ## Manejando Webhooks de Stripe
 
-Tanto Stripe como Braintree pueden notificar tu aplicación de una variedad de eventos por medio de Webhooks. Para manejar webhooks de Stripe, define una ruta que apunte al controlador de webhook de Cashier. Este controlador manejará todas las solicitudes de webhook entrantes y despacharlos al método de controlador apropiado.
+Stripe puede notificar tu aplicación de una variedad de eventos por medio de Webhooks. Para manejar webhooks, define una ruta que apunte al controlador de webhook de Cashier. Este controlador manejará todas las solicitudes de webhook entrantes y despacharlos al método de controlador apropiado.
 
     Route::post(
         'stripe/webhook',
@@ -563,7 +485,7 @@ Ya que los webhooks de Stripe necesitan pasar por alto la [protección CSRF](/do
 <a name="defining-webhook-event-handlers"></a>
 ### Definiendo Manejadores de Evento de Webhook
 
-Cashier maneja automáticamente la cancelación de suscripción por cargos fallidos, pero si tienes eventos de webhook adicionales que te gustaría manejar, extiende el controlador de Webhook. Tus nombres de métodos deberían corresponder con la convención esperada por Cashier, específicamente, los métodos deberían estar prefijados con `handle` y el nombre "camel case" del webhook de Stripe que deseas manejar. Por ejemplo, si deseas manejar el webhook `invoice.payment_succeeded`, deberías agregar un método `handleInvoicePaymentSucceeded` al controlador:
+Cashier maneja automáticamente la cancelación de suscripción por cargos fallidos, pero si tienes eventos de webhook adicionales que te gustaría manejar, extiende el controlador de Webhook. Tus nombres de métodos deberían corresponder con la convención esperada por Cashier, específicamente, los métodos deberían tener como prefijo `handle` y el nombre "camel case" del webhook que deseas manejar. Por ejemplo, si deseas manejar el webhook `invoice.payment_succeeded`, deberías agregar un método `handleInvoicePaymentSucceeded` al controlador:
 
     <?php
 
@@ -574,10 +496,10 @@ Cashier maneja automáticamente la cancelación de suscripción por cargos falli
     class WebhookController extends CashierController
     {
         /**
-         * Handle a Stripe webhook.
+         * Handle invoice payment succeeded.
          *
          * @param  array  $payload
-         * @return Response
+         * @return \Symfony\Component\HttpFoundation\Response
          */
         public function handleInvoicePaymentSucceeded($payload)
         {
@@ -611,89 +533,26 @@ Para asegurar tus webhooks, puedes usar [las firmas de webhook de Stripe](https:
 
 Para habilitar la verificación de webhook, asegurate de que el valor de configuración `stripe.webhook.secret` está establecido en tu archivo de configuración `services`. El valor `secret` del webhook puede ser retornado desde el dashboard de tu cuenta de Stripe.
 
-<a name="handling-braintree-webhooks"></a>
-## Manejando los Webhooks de Braintree
-
-Tanto Stripe como Braintree pueden notificar tu aplicación de una variedad de eventos por medio de webhooks. Para manejar los webhooks de Braintree, define una ruta que apunte al controlador de webhook de Cashier. Este controlador manejará todas las solicitudes webhook entrantes y los disparará al método de controlador apropiado:
-
-    Route::post(
-        'braintree/webhook',
-        '\Laravel\Cashier\Http\Controllers\WebhookController@handleWebhook'
-    );
-
-> {note} Una vez que hayas registrado tu ruta, asegurate de configurar la URL de webhook en tus opciones de configuración de panel de control de Braintree.
-
-De forma predeterminada, este controlador manejará automáticamente la cancelación de suscripciones que tengan demasiados cargos fallidos (como sean definidos en tus opciones de configuración de Braintree); sin embargo, tan pronto como descubramos, puedes extender este controlador para manejar cualquier evento de webhook que quieras.
-
-#### Webhooks & Protección CSRF
-
-Ya que los webhooks de Braintree necesitan pasar por alto la [protección CSRF](/docs/{{version}}/csrf) de Laravel, asegúrate de listar la URI como una execpción en tu middleware `VerifyCsrfToken` o listar la ruta fuera de el grupo de middleware `web`:
-
-    protected $except = [
-        'braintree/*',
-    ];
-
-<a name="defining-braintree-webhook-event-handlers"></a>
-### Definiendo Manejadores de Evento de Webhook
-
-Cashier maneja automáticamente la cancelación de suscripción por cargos fallidos, pero si tienes eventos de webhook de Braintree adicionales que quieras manejar, extiende el controlador de Webhook. Tus nombres de método deberían corresponder con la convención esperada por Cashier, específicamente, los métodos deberían estar prefijados con `handle` y el nombre "camel case" del webhook de Braintree que quieras manejar. Por ejemplo, si deseas manejar el webhook `dispute_opened`, deberías agregar un método `handleDisputeOpened` al controlador:
-
-    <?php
-
-    namespace App\Http\Controllers;
-
-    use Braintree\WebhookNotification;
-    use Laravel\Cashier\Http\Controllers\WebhookController as CashierController;
-
-    class WebhookController extends CashierController
-    {
-        /**
-         * Handle a new dispute.
-         *
-         * @param  \Braintree\WebhookNotification  $webhook
-         * @return \Symfony\Component\HttpFoundation\Responses
-         */
-        public function handleDisputeOpened(WebhookNotification $webhook)
-        {
-            // Handle The Webhook...
-        }
-    }
-
-<a name="handling-braintree-failed-subscriptions"></a>
-### Suscripciones Fallidas
-
-¿Qué sucedería si una tarjeta de crédito de un cliente expira? No importa - Cashier incluye un controlador de Webhook que puede cancelar fácilmente la suscripción del cliente por ti. Justamente apunta una ruta al controlador:
-
-    Route::post(
-        'braintree/webhook',
-        '\Laravel\Cashier\Http\Controllers\WebhookController@handleWebhook'
-    );
-
-¡Y eso es todo! Los pagos fallidos serán capturados y manejados por el controlador. El controlador cancelará la suscripción del cliente cuando Braintree determina que la suscripción ha fallado (normalmente después de tres intentos de pagos fallidos). No olvides: necesitarás configurar la URI de webhook en tus opciones de configuración del panel de control de Braintree.
-
 <a name="single-charges"></a>
 ## Cargos Únicos
 
 <a name="simple-charge"></a>
 ### Cargo Simple
 
-> {note} Al momento de usar Stripe, el método `charge` acepta la cantidad que prefieras cargar en el **denominador más bajo de la moneda usada por tu aplicación**. Sin embargo, al momento de usar Braintree, deberías pasar la cantidad de dólares completa al método `charge`:
+> {note} El método `charge` acepta la cantidad que prefieras cargar en el **denominador más bajo de la moneda usada por tu aplicación**.
 
-Si prefieres hacer un cargo de "un solo pago" contra una tarjeta de crédito de cliente suscrita, puedes usar el método `charge` en una instancia de modelo facturable.
+Si desea realizar un "cargo único" en la tarjeta de crédito de un cliente suscrito, puedes usar el método `charge` en una instancia de modelo facturable.
 
     // Stripe Accepts Charges In Cents...
     $stripeCharge = $user->charge(100);
 
-    // Braintree Accepts Charges In Dollars...
-    $user->charge(1);
-
-El método `charge` acepta un arreglo como segundo argumento, permitiendo que pases algunas opciones que desees para la creación de cargo de Stripe / Braintree subyacente. Consulta la documentación de Stripe o Braintree con respecto a las opciones disponibles para ti al momento de crear cargos:
+El método `charge` acepta un arreglo como segundo argumento, permitiendo que pases algunas opciones que desees para la creación de cargo de Stripe subyacente. Consulte la documentación de Stripe sobre las opciones disponibles al crear cargos:
 
     $user->charge(100, [
         'custom_option' => $value,
     ]);
 
-El método `charge` arrojará una excepción si el cargo falla. Si el cargo es exitoso, la respuesta completa de Stripe / Braintree será devuelta por el método:
+El método `charge` arrojará una excepción si el cargo falla. Si el cargo es exitoso, la respuesta completa de Stripe será devuelta por el método:
 
     try {
         $response = $user->charge(100);
@@ -709,20 +568,13 @@ Algunas veces puedes necesitar hacer un cargo único pero también generar una f
     // Stripe Accepts Charges In Cents...
     $user->invoiceFor('One Time Fee', 500);
 
-    // Braintree Accepts Charges In Dollars...
-    $user->invoiceFor('One Time Fee', 5);
-
 La factura será cargada inmediatamente contra la tarjeta de crédito del usuario. El método `invoiceFor` también acepta un arreglo como su tercer argumento. Este arreglo contiene las opciones de facturación para el elemento de la factura. El cuarto argumento aceptado por el método es también un arreglo. Este argumento final acepta las opciones de facturación de la factura en sí:
 
-    $user->invoiceFor('One Time Fee', 500, [
-        'custom-option' => $value,
+    $user->invoiceFor('Stickers', 500, [
+        'quantity' => 50,
+    ], [
+        'tax_percent' => 21,
     ]);
-
-Si estás usando Braintree como tu proveedor de facturación, debes incluir una opción `description` al llamar al método `invoiceFor`:
-
-$user->invoiceFor('One Time Fee', 500, [
-    'description' => 'your invoice description here',
-]);
 
 > {note} El método `invoiceFor` creará una factura de Stripe la cual reintentará intentos de facturación fallidos. Si no quieres que las facturas reintenten cargos fallidos, necesitarás cerrarlas usando la API de Stripe después del primer cargo fallido.
 
@@ -731,9 +583,9 @@ $user->invoiceFor('One Time Fee', 500, [
 
 Si necesitas reembolsar un cargo de Stripe, puedes usar el método `refund`. Este método acepta el id del cargo de Stripe como su único argumento:
 
-$stripeCharge = $user->charge(100);
+    $stripeCharge = $user->charge(100);
 
-$user->refund($stripeCharge->id);
+    $user->refund($stripeCharge->id);
 
 <a name="invoices"></a>
 ## Facturas
@@ -760,7 +612,7 @@ Al momento de listar las facturas para el cliente, puedes usar los métodos help
 <a name="generating-invoice-pdfs"></a>
 ### Generando PDFs de Facturas
 
-Dentro de una ruta o controlador, usa el método `downloadInvoice` para generar una descarga en PDF de la factura. Este método generará automáticamente la respuesta HTTT apropiada para enviar la descarga al navegador:
+Dentro de una ruta o controlador, usa el método `downloadInvoice` para generar una descarga en PDF de la factura. Este método generará automáticamente la respuesta HTTP apropiada para enviar la descarga al navegador:
 
     use Illuminate\Http\Request;
 
