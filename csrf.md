@@ -1,3 +1,5 @@
+::: v-pre
+
 # Protección CSRF
 
 - [Introducción](#csrf-introduction)
@@ -14,10 +16,12 @@ Laravel genera automáticamente un "token" CSRF para cada sesión de usuario act
 
 En cualquier momento que definas un formulario HTML en tu aplicación, debes incluir un campo de token CSRF en el formulario con el propósito de que el middleware para protección CSRF pueda validar la solicitud. Puedes usar la directiva de Blade `@csrf` para generar el campo de token:
 
-    <form method="POST" action="/profile">
-        @csrf
-        ...
-    </form>
+```php
+<form method="POST" action="/profile">
+    @csrf
+    ...
+</form>
+```
 
 El [middleware](/docs/{{version}}/middleware) `VerifyCsrfToken`, el cual es incluido en el grupo de middleware `web`, verificará automáticamente que el token en el campo de la solicitud coincida con el almacenado en la sesión.
 
@@ -32,44 +36,54 @@ Algunas veces puedes desear excluir un conjunto de URIs de la protección CSRF. 
 
 Típicamente, deberías colocar este tipo de rutas afuera del grupo de middleware `web` que el `RouteServiceProvider` aplica a todas las rutas en el archivo `routes/web.php`. Sin embargo, también puedes excluir las rutas al añadir sus URIs a la propiedad `except` del middleware `VerifyCsrfToken`:
 
-    <?php
+```php
+<?php
 
-    namespace App\Http\Middleware;
+namespace App\Http\Middleware;
 
-    use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken as Middleware;
+use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken as Middleware;
 
-    class VerifyCsrfToken extends Middleware
-    {
-        /**
-         * The URIs that should be excluded from CSRF verification.
-         *
-         * @var array
-         */
-        protected $except = [
-            'stripe/*',
-            'http://example.com/foo/bar',
-            'http://example.com/foo/*',
-        ];
-    }
+class VerifyCsrfToken extends Middleware
+{
+    /**
+        * The URIs that should be excluded from CSRF verification.
+        *
+        * @var array
+        */
+    protected $except = [
+        'stripe/*',
+        'http://example.com/foo/bar',
+        'http://example.com/foo/*',
+    ];
+}
+```
 
-> {tip} El middleware CSRF está deshabilitado automáticamente al [ejecutar pruebas](/docs/{{version}}/testing).
+::: tip
+El middleware CSRF está deshabilitado automáticamente al [ejecutar pruebas](/docs/{{version}}/testing).
+:::
 
 <a name="csrf-x-csrf-token"></a>
 ## X-CSRF-TOKEN
 
 Además de comprobar el token CSRF como parámetro POST, el middleware `VerifyCsrfToken` también comprobará el encabezado de solicitud `X-CSRF-TOKEN`. Podrías, por ejemplo, almacenar el token en una etiqueta `meta` de HTML:
 
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+```php
+<meta name="csrf-token" content="{{ csrf_token() }}">
+```
 
 Entonces, una vez que has creado la etiqueta `meta`, puedes instruir una biblioteca como jQuery para añadir automáticamente el token a todos los encabezados de las peticiones. Esto proporciona protección CSRF fácil y conveniente para tus aplicaciones basadas en AJAX.
 
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
+```php
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
+```
 
-> {tip} Por defecto, el archivo `resources/js/bootstrap.js` registra el valor de la etiqueta meta `csrf-token` con la biblioteca HTTP Axios. Si no estás usando esta biblioteca, necesitarás configurar este comportamiento de forma manual para tu aplicación.
+::: tip
+Por defecto, el archivo `resources/js/bootstrap.js` registra el valor de la etiqueta meta `csrf-token` con la biblioteca HTTP Axios. Si no estás usando esta biblioteca, necesitarás configurar este comportamiento de forma manual para tu aplicación.
+:::
 
 <a name="csrf-x-xsrf-token"></a>
 ## X-XSRF-TOKEN
