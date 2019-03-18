@@ -1,6 +1,7 @@
 # Socialite para Laravel
 
 - [Introducción](#introduction)
+- [Upgrading Socialite](#upgrading-socialite)
 - [Instalación](#installation)
 - [Configuración](#configuration)
 - [Enrutamiento](#routing)
@@ -16,6 +17,11 @@ Además de la típica, autenticación basada en formulario, Laravel también pro
 
 > {tip} Los adaptadores para otras plataformas son listados en el sitio web de [Proveedores de Socialite](https://socialiteproviders.github.io/) manejado por la comunidad.
 
+<a name="upgrading-socialite"></a>
+## Actualizando Socialite
+
+Al actualizar a una nueva versión principal de Socialite, es importante que revise cuidadosamente [la guía de actualización] (https://github.com/laravel/socialite/blob/master/UPGRADE.md).
+
 <a name="installation"></a>
 ## Instalación
 
@@ -29,8 +35,8 @@ Para empezar con Socialite, usa Composer para agregar el paquete a las dependenc
 Antes de usar Socialite, también necesitaras agregar las credenciales para los servicios OAuth que tu aplicación utiliza. Estas credenciales deberían estar colocadas en tu archivo de configuración `config/services.php`, y debería usar la clave `facebook`, `twitter`, `linkedin`, `google`, `github`, `gitlab` o `bitbucket` dependiendo del proveedor que tu aplicación requiera. Por ejemplo:
 
     'github' => [
-        'client_id' => env('GITHUB_CLIENT_ID'),         // Your GitHub Client ID
-        'client_secret' => env('GITHUB_CLIENT_SECRET'), // Your GitHub Client Secret
+        'client_id' => env('GITHUB_CLIENT_ID'),
+        'client_secret' => env('GITHUB_CLIENT_SECRET'),
         'redirect' => 'http://your-callback-url',
     ],
 
