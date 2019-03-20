@@ -195,13 +195,18 @@ Laravel incluye una variedad de funciones "helpers" globales de PHP. Muchas de e
 <a name="method-array-add"></a>
 #### `Arr::add()` {#collection-method .first-collection-method}
 
-La función `Arr::add` agrega una clave / valor dada a un arreglo si la clave no existe previamente en el arreglo:
+La función `Arr::add` agrega una clave / valor dada a un arreglo si la clave no existe previamente en el arreglo o existe pero con un valor `null`:
 
 	use Illuminate\Support\Arr;
 
     $array = Arr::add(['name' => 'Desk'], 'price', 100);
     
     // ['name' => 'Desk', 'price' => 100]
+
+    $array = Arr::add(['name' => 'Desk', 'price' => null], 'price', 100);
+
+    // ['name' => 'Desk', 'price' => 100]
+
 
 <a name="method-array-collapse"></a>
 #### `Arr::collapse()` {#collection-method}
