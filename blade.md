@@ -195,6 +195,12 @@ Sin embargo, en lugar de llamar manualmente a `json_encode`, puedes usar la dire
         var app = @json($array);
     </script>
 
+La directiva `@json` es también útil para trabajar con componentes de Vue o atributos `data-*`:
+
+    <example-component :some-prop='@json($array)'></example-component>
+
+> {note} El uso de `@json` en atributos de elementos requiere que esté rodeado por comillas simples.
+
 #### Codificación De Entidades HTML
 
 Por defecto, Blade (y el helper `e` de Laravel) codificarán doblemente las entidades HTML. Si te gustaría deshabilitar la codificación doble, llama al método `Blade::withoutDoubleEncoding` desde el método `boot` de tu `AppServiceProvider`:
