@@ -1030,6 +1030,8 @@ Para instruir al validador para que ignore el ID del usuario, usaremos la clase 
         ],
     ]);
 
+> {note} Nunca debes pasar ningún input de la solicitud controlado por cualquier usuario en el método `ignore`. En su lugar, sólo debes pasar un ID único generado por el sistema, como un ID autoincremental o UUID de una instancia de modelo Eloquent. De lo contrario, tu aplicación será vulnerable a un ataque de inyección SQL.
+
 En lugar de pasar el valor de la clave del modelo al método `ignore`, puedes pasar la instancia completa del modelo. Laravel automáticamente extraerá la clave del modelo:
 
     Rule::unique('users')->ignore($user)
