@@ -42,6 +42,7 @@ Nombre | Descripción
 `single` | Canal de registro de un sólo archivo o ubicación (`StreamHandler`)
 `daily` | Driver de Monolog basado en `RotatingFileHandler` que rota diariamente
 `slack` | Driver de Monolog basado en `SlackWebhookHandler`
+`papertrail` | Driver de Monolog basado en  `SyslogUdpHandler`
 `syslog` | Driver de Monolog basado en `SyslogHandler`
 `errorlog` | Driver de Monolog basado en `ErrorLogHandler`
 `monolog` | Driver factory de Monolog que puede usar cualquier manejador de Monolog soportado
@@ -58,6 +59,10 @@ Nombre | Descripción | Default
 `bubble` | Indica si los mensajes deberían llegar a otros canales después de ser manejados | `true`
 `permission` | Los permisos del archivo de registro | `644`
 `locking` | Intenta bloquear el archivo de registro antes de escribirlo | `false`
+
+#### Configurando El Canal De Papertrail
+
+El canal `papertrail` requiere de las opciones de configuración `url` y `port`. Puedes obtener estos valores desde [Papertrail](https://help.papertrailapp.com/kb/configuration/configuring-centralized-logging-from-php-apps/#send-events-from-php-app)
 
 #### Configurando el Canal de Slack
 
