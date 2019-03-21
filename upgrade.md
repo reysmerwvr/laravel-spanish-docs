@@ -585,7 +585,7 @@ El método `getPresenceVerifierFor` de la clase `Illuminate\Validation\Validator
 
 **Probabilidad De Impacto: Muy Baja**
 
-La regla de validación de correo electrónico ahora comprueba si el correo electrónico es compatible con [RFC5630](https://tools.ietf.org/html/rfc6530), lo que hace que la lógica de validación sea coherente con la lógica utilizada por SwiftMailer. En Laravel `5.7`, la regla` email` solo verificaba que el correo electrónico era compatible con [RFC822](https://tools.ietf.org/html/rfc822).
+La regla de validación de correo electrónico ahora comprueba si el correo electrónico es compatible con [RFC6530](https://tools.ietf.org/html/rfc6530), lo que hace que la lógica de validación sea coherente con la lógica utilizada por SwiftMailer. En Laravel `5.7`, la regla` email` solo verificaba que el correo electrónico era compatible con [RFC822](https://tools.ietf.org/html/rfc822).
 
 Por lo tanto, cuando se usa Laravel 5.8, los correos electrónicos que antes se consideraban incorrectamente no válidos ahora se considerarán válidos (por ejemplo, `hej@bär.se`). En general, esto debería considerarse una corrección de errores; sin embargo, está listado como un cambio de ruptura por precaución. [Por favor háznos saber si tienes algún problema relacionado con este cambio](https://github.com/laravel/framework/pull/26503).
 
