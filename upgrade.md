@@ -170,7 +170,15 @@ Si deseas liberar un bloqueo sin respetar a su propietario actual, puedes usar e
 Para cumplir con el `PSR-16` los valores de retorno de los métodos` put` y `forever` del contrato `Illuminate\Contracts\Cache\Repository` y los valores de retorno del `put`,` putMany` y los métodos `forever` del contrato `Illuminate\Contracts\Cache\Store` [se han cambiado](https://github.com/laravel/framework/pull/26726) de `void` a` bool`.
 
 <a name="collections"></a>
-### Colecciones 
+### Colecciones
+
+#### El Método `add`
+
+**Probabilidad De Impacto: Muy Baja**
+
+El método `add` [ha sido movido](https://github.com/laravel/framework/pull/27082) de la clase Collection de Eloquent a la clase Collection base. Si estás extendiendo la clase `Illuminate\Support\Collection` y en la clase extendida tienes un método `add`, asegúrate que la firma del método coincida con su padre:
+
+    public function add($item);
 
 #### El Método `firstWhere`
 
