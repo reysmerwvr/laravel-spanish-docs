@@ -140,7 +140,7 @@ Si estás usando el método `Cache::lock()->get(Closure)` de interacción con bl
 
 Sin embargo, si estás llamando manualmente a `Cache::lock()->release()`, debes actualizar tu código para mantener una instancia del bloqueo. Luego, una vez que hayas terminado de realizar tu tarea, puedes llamar al método `release` en **la misma instancia de bloqueo**. Por ejemplo:
 
-    if ($lock = Cache::lock('foo', 10)->get()) {
+    if (($lock = Cache::lock('foo', 10))->get()) {
         // Perform task...
 
         $lock->release();
@@ -151,7 +151,7 @@ A veces, es posible que desees adquirir un bloqueo en un proceso y liberarlo en 
     // Within Controller...
     $podcast = Podcast::find(1);
 
-    if ($lock = Cache::lock('foo', 120)->get()) {
+    if (($lock = Cache::lock('foo', 120))->get()) {
         ProcessPodcast::dispatch($podcast, $lock->owner());
     }
 
