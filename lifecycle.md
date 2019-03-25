@@ -1,3 +1,5 @@
+::: v-pre
+
 # Ciclo De Vida De La Solicitud
 
 - [Introducción](#introduction)
@@ -18,21 +20,21 @@ El objetivo de este documento es darte un buen resumen sobre cómo el framework 
 
 El punto de entrada para todas las solicitudes a una aplicación de Laravel es el archivo `public/index.php`. Todas las solicitudes son dirigidas a este archivo por la configuración de tu servidor web (Apache / Nginx). El archivo `index.php` no contiene mucho código. En su lugar, es un punto de partida para cargar el resto del framework.
 
-El archivo `index.php` carga la definición de autocarga generada por Composer y luego retorna una instancia de la aplicación de Laravel desde el script `bootstrap/app.php`. La primera acción tomada por Laravel es crear una instancia de la aplicación / [contenedor de servicios](/docs/{{version}}/container).
+El archivo `index.php` carga la definición de autocarga generada por Composer y luego retorna una instancia de la aplicación de Laravel desde el script `bootstrap/app.php`. La primera acción tomada por Laravel es crear una instancia de la aplicación / [contenedor de servicios](/docs/5.8/container).
 
 ### Kernel De HTTP / Consola
 
 Luego, la solicitud entrante es enviada ya sea al kernel HTTP o al kernel de la consola, dependiendo del tipo de solicitud que está entrando en la aplicación. Estos dos kernels funcionan como la ubicación principal a través de la cual todas las solicitudes pasan. Por ahora, vamos a enfocarnos sólo en el kernel HTTP, que está ubicado en `app/Http/Kernel.php`.
 
-El kernel HTTP extiende de la clase `Illuminate\Foundation\Http\Kernel`, que define un arreglo de `bootstrappers` que se ejecutarán antes de que la solicitud sea ejecutada. Estos maquetadores configuran el manejo de errores, registros, [detectan en el entorno de la aplicación](/docs/{{version}}/configuration#environment-configuration) y realizan otras tareas que necesitan ser ejecutadas antes de que la solicitud sea manejada.
+El kernel HTTP extiende de la clase `Illuminate\Foundation\Http\Kernel`, que define un arreglo de `bootstrappers` que se ejecutarán antes de que la solicitud sea ejecutada. Estos maquetadores configuran el manejo de errores, registros, [detectan en el entorno de la aplicación](/docs/5.8/configuration#environment-configuration) y realizan otras tareas que necesitan ser ejecutadas antes de que la solicitud sea manejada.
 
-El kernel HTTP también define una lista de [middleware](/docs/{{version}}/middleware) HTTP que todas las solicitudes deben pasar antes de ser manejadas por la aplicación. Estos middleware manejan la lectura y escritura de la [sesión HTTP](/docs/{{version}}/session), determinando si la aplicación está en modo de mantenimiento, [verificando el token CSRF](/docs/{{version}}/csrf) y más.
+El kernel HTTP también define una lista de [middleware](/docs/5.8/middleware) HTTP que todas las solicitudes deben pasar antes de ser manejadas por la aplicación. Estos middleware manejan la lectura y escritura de la [sesión HTTP](/docs/5.8/session), determinando si la aplicación está en modo de mantenimiento, [verificando el token CSRF](/docs/5.8/csrf) y más.
 
 La firma del método para el método `handle` del kernel HTTP es bastante simple: recibe un `Request` y retorna un `Response`. Piensa en el Kernel como una caja negra grande que representa toda tu aplicación. Aliméntala con solicitudes HTTP y retornará respuestas HTTP.
 
 #### Proveedores De Servicios
 
-Una de las acciones de maquetado más importantes del Kernel es cargar los [proveedores de servicios](/docs/{{version}}/providers) de tu aplicación. Todos los proveedores de servicios de la aplicación son configurados en el arreglo `providers` del archivo de configuración `config/app.php`. Primero, el método `register` será llamado en todos los proveedores, luego, una vez que todos los proveedores sean registrados, el método `boot` será llamado.
+Una de las acciones de maquetado más importantes del Kernel es cargar los [proveedores de servicios](/docs/5.8/providers) de tu aplicación. Todos los proveedores de servicios de la aplicación son configurados en el arreglo `providers` del archivo de configuración `config/app.php`. Primero, el método `register` será llamado en todos los proveedores, luego, una vez que todos los proveedores sean registrados, el método `boot` será llamado.
 
 Los proveedores de servicios son responsables de estructurar todos los distintos componentes del framework, como la base de datos, colas, validaciones y componentes de rutas. Dado que estructuran y configuran cada característica ofrecida por el framework, los proveedores de servicios son el aspecto más importante de todo el proceso de estructuración de Laravel.
 
