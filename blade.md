@@ -418,6 +418,8 @@ Propiedad  | Descripción
 `$loop->count`  |  La cantidad total de elementos en el arreglo que se itera.
 `$loop->first`  |  Si esta es la primera iteración a través del ciclo.
 `$loop->last`  |  Si esta es la última iteración a través del ciclo.
+`$loop->even`  |  Si esta es una iteración par a través del ciclo.
+`$loop->odd`  |  Si esta es una iteración impar a través del ciclo.
 `$loop->depth`  |  El nivel de anidamiento del bucle actual.
 `$loop->parent`  |  Cuando está en un bucle anidado, la variable de bucle del padre.
 
