@@ -1,3 +1,5 @@
+::: v-pre
+
 # Estructura de Directorios
 
 - [Introducción](#introduction)
@@ -109,22 +111,24 @@ El directorio `app` contiene una variedad de directorios adicionales tales como 
 
 Una variedad de otros directorios serán generados dentro del directorio `app` cuando uses los comandos `make` de Artisan para generar clases. Así que, por ejemplo, el directorio `app/Jobs` no existirá hasta que ejecutes el comando de Artisan `make:job` para generar una clase job.
 
-> {tip} Muchas de las clases en el directorio `app` pueden ser generadas por Artisan mediante comandos. Para ver los comandos disponibles, ejecuta el comando `php artisan list make` en tu terminal.
+::: tip
+Muchas de las clases en el directorio `app` pueden ser generadas por Artisan mediante comandos. Para ver los comandos disponibles, ejecuta el comando `php artisan list make` en tu terminal.
+:::
 
 <a name="the-broadcasting-directory"></a>
 #### The Broadcasting Directory
 
-El directorio `Broadcasting` contiene todas las clases de broadcast de tu aplicación. Estas clases son generadas usando el comando `make:channel`. Este directorio no existe por defecto, pero será creado para ti cuando crees tu primer canal. Para aprender más sobre canales, revisa la documentación sobre [broadcasting de eventos](/docs/{{version}}/broadcasting).
+El directorio `Broadcasting` contiene todas las clases de broadcast de tu aplicación. Estas clases son generadas usando el comando `make:channel`. Este directorio no existe por defecto, pero será creado para ti cuando crees tu primer canal. Para aprender más sobre canales, revisa la documentación sobre [broadcasting de eventos](/docs/5.8/broadcasting).
 
 <a name="the-console-directory"></a>
 #### El Directorio Console
 
-El directorio `Console` contiene todos los comandos personalizados de Artisan para tu aplicación. Estos comandos pueden ser generados usando el comando `make:command`. Este directorio también almacena el kernel de tu consola, que es donde tus comandos personalizados de Artisan son registrados y tus [tareas programadas](/docs/{{version}}/scheduling) son definidas.
+El directorio `Console` contiene todos los comandos personalizados de Artisan para tu aplicación. Estos comandos pueden ser generados usando el comando `make:command`. Este directorio también almacena el kernel de tu consola, que es donde tus comandos personalizados de Artisan son registrados y tus [tareas programadas](/docs/5.8/scheduling) son definidas.
 
 <a name="the-events-directory"></a>
 #### Directorio Events
 
-Este directorio no existe por defecto, pero será creado para ti por los comandos de Artisan `event:generate` y `make:event`. El directorio `Events` almacena [clases de eventos](/docs/{{version}}/events). Los eventos pueden ser usados para alertar a otras partes de tu aplicación que una acción dada ha ocurrido, proporcionando una gran cantidad de flexibilidad y desacoplamiento.
+Este directorio no existe por defecto, pero será creado para ti por los comandos de Artisan `event:generate` y `make:event`. El directorio `Events` almacena [clases de eventos](/docs/5.8/events). Los eventos pueden ser usados para alertar a otras partes de tu aplicación que una acción dada ha ocurrido, proporcionando una gran cantidad de flexibilidad y desacoplamiento.
 
 <a name="the-exceptions-directory"></a>
 #### Directorio Exceptions
@@ -139,12 +143,12 @@ El directorio `Http` contiene tus controladores, middleware y form requests. Cas
 <a name="the-jobs-directory"></a>
 #### Directorio Jobs
 
-Este directorio no existe por defecto, pero será creado para ti si ejecutas el comando de Artisan `make:job`. El directorio `Jobs` almacena las [colas de trabajos](/docs/{{version}}/queues) para tu aplicación. Los trabajos pueden ser encolados por tu aplicación o ejecutados sincrónicamente dentro del ciclo de vida actual de la solicitud. Los trabajos que son ejecutados sincrónicamente durante la solicitud actual son algunas veces referidos como "comandos" dado que son una implementación del [patrón de comandos](https://en.wikipedia.org/wiki/Command_pattern).
+Este directorio no existe por defecto, pero será creado para ti si ejecutas el comando de Artisan `make:job`. El directorio `Jobs` almacena las [colas de trabajos](/docs/5.8/queues) para tu aplicación. Los trabajos pueden ser encolados por tu aplicación o ejecutados sincrónicamente dentro del ciclo de vida actual de la solicitud. Los trabajos que son ejecutados sincrónicamente durante la solicitud actual son algunas veces referidos como "comandos" dado que son una implementación del [patrón de comandos](https://en.wikipedia.org/wiki/Command_pattern).
 
 <a name="the-listeners-directory"></a>
 #### Directorio Listeners
 
-Este directorio no existe por defecto, pero será creado para ti si ejecutas los comandos de Artisan `event:generate` o `make:listener`. El directorio `Listeners` contiene las clases que manejan tus [eventos](/docs/{{version}}/events). Los listeners de eventos reciben una instancia de evento y realizan la lógica en respuesta al evento siendo ejecutado. Por ejemplo, un evento `UserRegistered` puede ser manejado por un listener `SendWelcomeEmail`.
+Este directorio no existe por defecto, pero será creado para ti si ejecutas los comandos de Artisan `event:generate` o `make:listener`. El directorio `Listeners` contiene las clases que manejan tus [eventos](/docs/5.8/events). Los listeners de eventos reciben una instancia de evento y realizan la lógica en respuesta al evento siendo ejecutado. Por ejemplo, un evento `UserRegistered` puede ser manejado por un listener `SendWelcomeEmail`.
 
 <a name="the-mail-directory"></a>
 #### Directorio Mail
@@ -159,16 +163,16 @@ Este directorio no existe por defecto, pero será creado para ti si ejecutas el 
 <a name="the-policies-directory"></a>
 #### Directorio Policies
 
-Este directorio no existe por defecto, pero será creado para ti si ejecutas el comando de Artisan `make:policy`. El directorio `Policies` contiene las clases de las políticas de autorización de tu aplicación. Las políticas son usadas para determinar si un usuario puede realizar una acción dada contra un recurso. Para más información, revisa la [documentación sobre autorización][authorization documentation](/docs/{{version}}/authorization).
+Este directorio no existe por defecto, pero será creado para ti si ejecutas el comando de Artisan `make:policy`. El directorio `Policies` contiene las clases de las políticas de autorización de tu aplicación. Las políticas son usadas para determinar si un usuario puede realizar una acción dada contra un recurso. Para más información, revisa la [documentación sobre autorización][authorization documentation](/docs/5.8/authorization).
 
 <a name="the-providers-directory"></a>
 #### Directorio Providers
 
-El directorio `Providers` contiene todos los [proveedores de servicios](/docs/{{version}}/providers) para tu aplicación. Los proveedores de servicios maquetan tu aplicación al enlazar servicios en el contenedor de servicios, registrando eventos o realizando cualquier otra tarea para preparar tu aplicación para solicitudes entrantes.
+El directorio `Providers` contiene todos los [proveedores de servicios](/docs/5.8/providers) para tu aplicación. Los proveedores de servicios maquetan tu aplicación al enlazar servicios en el contenedor de servicios, registrando eventos o realizando cualquier otra tarea para preparar tu aplicación para solicitudes entrantes.
 
 En una aplicación de Laravel nueva, este directorio ya contendrá algunos proveedores. Eres libre de agregar tus propios proveedores a este directorio según sea necesario.
 
 <a name="the-rules-directory"></a>
 #### Directorio Rules
 
-Este directorio no existe por defecto, pero será creado para ti si ejecutas el comando de Artisan `make:rule`. El directorio `Rules` contiene los objetos para las reglas de validación personalizadas de tu aplicación. Las reglas son usadas para encapsular lógica de validación complicada en un simple objeto. Para más información, revisa la [documentación sobre validación](/docs/{{version}}/validation).
+Este directorio no existe por defecto, pero será creado para ti si ejecutas el comando de Artisan `make:rule`. El directorio `Rules` contiene los objetos para las reglas de validación personalizadas de tu aplicación. Las reglas son usadas para encapsular lógica de validación complicada en un simple objeto. Para más información, revisa la [documentación sobre validación](/docs/5.8/validation).
