@@ -1,3 +1,5 @@
+::: v-pre
+
 # Configuración
 
 - [Introducción](#introduction)
@@ -26,7 +28,9 @@ Tu archivo `.env` deberá omitirse en el sistema de control de versiones de tu a
 
 Si estás desarrollando con un equipo, es posible que desees continuar incluyendo el archivo `.env.example` en tu aplicación. Al poner valores de ejemplo (placeholder) en el archivo de configuración `.env.example`, otros desarrolladores en tu equipo podrán ver claramente cuáles variables de entorno se necesitan para ejecutar tu aplicación. También puedes crear un archivo `.env.testing`. Este archivo sobrescribirá el archivo `.env` al ejecutar pruebas con PHPUnit o al ejecutar comandos de Artisan con la opción `--env=testing`.
 
-> {tip} Cualquier variable en tu archivo `.env` puede ser anulada por variables de entorno externas tales como variables de entorno de nivel de servidor o de nivel de sistema.
+::: tip
+Cualquier variable en tu archivo `.env` puede ser anulada por variables de entorno externas tales como variables de entorno de nivel de servidor o de nivel de sistema.
+:::
 
 <a name="environment-variable-types"></a>
 ### Tipos De Variables De Entorno
@@ -46,35 +50,45 @@ null | (null) null
 
 Si necesitas definir una variable de entorno con un valor que contiene espacios, puedes hacerlo  encerrando el valor en comillas dobles.
 
-    APP_NAME="My Application"
+```php
+APP_NAME="My Application"
+```
 
 <a name="retrieving-environment-configuration"></a>
 ### Recuperar La Configuración Del Entorno
 
 Todas las variables listadas en este archivo van a ser cargadas en la variable super-global de PHP `$_ENV` cuando tu aplicación reciba una solicitud. Sin embargo, puedes utilizar el helper `env` para recuperar valores de estas variables en tus archivos de configuración. De hecho, si revisas los archivos de configuración de Laravel, podrás notar que varias de estas opciones ya están utilizando este helper:
 
-    'debug' => env('APP_DEBUG', false),
+```php
+'debug' => env('APP_DEBUG', false),
+```
 
 El segundo valor pasado a la función `env` es el "valor predeterminado". Este valor será utilizado si no se encuentra una variable de entorno existente para la clave proporcionada.
 
 <a name="determining-the-current-environment"></a>
 ### Determinando El Entorno Actual
 
-El entorno actual de la aplicación es determinado por medio de la variable `APP_ENV` desde tu archivo `.env`. Puedes acceder a este valor por medio del método `environment` del [facade](/docs/{{version}}/facades) `App`:
+El entorno actual de la aplicación es determinado por medio de la variable `APP_ENV` desde tu archivo `.env`. Puedes acceder a este valor por medio del método `environment` del [facade](/docs/5.8/facades) `App`:
 
-    $environment = App::environment();
+```php
+$environment = App::environment();
+```
 
 También puedes pasar argumentos al método `environment` para verificar si el entorno coincide con un valor determinado. El método va a retornar `true` si el entorno coincide con cualquiera de los valores dados:
 
-    if (App::environment('local')) {
-        // The environment is local
-    }
+```php
+if (App::environment('local')) {
+    // The environment is local
+}
 
-    if (App::environment(['local', 'staging'])) {
-        // The environment is either local OR staging...
-    }
+if (App::environment(['local', 'staging'])) {
+    // The environment is either local OR staging...
+}
+```
 
-> {tip} La detección del entorno actual de la aplicación puede ser anulada por una variable de entorno `APP_ENV` a nivel del servidor. Esto puede ser útil cuando necesites compartir la misma aplicación para diferentes configuraciones de entorno, para que puedas configurar un host determinado para que coincida con un entorno determinado en las configuraciones de tu servidor.
+::: tip 
+La detección del entorno actual de la aplicación puede ser anulada por una variable de entorno `APP_ENV` a nivel del servidor. Esto puede ser útil cuando necesites compartir la misma aplicación para diferentes configuraciones de entorno, para que puedas configurar un host determinado para que coincida con un entorno determinado en las configuraciones de tu servidor.
+:::
 
 <a name="hiding-environment-variables-from-debug"></a>
 ### Ocultar Variables De Entornos A Páginas De Depuración
@@ -83,37 +97,43 @@ Cuando una excepción no es capturada y la variable de entorno `APP_DEBUG` es ig
 
 Algunas variables están disponibles tanto en las variables de entorno y en los datos del servidor / petición. Por lo tanto, puede que necesites ocultarlos tanto para `$_ENV` como `$_SERVER`:
 
-    return [
+```php
+return [
 
-        // ...
+    // ...
 
-        'debug_blacklist' => [
-            '_ENV' => [
-                'APP_KEY',
-                'DB_PASSWORD',
-            ],
-
-            '_SERVER' => [
-                'APP_KEY',
-                'DB_PASSWORD',
-            ],
-
-            '_POST' => [
-                'password',
-            ],
+    'debug_blacklist' => [
+        '_ENV' => [
+            'APP_KEY',
+            'DB_PASSWORD',
         ],
-    ];
+
+        '_SERVER' => [
+            'APP_KEY',
+            'DB_PASSWORD',
+        ],
+
+        '_POST' => [
+            'password',
+        ],
+    ],
+];
+```
 
 <a name="accessing-configuration-values"></a>
 ## Acceder A Valores De Configuración
 
 Puedes acceder fácilmente a tus valores de configuración utilizando la funcion helper global `config` desde cualquier lugar de tu aplicación. Se puede acceder a los valores de configuración usanto la sintaxis de "punto", que incluye el nombre del archivo y la opción a la que deseas acceder. También puedes especificar un valor predeterminado que se devolverá si la opción de configuración no existe:
 
-    $value = config('app.timezone');
+```php
+$value = config('app.timezone');
+```
 
 Para establecer valores de configuración en tiempo de ejecución, pasa un arreglo al helper `config`:
 
-    config(['app.timezone' => 'America/Chicago']);
+```php
+config(['app.timezone' => 'America/Chicago']);
+```
 
 <a name="configuration-caching"></a>
 ## Almacenamiento En Caché De La Configuración
@@ -122,7 +142,9 @@ Para dar a tu aplicación un aumento de velocidad, debes almacenar en caché tod
 
 Usualmente deberías ejecutar el comando `php artisan config:cache` como parte de tu rutina de despliegue a producción. El comando no se debe ejecutar durante el desarrollo local ya que las opciones de configuración con frecuencia deberán cambiarse durante el desarrollo de tu aplicación.
 
-> {note} Si ejecutas el comando `config:cache` durante el proceso de despliegue, debes asegurarte de llamar solo a la función `env` desde tus archivos de configuración. Una vez que la configuración se ha almacenado en caché, el archivo `.env` no será cargado y todas las llamadas a la función `env` retornarán `null`.
+::: danger Nota
+Si ejecutas el comando `config:cache` durante el proceso de despliegue, debes asegurarte de llamar solo a la función `env` desde tus archivos de configuración. Una vez que la configuración se ha almacenado en caché, el archivo `.env` no será cargado y todas las llamadas a la función `env` retornarán `null`.
+:::
 
 <a name="maintenance-mode"></a>
 ## Modo De Mantenimiento
@@ -131,25 +153,35 @@ Cuando tu aplicación se encuentre en modo de mantenimiento, se mostrará una vi
 
 Para habilitar el modo de mantenimiento, ejecuta el comando de Artisan `down`:
 
-    php artisan down
+```php
+php artisan down
+```
 
 También puedes proporcionar las opciones `message` y `retry` al comando `down`. El valor de `message` se puede usar para mostrar o registrar un mensaje personalizado, mientras que el valor de `retry` se establecerá como el valor de cabecera HTTP `Retry-After`:
 
-    php artisan down --message="Upgrading Database" --retry=60
+```php
+php artisan down --message="Upgrading Database" --retry=60
+```
 
 Incluso en modo de mantenimiento, se les puede permitir acceder a la aplicación a direcciones IP  o redes específicas usando la opción `allow` del comando:
 
-    php artisan down --allow=127.0.0.1 --allow=192.168.0.0/16
+```php
+php artisan down --allow=127.0.0.1 --allow=192.168.0.0/16
+```
 
 Para deshabilitar el modo de mantenimiento, usa el comando `up`:
 
-    php artisan up
+```php
+php artisan up
+```
 
-> {tip} Puedes personalizar la plantilla predeterminada del modo de mantenimiento al definir tu propia plantilla en `resources/views/errors/503.blade.php`.
+::: tip
+Puedes personalizar la plantilla predeterminada del modo de mantenimiento al definir tu propia plantilla en `resources/views/errors/503.blade.php`.
+:::
 
 #### Modo De Mantenimiento Y Colas
 
-Mientras tu aplicación esté en modo de mantenimiento, no se manejarán [trabajos en cola](/docs/{{version}}/queues). Los trabajos continuarán siendo manejados de forma normal una vez que la aplicación esté fuera del modo de mantenimiento.
+Mientras tu aplicación esté en modo de mantenimiento, no se manejarán [trabajos en cola](/docs/5.8/queues). Los trabajos continuarán siendo manejados de forma normal una vez que la aplicación esté fuera del modo de mantenimiento.
 
 #### Alternativas Al Modo De Mantenimiento
 
