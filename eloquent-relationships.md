@@ -335,7 +335,7 @@ También puedes filtrar los resultados devueltos por `belongsToMany` usando los 
 <a name="defining-custom-intermediate-table-models"></a>
 ### Definiendo Modelos De Tabla Intermedia Personalizados
 
-Si prefieres definir un modelo personalizado para representar la tabla intermedia o pivote de tu relación, puedes ejecutar el método `using` al momento de definir la relación. Los modelos de tablas intermedias de muchos-a-muchos personalizados deben extender la clase `Illuminate\Database\Eloquent\Relations\Pivot` mientras que los modelos polimórficos muchos-a-muchos deben extender la clase `Illuminate\Database\Eloquent\Relations\MorphPivot`. Por ejemplo, podemos definir un `Role` que use un modelo pivote `UserRole` personalizado:
+Si prefieres definir un modelo personalizado para representar la tabla intermedia o pivote de tu relación, puedes ejecutar el método `using` al momento de definir la relación. Los modelos de tablas intermedias de muchos-a-muchos personalizados deben extender la clase `Illuminate\Database\Eloquent\Relations\Pivot` mientras que los modelos polimórficos muchos-a-muchos deben extender la clase `Illuminate\Database\Eloquent\Relations\MorphPivot`. Por ejemplo, podemos definir un `Role` que use un modelo pivote `RoleUser` personalizado:
 
     <?php
 
@@ -350,11 +350,11 @@ Si prefieres definir un modelo personalizado para representar la tabla intermedi
          */
         public function users()
         {
-            return $this->belongsToMany('App\User')->using('App\UserRole');
+            return $this->belongsToMany('App\User')->using('App\RoleUser');
         }
     }
 
-Al momento de definir el modelo `UserRole`, extenderemos la clase `Pivot`:
+Al momento de definir el modelo `RoleUser`, extenderemos la clase `Pivot`:
 
     <?php
 
@@ -362,12 +362,12 @@ Al momento de definir el modelo `UserRole`, extenderemos la clase `Pivot`:
 
     use Illuminate\Database\Eloquent\Relations\Pivot;
 
-    class UserRole extends Pivot
+    class RoleUser extends Pivot
     {
         //
     }
 
-Puedes combinar `using` y `withPivot` para retornar columnas de la tabla intermedia. Por ejemplo, puedes retornar las columnas `created_by` y `updated_by` desde la tabla pivote `userRole` pasando los nombres de las columnas al método `withPivot`:
+Puedes combinar `using` y `withPivot` para retornar columnas de la tabla intermedia. Por ejemplo, puedes retornar las columnas `created_by` y `updated_by` desde la tabla pivote `RoleUser` pasando los nombres de las columnas al método `withPivot`:
 
     <?php
 
@@ -383,7 +383,7 @@ Puedes combinar `using` y `withPivot` para retornar columnas de la tabla interme
         public function users()
         {
             return $this->belongsToMany('App\User')
-                            ->using('App\UserRole')
+                            ->using('App\RoleUser')
                             ->withPivot([
                                 'created_by',
                                 'updated_by'
