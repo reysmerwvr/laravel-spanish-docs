@@ -372,8 +372,6 @@ Además de proveer métodos útiles en el modelo `User`, Laravel también provee
             // The current user can update the blog post...
         }
     }
-    
-Por lo tanto, no necesitas agregar un condicional cuando usas el método `authorize` en el controlador. 
 
 #### Acciones que no requieren modelos
 
@@ -395,7 +393,7 @@ Como hemos discutido previamente, algunas acciones como `create` pueden no reque
 
 #### Autorizando Controladores De Recursos
 
-Si estás utilizando [controladores de recursos](/docs/{{version}}/controllers##resource-controllers), puedes hacer uso del método `authorizeResource` en el constructor del controlador. Este método agregará la definición de middleware `can` apropiada a los métodos del controlador de recursos.
+Si estás utilizando [controladores de recursos](/docs/{{version}}/controllers#resource-controllers), puedes hacer uso del método `authorizeResource` en el constructor del controlador. Este método agregará la definición de middleware `can` apropiada a los métodos del controlador de recursos.
 
 El método `authorizeResource` acepta el nombre de clase del modelo como primer argumento y el nombre del parametro de ruta / petición que contendrá el ID del modelo como segundo argumento:
 
