@@ -54,6 +54,10 @@ Debido a que los modelos y colecciones son convertidos a JSON al momento de conv
         return App\User::all();
     });
 
+#### Relaciones
+
+Cuando un modelo de Eloquent es convertido a JSON, las relaciones que sean cargadas serán incluidas automáticamente como atributos en el objeto JSON. Además, aunque los métodos de relación de Eloquent sean definidos usando "camel case", un atributo JSON de la relación en su lugar se verá como "snake case".
+
 <a name="hiding-attributes-from-json"></a>
 ## Ocultando Atributos de JSON
 
