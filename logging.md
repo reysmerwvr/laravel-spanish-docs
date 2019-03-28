@@ -57,7 +57,7 @@ Los canales `single` y `daily` tienen tres opciones de configuración opcionales
 Nombre | Descripción | Default
 ------------- | ------------- | -------------
 `bubble` | Indica si los mensajes deberían llegar a otros canales después de ser manejados | `true`
-`permission` | Los permisos del archivo de registro | `644`
+`permission` | Los permisos del archivo de registro | `0644`
 `locking` | Intenta bloquear el archivo de registro antes de escribirlo | `false`
 
 #### Configurando El Canal De Papertrail
