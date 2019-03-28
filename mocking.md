@@ -334,19 +334,22 @@ El método fake de la clase facade `Storage` permite que generes fácilmente un 
 
     class ExampleTest extends TestCase
     {
-        public function testAvatarUpload()
+        public function testAlbumUpload()
         {
-            Storage::fake('avatars');
+            Storage::fake('photos');
 
-            $response = $this->json('POST', '/avatar', [
-                'avatar' => UploadedFile::fake()->image('avatar.jpg')
+            $response = $this->json('POST', '/photos', [
+                UploadedFile::fake()->image('photo1.jpg'),
+                UploadedFile::fake()->image('photo2.jpg')
             ]);
 
-            // Comprueba que el archivo fue almacenado...
-            Storage::disk('avatars')->assertExists('avatar.jpg');
+            // Comprueba que uno o más archivos fueron almacenados...
+            Storage::disk('photos')->assertExists('photo1.jpg');
+            Storage::disk('photos')->assertExists(['photo1.jpg', 'photo2.jpg']);
 
-            // Comprueba que un archivo no existe...
-            Storage::disk('avatars')->assertMissing('missing.jpg');
+            // Comprueba que uno o más archivos no fueron almacenados...
+            Storage::disk('photos')->assertMissing('missing.jpg');
+            Storage::disk('photos')->assertMissing(['missing.jpg', 'non-existing.jpg']);
         }
     }
 
