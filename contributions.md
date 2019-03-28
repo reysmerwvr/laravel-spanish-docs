@@ -50,9 +50,9 @@ Discusiones informales sobre errores, nuevas funcionalidades e implementación d
 
 **Todas** las correcciones de errores deben ser enviadas a la última rama estable o a la [actual rama LTS](/docs/{{version}}/releases#support-policy). Las correcciones de errores **nunca** deben ser enviadas a la rama `master` a menos que ellos reparen funcionalidades que existan solo en los próximos lanzamientos.
 
-Funcionalidades **menores** que son **totalmente compatible** con la versión actual de Laravel pueden enviarse a la última rama estable.
+Funcionalidades **menores** que son **totalmente compatible** con la versión actual pueden enviarse a la última rama estable.
 
-Las nuevas funcionalidades **mayores** deben siempre ser enviadas a la rama `master`, la cual contiene el próximo lanzamiento de Laravel.
+Las nuevas funcionalidades **mayores** deben siempre ser enviadas a la rama `master`, la cual contiene el próximo lanzamiento.
 
 Si no estás seguro si tu funcionalidad califica como mayor o menor, por favor pregúntale a Taylor Otwell en el canal `#internals` del [servidor Discord de Laravel](https://discordapp.com/invite/mPZNm7A).
 
