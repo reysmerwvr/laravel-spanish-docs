@@ -1,7 +1,8 @@
-# Laravel Documentation
+# Documentación de Laravel
 
-You can find the online version of the Laravel documentation at [https://laravel.com/docs](https://laravel.com/docs)
+Puedes encontrar la versión en línea de la documentación de Laravel en inglés en [https://laravel.com/docs](https://laravel.com/docs)
 
-## Contribution Guidelines
+## Guía Para Contribuir
 
-If you are submitting documentation for the **current stable release**, submit it to the corresponding branch. For example, documentation for Laravel 5.7 would be submitted to the `5.7` branch. Documentation intended for the next release of Laravel should be submitted to the `master` branch.
+Si está enviando documentación para la **versión estable actual**, envíala a la rama correspondiente. Por ejemplo, la documentación para Laravel 5.8 se enviaría a la rama `5.8`. La documentación destinada a la próxima versión de Laravel debe enviarse a la rama `master`.
+

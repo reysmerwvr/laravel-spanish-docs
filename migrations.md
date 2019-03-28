@@ -1,54 +1,54 @@
-# Database: Migrations
+# Base de datos: Migraciones
 
-- [Introduction](#introduction)
-- [Generating Migrations](#generating-migrations)
-- [Migration Structure](#migration-structure)
-- [Running Migrations](#running-migrations)
-    - [Rolling Back Migrations](#rolling-back-migrations)
-- [Tables](#tables)
-    - [Creating Tables](#creating-tables)
-    - [Renaming / Dropping Tables](#renaming-and-dropping-tables)
-- [Columns](#columns)
-    - [Creating Columns](#creating-columns)
-    - [Column Modifiers](#column-modifiers)
-    - [Modifying Columns](#modifying-columns)
-    - [Dropping Columns](#dropping-columns)
-- [Indexes](#indexes)
-    - [Creating Indexes](#creating-indexes)
-    - [Renaming Indexes](#renaming-indexes)
-    - [Dropping Indexes](#dropping-indexes)
-    - [Foreign Key Constraints](#foreign-key-constraints)
+- [Introducción](#introduction)
+- [Generando Migraciones](#generating-migrations)
+- [Estructura de Migración](#migration-structure)
+- [Ejecutando Migraciones](#running-migrations)
+  - [Reversando Migraciones](#rolling-back-migrations)
+- [Tablas](#tables)
+  - [Creando Tablas](#creating-tables)
+  - [Renombrando / Eliminando Tablas](#renaming-and-dropping-tables)
+- [Columnas](#columns)
+  - [Creando Columnas](#creating-columns)
+  - [Modificadores de Columna](#column-modifiers)
+  - [Modificando Columnas](#modifying-columns)
+  - [Eliminando Columnas](#dropping-columns)
+- [Índices](#indexes)
+  - [Creación de Índices](#creating-indexes)
+  - [Renombrando Índices](#renaming-indexes)
+  - [Eliminando Índices](#dropping-indexes)
+  - [Restricciones de Clave Foránea](#foreign-key-constraints)
 
 <a name="introduction"></a>
-## Introduction
+## Introducción
 
-Migrations are like version control for your database, allowing your team to easily modify and share the application's database schema. Migrations are typically paired with Laravel's schema builder to easily build your application's database schema. If you have ever had to tell a teammate to manually add a column to their local database schema, you've faced the problem that database migrations solve.
+Las migraciones son como el control de versión para tu base de datos, permiten que tu equipo modifique y comparta fácilmente el esquema de base de datos de la aplicación. Las migraciones son emparejadas típicamente con el constructor de esquema de Laravel para construir fácilmente el esquema de base de datos de tu aplicación. Si inclusive has tenido que decirle a un miembro de equipo que agregue una columna manualmente a sus esquemas de bases de datos local, has encarado el problema que solucionan las migraciones de base de datos.
 
-The Laravel `Schema` [facade](/docs/{{version}}/facades) provides database agnostic support for creating and manipulating tables across all of Laravel's supported database systems.
+La clase [facade](/docs/{{version}}/facades) `Schema` de Laravel proporciona soporte de base de datos orientado a la programación orientada a objetos para la creación y manipulación de tablas a través de todos los sistemas de bases de datos soportados por Laravel.
 
 <a name="generating-migrations"></a>
-## Generating Migrations
+## Generando Migraciones
 
-To create a migration, use the `make:migration` [Artisan command](/docs/{{version}}/artisan):
+Para crear una migración, usa el [comando Artisan](/docs/{{version}}/artisan) `make:migration`:
 
     php artisan make:migration create_users_table
 
-The new migration will be placed in your `database/migrations` directory. Each migration file name contains a timestamp which allows Laravel to determine the order of the migrations.
+La nueva migración estará ubicada en tu directorio `database/migrations`. Cada nombre de archivo de migración contiene una marca de tiempo la cual permite que Laravel determine el orden de las migraciones.
 
-The `--table` and `--create` options may also be used to indicate the name of the table and whether the migration will be creating a new table. These options pre-fill the generated migration stub file with the specified table:
+Las opciones `--table` y `--create` también pueden ser usadas para indicar el nombre de la tabla y si la migración estará creando una nueva tabla. Estas opciones rellenan previamente el archivo stub de migración generado con la tabla especificada:
 
     php artisan make:migration create_users_table --create=users
 
     php artisan make:migration add_votes_to_users_table --table=users
 
-If you would like to specify a custom output path for the generated migration, you may use the `--path` option when executing the `make:migration` command. The given path should be relative to your application's base path.
+Si prefieres especificar una ruta de directorio de salida personalizada para la migración generada, puedes usar la opción `--path` al momento de ejecutar el comando `make:migration`. La ruta de directorio dada debe ser relativa a la ruta de directorio base de tu aplicación.
 
 <a name="migration-structure"></a>
-## Migration Structure
+## Estructura de Migración
 
-A migration class contains two methods: `up` and `down`. The `up` method is used to add new tables, columns, or indexes to your database, while the `down` method should reverse the operations performed by the `up` method.
+Una clase de migración contiene dos métodos: `up` y `down`. El método `up` es usado para agregar nuevas tablas, columnas, o índices para tu base de datos, mientras el método `down` debería reversar las operaciones ejecutadas por el método `up`.
 
-Within both of these methods you may use the Laravel schema builder to expressively create and modify tables. To learn about all of the methods available on the `Schema` builder, [check out its documentation](#creating-tables). For example, this migration example creates a `flights` table:
+Dentro de ambos métodos puedes usar el constructor de esquema de Laravel para crear y modificar expresivamente las tablas. Para aprender sobre todos los métodos disponibles en el constructor `Schema`, [inspecciona su documentación](#creating-tables). Por ejemplo, este ejemplo de migración crea una tabla `flights`:
 
     <?php
 
@@ -85,73 +85,73 @@ Within both of these methods you may use the Laravel schema builder to expressiv
     }
 
 <a name="running-migrations"></a>
-## Running Migrations
+## Ejecutando Migraciones
 
-To run all of your outstanding migrations, execute the `migrate` Artisan command:
+Para ejecutar todas tus maravillosas migraciones, ejecuta el comando Artisan `migrate`:
 
     php artisan migrate
 
-> {note} If you are using the [Homestead virtual machine](/docs/{{version}}/homestead), you should run this command from within your virtual machine.
+> {note} Si estás usando [La máquina virtual de Homestead](/docs/{{version}}/homestead), deberías ejecutar este comando desde dentro de tu máquina virtual.
 
-#### Forcing Migrations To Run In Production
+#### Forzando las Migraciones para Ejecutar en Producción
 
-Some migration operations are destructive, which means they may cause you to lose data. In order to protect you from running these commands against your production database, you will be prompted for confirmation before the commands are executed. To force the commands to run without a prompt, use the `--force` flag:
+Algunas operaciones de migración son destructivas, lo que significa que pueden causar que pierdas tus datos. Con el propósito de protegerte de ejecutar estos comandos contra tu base de datos de producción, recibirás un mensaje de confirmación antes que los comandos sean ejecutados. Para forzar que los comandos se ejecuten sin retardo, usa el indicador `--force`.
 
     php artisan migrate --force
 
 <a name="rolling-back-migrations"></a>
-### Rolling Back Migrations
+### Reversando Migraciones
 
-To rollback the latest migration operation, you may use the `rollback` command. This command rolls back the last "batch" of migrations, which may include multiple migration files:
+Para reversar la operación de migración más reciente, puedes usar el comando `rollback`. Este comando reversa el último "lote" de migraciones, los cuales pueden incluir archivos de migración múltiples.
 
     php artisan migrate:rollback
 
-You may rollback a limited number of migrations by providing the `step` option to the `rollback` command. For example, the following command will rollback the last five migrations:
+Puedes reversar un número limitado de migraciones proporcionando la opción `step` al comando `rollback`. Por ejemplo, el siguiente comando revertirá los cinco "lotes" de migraciones más recientes:
 
     php artisan migrate:rollback --step=5
 
-The `migrate:reset` command will roll back all of your application's migrations:
+El comando `migrate:reset` revertirá todas las migraciones de tu aplicación:
 
     php artisan migrate:reset
 
-#### Rollback & Migrate In Single Command
+#### Rollback & Migrate En un Único Comando
 
-The `migrate:refresh` command will roll back all of your migrations and then execute the `migrate` command. This command effectively re-creates your entire database:
+El comando `migrate:refresh` reversará todas tus migraciones y después ejecutará el comando `migrate`. Este comando vuelve a crear efectivamente tu base de datos entera:
 
     php artisan migrate:refresh
 
     // Refresh the database and run all database seeds...
     php artisan migrate:refresh --seed
 
-You may rollback & re-migrate a limited number of migrations by providing the `step` option to the `refresh` command. For example, the following command will rollback & re-migrate the last five migrations:
+Puedes reversar y volver a migrar un número limitado de migraciones proporcionando la opción `step` al comando `refresh`. Por ejemplo, el siguiente comando revertirá y volverá a migrar las cinco migraciones más recientes:
 
     php artisan migrate:refresh --step=5
 
-#### Drop All Tables & Migrate
+#### Eliminando Todas las Tablas y Migrar
 
-The `migrate:fresh` command will drop all tables from the database and then execute the `migrate` command:
+El comando `migrate:fresh` eliminará todas las tablas de la base de datos y después ejecutará el comando `migrate`:
 
     php artisan migrate:fresh
 
     php artisan migrate:fresh --seed
 
 <a name="tables"></a>
-## Tables
+## Tablas
 
 <a name="creating-tables"></a>
-### Creating Tables
+### Creando Tablas
 
-To create a new database table, use the `create` method on the `Schema` facade. The `create` method accepts two arguments. The first is the name of the table, while the second is a `Closure` which receives a `Blueprint` object that may be used to define the new table:
+Para crear una nueva tabla en la base de datos, usa el método `create` en la clase facade `Schema`. El método `create` acepta dos argumentos. El primero es el nombre de la tabla, mientras que el segundo es una `Closure` la cual recibe un objeto de la clase `Blueprint` que puede ser usado para definir la nueva tabla:
 
     Schema::create('users', function (Blueprint $table) {
         $table->increments('id');
     });
 
-When creating the table, you may use any of the schema builder's [column methods](#creating-columns) to define the table's columns.
+Al momento de crear la tabla, puedes usar cualquiera de [los métodos de columna](#creating-columns) del constructor de esquemas para definir las columnas de la tabla.
 
-#### Checking For Table / Column Existence
+#### Inspeccionando la Tabla / Existencia de Columna
 
-You may easily check for the existence of a table or column using the `hasTable` and `hasColumn` methods:
+Puedes inspeccionar fácilmente la existencia de una tabla o columna usando los métodos `hasTable` y `hasColumn`:
 
     if (Schema::hasTable('users')) {
         //
@@ -161,242 +161,242 @@ You may easily check for the existence of a table or column using the `hasTable`
         //
     }
 
-#### Database Connection & Table Options
+#### Conexión de Base de Datos & Opciones de Tabla
 
-If you want to perform a schema operation on a database connection that is not your default connection, use the `connection` method:
+Si quieres ejecutar una operación de esquema en una conexión de base de datos que no es tu conexión predeterminada, usa el método `connection`:
 
     Schema::connection('foo')->create('users', function (Blueprint $table) {
         $table->increments('id');
     });
 
-You may use the following commands on the schema builder to define the table's options:
+Puedes usar los siguientes comandos en el constructor de esquema para definir las opciones de tabla:
 
-Command  |  Description
+Comando  |  Descripción
 -------  |  -----------
-`$table->engine = 'InnoDB';`  |  Specify the table storage engine (MySQL).
-`$table->charset = 'utf8';`  |  Specify a default character set for the table (MySQL).
-`$table->collation = 'utf8_unicode_ci';`  |  Specify a default collation for the table (MySQL).
-`$table->temporary();`  |  Create a temporary table (except SQL Server).
+`$table->engine = 'InnoDB';`  |  Especifica el motor de almacenamiento de la tabla. (Sólo en MySQL).
+`$table->charset = 'utf8';`  |  Especifica un conjunto de caracteres. (Sólo en MySQL).
+`$table->collation = 'utf8_unicode_ci';`  |  Especifica un orden predeterminado para la tabla. (Sólo en MySQL)
+`$table->temporary();`  |  Crea una tabla temporal (excepto en SQL Server).
 
 <a name="renaming-and-dropping-tables"></a>
-### Renaming / Dropping Tables
+### Renombrando / Eliminando Tablas
 
-To rename an existing database table, use the `rename` method:
+Para renombrar una tabla de base de datos existente, usa el método `rename`:
 
     Schema::rename($from, $to);
 
-To drop an existing table, you may use the `drop` or `dropIfExists` methods:
+Para eliminar una tabla existente, puedes usar los métodos `drop` o `dropIfExists`:
 
     Schema::drop('users');
 
     Schema::dropIfExists('users');
 
-#### Renaming Tables With Foreign Keys
+#### Renombrando Tablas con Claves Foráneas
 
-Before renaming a table, you should verify that any foreign key constraints on the table have an explicit name in your migration files instead of letting Laravel assign a convention based name. Otherwise, the foreign key constraint name will refer to the old table name.
+Antes de renombrar una tabla, deberías verificar que cualquiera de las restricciones de clave foránea en la tabla tenga un nombre explícito en tus archivos de migración en caso de permitir que Laravel asigne un nombre basado en la convención. De otra manera, el nombre de restricción de clave foránea se referirá al nombre que tenía la tabla.
 
 <a name="columns"></a>
-## Columns
+## Columnas
 
 <a name="creating-columns"></a>
-### Creating Columns
+### Creando Columnas
 
-The `table` method on the `Schema` facade may be used to update existing tables. Like the `create` method, the `table` method accepts two arguments: the name of the table and a `Closure` that receives a `Blueprint` instance you may use to add columns to the table:
+El método `table` en la clase facade `Schema` puede ser usado para actualizar tablas existentes. Igual que el método `create` acepta dos argumentos: el nombre de la tabla y una `Closure` que recibe una instancia de la clase `Blueprint` que puedes usar para agregar columnas a la tabla:
 
     Schema::table('users', function (Blueprint $table) {
         $table->string('email');
     });
 
-#### Available Column Types
+#### Tipos de Columna Permitidos
 
-The schema builder contains a variety of column types that you may specify when building your tables:
+El constructor de esquema contiene una variedad de tipos de columna que puedes especificar al momento de construir tus tablas:
 
-Command  |  Description
+Comando  |  Descripción
 -------  |  -----------
-`$table->bigIncrements('id');`  |  Auto-incrementing UNSIGNED BIGINT (primary key) equivalent column.
-`$table->bigInteger('votes');`  |  BIGINT equivalent column.
-`$table->binary('data');`  |  BLOB equivalent column.
-`$table->boolean('confirmed');`  |  BOOLEAN equivalent column.
-`$table->char('name', 100);`  |  CHAR equivalent column with an optional length.
-`$table->date('created_at');`  |  DATE equivalent column.
-`$table->dateTime('created_at');`  |  DATETIME equivalent column.
-`$table->dateTimeTz('created_at');`  |  DATETIME (with timezone) equivalent column.
-`$table->decimal('amount', 8, 2);`  |  DECIMAL equivalent column with a precision (total digits) and scale (decimal digits).
-`$table->double('amount', 8, 2);`  |  DOUBLE equivalent column with a precision (total digits) and scale (decimal digits).
-`$table->enum('level', ['easy', 'hard']);`  |  ENUM equivalent column.
-`$table->float('amount', 8, 2);`  |  FLOAT equivalent column with a precision (total digits) and scale (decimal digits).
-`$table->geometry('positions');`  |  GEOMETRY equivalent column.
-`$table->geometryCollection('positions');`  |  GEOMETRYCOLLECTION equivalent column.
-`$table->increments('id');`  |  Auto-incrementing UNSIGNED INTEGER (primary key) equivalent column.
-`$table->integer('votes');`  |  INTEGER equivalent column.
-`$table->ipAddress('visitor');`  |  IP address equivalent column.
-`$table->json('options');`  |  JSON equivalent column.
-`$table->jsonb('options');`  |  JSONB equivalent column.
-`$table->lineString('positions');`  |  LINESTRING equivalent column.
-`$table->longText('description');`  |  LONGTEXT equivalent column.
-`$table->macAddress('device');`  |  MAC address equivalent column.
-`$table->mediumIncrements('id');`  |  Auto-incrementing UNSIGNED MEDIUMINT (primary key) equivalent column.
-`$table->mediumInteger('votes');`  |  MEDIUMINT equivalent column.
-`$table->mediumText('description');`  |  MEDIUMTEXT equivalent column.
-`$table->morphs('taggable');`  |  Adds `taggable_id` UNSIGNED BIGINT and `taggable_type` VARCHAR equivalent columns.
-`$table->multiLineString('positions');`  |  MULTILINESTRING equivalent column.
-`$table->multiPoint('positions');`  |  MULTIPOINT equivalent column.
-`$table->multiPolygon('positions');`  |  MULTIPOLYGON equivalent column.
-`$table->nullableMorphs('taggable');`  |  Adds nullable versions of `morphs()` columns.
-`$table->nullableTimestamps();`  |  Alias of `timestamps()` method.
-`$table->point('position');`  |  POINT equivalent column.
-`$table->polygon('positions');`  |  POLYGON equivalent column.
-`$table->rememberToken();`  |  Adds a nullable `remember_token` VARCHAR(100) equivalent column.
-`$table->smallIncrements('id');`  |  Auto-incrementing UNSIGNED SMALLINT (primary key) equivalent column.
-`$table->smallInteger('votes');`  |  SMALLINT equivalent column.
-`$table->softDeletes();`  |  Adds a nullable `deleted_at` TIMESTAMP equivalent column for soft deletes.
-`$table->softDeletesTz();`  |  Adds a nullable `deleted_at` TIMESTAMP (with timezone) equivalent column for soft deletes.
-`$table->string('name', 100);`  |  VARCHAR equivalent column with a optional length.
-`$table->text('description');`  |  TEXT equivalent column.
-`$table->time('sunrise');`  |  TIME equivalent column.
-`$table->timeTz('sunrise');`  |  TIME (with timezone) equivalent column.
-`$table->timestamp('added_on');`  |  TIMESTAMP equivalent column.
-`$table->timestampTz('added_on');`  |  TIMESTAMP (with timezone) equivalent column.
-`$table->timestamps();`  |  Adds nullable `created_at` and `updated_at` TIMESTAMP equivalent columns.
-`$table->timestampsTz();`  |  Adds nullable `created_at` and `updated_at` TIMESTAMP (with timezone) equivalent columns.
-`$table->tinyIncrements('id');`  |  Auto-incrementing UNSIGNED TINYINT (primary key) equivalent column.
-`$table->tinyInteger('votes');`  |  TINYINT equivalent column.
-`$table->unsignedBigInteger('votes');`  |  UNSIGNED BIGINT equivalent column.
-`$table->unsignedDecimal('amount', 8, 2);`  |  UNSIGNED DECIMAL equivalent column with a precision (total digits) and scale (decimal digits).
-`$table->unsignedInteger('votes');`  |  UNSIGNED INTEGER equivalent column.
-`$table->unsignedMediumInteger('votes');`  |  UNSIGNED MEDIUMINT equivalent column.
-`$table->unsignedSmallInteger('votes');`  |  UNSIGNED SMALLINT equivalent column.
-`$table->unsignedTinyInteger('votes');`  |  UNSIGNED TINYINT equivalent column.
-`$table->uuid('id');`  |  UUID equivalent column.
-`$table->year('birth_year');`  |  YEAR equivalent column.
+`$table->bigIncrements('id');`  |  Tipo de columna equivalente a Auto-incremento UNSIGNED BIGINT (clave primaria).
+`$table->bigInteger('votes');`  |  Tipo de columna equivalente a BIGINT equivalent.
+`$table->binary('data');`  |  Tipo de columna equivalente a BLOB.
+`$table->boolean('confirmed');`  |  Tipo de columna equivalente a BOOLEAN.
+`$table->char('name', 100);`  |  Tipo de columna equivalente a CHAR con una longitud opcional.
+`$table->date('created_at');`  |  Tipo de columna equivalente a DATE.                          
+`$table->dateTime('created_at');`  |  Tipo de columna equivalente a DATETIME.                      
+`$table->dateTimeTz('created_at');`  |  Tipo de columna equivalente a DATETIME (con hora de la zona).
+`$table->decimal('amount', 8, 2);`  |  Tipo de columna equivalente a DECIMAL con una precisión (el total de dígitos) y escala de dígitos decimales.
+`$table->double('amount', 8, 2);`  |  Tipo de columna equivalente a DOUBLE con una precisión (el total de dígitos) y escala de dígitos decimales.
+`$table->enum('level', ['easy', 'hard']);` |  Tipo de columna equivalente a ENUM.
+`$table->float('amount', 8, 2);`  |  Tipo de columna equivalente a FLOAT con una precisión (el total de dígitos) y escala de dígitos decimales.
+`$table->geometry('positions');`  |  Tipo de columna equivalente a GEOMETRY.         
+`$table->geometryCollection('positions');`  |  Tipo de columna equivalente a GEOMETRYCOLLECTION.
+`$table->increments('id');`  |  Tipo de columna equivalente a Auto-incremento UNSIGNED INTEGER (clave primaria).
+`$table->integer('votes');`  |  Tipo de columna equivalente a INTEGER.
+`$table->ipAddress('visitor');`  |  Tipo de columna equivalente a dirección IP.                  
+`$table->json('options');`  |  Tipo de columna equivalente a JSON.                          
+`$table->jsonb('options');`  |  Tipo de columna equivalente a JSONB.                         
+`$table->lineString('positions');`  |  Tipo de columna equivalente a LINESTRING.
+`$table->longText('description');`  |  Tipo de columna equivalente a LONGTEXT.
+`$table->macAddress('device');`  |  Tipo de columna equivalente a dirección MAC.                 
+`$table->mediumIncrements('id');`  |  Tipo de columna equivalente a Auto-incremento UNSIGNED MEDIUMINT (clave primaria).
+`$table->mediumInteger('votes');`  |  Tipo de columna equivalente a MEDIUMINT.
+`$table->mediumText('description');`  |  Tipo de columna equivalente a MEDIUMTEXT.
+`$table->morphs('taggable');`  |  Agrega los tipos de columna equivalente a UNSIGNED INTEGER `taggable_id` y VARCHAR `taggable_type`.
+`$table->multiLineString('positions');`  |  Tipo de columna equivalente a MULTILINESTRING.
+`$table->multiPoint('positions');`  |  Tipo de columna equivalente a MULTIPOINT.                    
+`$table->multiPolygon('positions');`  |  Tipo de columna equivalente a MULTIPOLYGON.
+`$table->nullableMorphs('taggable');`  |  Permite que la columna `morphs()` acepte una versión de valor nulo.
+`$table->nullableTimestamps();`  |  Método Alias de `timestamps()`.                              
+`$table->point('position');`  |  Tipo de columna equivalente a POINT.
+`$table->polygon('positions');`  |  Tipo de columna equivalente a POLYGON.
+`$table->rememberToken();`  |  Permite nulos en el tipo de columna equivalente a VARCHAR(100) `remember_token`.
+`$table->smallIncrements('id');`  |  Tipo de columna equivalente a Auto-incremento UNSIGNED SMALLINT (clave primaria).
+`$table->smallInteger('votes');`  |  Tipo de columna equivalente a SMALLINT.                      
+`$table->softDeletes();`  |  Permite nulos en el tipo de columna equivalente a TIMESTAMP `deleted_at` para eliminaciones.
+`$table->softDeletesTz();`  |  Permite nulos en el tipo de columna equivalente a TIMESTAMP `deleted_at` (con la hora de la zona) para eliminaciones.
+`$table->string('name', 100);`  |  Tipo de columna equivalente a VARCHAR con una longitud opcional.
+`$table->text('description');`  |  Tipo de columna equivalente a TEXT.                          
+`$table->time('sunrise');`  |  Tipo de columna equivalente a TIME.                          
+`$table->timeTz('sunrise');`  |  Tipo de columna equivalente a TIME (con la hora de la zona). 
+`$table->timestamp('added_on');`  |  Tipo de columna equivalente a TIMESTAMP.                     
+`$table->timestampTz('added_on');`  |  Tipo de columna equivalente a TIMESTAMP (con la hora de la zona).
+`$table->timestamps();`  |  Permite nulos en las columnas equivalentes TIMESTAMP `created_at` y `updated_at`.
+`$table->timestampsTz();`  |  Permite nulos en las columnas equivalentes TIMESTAMP `created_at` y `updated_at` (con la hora de la zona).
+`$table->tinyIncrements('id');`  |  Tipo de columna equivalente a Auto-incremento UNSIGNED TINYINT (clave primaria).
+`$table->tinyInteger('votes');`  |  Tipo de columna equivalente a TINYINT.                       
+`$table->unsignedBigInteger('votes');`  |  Tipo de columna equivalente a UNSIGNED BIGINT.
+`$table->unsignedDecimal('amount', 8, 2);`  |  Tipo de columna equivalente a UNSIGNED DECIMAL con una precisión (total de dígitos) escala (dígitos decimales).
+`$table->unsignedInteger('votes');`  |  Tipo de columna equivalente a UNSIGNED INTEGER.
+`$table->unsignedMediumInteger('votes');`  |  Tipo de columna equivalente a UNSIGNED MEDIUMINT.
+`$table->unsignedSmallInteger('votes');`  |  Tipo de columna equivalente a UNSIGNED SMALLINT.
+`$table->unsignedTinyInteger('votes');`  |  Tipo de columna equivalente a UNSIGNED TINYINT.
+`$table->uuid('id');`  |  Tipo de columna equivalente a UUID.                          
+`$table->year('birth_year');`  |  Tipo de columna equivalente a YEAR.
 
 <a name="column-modifiers"></a>
-### Column Modifiers
+### Modificadores de Columna
 
-In addition to the column types listed above, there are several column "modifiers" you may use while adding a column to a database table. For example, to make the column "nullable", you may use the `nullable` method:
+Además de los tipos de columna listados anteriormente, hay varios "modificadores" de columna que puedes usar al momento de agregar una columna a la tabla de base de datos. Por ejemplo, para hacer que la columna "acepte valores nulos", puedes usar el método `nullable`.
 
     Schema::table('users', function (Blueprint $table) {
         $table->string('email')->nullable();
     });
 
-Below is a list of all the available column modifiers. This list does not include the [index modifiers](#creating-indexes):
+Debajo está una lista con todos los modificadores de columna disponibles. Esta lista no incluye los [modificadores de índice](#creating-indexes):
 
-Modifier  |  Description
---------  |  -----------
-`->after('column')`  |  Place the column "after" another column (MySQL)
-`->autoIncrement()`  |  Set INTEGER columns as auto-increment (primary key)
-`->charset('utf8')`  |  Specify a character set for the column (MySQL)
-`->collation('utf8_unicode_ci')`  |  Specify a collation for the column (MySQL/SQL Server)
-`->comment('my comment')`  |  Add a comment to a column (MySQL/PostgreSQL)
-`->default($value)`  |  Specify a "default" value for the column
-`->first()`  |  Place the column "first" in the table (MySQL)
-`->nullable($value = true)`  |  Allows (by default) NULL values to be inserted into the column
-`->storedAs($expression)`  |  Create a stored generated column (MySQL)
-`->unsigned()`  |  Set INTEGER columns as UNSIGNED (MySQL)
-`->useCurrent()`  |  Set TIMESTAMP columns to use CURRENT_TIMESTAMP as default value
-`->virtualAs($expression)`  |  Create a virtual generated column (MySQL)
-`->generatedAs($expression)`  |  Create an identity column with specified sequence options (PostgreSQL)
-`->always()`  |  Defines the precedence of sequence values over input for an identity column (PostgreSQL)
+Modificador  |  Descripción
+-----------  |  -----------
+`->after('column')`  |  Coloca la columna "después de" otra columna (MySQL)                    
+`->autoIncrement()`  |  Establece las columnas tipo INTEGER como auto-incremento (clave primaria)
+`->charset('utf8')`  |  Especifica un conjunto de caracteres para la columna (MySQL)
+`->collation('utf8_unicode_ci')`  |  Especifica un ordenamiento para la columna (MySQL/SQL Server)
+`->comment('my comment')`  |  Agrega un comentario a una columna (MySQL/PostgreSQL)
+`->default($value)`  |  Especifica un valor "predeterminado" para la columna
+`->first()`  |  Coloca la columna al "principio" en la tabla (MySQL)
+`->nullable($value = true)`  |  Permite que valores NULL (por defecto) sean insertados dentro de la columna
+`->storedAs($expression)`  |  Crea una columna almacenada generada por la expresión (MySQL)
+`->unsigned()`  |  Establece las columnas tipo INTEGER como UNSIGNED (MySQL)
+`->useCurrent()`  |  Establece las columnas tipo TIMESTAMP para usar CURRENT_TIMESTAMP como valor predeterminado
+`->virtualAs($expression)`  |  Crea una columna virtual generada por la expresión (MySQL)   
+`->generatedAs($expression)`  |  Crea una columna de identidad con opciones de secuencia especificadas (PostgreSQL)
+`->always()`  |  Define la prioridad de los valores de secuencia sobre la entrada para una columna de identidad (PostgreSQL)
 
 <a name="modifying-columns"></a>
-### Modifying Columns
+### Modificando Columnas
 
-#### Prerequisites
+#### Prerequisitos
 
-Before modifying a column, be sure to add the `doctrine/dbal` dependency to your `composer.json` file. The Doctrine DBAL library is used to determine the current state of the column and create the SQL queries needed to make the specified adjustments to the column:
+Antes de modificar una columna, asegúrate de agregar la dependencia `doctrine/dbal` a tu archivo `composer.json`. La biblioteca DBAL de Doctrine es usada para determinar el estado actual de la columna y crear las consultas SQL necesarias para hacer los ajustes especificados a la columna:
 
     composer require doctrine/dbal
 
-#### Updating Column Attributes
+#### Actualizando los atributos de Columna
 
-The `change` method allows you to modify some existing column types to a new type or modify the column's attributes. For example, you may wish to increase the size of a string column. To see the `change` method in action, let's increase the size of the `name` column from 25 to 50:
+El método `change` permite que modifiques algunos tipos de columna existentes a un nuevo tipo o modifiques los atributos de la columna. Por ejemplo, puedes querer aumentar el tamaño de una columna tipo cadena. Para ver el método `change` en acción, vamos a aumentar el tamaño de la columna `name` de 25 a 50 caracteres:
 
     Schema::table('users', function (Blueprint $table) {
         $table->string('name', 50)->change();
     });
 
-We could also modify a column to be nullable:
+También podríamos modificar una columna para que acepte valores nulos:
 
     Schema::table('users', function (Blueprint $table) {
         $table->string('name', 50)->nullable()->change();
     });
 
-> {note} Only the following column types can be "changed": bigInteger, binary, boolean, date, dateTime, dateTimeTz, decimal, integer, json, longText, mediumText, smallInteger, string, text, time, unsignedBigInteger, unsignedInteger and unsignedSmallInteger.
+> {note} solamente los siguientes tipos de columna pueden ser "cambiados": bigInteger, binary, boolean, date, dateTime, dateTimeTz, decimal, integer, json, longText, mediumText, smallInteger, string, text, time, unsignedBigInteger, unsignedInteger y unsignedSmallInteger.
 
-#### Renaming Columns
+#### Renombrando Columnas
 
-To rename a column, you may use the `renameColumn` method on the Schema builder. Before renaming a column, be sure to add the `doctrine/dbal` dependency to your `composer.json` file:
+Para renombrar una columna, puedes usar el método `renameColumn` en el constructor de esquemas. Antes de renombrar una columna, asegúrate de agregar la dependencia `doctrine/dbal` a tu archivo `composer.json`:
 
     Schema::table('users', function (Blueprint $table) {
         $table->renameColumn('from', 'to');
     });
 
-> {note} Renaming any column in a table that also has a column of type `enum` is not currently supported.
+> {note} Renombrar alguna columna en una tabla que también tiene una columna de tipo `enum` no es soportado actualmente.
 
 <a name="dropping-columns"></a>
-### Dropping Columns
+### Eliminando Columnas
 
-To drop a column, use the `dropColumn` method on the Schema builder. Before dropping columns from a SQLite database, you will need to add the `doctrine/dbal` dependency to your `composer.json` file and run the `composer update` command in your terminal to install the library:
+Para eliminar una columna, usa el método `dropColumn` en el constructor de esquemas. Antes de eliminar columnas de una base de datos SQLite, necesitarás agregar la dependencia `doctrine/dbal` a tu archivo `composer.json` y ejecutar el comando `composer update` en tu terminal para instalar la biblioteca:
 
     Schema::table('users', function (Blueprint $table) {
         $table->dropColumn('votes');
     });
 
-You may drop multiple columns from a table by passing an array of column names to the `dropColumn` method:
+Puedes eliminar múltiples columnas de una tabla al pasar un arreglo de nombres de columna al método `dropColumn`:
 
     Schema::table('users', function (Blueprint $table) {
         $table->dropColumn(['votes', 'avatar', 'location']);
     });
 
-> {note} Dropping or modifying multiple columns within a single migration while using a SQLite database is not supported.
+> {note} Eliminar o modificar múltiples columnas dentro de una sola migración al momento de usar una base de datos SQLite no está soportado.
 
-#### Available Command Aliases
+#### Alias de Comandos Disponibles
 
-Command  |  Description
--------  |  -----------
-`$table->dropRememberToken();`  |  Drop the `remember_token` column.
-`$table->dropSoftDeletes();`  |  Drop the `deleted_at` column.
-`$table->dropSoftDeletesTz();`  |  Alias of `dropSoftDeletes()` method.
-`$table->dropTimestamps();`  |  Drop the `created_at` and `updated_at` columns.
-`$table->dropTimestampsTz();` |  Alias of `dropTimestamps()` method.
+| Comando                        | Descripción                                        |
+| ------------------------------ | -------------------------------------------------- |
+| `$table->dropRememberToken();` | Eliminar la columna `remember_token`.              |
+| `$table->dropSoftDeletes();`   | Eliminar la columna `deleted_at`.                  |
+| `$table->dropSoftDeletesTz();` | Alias del método `dropSoftDeletes()`.              |
+| `$table->dropTimestamps();`    | Eliminar las columnas `created_at` y `updated_at`. |
+| `$table->dropTimestampsTz();`  | Alias del método `dropTimestamps()`.               |
 
 <a name="indexes"></a>
-## Indexes
+## Índices
 
 <a name="creating-indexes"></a>
-### Creating Indexes
+### Creando Índices
 
-The schema builder supports several types of indexes. First, let's look at an example that specifies a column's values should be unique. To create the index, we can chain the `unique` method onto the column definition:
+El constructor de esquemas soporta varios tipos de índices. Primero, veamos un ejemplo que especifica que los valores de una columna deben ser únicos. Para crear el índice, podemos encadenar el método `unique` en la definición de columna:
 
     $table->string('email')->unique();
 
-Alternatively, you may create the index after defining the column. For example:
+Alternativamente, puedes crear el índice después de la definición de la columna. Por ejemplo:
 
     $table->unique('email');
 
-You may even pass an array of columns to an index method to create a compound (or composite) index:
+Incluso puedes pasar un arreglo de columnas a un método de índice para crear un índice compuesto (o combinado) :
 
     $table->index(['account_id', 'created_at']);
 
-Laravel will automatically generate a reasonable index name, but you may pass a second argument to the method to specify the name yourself:
+Laravel generará automáticamente un nombre de índice razonable, pero puedes pasar un segundo argumento al método para especificar el nombre por ti mismo.
 
     $table->unique('email', 'unique_email');
 
-#### Available Index Types
+#### Tipos de Índice Disponibles
 
-Each index method accepts an optional second argument to specify the name of the index. If omitted, the name will be derived from the names of the table and column(s).
+Cada método de índice acepta un segundo argumento opcional para especificar el nombre del índice. Si se omite, el nombre se derivará de los nombres de la tabla y la(s) columna(s).
 
-Command  |  Description
--------  |  -----------
-`$table->primary('id');`  |  Adds a primary key.
-`$table->primary(['id', 'parent_id']);`  |  Adds composite keys.
-`$table->unique('email');`  |  Adds a unique index.
-`$table->index('state');`  |  Adds a plain index.
-`$table->spatialIndex('location');`  |  Adds a spatial index. (except SQLite)
+| Comando                                 | Descripción                                 |
+| --------------------------------------- | ------------------------------------------- |
+| `$table->primary('id');`                | Agrega una clave primaria.                  |
+| `$table->primary(['id', 'parent_id']);` | Agrega claves compuestas.                   |
+| `$table->unique('email');`              | Agrega un índice único.                     |
+| `$table->index('state');`               | Agrega un índice con valores repetidos.     |
+| `$table->spatialIndex('location');`     | Agrega un índice espacial. (excepto SQLite) |
 
-#### Index Lengths & MySQL / MariaDB
+#### Longitudes de Índices & MySQL / MariaDB
 
-Laravel uses the `utf8mb4` character set by default, which includes support for storing "emojis" in the database. If you are running a version of MySQL older than the 5.7.7 release or MariaDB older than the 10.2.2 release, you may need to manually configure the default string length generated by migrations in order for MySQL to create indexes for them. You may configure this by calling the `Schema::defaultStringLength` method within your `AppServiceProvider`:
+Laravel usa el conjunto de caracteres `utf8mb4` por defecto, el cual incluye soporte para almacenar "emojis" en la base de datos. Si estás ejecutando una versión de MySQL más antigua que la versión 5.7.7 o más vieja que la versión 10.2.2 de MariaDB, puedes que necesites configurar manualmente la longitud de cadena predeterminada generada por las migraciones con el propósito de que MySQL cree los índices para estos. Puedes configurar esto ejecutando el método `Schema::defaultStringLength` dentro de tu `AppServiceProvider`:
 
     use Illuminate\Support\Facades\Schema;
 
@@ -410,62 +410,62 @@ Laravel uses the `utf8mb4` character set by default, which includes support for 
         Schema::defaultStringLength(191);
     }
 
-Alternatively, you may enable the `innodb_large_prefix` option for your database. Refer to your database's documentation for instructions on how to properly enable this option.
+Alternativamente, puedes habilitar la opción `innodb_large_prefix` para tu base de datos. Debes referirte a la documentación de tu base de datos para conocer las instrucciones de cómo habilitar ésta apropiadamente.
 
 <a name="renaming-indexes"></a>
-### Renaming Indexes
+### Renombrando Índices
 
-To rename an index, you may use the `renameIndex` method. This method accepts the current index name as its first argument and the desired name as its second argument:
+Para renombrar un índice, puedes usar el método `renameIndex`. Este método acepta el nombre del índice actual como primer argumento y el nombre deseado como segundo argumento:
 
     $table->renameIndex('from', 'to')
 
 <a name="dropping-indexes"></a>
-### Dropping Indexes
+### Eliminando Índices
 
-To drop an index, you must specify the index's name. By default, Laravel automatically assigns a reasonable name to the indexes. Concatenate the table name, the name of the indexed column, and the index type. Here are some examples:
+Para eliminar un índice, debes especificar el nombre del índice. De forma predeterminada, Laravel asigna automáticamente un nombre razonable para los índices. Concatena el nombre de la tabla, el nombre de la columna indexada y el tipo de índice. Aquí están algunos ejemplos:
 
-Command  |  Description
+Comando  |  Descripción
 -------  |  -----------
-`$table->dropPrimary('users_id_primary');`  |  Drop a primary key from the "users" table.
-`$table->dropUnique('users_email_unique');`  |  Drop a unique index from the "users" table.
-`$table->dropIndex('geo_state_index');`  |  Drop a basic index from the "geo" table.
-`$table->dropSpatialIndex('geo_location_spatialindex');`  |  Drop a spatial index from the "geo" table  (except SQLite).
+`$table->dropPrimary('users_id_primary');`  |  Eliminar una clave primaria de la tabla "users".
+`$table->dropUnique('users_email_unique');`  |  Elimina un índice único de la tabla "users".
+`$table->dropIndex('geo_state_index');`  |  Elimina un índice básico de la tabla "geo".
+`$table->dropSpatialIndex('geo_location_spatialindex');`  |  Elimina un índice espacial de la tabla "geo" (excepto SQLite).
 
-If you pass an array of columns into a method that drops indexes, the conventional index name will be generated based on the table name, columns and key type:
+Si pasas un arreglo de columnas dentro de un método que elimina los índices, el nombre de índice convencional será generado basado en el nombre de la tabla, columnas y tipo de clave:
 
     Schema::table('geo', function (Blueprint $table) {
         $table->dropIndex(['state']); // Drops index 'geo_state_index'
     });
 
 <a name="foreign-key-constraints"></a>
-### Foreign Key Constraints
+### Restricciones de Clave Foránea
 
-Laravel also provides support for creating foreign key constraints, which are used to force referential integrity at the database level. For example, let's define a `user_id` column on the `posts` table that references the `id` column on a `users` table:
+Laravel también proporciona soporte para la creación de restricciones de clave foránea, las cuales son usadas para forzar la integridad referencial a nivel de base de datos.  Por ejemplo, vamos a definir una columna `user_id` en la tabla `posts` que referencia la columna `id` en una tabla `users`:
 
     Schema::table('posts', function (Blueprint $table) {
-        $table->unsignedInteger('user_id');
+        $table->unsignedBigInteger('user_id');
 
         $table->foreign('user_id')->references('id')->on('users');
     });
 
-You may also specify the desired action for the "on delete" and "on update" properties of the constraint:
+También puedes especificar la acción deseada para las propiedades "on delete" y "on update" de la restricción:
 
     $table->foreign('user_id')
           ->references('id')->on('users')
           ->onDelete('cascade');
 
-To drop a foreign key, you may use the `dropForeign` method. Foreign key constraints use the same naming convention as indexes. So, we will concatenate the table name and the columns in the constraint then suffix the name with "\_foreign":
+Para eliminar una clave foránea, puedes usar el método `dropForeign`. Las restricciones de clave foránea usan la misma convención de nombres que los índices. Así, concatenaremos el nombre de la tabla y el de columna en la restricción luego agrega el sufijo "\_foreign" al nombre:
 
     $table->dropForeign('posts_user_id_foreign');
 
-Or, you may pass an array value which will automatically use the conventional constraint name when dropping:
+O, puedes pasar un arreglo de valores el cual usará automáticamente el nombre de restricción convencional al momento de eliminar:
 
     $table->dropForeign(['user_id']);
 
-You may enable or disable foreign key constraints within your migrations by using the following methods:
+Puedes habilitar o deshabilitar las restricciones de clave foránea dentro de tus migraciones usando los siguientes métodos:
 
     Schema::enableForeignKeyConstraints();
 
     Schema::disableForeignKeyConstraints();
 
-> {note} SQLite disables foreign key constraints by default. When using SQLite, make sure to [enable foreign key support](/docs/{{version}}/database#configuration) in your database configuration before attempting to create them in your migrations.
+> {note} SQLite deshabilita las restricciones de clave foránea de forma predeterminada. Al usar SQLite, asegúrese de [habilitar el soporte de clave foránea](/docs/{{version}}/database#configuration) en la configuración de tu base de datos antes de intentar crearlos en sus migraciones.

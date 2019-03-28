@@ -1,108 +1,108 @@
-# Authentication
+# Autenticación
 
-- [Introduction](#introduction)
-    - [Database Considerations](#introduction-database-considerations)
-- [Authentication Quickstart](#authentication-quickstart)
-    - [Routing](#included-routing)
-    - [Views](#included-views)
-    - [Authenticating](#included-authenticating)
-    - [Retrieving The Authenticated User](#retrieving-the-authenticated-user)
-    - [Protecting Routes](#protecting-routes)
-    - [Login Throttling](#login-throttling)
-- [Manually Authenticating Users](#authenticating-users)
-    - [Remembering Users](#remembering-users)
-    - [Other Authentication Methods](#other-authentication-methods)
-- [HTTP Basic Authentication](#http-basic-authentication)
-    - [Stateless HTTP Basic Authentication](#stateless-http-basic-authentication)
-- [Logging Out](#logging-out)
-    - [Invalidating Sessions On Other Devices](#invalidating-sessions-on-other-devices)
-- [Social Authentication](https://github.com/laravel/socialite)
-- [Adding Custom Guards](#adding-custom-guards)
-    - [Closure Request Guards](#closure-request-guards)
-- [Adding Custom User Providers](#adding-custom-user-providers)
-    - [The User Provider Contract](#the-user-provider-contract)
-    - [The Authenticatable Contract](#the-authenticatable-contract)
-- [Events](#events)
+- [Introducción](#introduction)
+    - [Consideraciones De La Base De Datos](#introduction-database-considerations)
+- [Inicio Rápido De Autenticación](#authentication-quickstart)
+    - [Enrutamiento](#included-routing)
+    - [Vistas](#included-views)
+    - [Autenticando](#included-authenticating)
+    - [Recuperando El Usuario Autenticado](#retrieving-the-authenticated-user)
+    - [Proteger Rutas](#protecting-routes)
+    - [Regulación De Inicio De Sesión](#login-throttling)
+- [Autenticar Usuarios Manualmente](#authenticating-users)
+    - [Recordar Usuarios](#remembering-users)
+    - [Otros Métodos De Autenticación](#other-authentication-methods)
+- [Autenticación HTTP Básica](#http-basic-authentication)
+    - [Autenticación HTTP Básica Sin Estado](#stateless-http-basic-authentication)
+- [Cerrar Sesión](#logging-out)
+    - [Invalidar Sesiones En Otros Dispositivos](#invalidating-sessions-on-other-devices)    
+- [Autenticar Con Redes Sociales](https://github.com/laravel/socialite)
+- [Agregar Guards Personalizados](#adding-custom-guards)
+    - [Guards De Closures De Peticiones](#closure-request-guards)
+- [Agregar User Providers Personalizados](#adding-custom-user-providers)
+    - [El Contrato De Proveedor De Usuario](#the-user-provider-contract)
+    - [El Contrato Authenticatable](#the-authenticatable-contract)
+- [Eventos](#events)
 
 <a name="introduction"></a>
-## Introduction
+## Introducción
 
-> {tip} **Want to get started fast?** Just run `php artisan make:auth` and `php artisan migrate` in a fresh Laravel application. Then, navigate your browser to `http://your-app.test/register` or any other URL that is assigned to your application. These two commands will take care of scaffolding your entire authentication system!
+> {tip} **¿Quieres comenzar rápido?** Simplemente ejecuta `php artisan make:auth` y `php artisan migrate` en una nueva aplicación de Laravel. Luego, dirigete en tu navegador a `http://tu-app.test/register` o cualquier otra URL asignada a tu aplicación. ¡Estos dos comandos se encargarán de generar todo el sistema de autenticación!
 
-Laravel makes implementing authentication very simple. In fact, almost everything is configured for you out of the box. The authentication configuration file is located at `config/auth.php`, which contains several well documented options for tweaking the behavior of the authentication services.
+Laravel hace la implementación de la autenticación algo muy sencillo. De hecho, casi todo se configura para ti por defecto. El archivo de configuración de la autenticación está localizado en `config/auth.php`, el cual contiene varias opciones bien documentadas para ajustar el comportmiento de los servicios de autenticación.
 
-At its core, Laravel's authentication facilities are made up of "guards" and "providers". Guards define how users are authenticated for each request. For example, Laravel ships with a `session` guard which maintains state using session storage and cookies.
+En esencia, las características de la autenticación de Laravel están compuestas de "guards" (guardias) y "providers" (proveedores). Los Guards definen cómo los usuarios son autenticados para cada petición. Por ejemplo, Laravel contiene un guard `session` el cual mantiene el estado utilizando el almacenamiento de sesión y las cookies.
 
-Providers define how users are retrieved from your persistent storage. Laravel ships with support for retrieving users using Eloquent and the database query builder. However, you are free to define additional providers as needed for your application.
+Los proveedores definen cómo se retornan los usuarios de tu almacenamiento persistente. Laravel cuenta con soporte para recuperar los usuarios utilizando Eloquent y el constructor de consultas de la base de datos. Sin embargo, eres libre de definir los proveedores adicionales que requiera tu aplicación.
 
-Don't worry if this all sounds confusing now! Many applications will never need to modify the default authentication configuration.
+¡No te preocupes si esto suena confuso por el momento! Muchas aplicaciones nunca necesitarán modificar la configuración predeterminada de la autenticación.
 
 <a name="introduction-database-considerations"></a>
-### Database Considerations
+### Consideraciones De La Base De Datos
 
-By default, Laravel includes an `App\User` [Eloquent model](/docs/{{version}}/eloquent) in your `app` directory. This model may be used with the default Eloquent authentication driver. If your application is not using Eloquent, you may use the `database` authentication driver which uses the Laravel query builder.
+De manera predeterminada, Laravel incluye un [Modelo de Eloquent](/docs/{{version}}/eloquent) `App\User` en tu directorio `app`. Este modelo puede ser utilizado por el controlador de autenticación predeterminado de Eloquent. Si tu aplicación no utiliza Eloquent, deberás utilizar el controlador de autenticación `database` el cual utiliza el constructor de consultas (query builder) de Laravel.
 
-When building the database schema for the `App\User` model, make sure the password column is at least 60 characters in length. Maintaining the default string column length of 255 characters would be a good choice.
+Al crear el esquema de la base de datos para el modelo `App\User`, asegurate de que la columna password sea de al menos 60 caracteres de longitud. Mantener una longitud de columna de cadena predeterminada a 255 caracteres sería una buena opción.
 
-Also, you should verify that your `users` (or equivalent) table contains a nullable, string `remember_token` column of 100 characters. This column will be used to store a token for users that select the "remember me" option when logging into your application.
+Además, debes verificar que tu tabla `users` (o equivalente) contenga un campo nulo, de tipo cadena llamado `remember_token` de 100 caracteres. Esta columna se usará para almacenar un token para los usuarios que seleccionen la opción "remember me" (recuérdame) cuando inicien sesión en tu aplicación.
 
 <a name="authentication-quickstart"></a>
-## Authentication Quickstart
+## Inicio Rápido De Autenticación
 
-Laravel ships with several pre-built authentication controllers, which are located in the `App\Http\Controllers\Auth` namespace. The `RegisterController` handles new user registration, the `LoginController` handles authentication, the `ForgotPasswordController` handles e-mailing links for resetting passwords, and the `ResetPasswordController` contains the logic to reset passwords. Each of these controllers uses a trait to include their necessary methods. For many applications, you will not need to modify these controllers at all.
+Laravel viene con varios controladores de autenticación preconstruidos, los cuales están localizados en el nombre de espacio `App\Http\Controllers\Auth`. `RegisterController` maneja el registro de usuarios nuevos, `LoginController` maneja la autenticación, `ForgotPasswordController` maneja el envío de correos electrónicos para restablecer la contraseña y el `ResetPasswordController` contiene la lógica para reiniciar contraseñas. Cada uno de estos controladores utiliza un trait para incluir los métodos necesarios. En la mayoría de los casos no tendrás que modificar estos controladores en lo absoluto.
 
 <a name="included-routing"></a>
-### Routing
+### Enrutamiento
 
-Laravel provides a quick way to scaffold all of the routes and views you need for authentication using one simple command:
+Laravel proporciona una manera rápida de generar todas las rutas y vistas que necesitas para la autenticación con un simple comando:
 
     php artisan make:auth
 
-This command should be used on fresh applications and will install a layout view, registration and login views, as well as routes for all authentication end-points. A `HomeController` will also be generated to handle post-login requests to your application's dashboard.
+Este comando debe ser utilizado en aplicaciones nuevas e instalará vistas de diseño, registro e inicio de sesión, así como todas las rutas necesarias para la autenticación. También será generado un `HomeController` que se encargará de manejar las peticiones posteriores al login, como mostrar el dashboard de la aplicación.
 
-> {tip} If your application doesn’t need registration, you may disable it by removing the newly created `RegisterController` and modifying your route declaration: `Auth::routes(['register' => false]);`.
+> {tip} Si tu aplicación no necesita registro, puedes desactivarlo eliminando el recién creado `RegisterController` y modificando tu declaración de ruta: `Auth::routes(['register' => false]);`.
 
 <a name="included-views"></a>
-### Views
+### Vistas
 
-As mentioned in the previous section, the `php artisan make:auth` command will create all of the views you need for authentication and place them in the `resources/views/auth` directory.
+Como se mencionó en la sección anterior, el comando `php artisan make:auth` creará todas las vistas que se necesiten para la autenticación y las colocará en el directorio `resources/views/auth`.
 
-The `make:auth` command will also create a `resources/views/layouts` directory containing a base layout for your application. All of these views use the Bootstrap CSS framework, but you are free to customize them however you wish.
+El comando `make:auth` también creará el directorio `resources/views/layouts`, el cual contendrá la plantilla base para tu aplicación. Todas estas vistas usan el framework de CSS Bootstrap, pero eres libre de modificarlo en base a tus preferencias.
 
 <a name="included-authenticating"></a>
-### Authenticating
+### Autenticación
 
-Now that you have routes and views setup for the included authentication controllers, you are ready to register and authenticate new users for your application! You may access your application in a browser since the authentication controllers already contain the logic (via their traits) to authenticate existing users and store new users in the database.
+Ahora que ya tienes tus rutas y vistas configuradas para los controladores de autenticación incluidos con el framework, ¡estás listo para registrar y autenticar usuarios nuevos para tu aplicación! Puedes acceder a tu aplicación en el navegador ya que los controladores de autenticación contienen la lógica (a través de traits) para autenticar usuarios existentes y almacenar usuarios nuevos en la base de datos.
 
-#### Path Customization
+#### Personalizar Rutas
 
-When a user is successfully authenticated, they will be redirected to the `/home` URI. You can customize the post-authentication redirect location by defining a `redirectTo` property on the `LoginController`, `RegisterController`, `ResetPasswordController`, and `VerificationController`:
+Cuando un usuario se ha autenticado exitosamente, será redirigido a la URI `/home`. Puedes personalizar la ubicación de redireccionamiento post-autenticación definiendo una propiedad `redirectTo` en `LoginController`, `RegisterController`, `ResetPasswordController` y `VerificationController`:
 
     protected $redirectTo = '/';
 
-Next, you should modify the `RedirectIfAuthenticated` middleware's `handle` method to use your new URI when redirecting the user.
+Luego, debes modificar el método `handle` del middleware `RedirectIfAuthenticated` para usar tu nueva URI al redirigir al usuario.
 
-If the redirect path needs custom generation logic you may define a `redirectTo` method instead of a `redirectTo` property:
+Si la ruta de redireccionamiento necesita generar lógica personalizada puedes definir un método `redirectTo` en lugar de una propiedad `redirectTo`:
 
     protected function redirectTo()
     {
         return '/path';
     }
 
-> {tip} The `redirectTo` method will take precedence over the `redirectTo` attribute.
+> {tip} El método `redirectTo` toma precedencia sobre el atributo `redirectTo`.
 
-#### Username Customization
+#### Personalizar Usuario
 
-By default, Laravel uses the `email` field for authentication. If you would like to customize this, you may define a `username` method on your `LoginController`:
+Por defecto, Laravel utiliza el campo `email` para la autenticación. Si deseas modificar esto, puedes definir un método `username` en `LoginController`:
 
     public function username()
     {
         return 'username';
     }
 
-#### Guard Customization
+#### Personalizar Guard
 
-You may also customize the "guard" that is used to authenticate and register users. To get started, define a `guard` method on your `LoginController`, `RegisterController`, and `ResetPasswordController`. The method should return a guard instance:
+También puedes personalizar el "guard" que es utilizado para autenticar y registrar usuarios. Para empezar, define un método `guard` en `LoginController`, `RegisterController` y `ResetPasswordController`. Este método debe devolver una instancia de guard:
 
     use Illuminate\Support\Facades\Auth;
 
@@ -111,18 +111,18 @@ You may also customize the "guard" that is used to authenticate and register use
         return Auth::guard('guard-name');
     }
 
-#### Validation / Storage Customization
+#### Validación / Personalizar Almacenamiento
 
-To modify the form fields that are required when a new user registers with your application, or to customize how new users are stored into your database, you may modify the `RegisterController` class. This class is responsible for validating and creating new users of your application.
+Para modificar los campos del formulario que son requeridos cuando se registren usuarios nuevos en tu aplicación, o para personalizar cómo los nuevos usuarios son almacenados en tu base de datos, puedes modificar la clase `RegisterController`. Esta clase es responsable de validar y crear usuarios nuevos en tu aplicación.
 
-The `validator` method of the `RegisterController` contains the validation rules for new users of the application. You are free to modify this method as you wish.
+El método `validator` de `RegisterController` contiene las reglas de validación para los usuarios nuevos de tu aplicación. Eres libre de modificar este metodo según te convenga.
 
-The `create` method of the `RegisterController` is responsible for creating new `App\User` records in your database using the [Eloquent ORM](/docs/{{version}}/eloquent). You are free to modify this method according to the needs of your database.
+El método `create` de `RegisterController` es responsable de crear registros nuevos de `App\User` en tu base de datos usando el [ORM Eloquent](/docs/{{version}}/eloquent). Eres libre de modificar este método de acuerdo a las necesidades de tu base de datos.
 
 <a name="retrieving-the-authenticated-user"></a>
-### Retrieving The Authenticated User
+### Recuperando El Usuario Autenticado
 
-You may access the authenticated user via the `Auth` facade:
+Puedes acceder al usuario autenticado por medio del facade `Auth`:
 
     use Illuminate\Support\Facades\Auth;
 
@@ -132,7 +132,7 @@ You may access the authenticated user via the `Auth` facade:
     // Get the currently authenticated user's ID...
     $id = Auth::id();
 
-Alternatively, once a user is authenticated, you may access the authenticated user via an `Illuminate\Http\Request` instance. Remember, type-hinted classes will automatically be injected into your controller methods:
+Alternativamente, una vez que el usuario haya sido autenticado, puedes aceder al usuario autenticado mediante una instancia de `Illuminate\Http\Request`. Recuerda que las clases a las cuales se le declaren el tipo serán inyectadas automáticamente en los métodos de tu controlador:
 
     <?php
 
@@ -154,9 +154,9 @@ Alternatively, once a user is authenticated, you may access the authenticated us
         }
     }
 
-#### Determining If The Current User Is Authenticated
+#### Determinar Si El Usuario Actual Está Autenticado
 
-To determine if the user is already logged into your application, you may use the `check` method on the `Auth` facade, which will return `true` if the user is authenticated:
+Para determinar si el usuario actual está loggeado en tu aplicación, puedes usar el método `check` del facade `Auth`, el cual devolverá `true` si el usuario está autenticado:
 
     use Illuminate\Support\Facades\Auth;
 
@@ -164,29 +164,29 @@ To determine if the user is already logged into your application, you may use th
         // The user is logged in...
     }
 
-> {tip} Even though it is possible to determine if a user is authenticated using the `check` method, you will typically use a middleware to verify that the user is authenticated before allowing the user access to certain routes / controllers. To learn more about this, check out the documentation on [protecting routes](/docs/{{version}}/authentication#protecting-routes).
+> {tip} Aún cuando es posible determinar si un usuario está autenticado utilizando el método `check`, típicamente deberás usar un middleware para verificar que el usuario está autenticado antes de permitir al usuario acceder a ciertas rutas / controladores. Para aprender más acerca de esto, echa un vistazo a la documentación para [proteger rutas](/docs/{{version}}/authentication#protecting-routes).
 
 <a name="protecting-routes"></a>
-### Protecting Routes
+### Proteger Rutas
 
-[Route middleware](/docs/{{version}}/middleware) can be used to only allow authenticated users to access a given route. Laravel ships with an `auth` middleware, which is defined at `Illuminate\Auth\Middleware\Authenticate`. Since this middleware is already registered in your HTTP kernel, all you need to do is attach the middleware to a route definition:
+Puedes utilizar [middleware de rutas](/docs/{{version}}/middleware) para permitir acceder a ciertas rutas a los usuarios autenticados. Laravel incluye un middleware `auth`, el cual está definido en `Illuminate\Auth\Middleware\Authenticate`. Ya que este middleware está registrado en tu kernel HTTP, todo lo que necesitas hacer es adjuntar el middleware a la definición de la ruta:
 
     Route::get('profile', function () {
         // Only authenticated users may enter...
     })->middleware('auth');
 
-If you are using [controllers](/docs/{{version}}/controllers), you may call the `middleware` method from the controller's constructor instead of attaching it in the route definition directly:
+Si estás utilizando [controladores](/docs/{{version}}/controllers), puedes hacer una llamada al método `middleware` desde el constructor de tu controlador en lugar de adjuntarlo a la definición de la ruta:
 
     public function __construct()
     {
         $this->middleware('auth');
     }
 
-#### Redirecting Unauthenticated Users
+#### Redireccionar Usuarios No Autenticados
 
-When the `auth` middleware detects an unauthorized user, it will redirect the user to the `login` [named route](/docs/{{version}}/routing#named-routes). You may modify this behavior by updating the `redirectTo` function in your `app/Http/Middleware/Authenticate.php` file:
+Cuando el middleware `auth` detecta un usuario no autorizado, redirigirá al usuario a la [ruta nombrada](/docs/{{version}}/routing#named-routes) `login`. Puedes modificar este comportamiento actualizando la función `redirectTo` en tu archivo `app/Http/Middleware/Authenticate.php`:
 
-    /**
+	/**
      * Get the path the user should be redirected to.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -197,9 +197,9 @@ When the `auth` middleware detects an unauthorized user, it will redirect the us
         return route('login');
     }
 
-#### Specifying A Guard
+#### Especificar Un Guard
 
-When attaching the `auth` middleware to a route, you may also specify which guard should be used to authenticate the user. The guard specified should correspond to one of the keys in the `guards` array of your `auth.php` configuration file:
+Cuando adjuntes el middleware `auth` a una ruta, también puedes especificar cual guard deberá ser utilizado para autenticar al usuario. El guard especificado deberá corresponder a una de las llaves en el arreglo `guards` del archivo de configuración `auth.php`:
 
     public function __construct()
     {
@@ -207,16 +207,16 @@ When attaching the `auth` middleware to a route, you may also specify which guar
     }
 
 <a name="login-throttling"></a>
-### Login Throttling
+### Regulación De Inicio De Sesión
 
-If you are using Laravel's built-in `LoginController` class, the `Illuminate\Foundation\Auth\ThrottlesLogins` trait will already be included in your controller. By default, the user will not be able to login for one minute if they fail to provide the correct credentials after several attempts. The throttling is unique to the user's username / e-mail address and their IP address.
+Si estás utilizando la clase `LoginController` incorporada en Laravel, el trait `Illuminate\Foundation\Auth\ThrottlesLogins` se encontrará incluído en tu controlador. De manera predeterminada, el usuario no será capaz de iniciar sesión durante un minuto si falla al proveer las credenciales correctas después de varios intentos. El regulador (o throttle) es único para el nombre de usuario / dirección de correo electrónico del usuario y su dirección IP.
 
 <a name="authenticating-users"></a>
-## Manually Authenticating Users
+## Autenticar Usuarios Manualmente
 
-Note that you are not required to use the authentication controllers included with Laravel. If you choose to remove these controllers, you will need to manage user authentication using the Laravel authentication classes directly. Don't worry, it's a cinch!
+Nota que no estás obligado a utilizar los controladores de autenticación incluidos en Laravel. Si deseas eliminar estos controladores, tendrás que encargarte de administrar la autenticación de usuarios utilizando las clases de autenticación de Laravel directamente. No te preocupes, ¡es algo sencillo!.
 
-We will access Laravel's authentication services via the `Auth` [facade](/docs/{{version}}/facades), so we'll need to make sure to import the `Auth` facade at the top of the class. Next, let's check out the `attempt` method:
+Vamos a acceder a los servicios de autenticación de Laravel por medio del [facade](/docs/{{version}}/facades), así que hay que asegurarnos de importar el facade `Auth` al inicio de la clase. Después, veamos el método `attempt`:
 
     <?php
 
@@ -245,110 +245,110 @@ We will access Laravel's authentication services via the `Auth` [facade](/docs/{
         }
     }
 
-The `attempt` method accepts an array of key / value pairs as its first argument. The values in the array will be used to find the user in your database table. So, in the example above, the user will be retrieved by the value of the `email` column. If the user is found, the hashed password stored in the database will be compared with the `password` value passed to the method via the array. You should not hash the password specified as the `password` value, since the framework will automatically hash the value before comparing it to the hashed password in the database. If the two hashed passwords match an authenticated session will be started for the user.
+El método `attempt` acepta un arreglo de pares llave / valor como primer argumento. Los valores en el arreglo serán utilizados para encontrar el usuario en la tabla de tu base de datos. Así que, en el ejemplo anterior, el usuario se obtiene por el valor de la columna `email`. Si se encuentra el usuario, la contraseña encriptada obtenida de la base de datos será comparada con el valor `password` pasado al método en el arreglo. No debes encriptar la contraseña especificada para el valor `password`, ya que el framework automáticamente va a encriptarlo antes de compararlo con la contraseña almacenada en la base de datos. Si dos contraseñas encriptadas coinciden, se iniciará una sesión autenticada para el usuario.
 
-The `attempt` method will return `true` if authentication was successful. Otherwise, `false` will be returned.
+El método `attempt` va a devolver `true` si la autenticación fue exitosa. De otra forma, devolverá `false`.
 
-The `intended` method on the redirector will redirect the user to the URL they were attempting to access before being intercepted by the authentication middleware. A fallback URI may be given to this method in case the intended destination is not available.
+El método `intended` del redireccionador va a redirigir al usuario a la URL que intentaba acceder antes de ser interceptado por el middleware de autenticación. Una URI de fallback puede ser proporcionada al método en caso de que el destino solicitado no esté disponible.
 
-#### Specifying Additional Conditions
+#### Especificar Condiciones Adicionales
 
-If you wish, you may also add extra conditions to the authentication query in addition to the user's e-mail and password. For example, we may verify that user is marked as "active":
+Si lo deseas, puedes agregar condiciones extras a la consulta de autenticación además del correo electrónico del usuario y su contraseña. Por ejemplo, podemos verificar que un usuario esté marcado como "active":
 
     if (Auth::attempt(['email' => $email, 'password' => $password, 'active' => 1])) {
         // The user is active, not suspended, and exists.
     }
 
-> {note} In these examples, `email` is not a required option, it is merely used as an example. You should use whatever column name corresponds to a "username" in your database.
+> {nota} En estos ejemplos, `email` no es una opción requerida, solamente es utilizado como ejemplo. Debes utilizar cualquier columna que corresponda a "username" en tu base de datos.
 
-#### Accessing Specific Guard Instances
+#### Acceso A Instancias Específicas De Guard
 
-You may specify which guard instance you would like to utilize using the `guard` method on the `Auth` facade. This allows you to manage authentication for separate parts of your application using entirely separate authenticatable models or user tables.
+Puedes especificar que instancia de guard deseas usar utilizando el método `guard` en el facade `Auth`. Esto te permitirá administrar la autentincación para partes separadas de tu aplicación utilizando modelos autenticables o tablas de usuarios independientes.
 
-The guard name passed to the `guard` method should correspond to one of the guards configured in your `auth.php` configuration file:
+El nombre del guard pasado al método `guard` deberá corresponder a uno de los guards configurados en tu archivo de configuración `auth.php`:
 
     if (Auth::guard('admin')->attempt($credentials)) {
         //
     }
 
-#### Logging Out
+#### Cerrar Sesión
 
-To log users out of your application, you may use the `logout` method on the `Auth` facade. This will clear the authentication information in the user's session:
+Para desconectar usuarios de tu aplicación, debes utilizar el método `logout` del facade `Auth`. Esto va a borrar la información de autenticación en la sesión del usuario:
 
     Auth::logout();
 
 <a name="remembering-users"></a>
-### Remembering Users
+### Recordar Usuarios
 
-If you would like to provide "remember me" functionality in your application, you may pass a boolean value as the second argument to the `attempt` method, which will keep the user authenticated indefinitely, or until they manually logout. Your `users` table must include the string `remember_token` column, which will be used to store the "remember me" token.
+Si desea proporcionar la funcionalidad de "recordarme" en tu aplicación, puedes pasar un valor booleano como segundo argumento al método `attempt`, que mantendrá al usuario autenticado indefinidamente, o hasta que cierre su sesión manualmente. Tu tabla `users` deberá incluir una columna de tipo string llamada `remember_token`, que será utilizada para almacenar el token de "recordarme".
 
     if (Auth::attempt(['email' => $email, 'password' => $password], $remember)) {
         // The user is being remembered...
     }
 
-> {tip} If you are using the built-in `LoginController` that is shipped with Laravel, the proper logic to "remember" users is already implemented by the traits used by the controller.
+> {tip} Si estás utilizando el `LoginController` integrado en tu instalación de Laravel, la lógica apropiada para "recordar" usuarios ya se encontrará implementada por los traits utilizados por el controlador.
 
-If you are "remembering" users, you may use the `viaRemember` method to determine if the user was authenticated using the "remember me" cookie:
+Si estás "recordando" usuarios, puedes utilizar el método `viaRemember` para determinar si el usuario se ha autenticado utilizando la cookie "recordarme":
 
     if (Auth::viaRemember()) {
         //
     }
 
 <a name="other-authentication-methods"></a>
-### Other Authentication Methods
+### Otros Métodos De Autenticación
 
-#### Authenticate A User Instance
+#### Autenticar Una Instancia De Usuario
 
-If you need to log an existing user instance into your application, you may call the `login` method with the user instance. The given object must be an implementation of the `Illuminate\Contracts\Auth\Authenticatable` [contract](/docs/{{version}}/contracts). The `App\User` model included with Laravel already implements this interface:
+Si necesitas registrar una instancia de usuario existente en tu aplicación, puedes llamar al método `login` con la instancia de usuario. El objeto proporcionado deberá ser una implementación del [contract](/docs/{{version}}/contracts) `Illuminate\Contracts\Auth\Authenticatable`. El modelo `App\User` incluido en Laravel ya implementa esta interface:
 
     Auth::login($user);
 
     // Login and "remember" the given user...
     Auth::login($user, true);
 
-You may specify the guard instance you would like to use:
+Puedes especificar la instancia de guard que desees utilizar:
 
     Auth::guard('admin')->login($user);
 
-#### Authenticate A User By ID
+#### Autenticar Un Usuario Por ID
 
-To log a user into the application by their ID, you may use the `loginUsingId` method. This method accepts the primary key of the user you wish to authenticate:
+Para autenticar un usuario en tu aplicación por su ID, debes usar el método `loginUsingId`. Este método acepta la clave primaria del usuario que deseas autenticar:
 
     Auth::loginUsingId(1);
 
     // Login and "remember" the given user...
     Auth::loginUsingId(1, true);
 
-#### Authenticate A User Once
+#### Autenticar Un Usuario Una Vez
 
-You may use the `once` method to log a user into the application for a single request. No sessions or cookies will be utilized, which means this method may be helpful when building a stateless API:
+Puedes utilizar el método `once` para autenticar un usuario en tu aplicación para una única solicitud. No se utilizarán sesiones o cookies, lo que significa que este método puede ser bastante útil al construir una API sin estado:
 
     if (Auth::once($credentials)) {
         //
     }
 
 <a name="http-basic-authentication"></a>
-## HTTP Basic Authentication
+## Autenticación HTTP Básica
 
-[HTTP Basic Authentication](https://en.wikipedia.org/wiki/Basic_access_authentication) provides a quick way to authenticate users of your application without setting up a dedicated "login" page. To get started, attach the `auth.basic` [middleware](/docs/{{version}}/middleware) to your route. The `auth.basic` middleware is included with the Laravel framework, so you do not need to define it:
+La [Autenticación HTTP Básica](https://en.wikipedia.org/wiki/Basic_access_authentication) proporciona una manera rápida de autenticar usuarios en tu aplicación sin configurar una página de "login" dedicada. Para iniciar, adjunta el [middleware](/docs/{{version}}/middleware) `auth.basic` a tu ruta. El middleware `auth.basic` está incluido en el framework de Laravel, por lo que no hay necesidad de definirlo:
 
     Route::get('profile', function () {
         // Only authenticated users may enter...
     })->middleware('auth.basic');
 
-Once the middleware has been attached to the route, you will automatically be prompted for credentials when accessing the route in your browser. By default, the `auth.basic` middleware will use the `email` column on the user record as the "username".
+Una vez que el middleware haya sido adjuntado a la ruta, se preguntará automáticamente por las credenciales al acceder a la ruta desde tu navegador. Por defecto, el middleware `auth.basic` va a usar la columna `email` en el registro del usuario como "nombre de usuario".
 
-#### A Note On FastCGI
+#### Una Nota Sobre FastCGI
 
-If you are using PHP FastCGI, HTTP Basic authentication may not work correctly out of the box. The following lines should be added to your `.htaccess` file:
+Si estás usando PHP FastCGI, la Autentincación Básica HTTP podría no funcionar correctamente por defecto. Las siguientes líneas deberán ser agregadas a tu archivo `.htaccess`:
 
     RewriteCond %{HTTP:Authorization} ^(.+)$
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
 <a name="stateless-http-basic-authentication"></a>
-### Stateless HTTP Basic Authentication
+### Autenticación HTTP Básica Sin Estado
 
-You may also use HTTP Basic Authentication without setting a user identifier cookie in the session, which is particularly useful for API authentication. To do so, [define a middleware](/docs/{{version}}/middleware) that calls the `onceBasic` method. If no response is returned by the `onceBasic` method, the request may be passed further into the application:
+También puedes utilizar la Autenticación HTTP Básica sin establecer una cookie de identificación en la sesión, esto es particularmente útil para la autenticacíon API. Para hacer esto [define un middleware](/docs/{{version}}/middleware) que llame al método `onceBasic`. Si el método no devuelve ninguna respuesta, la petición puede pasarse a la aplicación:
 
     <?php
 
@@ -372,7 +372,7 @@ You may also use HTTP Basic Authentication without setting a user identifier coo
 
     }
 
-Next, [register the route middleware](/docs/{{version}}/middleware#registering-middleware) and attach it to a route:
+A continuación [registra el middleware de ruta](/docs/{{version}}/middleware#registering-middleware) y adjúntalo a la ruta:
 
     Route::get('api/user', function () {
         // Only authenticated users may enter...
@@ -381,35 +381,35 @@ Next, [register the route middleware](/docs/{{version}}/middleware#registering-m
 <a name="logging-out"></a>
 ## Logging Out
 
-To manually log users out of your application, you may use the `logout` method on the `Auth` facade. This will clear the authentication information in the user's session:
+Para manualmente cerrar la sesión de un usuario en tu aplicación, puedes usar el método `logout` en el facade `Auth`. Esto limpiará la información de autenticación en la sesión del usuario:
 
     use Illuminate\Support\Facades\Auth;
 
     Auth::logout();
 
 <a name="invalidating-sessions-on-other-devices"></a>
-### Invalidating Sessions On Other Devices
+### Invalidando Sesiones En Otros Dispositivos
 
-Laravel also provides a mechanism for invalidating and "logging out" a user's sessions that are active on other devices without invalidating the session on their current device. Before getting started, you should make sure that the `Illuminate\Session\Middleware\AuthenticateSession` middleware is present and un-commented in your `app/Http/Kernel.php` class' `web` middleware group:
+Laravel también proporciona un mecanismo para invalidar y "sacar" las sesiones de un usuario que están activas en otros dispositivos sin invalidar la sesión en el dispositivo actual. Antes de comenzar, debes asegurarte de que el middleware `Illuminate\Session\Middleware\AuthenticateSession` está presente y no está comentado en tu clase `app/Http/Kernel.php` del grupo de middleware `web`:
 
     'web' => [
         // ...
         \Illuminate\Session\Middleware\AuthenticateSession::class,
         // ...
-    ],
+    ]
 
-Then, you may use the `logoutOtherDevices` method on the `Auth` facade. This method requires the user to provide their current password, which your application should accept through an input form:
+Luego, puedes usar el método `logoutOtherDevices` en el facade `Auth`. Este método requiere que el usuario proporcione su contraseña actual, que tu aplicación debe aceptar mediante un campo de formulario:
 
     use Illuminate\Support\Facades\Auth;
 
     Auth::logoutOtherDevices($password);
 
-> {note} When the `logoutOtherDevices` method is invoked, the user's other sessions will be invalidated entirely, meaning they will be "logged out" of all guards they were previously authenticated by.
+> {note} Cuando el método `logoutOtherDevices` es invocado, las otras sesiones del usuario serán invalidadas completamente, lo que quiere decir que serán "sacadas" de todos los guards en los que previamente estaban autenticadas.
 
 <a name="adding-custom-guards"></a>
-## Adding Custom Guards
+## Agregar Guards Personalizados
 
-You may define your own authentication guards using the `extend` method on the `Auth` facade. You should place this call to `extend` within a [service provider](/docs/{{version}}/providers). Since Laravel already ships with an `AuthServiceProvider`, we can place the code in that provider:
+Puedes definir tu propio guard de autenticación utilizando el método `extend` en el facade `Auth`. Debes colocar la llamada a este método `extend` en el [proveedor de servicios](/docs/{{version}}/providers). Ya que Laravel cuenta con un `AuthServiceProvider`, puedes colocar el código en ese proveedor:
 
     <?php
 
@@ -438,7 +438,7 @@ You may define your own authentication guards using the `extend` method on the `
         }
     }
 
-As you can see in the example above, the callback passed to the `extend` method should return an implementation of `Illuminate\Contracts\Auth\Guard`. This interface contains a few methods you will need to implement to define a custom guard. Once your custom guard has been defined, you may use this guard in the `guards` configuration of your `auth.php` configuration file:
+Como puedes ver en el ejemplo anterior, el callback pasado al método `extend` deberá retornar una implementación de `Illuminate\Contracts\Auth\Guard`. Esta interfaz contiene algunos métodos que tendrás que implementar para definir un guard personalizado. Una vez que tu guard personalizado haya sido definido, podrás utilizar este guard en la configuración `guards` de tu archivo de configuración `auth.php`:
 
     'guards' => [
         'api' => [
@@ -448,11 +448,11 @@ As you can see in the example above, the callback passed to the `extend` method 
     ],
 
 <a name="closure-request-guards"></a>
-### Closure Request Guards
+### Guards De Closures De Peticiones
 
-The simplest way to implement a custom, HTTP request based authentication system is by using the `Auth::viaRequest` method. This method allows you to quickly define your authentication process using a single Closure.
+La forma más sencilla de implementar un sistema de autenticación basado en peticiones HTTP es usando el método `Auth:viaRequest`. Este método te permite definir rápidamente tu proceso de autenticación usando sólo un Closure.
 
-To get started, call the `Auth::viaRequest` method within the `boot` method of your `AuthServiceProvider`. The `viaRequest` method accepts a guard name as its first argument. This name can be any string that describes your custom guard. The second argument passed to the method should be a Closure that receives the incoming HTTP request and returns a user instance or, if authentication fails, `null`:
+Para comenzar, llama al método `Auth::viaRequest` dentro del método `boot` de tu `AuthServiceProvider`. El método `viaRequest` acepta el nombre de un driver de autenticación como su primer argumento. Este nombre puede ser cualquier cadena que describa tu guard personalizado. El segundo argumento pasado al método método debe ser un Closure que reciba la petición HTTP entrante y retorne una instancia de usuario o, si la autenticación falla, `null`:
 
     use App\User;
     use Illuminate\Http\Request;
@@ -472,7 +472,7 @@ To get started, call the `Auth::viaRequest` method within the `boot` method of y
         });
     }
 
-Once your custom guard has been defined, you may use this guard in the `guards` configuration of your `auth.php` configuration file:
+Una vez que tu driver de autenticación personalizado ha sido definido, usalo como un driver dentro de la configuración de `guards` de tu archivo de configuración `auth.php`:
 
     'guards' => [
         'api' => [
@@ -481,9 +481,9 @@ Once your custom guard has been defined, you may use this guard in the `guards` 
     ],
 
 <a name="adding-custom-user-providers"></a>
-## Adding Custom User Providers
+## Agregar User Providers Personalizados
 
-If you are not using a traditional relational database to store your users, you will need to extend Laravel with your own authentication user provider. We will use the `provider` method on the `Auth` facade to define a custom user provider:
+Si no estás utilizando una base de datos relacional tradicional para almacenar a tus usuarios, deberás extender Laravel con tu propio proveedor de autenticación. Usaremos el método `provider` en el facade `Auth` para definir un proveedor de usuarios personalizado:
 
     <?php
 
@@ -512,7 +512,7 @@ If you are not using a traditional relational database to store your users, you 
         }
     }
 
-After you have registered the provider using the `provider` method, you may switch to the new user provider in your `auth.php` configuration file. First, define a `provider` that uses your new driver:
+Después de haber registrado el proveedor utilizando el método `provider`, puedes cambiar al nuevo proveedor de usuarios en tu archivo de configuración `auth.php`. Primero, define un `provider` que utilice tu nuevo controlador:
 
     'providers' => [
         'users' => [
@@ -520,7 +520,7 @@ After you have registered the provider using the `provider` method, you may swit
         ],
     ],
 
-Finally, you may use this provider in your `guards` configuration:
+Finalmente, puedes utilizar este proveedor en tu configuración de `guards`:
 
     'guards' => [
         'web' => [
@@ -530,11 +530,11 @@ Finally, you may use this provider in your `guards` configuration:
     ],
 
 <a name="the-user-provider-contract"></a>
-### The User Provider Contract
+### El Contrato De Proveedor De Usuario
 
-The `Illuminate\Contracts\Auth\UserProvider` implementations are only responsible for fetching a `Illuminate\Contracts\Auth\Authenticatable` implementation out of a persistent storage system, such as MySQL, Riak, etc. These two interfaces allow the Laravel authentication mechanisms to continue functioning regardless of how the user data is stored or what type of class is used to represent it.
+Las implementaciones `Illuminate\Contracts\Auth\UserProvider` son responsables solamente de obtener una implementación de `Illuminate\Contracts\Auth\Authenticatable` desde un sistema de almacenamiento persistente, como MySQL, Riak, etc. Estas dos interfaces permiten a los mecanismos de autenticación de Laravel continuar funcionando independientemente de cómo esté almacenada la información del usuario o qué tipo de clase es utilizado para representarlo.
 
-Let's take a look at the `Illuminate\Contracts\Auth\UserProvider` contract:
+Echemos un vistaso al contract `Illuminate\Contracts\Auth\UserProvider`:
 
     <?php
 
@@ -550,20 +550,20 @@ Let's take a look at the `Illuminate\Contracts\Auth\UserProvider` contract:
 
     }
 
-The `retrieveById` function typically receives a key representing the user, such as an auto-incrementing ID from a MySQL database. The `Authenticatable` implementation matching the ID should be retrieved and returned by the method.
+La función `retrieveById` generalmente recibe una clave que representa al usuario, como un ID auto-incrementable de una base de datos MySQL. La implementación `Authenticatable` que coincida con el ID deberá ser recuperado y retornado por el método.
 
-The `retrieveByToken` function retrieves a user by their unique `$identifier` and "remember me" `$token`, stored in a field `remember_token`. As with the previous method, the `Authenticatable` implementation should be returned.
+La función `retireveByToken` recupera un usuario por su `$identifier` único y su `$token` "recordar datos", almacenados en el campo `remember_token`. Como en el método anterior, la implementación `Authenticatable` deberá ser retornado.
 
-The `updateRememberToken` method updates the `$user` field `remember_token` with the new `$token`. A fresh token is assigned on a successful "remember me" login attempt or when the user is logging out.
+El método `updateRememberToken` actualiza el campo `$user` y `remember_token` con el nuevo `$token`. Un nuevo token es asignado en un inicio de sesión con "recordar datos" o cuando el usuario cierre su sesión.
 
-The `retrieveByCredentials` method receives the array of credentials passed to the `Auth::attempt` method when attempting to sign into an application. The method should then "query" the underlying persistent storage for the user matching those credentials. Typically, this method will run a query with a "where" condition on `$credentials['username']`. The method should then return an implementation of `Authenticatable`. **This method should not attempt to do any password validation or authentication.**
+El método `retrieveByCredentials` recupera el arreglo de credenciales pasadas al método `Auth::attempt` cuando intenta loguearse a la aplicación. El método "consulta" el almacenamiento persistente en busca de las credenciales que coincidan con las del usuario. Típicamente, este método va a ejecutar una consulta con una condición "where" en `$credentials['username']`. El método deberá retornar una implementación de `Authenticatable`. **Este método no debe intentar realizar ninguna validación o autenticación por contraseña.**
 
-The `validateCredentials` method should compare the given `$user` with the `$credentials` to authenticate the user. For example, this method should probably use `Hash::check` to compare the value of `$user->getAuthPassword()` to the value of `$credentials['password']`. This method should return `true` or `false` indicating on whether the password is valid.
+El método `validateCredentials` deberá comparar el `$user` proporcionado con sus `$credentials` para autenticar el usuario. Por ejemplo, este método puede utilizar `Hash::check` para comparar los valores de `$user->getAuthPassword()` al valor de `$credentials['password']`. Este método deberá retornar `true` o `false` indicando si la contraseña es válida o no.
 
 <a name="the-authenticatable-contract"></a>
-### The Authenticatable Contract
+### El Contrato Authenticatable
 
-Now that we have explored each of the methods on the `UserProvider`, let's take a look at the `Authenticatable` contract. Remember, the provider should return implementations of this interface from the `retrieveById`, `retrieveByToken`, and `retrieveByCredentials` methods:
+Ahora que hemos explorado cada uno de los métodos en `UserProvider`, vamos a echar un vistazo al contract `Authenticatable`. Recuerda, el proveedor deberá retornar implementaciones de esta interfaz desde los métodos `retrieveById`, `retrieveByToken` y `retrieveByCredentials`:
 
     <?php
 
@@ -580,12 +580,12 @@ Now that we have explored each of the methods on the `UserProvider`, let's take 
 
     }
 
-This interface is simple. The `getAuthIdentifierName` method should return the name of the "primary key" field of the user and the `getAuthIdentifier` method should return the "primary key" of the user. In a MySQL back-end, again, this would be the auto-incrementing primary key. The `getAuthPassword` should return the user's hashed password. This interface allows the authentication system to work with any User class, regardless of what ORM or storage abstraction layer you are using. By default, Laravel includes a `User` class in the `app` directory which implements this interface, so you may consult this class for an implementation example.
+Esta interfaz es simple. El método `getAuthIdentifierName` debe retornar el nombre del campo "clave primaria" del usuario y el método `getAuthIdentifier` deberá retornar la "clave primaria" del usuario. En un backend MySQL, nuevamente, esto deberá ser la clave auto-incrementable. El método `getAuthPassword` deberá retornar la contraseña encriptada del usuario. Esta interfaz permite que el sistema de autenticación funcione con cualquier clase de usuario, independientemente de qué capa de abstracción o qué ORM se está utilizando. Por defecto, Laravel incluye una clase `User` en el directorio `app` que implementa esta interfaz, por lo que puedes consultar esta clase para obtener un ejemplo de implementación.
 
 <a name="events"></a>
-## Events
+## Eventos
 
-Laravel raises a variety of [events](/docs/{{version}}/events) during the authentication process. You may attach listeners to these events in your `EventServiceProvider`:
+Laravel genera una variedad de [eventos](/docs/{{version}}/events) durante el proceso de autenticación. Puedes adjuntar listeners a estos eventos en tu `EventServiceProvider`:
 
     /**
      * The event listener mappings for the application.

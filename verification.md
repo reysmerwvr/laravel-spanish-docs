@@ -1,21 +1,21 @@
-# Email Verification
+# Verificación de Correo Electrónico
 
-- [Introduction](#introduction)
-- [Database Considerations](#verification-database)
-- [Routing](#verification-routing)
-    - [Protecting Routes](#protecting-routes)
-- [Views](#verification-views)
-- [After Verifying Emails](#after-verifying-emails)
-- [Events](#events)
+- [Introducción](#introduction)
+- [Consideraciones De La Base De Datos](#verification-database)
+- [Rutas](#verification-routing)
+    - [Protegiendo Rutas](#protecting-routes)
+- [Vistas](#verification-views)
+- [Luego De Verificar Correos Electrónicos](#after-verifying-emails)
+- [Eventos](#events)
 
 <a name="introduction"></a>
-## Introduction
+## Introducción
 
-Many web applications require users to verify their email addresses before using the application. Rather than forcing you to re-implement this on each application, Laravel provides convenient methods for sending and verifying email verification requests.
+Muchas aplicaciones web requieren que los usuarios verifiquen sus correos electrónicos usando la aplicación. En lugar de forzarte a volver a implementar esto en cada aplicación, Laravel proporciona métodos convenientes para enviar y verificar solicitudes de verificación de correos electrónicos. 
 
-### Model Preparation
+### Preparación Del Modelo
 
-To get started, verify that your `App\User` model implements the `Illuminate\Contracts\Auth\MustVerifyEmail` contract:
+Para comenzar, verifica que tu modelo `App\User` implementa el contrato `Illuminate\Contracts\Auth\MustVerifyEmail`:
 
     <?php
 
@@ -33,46 +33,46 @@ To get started, verify that your `App\User` model implements the `Illuminate\Con
     }
 
 <a name="verification-database"></a>
-## Database Considerations
+## Consideraciones De La Base De Datos
 
-#### The Email Verification Column
+#### Columna De Verificación De Correo Electrónico
 
-Next, your `user` table must contain an `email_verified_at` column to store the date and time that the email address was verified. By default, the `users` table migration included with the Laravel framework already includes this column. So, all you need to do is run your database migrations:
+Luego, tu tabla `user` debe contener una columna `email_verified_at` para almacenar la fecha y la hora en la que la dirección de correo electrónico fue verificada. Por defecto, la migración de la tabla `user` incluida con el framework Laravel ya incluye esta columna. Así que, lo único que necesitas es ejecutar la migración de la base de datos:
 
     php artisan migrate
 
 <a name="verification-routing"></a>
-## Routing
+## Rutas
 
-Laravel includes the `Auth\VerificationController` class that contains the necessary logic to send verification links and verify emails. To register the necessary routes for this controller, pass the `verify` option to the `Auth::routes` method:
+Laravel incluye la clase `Auth\VerificationController` que contiene la lógica necesaria para enviar enlaces de verificación y verificar correos electrónicos. Para registrar las rutas necesarias para este controlador, pasa la opción `verify` al método `Auth::routes`:
 
     Auth::routes(['verify' => true]);
 
 <a name="protecting-routes"></a>
-### Protecting Routes
+### Protegiendo Rutas
 
-[Route middleware](/docs/{{version}}/middleware) can be used to only allow verified users to access a given route. Laravel ships with a `verified` middleware, which is defined at `Illuminate\Auth\Middleware\EnsureEmailIsVerified`. Since this middleware is already registered in your application's HTTP kernel, all you need to do is attach the middleware to a route definition:
+[El middleware de rutas](/docs/{{version}}/middleware) puede ser usado para permitir que sólo usuarios autorizados puedan acceder a una ruta dada. Laravel viene con un middleware `verified`, que está definido en `Illuminate\Auth\Middleware\EnsureEmailIsVerified`. Dado que este middleware ya está registrado en el kernel HTTP de tu aplicación, lo único que necesitas hacer es adjuntar el middleware a una definición de ruta:
 
     Route::get('profile', function () {
         // Only verified users may enter...
     })->middleware('verified');
 
 <a name="verification-views"></a>
-## Views
+## Vistas
 
-Laravel will generate all of the necessary email verification views when the `make:auth` command is executed. This view is placed in `resources/views/auth/verify.blade.php`. You are free to customize this view as needed for your application.
+Laravel generará todas las vistas de verificación de correo electrónico necesarias cuando el comando `make:auth` sea ejecutado. Esta vista es colocada en `resources/views/auth/verify.blade.php`. Eres libre de personalizar esta vista según sea necesario para tu aplicación.
 
 <a name="after-verifying-emails"></a>
-## After Verifying Emails
+## Luego De Verificar Correos Electrónicos
 
-After an email address is verified, the user will automatically be redirected to `/home`. You can customize the post verification redirect location by defining a `redirectTo` method or property on the `VerificationController`:
+Luego de que una dirección de correo electrónico es verificada, el usuario será redirigido automáticamente a `/home`. Puedes personalizar la ubicación de redirección post-verificación definiendo un método `redirectTo` o propiedad en `VerificationController`:
 
     protected $redirectTo = '/dashboard';
 
 <a name="events"></a>
-## Events
+## Eventos
 
-Laravel dispatches [events](/docs/{{version}}/events) during the email verification process. You may attach listeners to these events in your `EventServiceProvider`:
+Laravel despacha [eventos](/docs/{{version}}/events) durante el proceso de verificación de correo electrónico. Puedes agregar listeners a estos eventos en tu `EventServiceProvider`:
 
     /**
      * The event listener mappings for the application.

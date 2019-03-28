@@ -1,37 +1,37 @@
-# Package Development
+# Desarrollo de Paquetes
 
-- [Introduction](#introduction)
-    - [A Note On Facades](#a-note-on-facades)
-- [Package Discovery](#package-discovery)
-- [Service Providers](#service-providers)
-- [Resources](#resources)
-    - [Configuration](#configuration)
-    - [Migrations](#migrations)
-    - [Routes](#routes)
-    - [Translations](#translations)
-    - [Views](#views)
-- [Commands](#commands)
-- [Public Assets](#public-assets)
-- [Publishing File Groups](#publishing-file-groups)
+- [Introducción](#introduction)
+    - [Una nota sobre Facades](#a-note-on-facades)
+- [Descubrimiento de Paquetes](#package-discovery)
+- [Proveedores de Servicios](#service-providers)
+- [Recursos](#resources)
+    - [Configuración](#configuration)
+    - [Migraciones](#migrations)
+    - [Rutas](#routes)
+    - [Traducciones](#translations)
+    - [Vistas](#views)
+- [Comandos](#commands)
+- [Archivos Públicos](#public-assets)
+- [Publicar Grupos de Archivos](#publishing-file-groups)
 
 <a name="introduction"></a>
-## Introduction
+## Introducción
 
-Packages are the primary way of adding functionality to Laravel. Packages might be anything from a great way to work with dates like [Carbon](https://github.com/briannesbitt/Carbon), or an entire BDD testing framework like [Behat](https://github.com/Behat/Behat).
+Los paquetes son la forma principal de agregar funcionalidad a Laravel. Los paquetes pueden ser cualquier cosa, desde una estupenda manera de trabajar con fechas como [Carbon](https://github.com/briannesbitt/Carbon), o un framework completo de pruebas BDD como [Behat](https://github.com/Behat/Behat).
 
-There are different types of packages. Some packages are stand-alone, meaning they work with any PHP framework. Carbon and Behat are examples of stand-alone packages. Any of these packages may be used with Laravel by requesting them in your `composer.json` file.
+Hay diferentes tipos de paquetes. Algunos paquetes son independientes, lo que significa que funcionan con cualquier framework de PHP. Carbon y Behat son ejemplos de paquetes independientes. Cualquiera de estos paquetes se puede usar con Laravel simplemente solicitándolos en el archivo `composer.json`.
 
-On the other hand, other packages are specifically intended for use with Laravel. These packages may have routes, controllers, views, and configuration specifically intended to enhance a Laravel application. This guide primarily covers the development of those packages that are Laravel specific.
+Por otro lado, otros paquetes están específicamente destinados para su uso con Laravel. Estos paquetes pueden tener rutas, controladores, vistas y configuraciones específicamente diseñadas para mejorar una aplicación Laravel. Esta guía cubre principalmente el desarrollo de aquellos paquetes que son específicos de Laravel.
 
 <a name="a-note-on-facades"></a>
-### A Note On Facades
+### Una nota sobre Facades
 
-When writing a Laravel application, it generally does not matter if you use contracts or facades since both provide essentially equal levels of testability. However, when writing packages, your package will not typically have access to all of Laravel's testing helpers. If you would like to be able to write your package tests as if they existed inside a typical Laravel application, you may use the [Orchestral Testbench](https://github.com/orchestral/testbench) package.
+Al escribir una aplicación Laravel, generalmente no importa si usas contratos o facades ya que ambos brindan niveles esencialmente iguales de capacidad de pruebas. Sin embargo, al escribir paquetes, tu paquete normalmente no tendrá acceso a todos las funciones helpers de prueba de Laravel. Si deseas escribir pruebas para el paquete como si existiera dentro de una típica aplicación Laravel puedes usar el paquete [Orchestral Testbench](https://github.com/orchestral/testbench).
 
 <a name="package-discovery"></a>
-## Package Discovery
+## Descubrimiento de Paquetes
 
-In a Laravel application's `config/app.php` configuration file, the `providers` option defines a list of service providers that should be loaded by Laravel. When someone installs your package, you will typically want your service provider to be included in this list. Instead of requiring users to manually add your service provider to the list, you may define the provider in the `extra` section of your package's `composer.json` file. In addition to service providers, you may also list any [facades](/docs/{{version}}/facades) you would like to be registered:
+En el archivo de configuración `config/app.php` de una aplicación Laravel, la opción `providers` define una lista de proveedores de servicios que Laravel debe cargar. Cuando alguien instala tu paquete normalmente querrás que tu proveedor de servicio sea incluido en esta lista. En lugar de requerir que los usuarios agreguen manualmente su proveedor de servicios a la lista, puede definir el proveedor en la sección `extra` del archivo `composer.json` de tu paquete. Además de los proveedores de servicios, también puedes enumerar los [facades](/docs/{{version}}/facades) que desees registrar:
 
     "extra": {
         "laravel": {
@@ -44,11 +44,11 @@ In a Laravel application's `config/app.php` configuration file, the `providers` 
         }
     },
 
-Once your package has been configured for discovery, Laravel will automatically register its service providers and facades when it is installed, creating a convenient installation experience for your package's users.
+Una vez que tu paquete se haya configurado para su descubrimiento, Laravel registrará automáticamente sus proveedores de servicios y facades cuando esté instalado, creando una experiencia de instalación conveniente para los usuarios de tu paquete.
 
-### Opting Out Of Package Discovery
+### Exclusión Del Descubrimiento De Paquetes
 
-If you are the consumer of a package and would like to disable package discovery for a package, you may list the package name in the `extra` section of your application's `composer.json` file:
+Si eres es el consumidor de un paquete y deseas deshabilitar el descubrimiento de paquetes para un paquete, puedes incluir el nombre del paquete en la sección `extra` del archivo `composer.json` de tu aplicación Laravel:
 
     "extra": {
         "laravel": {
@@ -58,7 +58,7 @@ If you are the consumer of a package and would like to disable package discovery
         }
     },
 
-You may disable package discovery for all packages using the `*` character inside of your application's `dont-discover` directive:
+Puede deshabilitar el descubrimiento de paquetes para todos los paquetes que usan el carácter `*` dentro de la directiva `dont-discover` de tu aplicación:
 
     "extra": {
         "laravel": {
@@ -69,19 +69,19 @@ You may disable package discovery for all packages using the `*` character insid
     },
 
 <a name="service-providers"></a>
-## Service Providers
+## Proveedores de Servicios
 
-[Service providers](/docs/{{version}}/providers) are the connection points between your package and Laravel. A service provider is responsible for binding things into Laravel's [service container](/docs/{{version}}/container) and informing Laravel where to load package resources such as views, configuration, and localization files.
+Los [Proveedores de Servicios](/docs/{{version}}/providers) son la conexión entre tu paquete y Laravel. Un proveedor de servicios es responsable de enlazar cosas a Laravel con el [Contenedor de Servicios](/docs/{{version}}/container) e informar a Laravel dónde cargar los recursos del paquete como vistas y archivos de configuración y de configuración regional.
 
-A service provider extends the `Illuminate\Support\ServiceProvider` class and contains two methods: `register` and `boot`. The base `ServiceProvider` class is located in the `illuminate/support` Composer package, which you should add to your own package's dependencies. To learn more about the structure and purpose of service providers, check out [their documentation](/docs/{{version}}/providers).
+Un Proveedor de Servicios extiende de la clase `Illuminate\Support\ServiceProvider` y contiene dos métodos: `register` y `boot`. La clase base `ServiceProvider` está ubicada en `illuminate/support`, donde debemos especificar todas las dependencias de nuestro paquete. Para obtener más información sobre la estructura y el propósito de los proveedores de servicios, visita su [documentación](/docs/{{version}}/providers).
 
 <a name="resources"></a>
-## Resources
+## Recursos
 
 <a name="configuration"></a>
-### Configuration
+### Configuración
 
-Typically, you will need to publish your package's configuration file to the application's own `config` directory. This will allow users of your package to easily override your default configuration options. To allow your configuration files to be published, call the `publishes` method from the `boot` method of your service provider:
+Por lo general, deberás publicar el archivo de configuración de tu paquete en el propio directorio `config` de la aplicación. Esto permitirá a los usuarios anular fácilmente sus opciones de configuración predeterminadas. Para permitir que se publiquen sus archivos de configuración, debes llamar al método `publishes` desde el método `boot` de tu proveedor de servicios:
 
     /**
      * Perform post-registration booting of services.
@@ -95,15 +95,15 @@ Typically, you will need to publish your package's configuration file to the app
         ]);
     }
 
-Now, when users of your package execute Laravel's `vendor:publish` command, your file will be copied to the specified publish location. Once your configuration has been published, its values may be accessed like any other configuration file:
+Ahora, cuando los usuarios de tu paquete ejecutan el comando `vendor:publish` de Laravel, su archivo se copiará a la ubicación de publicación especificada. Una vez que se haya publicado su configuración, se podrá acceder a sus valores como cualquier otro archivo de configuración:
 
     $value = config('courier.option');
 
-> {note} You should not define Closures in your configuration files. They can not be serialized correctly when users execute the `config:cache` Artisan command.
+> {note} No debes definir funciones anónimas en tus archivos de configuración ya que no se pueden serializar correctamente cuando los usuarios ejecutan el comando Artisan `config:cache`.
 
-#### Default Package Configuration
+#### Configuración predeterminada del paquete
 
-You may also merge your own package configuration file with the application's published copy. This will allow your users to define only the options they actually want to override in the published copy of the configuration. To merge the configurations, use the `mergeConfigFrom` method within your service provider's `register` method:
+También puedes fusionar tu propio archivo de configuración de paquete con la copia publicada de la aplicación. Esto permitirá que los usuarios definan solo las opciones que realmente desean anular en la copia publicada de la configuración. Para fusionar las configuraciones, use el método `mergeConfigFrom` dentro del método `register` de tu proveedor de servicios:
 
     /**
      * Register bindings in the container.
@@ -117,12 +117,12 @@ You may also merge your own package configuration file with the application's pu
         );
     }
 
-> {note} This method only merges the first level of the configuration array. If your users partially define a multi-dimensional configuration array, the missing options will not be merged.
+> {note} Este método solo combina el primer nivel de la matriz de configuración. Si los usuarios definen parcialmente una matriz de configuración multidimensional las opciones faltantes no se fusionarán.
 
 <a name="routes"></a>
-### Routes
+### Rutas
 
-If your package contains routes, you may load them using the `loadRoutesFrom` method. This method will automatically determine if the application's routes are cached and will not load your routes file if the routes have already been cached:
+Si tu paquete contiene rutas, puede cargarlas usando el método `loadRoutesFrom`. Este método determinará automáticamente si las rutas de la aplicación se almacenan en caché y no cargarán el archivo de rutas si las rutas ya se han almacenado en caché:
 
     /**
      * Perform post-registration booting of services.
@@ -135,9 +135,9 @@ If your package contains routes, you may load them using the `loadRoutesFrom` me
     }
 
 <a name="migrations"></a>
-### Migrations
+### Migraciones
 
-If your package contains [database migrations](/docs/{{version}}/migrations), you may use the `loadMigrationsFrom` method to inform Laravel how to load them. The `loadMigrationsFrom` method accepts the path to your package's migrations as its only argument:
+Si tu paquete contiene [migraciones de base de datos](/docs/{{version}}/migraciones), puedes usar el método `loadMigrationsFrom` para informarle a Laravel cómo cargarlas. El método `loadMigrationsFrom` acepta la ruta a las migraciones de tu paquete como su único argumento:
 
     /**
      * Perform post-registration booting of services.
@@ -149,12 +149,12 @@ If your package contains [database migrations](/docs/{{version}}/migrations), yo
         $this->loadMigrationsFrom(__DIR__.'/path/to/migrations');
     }
 
-Once your package's migrations have been registered, they will automatically be run when the `php artisan migrate` command is executed. You do not need to export them to the application's main `database/migrations` directory.
+Una vez que se hayan registrado las migraciones de tu paquete, éstas se ejecutarán automáticamente cuando se utilize el comando `php artisan migrate`. Cabe destacar que no es necesario exportarlas al directorio principal de las migraciones en la aplicación.
 
 <a name="translations"></a>
-### Translations
+### Traducciones
 
-If your package contains [translation files](/docs/{{version}}/localization), you may use the `loadTranslationsFrom` method to inform Laravel how to load them. For example, if your package is named `courier`, you should add the following to your service provider's `boot` method:
+Si tu paquete contiene [archivos de traducción](/docs/{{version}}/localization) puedes usar el método `loadTranslationsFrom` para informarle a Laravel cómo cargarlos. Por ejemplo, si tu paquete se llama `courier`, debes agregar lo siguiente al método` boot` de tu proveedor de servicios:
 
     /**
      * Perform post-registration booting of services.
@@ -166,13 +166,13 @@ If your package contains [translation files](/docs/{{version}}/localization), yo
         $this->loadTranslationsFrom(__DIR__.'/path/to/translations', 'courier');
     }
 
-Package translations are referenced using the `package::file.line` syntax convention. So, you may load the `courier` package's `welcome` line from the `messages` file like so:
+Las traducciones de paquetes se referencian usando la convención de sintaxis `package::file.line`. Por lo tanto, puedes cargar la línea `welcome` del paquete `courier` del archivo `messages` de la siguiente manera:
 
     echo trans('courier::messages.welcome');
 
-#### Publishing Translations
+#### Publicación de Traducciones
 
-If you would like to publish your package's translations to the application's `resources/lang/vendor` directory, you may use the service provider's `publishes` method. The `publishes` method accepts an array of package paths and their desired publish locations. For example, to publish the translation files for the `courier` package, you may do the following:
+Si deseas publicar las traducciones de tu paquete en el directorio `resources/lang/vendor` de la aplicación, puedes usar el método `publishes` del proveedor de servicios. El método `publishes` acepta un arreglo de rutas de paquetes y sus ubicaciones de publicación deseadas. Por ejemplo, para publicar los archivos de traducción para el paquete `courier`, puedes hacer lo siguiente:
 
     /**
      * Perform post-registration booting of services.
@@ -188,12 +188,12 @@ If you would like to publish your package's translations to the application's `r
         ]);
     }
 
-Now, when users of your package execute Laravel's `vendor:publish` Artisan command, your package's translations will be published to the specified publish location.
+Ahora, cuando los usuarios de tu paquete ejecutan el comando Artisan `vendor:publish` de Laravel, las traducciones de tu paquete se publicarán en la ubicación de publicación especificada.
 
 <a name="views"></a>
-### Views
+### Vistas
 
-To register your package's [views](/docs/{{version}}/views) with Laravel, you need to tell Laravel where the views are located. You may do this using the service provider's `loadViewsFrom` method. The `loadViewsFrom` method accepts two arguments: the path to your view templates and your package's name. For example, if your package's name is `courier`, you would add the following to your service provider's `boot` method:
+Para registrar las [vistas](/docs/{{version}}/views) de tu paquete con Laravel necesitas decirle a Laravel dónde están ubicadas. Puedes hacerlo utilizando el método `loadViewsFrom` del proveedor de servicios. El método `loadViewsFrom` acepta dos argumentos: la ruta a sus plantillas de vista y el nombre de tu paquete. Por ejemplo, si el nombre de tu paquete es `courier`, debe agregar lo siguiente al método `boot` de tu proveedor de servicios:
 
     /**
      * Perform post-registration booting of services.
@@ -205,19 +205,19 @@ To register your package's [views](/docs/{{version}}/views) with Laravel, you ne
         $this->loadViewsFrom(__DIR__.'/path/to/views', 'courier');
     }
 
-Package views are referenced using the `package::view` syntax convention. So, once your view path is registered in a service provider, you may load the `admin` view from the `courier` package like so:
+Las vistas de paquete se referencian usando la convención de sintaxis `package::view`. Entonces, una vez que tu ruta de vista se registra en un proveedor de servicios, puedes cargar la vista `admin` del paquete `courier` de la siguiente manera:
 
     Route::get('admin', function () {
         return view('courier::admin');
     });
 
-#### Overriding Package Views
+#### Desactivar Vistas del Paquete
 
-When you use the `loadViewsFrom` method, Laravel actually registers two locations for your views: the application's `resources/views/vendor` directory and the directory you specify. So, using the `courier` example, Laravel will first check if a custom version of the view has been provided by the developer in `resources/views/vendor/courier`. Then, if the view has not been customized, Laravel will search the package view directory you specified in your call to `loadViewsFrom`. This makes it easy for package users to customize / override your package's views.
+Cuando utilizas el método `loadViewsFrom`, Laravel en realidad registra dos ubicaciones para sus vistas: el directorio `resources/views/vendor` de la aplicación y el directorio que tu especificas. Entonces, usando el ejemplo `courier`, Laravel primero comprobará si el desarrollador ha proporcionado una versión personalizada de la vista en `resources/views/vendor/courier`. Entonces, si la vista no se ha personalizado, Laravel buscará en el directorio de las vistas del paquete que has colocado en el método `loadViewsFrom`. Esto facilita a los usuarios del paquete personalizar o anular las vistas de tu paquete.
 
-#### Publishing Views
+#### Publicación de Vistas
 
-If you would like to make your views available for publishing to the application's `resources/views/vendor` directory, you may use the service provider's `publishes` method. The `publishes` method accepts an array of package view paths and their desired publish locations:
+Si desea que tus vistas estén disponibles para su publicación en el directorio `resources/views/vendor` de la aplicación, puedes usar el método` publishes` del proveedor de servicios. El método `publishes` acepta una matriz de rutas de vista de paquete y sus ubicaciones de publicación deseadas:
 
     /**
      * Perform post-registration booting of services.
@@ -233,12 +233,12 @@ If you would like to make your views available for publishing to the application
         ]);
     }
 
-Now, when users of your package execute Laravel's `vendor:publish` Artisan command, your package's views will be copied to the specified publish location.
+Ahora, cuando los usuarios de su paquete ejecutan el comando Artisan `vendor:publish` de Laravel, las vistas de su paquete se copiarán en la ubicación especificada.
 
 <a name="commands"></a>
-## Commands
+## Comandos
 
-To register your package's Artisan commands with Laravel, you may use the `commands` method. This method expects an array of command class names. Once the commands have been registered, you may execute them using the [Artisan CLI](/docs/{{version}}/artisan):
+Para registrar los comandos Artisan de tu paquete con Laravel puedes usar el método `commands`. Este método espera un arreglo con los nombres de clases de comando. Una vez que los comandos han sido registrados, puedes ejecutarlos usando [Artisan CLI](/docs/{{version}}/artisan):
 
     /**
      * Bootstrap the application services.
@@ -256,9 +256,9 @@ To register your package's Artisan commands with Laravel, you may use the `comma
     }
 
 <a name="public-assets"></a>
-## Public Assets
+## Archivos Públicos
 
-Your package may have assets such as JavaScript, CSS, and images. To publish these assets to the application's `public` directory, use the service provider's `publishes` method. In this example, we will also add a `public` asset group tag, which may be used to publish groups of related assets:
+Tu paquete puede tener archivos como JavaScript, CSS e imágenes. Para publicar estos archivos en el directorio `public` de la aplicación debes usar el método `publishes` del proveedor de servicios. En este ejemplo, también agregaremos una etiqueta de grupo de archivos `public`, que se puede usar para publicar grupos de archivos relacionados:
 
     /**
      * Perform post-registration booting of services.
@@ -272,14 +272,14 @@ Your package may have assets such as JavaScript, CSS, and images. To publish the
         ], 'public');
     }
 
-Now, when your package's users execute the `vendor:publish` command, your assets will be copied to the specified publish location. Since you will typically need to overwrite the assets every time the package is updated, you may use the `--force` flag:
+Ahora, cuando los usuarios de tu paquete ejecuten el comando `vendor:publish` tus archivos se copiarán en la ubicación especificada. Como normalmente necesitarás sobrescribir los archivos cada vez que se actualice el paquete, puedes usar el indicador `--force`:
 
     php artisan vendor:publish --tag=public --force
 
 <a name="publishing-file-groups"></a>
-## Publishing File Groups
+## Publicar Grupos de Archivos
 
-You may want to publish groups of package assets and resources separately. For instance, you might want to allow your users to publish your package's configuration files without being forced to publish your package's assets. You may do this by "tagging" them when calling the `publishes` method from a package's service provider. For example, let's use tags to define two publish groups in the `boot` method of a package service provider:
+Es posible que desees publicar grupos de archivos y recursos de paquetes por separado. Por ejemplo, es posible que desees permitir que los usuarios publiquen los archivos de configuración de su paquete sin verse obligados a publicar los archivos de tu paquete. Puede hacer esto "etiquetándolos" cuando llames al método `publishes` del proveedor de servicios de un paquete. Por ejemplo, usemos etiquetas para definir dos grupos de publicación en el método `boot` de un proveedor de servicios de paquetes:
 
     /**
      * Perform post-registration booting of services.
@@ -297,6 +297,6 @@ You may want to publish groups of package assets and resources separately. For i
         ], 'migrations');
     }
 
-Now your users may publish these groups separately by referencing their tag when executing the `vendor:publish` command:
+Ahora tus usuarios pueden publicar estos grupos por separado al hacer referencia a su etiqueta cuando ejecuten el comando `vendor:publish`:
 
     php artisan vendor:publish --tag=config

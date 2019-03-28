@@ -1,53 +1,54 @@
-# Upgrade Guide
+# Guía De Actualización
 
-- [Upgrading To 5.8.0 From 5.7](#upgrade-5.8.0)
+- [Actualizando de 5.8.0 desde 5.7](#upgrade-5.8.0)
 
 <a name="high-impact-changes"></a>
-## High Impact Changes
+## Cambios De Alto Impacto
 
 <div class="content-list" markdown="1">
-- [Cache TTL In Seconds](#cache-ttl-in-seconds)
-- [Cache Lock Safety Improvements](#cache-lock-safety-improvements)
-- [Markdown File Directory Change](#markdown-file-directory-change)
-- [Nexmo / Slack Notification Channels](#nexmo-slack-notification-channels)
+- [TTL De Caché En Segundos](#cache-ttl-in-seconds)
+- [Mejoras De Seguridad De Bloqueo De Caché](#cache-lock-safety-improvements)
+- [Parseo De Variables De Entorno](#environment-variable-parsing)
+- [Cambio de Directorio de Archivos Markdown](#markdown-file-directory-change)
+- [Canales De Notificación Nexmo / Slack](#nexmo-slack-notification-channels)
 </div>
 
 <a name="medium-impact-changes"></a>
-## Medium Impact Changes
+## Cambios De Mediano Impacto
 
 <div class="content-list" markdown="1">
-- [Container Generators & Tagged Services](#container-generators)
-- [SQLite Version Constraints](#sqlite)
-- [Prefer String And Array Classes Over Helpers](#string-and-array-helpers)
-- [Deferred Service Providers](#deferred-service-providers)
-- [PSR-16 Conformity](#psr-16-conformity)
-- [Model Names Ending With Irregular Plurals](#model-names-ending-with-irregular-plurals)
-- [Custom Pivot Models With Incrementing IDs](#custom-pivot-models-with-incrementing-ids)
+- [Generadores Y Servicios Etiquetados De Container](#container-generators)
+- [Restricciones de la versión de SQLite](#sqlite)
+- [Preferir Clases String Y Array Sobre Helpers](#string-and-array-helpers)
+- [Proveedores De Servicios Diferidos](#deferred-service-providers)
+- [Cumplimiento de PSR-16](#psr-16-conformity)
+- [Modelos De Nombre Que Terminan Con Plurales Irregulares](#model-names-ending-with-irregular-plurals)
+- [Modelos Personalizados Para Pivote Con IDs Incrementales](#custom-pivot-models-with-incrementing-ids)
 - [Pheanstalk 4.0](#pheanstalk-4)
 </div>
 
 <a name="upgrade-5.8.0"></a>
-## Upgrading To 5.8.0 From 5.7
+## Actualizando de 5.8.0 desde 5.7
 
-#### Estimated Upgrade Time: 1 Hour
+#### Tiempo Estimado De Actualización: 1 Hora
 
-> {note} We attempt to document every possible breaking change. Since some of these breaking changes are in obscure parts of the framework only a portion of these changes may actually affect your application.
+>{note} Tratamos de documentar cada cambio significativo. Debido a que alguno de estos cambios significativos están en partes ocultas dentro del framework solo una porción de estos cambios podria afectar tu aplicación. 
 
 <a name="updating-dependencies"></a>
-### Updating Dependencies
+### Actualización De Dependencias
 
-Update your `laravel/framework` dependency to `5.8.*` in your `composer.json` file.
+Actualiza tu dependencia `laravel/framework` a  `5.8.*` en tu archivo `composer.json`.
 
-Next, examine any 3rd party packages consumed by your application and verify you are using the proper version for Laravel 5.8 support.
+Luego, examina cualquier paquete de terceros que sean consumidos por tu aplicación y verifica que estén usando la versión con soporte para Laravel 5.8.
 
 <a name="the-application-contract"></a>
-### The `Application` Contract
+### El Contrato `Aplicación`
 
-#### The `environment` Method
+#### El Método `environment`
 
-**Likelihood Of Impact: Very Low**
+**Probabilidad De Impacto: Muy Baja** 
 
-The `environment` method signature of the `Illuminate/Contracts/Foundation/Application` contract [has changed](https://github.com/laravel/framework/pull/26296). If you are implementing this contract in your application, you should update the method signature:
+La firma del método `environment` del contrato `Illuminate/Contracts/Foundation/Application` [ha cambiado](https://github.com/laravel/framework/pull/26296). Si estás implementando este contrato en tu aplicación, debes actualizar la firma del método:
 
     /**
      * Get or check the current application environment.
@@ -57,48 +58,48 @@ The `environment` method signature of the `Illuminate/Contracts/Foundation/Appli
      */
     public function environment(...$environments);
 
-#### Added Methods
+#### Métodos Añadidos
 
-**Likelihood Of Impact: Very Low**
+**Probabilidad De Impacto: Muy Baja**
 
-The `bootstrapPath`, `configPath`, `databasePath`, `environmentPath`, `resourcePath`, `storagePath`, `resolveProvider`, `bootstrapWith`, `configurationIsCached`, `detectEnvironment`, `environmentFile`, `environmentFilePath`, `getCachedConfigPath`, `getCachedRoutesPath`, `getLocale`, `getNamespace`, `getProviders`, `hasBeenBootstrapped`, `loadDeferredProviders`, `loadEnvironmentFrom`, `routesAreCached`, `setLocale`, `shouldSkipMiddleware` and `terminate`  methods [were added to the `Illuminate/Contracts/Foundation/Application` contract](https://github.com/laravel/framework/pull/26477).
+Los métodos `bootstrapPath`, `configPath`, `databasePath`, `environmentPath`, `resourcePath`, `storagePath`, `resolveProvider`, `bootstrapWith`, `configurationIsCached`, `detectEnvironment`, `environmentFile`, `environmentFilePath`, `getCachedConfigPath`, `getCachedRoutesPath`, `getLocale`, `getNamespace`, `getProviders`, `hasBeenBootstrapped`, `loadDeferredProviders`, `loadEnvironmentFrom`, `routesAreCached`, `setLocale`, `shouldSkipMiddleware` y `terminate`  [Fueron añadidos a la interfaz `Illuminate/Contracts/Foundation/Application`](https://github.com/laravel/framework/pull/26477).
 
-In the very unlikely event you are implementing this interface, you should add these methods to your implementation.
+En el caso poco probable de que implementes esta interfaz, debes añadir estos métodos a la implementación. 
 
 <a name="authentication"></a>
-### Authentication
+### Autenticación 
 
-#### Password Reset Notification Route Parameter
+#### Parámetro De Ruta De La Notificación De Restablecimiento De Contraseña  
 
-**Likelihood Of Impact: Low**
+**Probabilidad De Impacto: Muy Baja**
 
-When a user requests a link to reset their password, Laravel generates the URL using the `route` helper to create a URL to the `password.reset` named route. When using Laravel 5.7, the token is passed to the `route` helper without an explicit name, like so:
+Cuando un usuario solicita un enlace para restablecer su contraseña, Laravel genera la URL utilizando el helper `route` para crear una URL a la ruta denominada` password.reset`. Cuando se usa Laravel 5.7, el token se pasa al helper `route` sin un nombre explícito, de manera que:
 
     route('password.reset', $token);
 
-When using Laravel 5.8, the token is passed to the `route` helper as an explicit parameter:
+Pero cuando se usa Laravel 5.8, el token se pasa al helper `route` como un parámetro explícito:
 
     route('password.reset', ['token' => $token]);
 
-Therefore, if you are defining your own `password.reset` route, you should ensure that it contains a `{token}` parameter in its URI.
+Por lo tanto, si estás definiendo tu propia ruta `password.reset`, debes asegurarte de que contenga un parámetro` {token} `en tu URI.
 
-#### New Default Password Length
+#### Nueva Longitud De Contraseña Por Defecto
 
-**Likelihood Of Impact: Low**
+**Probabilidad De Impacto: Baja**
 
-The required password length when choosing or resetting a password was [changed to at least eight characters](https://github.com/laravel/framework/pull/25957).
+La longitud de la contraseña requerida al elegir o restablecer una contraseña se [cambió a al menos ocho caracteres](https://github.com/laravel/framework/pull/25957).
 
 <a name="cache"></a>
-### Cache
+### Caché
 
 <a name="cache-ttl-in-seconds"></a>
-#### TTL in seconds
+#### TTL En Segundos
 
-**Likelihood Of Impact: Very High**
+**Probabilidad De Impacto: Muy Alta**
 
-In order to allow a more granular expiration time when storing items, the cache item time-to-live has changed from minutes to seconds. The `put`, `putMany`, `add`, `remember` and `setDefaultCacheTime` methods of the `Illuminate\Cache\Repository` class and its extended classes, as well as the `put` method of each cache store were updated with this changed behavior. See [the related PR](https://github.com/laravel/framework/pull/27276) for more info.
+Para permitir un tiempo de caducidad más granular al almacenar elementos, el tiempo de vida del elemento de caché ha cambiado de minutos a segundos. Se actualizaron los métodos `put`,` putMany`, `add`,` remember` y `setDefaultCacheTime` de la clase `Illuminate\Cache\Repository` y sus clases extendidas, así como el método `put` de cada almacenamiento de caché se actualizaron con este comportamiento cambiado. Consulte [los PR relacionados](https://github.com/laravel/framework/pull/27276) para obtener más información.
 
-If you are passing an integer to any of these methods, you should update your code to ensure you are now passing the number of seconds you wish the item to remain in the cache. Alternatively, you may pass a `DateTime` instance indicating when the item should expire:
+Si estás pasando un número entero a cualquiera de estos métodos, debes actualizar tu código para asegurarte que ahora estás pasando la cantidad de segundos que deseas que el elemento permanezca en el caché. Alternativamente, puedes pasar una instancia de `DateTime` que indica cuándo debe expirar el elemento:
 
     // Laravel 5.7 - Store item for 30 minutes...
     Cache::put('foo', 'bar', 30);
@@ -109,72 +110,81 @@ If you are passing an integer to any of these methods, you should update your co
     // Laravel 5.7 / 5.8 - Store item for 30 seconds...
     Cache::put('foo', 'bar', now()->addSeconds(30));
 
-> {tip} This change makes the Laravel cache system fully compliant with the [PSR-16 caching library standard](https://www.php-fig.org/psr/psr-16/).
+> {tip} Este cambio hace que el sistema de caché Laravel sea totalmente compatible con el [estándar de la libreria de almacenamiento en caché PSR-16](https://www.php-fig.org/psr/psr-16/)
 
 <a name="psr-16-conformity"></a>
-#### PSR-16 Conformity
+#### Cumplimiento de PSR-16
 
-**Likelihood Of Impact: Medium**
+**Probabilidad De Impacto: Media**
 
-In addition to the return value changes from above, the TTL argument of the `put`, `putMany` and `add` method's of the `Illuminate\Cache\Repository` class was updated to conform better with the PSR-16 spec. The new behavior provides a default of `null` so a call without specifying a TTL will result in storing the cache item forever. Additionally, storing cache items with a TTL of 0 or lower will remove items from the cache. See [the related PR](https://github.com/laravel/framework/pull/27217) for more info.
+Además de [los cambios de valor de retorno descritos abajo](#the-repository-and-store-contracts), el argumento TTL de los métodos `put`,` putMany` y `add` de la clase `Illuminate\Cache\Repository` se actualizó para cumplir mejor con la especificación del PSR-16. El nuevo comportamiento proporciona un valor predeterminado de `null`, por lo que una llamada sin especificar un TTL dará como resultado el almacenamiento del elemento de caché para siempre. Además, el almacenamiento de elementos de caché con un TTL de 0 o inferior eliminará los elementos del caché. Vea el [PR Relacionado](https://github.com/laravel/framework/pull/27217) Para más información.
 
-The `KeyWritten` event [was also updated](https://github.com/laravel/framework/pull/27265) with these changes.
+El evento `KeyWritten` [también fue actualizado](https://github.com/laravel/framework/pull/27265) con esos cambios.
 
 <a name="cache-lock-safety-improvements"></a>
-#### Lock Safety Improvements
+#### Mejoras De Seguridad De Bloqueo
 
-**Likelihood Of Impact: High**
+**Probabilidad De Impacto: Alta**
 
-In Laravel 5.7 and prior versions of Laravel, the "atomic lock" feature provided by some cache drivers could have unexpected behavior leading to the early release of locks.
+En laravel 5.7 y versiones anteriores, la característica "atomic lock" proporcionada por algunos controladores de caché podría tener un comportamiento no deseado llevando a la liberación prematura de los bloqueos.
 
-For example: **client A** acquires lock `foo` with a 10 second expiration. **Client A** actually takes 20 seconds to finish its task. The lock is released automatically by the cache system 10 seconds into **Client A's** processing time. **Client B** acquires lock `foo`. **Client A** finally finishes its task and releases lock `foo`, inadvertently releasing **Client B's** hold on the lock. **Client C** is now able to acquire the lock.
+Por ejemplo: **cliente A** adquiere un bloqueo `foo` con una expiración de 10 segundos. Al **cliente A** realmente le toma 20 segundos finalizar esta tarea. El bloqueo es liberado automáticamente por el caché del sistema y en 10 segudos dentro del tiempo de procesamiento de **Del Cliente A**. El **Cliente B** adquiere un bloqueo `foo`. El **Client A** finalmente termina su tarea y libera el bloqueo `foo`, inadvertidamente liberando el tiempo en espera **Del Cliente B** . Ahora el **Client C** es capaz de adquirir un bloqueo. 
 
-In order to mitigate this scenario, locks are now generated with an embedded "scope token" which allows the framework to ensure that, under normal circumstances, only the proper owner of a lock can release a lock.
+A manera de mitigar este escenario, los bloqueos ahora son generados con un "token de alcance" lo que permite al framework asegurarse de que, en circunstancias normales, solo el propietario de bloqueo pueda liberar el bloqueo.
 
-If you are using the `Cache::lock()->get(Closure)` method of interacting with locks, no changes are required:
+Si estás usando el método `Cache::lock()->get(Closure)` de interacción con bloqueos, no se requiere de cambios: 
 
     Cache::lock('foo', 10)->get(function () {
         // Lock will be released safely automatically...
     });
 
-However, if you are manually calling `Cache::lock()->release()`, you must update your code to maintain an instance of the lock. Then, after you are done performing your task, you may call the `release` method on **the same lock instance**. For example:
+Sin embargo, si estás llamando manualmente a `Cache::lock()->release()`, debes actualizar tu código para mantener una instancia del bloqueo. Luego, una vez que hayas terminado de realizar tu tarea, puedes llamar al método `release` en **la misma instancia de bloqueo**. Por ejemplo:
 
-    if ($lock = Cache::lock('foo', 10)->get()) {
+    if (($lock = Cache::lock('foo', 10))->get()) {
         // Perform task...
 
         $lock->release();
     }
 
-Sometimes, you may wish to acquire a lock in one process and release it in another process. For example, you may acquire a lock during a web request and wish to release the lock at the end of a queued job that is triggered by that request. In this scenario, you should pass the lock's scoped "owner token" to the queued job so that the job can re-instantiate the lock using the given token:
+A veces, es posible que desees adquirir un bloqueo en un proceso y liberarlo en otro proceso. Por ejemplo, puede adquirir un bloqueo durante una solicitud web y deseas liberar el bloqueo al final de un trabajo en cola que se activa con esa solicitud. En este escenario, debes pasar el "token de propietario" del ámbito del bloqueo al trabajo en cola para que el trabajo pueda volver a crear una instancia del bloqueo utilizando el token dado:
 
     // Within Controller...
     $podcast = Podcast::find(1);
 
-    if ($lock = Cache::lock('foo', 120)->get()) {
+    if (($lock = Cache::lock('foo', 120))->get()) {
         ProcessPodcast::dispatch($podcast, $lock->owner());
     }
 
     // Within ProcessPodcast Job...
     Cache::restoreLock('foo', $this->owner)->release();
 
-If you would like to release a lock without respecting its current owner, you may use the `forceRelease` method:
+Si deseas liberar un bloqueo sin respetar a su propietario actual, puedes usar el método `forceRelease`: 
 
     Cache::lock('foo')->forceRelease();
 
-#### The `Repository` and `Store` Contracts
+<a name="the-repository-and-store-contracts"></a>
+####  Los Contratos `Repository` Y `Store`
 
-**Likelihood Of Impact: Very Low**
+**Probabilidad De Impacto: Muy Baja**
 
-In order to be fully compliant with `PSR-16` the return values of the `put` and `forever` methods of the `Illuminate\Contracts\Cache\Repository` contract and the return values of the `put`, `putMany` and `forever` methods of the `Illuminate\Contracts\Cache\Store` contract [have been changed](https://github.com/laravel/framework/pull/26726) from `void` to `bool`.
+Para cumplir con el `PSR-16` los valores de retorno de los métodos` put` y `forever` del contrato `Illuminate\Contracts\Cache\Repository` y los valores de retorno del `put`,` putMany` y los métodos `forever` del contrato `Illuminate\Contracts\Cache\Store` [se han cambiado](https://github.com/laravel/framework/pull/26726) de `void` a` bool`.
 
 <a name="collections"></a>
-### Collections
+### Colecciones
 
-#### The `firstWhere` Method
+#### El Método `add`
 
-**Likelihood Of Impact: Very Low**
+**Probabilidad De Impacto: Muy Baja**
 
-The `firstWhere` method signature [has changed](https://github.com/laravel/framework/pull/26261) to match the `where` method's signature. If you are overriding this method, you should update the method signature to match its parent:
+El método `add` [ha sido movido](https://github.com/laravel/framework/pull/27082) de la clase Collection de Eloquent a la clase Collection base. Si estás extendiendo la clase `Illuminate\Support\Collection` y en la clase extendida tienes un método `add`, asegúrate que la firma del método coincida con su padre:
+
+    public function add($item);
+
+#### El Método `firstWhere`
+
+**Probabilidad De Impacto: Muy Baja**
+
+La firma del método `firstWhere` [ha cambiado](https://github.com/laravel/framework/pull/26261) para coincidir con la firma del método` where`. Si estás sobreescribiendo este método, debes actualizar la firma del método para que coincida con su padre:
 
     /**
      * Get the first item by the given key value pair.
@@ -187,60 +197,60 @@ The `firstWhere` method signature [has changed](https://github.com/laravel/frame
     public function firstWhere($key, $operator = null, $value = null);
 
 <a name="console"></a>
-### Console
+### Consola
 
-#### The `Kernel` Contract
+#### El Contrato `Kernel` 
 
-**Likelihood Of Impact: Very Low**
+**Probabilidad De Impacto: Muy Baja**
 
-The `terminate` method [has been added to the `Illuminate/Contracts/Console/Kernel` contract](https://github.com/laravel/framework/pull/26393). If you are implementing this interface, you should add this method to your implementation.
+El método `terminate` [se ha agregado al contrato `Illuminate/Contracts/Console/Kernel`](https://github.com/laravel/framework/pull/26393). Si estás implementando esta interfaz, debes agregar este método a tu implementación.
 
 <a name="container"></a>
-### Container
+### Contenedor
 
 <a name="container-generators"></a>
-#### Generators & Tagged Services
+#### Generadores Y Servicios Etiquetados
 
-**Likelihood Of Impact: Medium**
+**Probabilidad De Impacto: Media**
 
-The container's `tagged` method now utilizes PHP generators to lazy-instantiate the services with a given tag. This provides a performance improvement if you are not utilizing every tagged service.
+El método `tagged` del contenedor ahora utiliza generadores de PHP para crear una instancia "vaga" (lazy) de los servicios con una etiqueta determinada. Esto proporciona una mejora en el rendimiento si no estás utilizando todos los servicios etiquetados.
 
-Because of this change, the `tagged` method now returns an `iterable` instead of an `array`. If you are type-hinting the return value of this method, you should ensure that your type-hint is changed to `iterable`.
+Debido a este cambio, el método `tagged` ahora devuelve un `iterable` en lugar de un `array`. Si estás declarando el tipo del valor de retorno de este método, debes asegurarte de que la declaración del tipo cambie a `iterable`.
 
-In addition, it is no longer possible to directly access a tagged service by its array offset value, such as `$container->tagged('foo')[0]`.
+Además, ya no es posible acceder directamente a un servicio etiquetado por su valor en el arreglo, como por ejemplo `$container->tagged('foo')[0]`.
 
-#### The `resolve` Method
+#### El Método `resolve` 
 
-**Likelihood Of Impact: Very Low**
+**Probabilidad De Impacto: Muy Baja**
 
-The `resolve` method [now accepts](https://github.com/laravel/framework/pull/27066) a new boolean parameter which indicates whether events (resolving callbacks) should be raised/executed during the instantiation of an object. If you are overriding this method, you should update the method signature to match its parent.
+El método `resolver` [ahora acepta](https://github.com/laravel/framework/pull/27066) un nuevo parámetro booleano que indica si los eventos de (resolución de callbacks) deben activarse / ejecutarse durante la creación de instancias de un objeto. Si estás sobreescribiendo este método, debes actualizar la firma del método para que coincida con su padre.
 
-#### The `addContextualBinding` Method
+#### El Método `addContextualBinding`
 
-**Likelihood Of Impact: Very Low**
+**Probabilidad De Impacto: Muy Baja**
 
-The `addContextualBinding` method [was added to the `Illuminate\Contracts\Container\Container` contract](https://github.com/laravel/framework/pull/26551). If you are implementing this interface, you should add this method to your implementation.
+El método `addContextualBinding` [se agregó al contrato `Illuminate\Contracts\Container\Container`](https://github.com/laravel/framework/pull/26551). Si estás implementando esta interfaz, debes agregar este método a tu implementación.
 
-#### The `tagged` Method
+#### El Método `tagged` 
 
-**Likelihood Of Impact: Low**
+**Probabilidad De Impacto: Baja**
 
-The `tagged` method signature [has been changed](https://github.com/laravel/framework/pull/26953) and it now returns an `iterable` instead of an `array`. If you have type-hinted in your code some parameter which gets the return value of this method with `array`, you should modify the type-hint to `iterable`.
+La firma del método `tagged` [ha sido cambiada](https://github.com/laravel/framework/pull/26953) y ahora devuelve un `iterable` en lugar de un `array`. Si en tu código has declarado el tipo de algún parámetro que obtiene el valor de retorno de este método con `array`, debes modificar la declaración de tipo a `iterable`.
 
-#### The `flush` Method
+#### El Método `flush`
 
-**Likelihood Of Impact: Very Low**
+**Probabilidad De Impacto: Muy Baja**
 
-The `flush` method [was added to the `Illuminate\Contracts\Container\Container` contract](https://github.com/laravel/framework/pull/26477). If you are implementing this interface, you should add this method to your implementation.
+El método `flush` [se agregó al contrato `Illuminate\Contracts\Container\Container`](https://github.com/laravel/framework/pull/26477). Si estás implementando esta interfaz, debes agregar este método a tu implementación.
 
 <a name="database"></a>
-### Database
+### Base De Datos
 
-#### Unquoted MySQL JSON Values
+#### Valores No Citados MySQL JSON 
 
-**Likelihood Of Impact: Low**
+**Probabilidad De Impacto: Baja**
 
-The query builder will now return unquoted JSON values when using MySQL and MariaDB. This behavior is consistent with the other supported databases:
+El constructor de consultas ahora devolverá valores JSON no citados al usar MySQL y MariaDB. Este comportamiento es consistente con las otras bases de datos soportadas:
 
     $value = DB::table('users')->value('options->language');
 
@@ -252,24 +262,24 @@ The query builder will now return unquoted JSON values when using MySQL and Mari
     // Laravel 5.8...
     'en'
 
-As a result, the `->>` operator is no longer supported or necessary.
+Como resutlado el operador `->>` ya no es soportado ni necesario.
 
 <a name="sqlite"></a>
 #### SQLite
 
-**Likelihood Of Impact: Medium**
+**Probabilidad De Impacto: Media**
 
-As of Laravel 5.8 the [oldest supported SQLite version](https://github.com/laravel/framework/pull/25995) is SQLite 3.7.11. If you are using an older SQLite version, you should update it (SQLite 3.8.8+ is recommended).
+A partir de Laravel 5.8, la [versión SQLite soportada más antigua](https://github.com/laravel/framework/pull/25995) es SQLite 3.7.11. Si estás utilizando una versión anterior de SQLite, debe actualizarla (se recomienda SQLite 3.8.8+).
 
 <a name="eloquent"></a>
 ### Eloquent
 
 <a name="model-names-ending-with-irregular-plurals"></a>
-#### Model Names Ending With Irregular Plurals
+#### Modelos De Nombre Que Terminan Con Plurales Irregulares
 
-**Likelihood of Impact: Medium**
+**Probabilidad De Impacto: Media**
 
-As of Laravel 5.8, multi-word model names ending in a word with an irregular plural [are now correctly pluralized](https://github.com/laravel/framework/pull/26421).
+A partir de Laravel 5.8, los nombres de modelos de múltiples palabras que terminan en una palabra con un plural irregular [ahora están correctamente pluralizados (solo válido para inglés)](https://github.com/laravel/framework/pull/26421).
 
     // Laravel 5.7...
     App\Feedback.php -> feedback (correctly pluralized)
@@ -279,7 +289,7 @@ As of Laravel 5.8, multi-word model names ending in a word with an irregular plu
     App\Feedback.php -> feedback (correctly pluralized)
     App\UserFeedback.php -> user_feedback (correctly pluralized)
 
-If you have a model that was incorrectly pluralized, you may continue using the old table name by defining a `$table` property on your model:
+Si tienes un modelo incorrectamente pluralizado, puedes continuar usando el nombre de la tabla anterior definiendo una propiedad `$table` en tu modelo:
 
     /**
      * The table associated with the model.
@@ -289,9 +299,9 @@ If you have a model that was incorrectly pluralized, you may continue using the 
     protected $table = 'user_feedbacks';
 
 <a name="custom-pivot-models-with-incrementing-ids"></a>
-#### Custom Pivot Models With Incrementing IDs
+#### Modelos Personalizados Para Pivote Con IDs Incrementales
 
-If you have defined a many-to-many relationship that uses a custom pivot model, and that pivot model has an auto-incrementing primary key, you should ensure your custom pivot model class defines an `incrementing` property that is set to `true`:
+Si has definido una relación de muchos a muchos que usa un modelo personalizado para tablas pivote, y ese modelo tiene una clave primaria autoincremental, debes asegurarte de que tu clase de modelo personalizado para pivote defina una propiedad `incrementing` que se establece en `true`:
 
     /**
      * Indicates if the IDs are auto-incrementing.
@@ -300,56 +310,82 @@ If you have defined a many-to-many relationship that uses a custom pivot model, 
      */
     public $incrementing = true;
 
-#### The `loadCount` Method
+#### El Método `loadCount` 
 
-**Likelihood Of Impact: Low**
+**Probabilidad De Impacto: Baja**
 
-A `loadCount` method has been added to the base `Illuminate\Database\Eloquent\Model` class. If your application also defines a `loadCount` method, it may conflict with Eloquent's definition.
+Se ha agregado un método `loadCount` a la clase base `Illuminate\Database\Eloquent\Model`. Si tu aplicación también define un método `loadCount`, puede entrar en conflicto con la definición de Eloquent.
 
-#### The `originalIsEquivalent` Method
+#### El Método `originalIsEquivalent` 
 
-**Likelihood Of Impact: Very Low**
+**Probabilidad De Impacto: Muy Baja**
 
-The `originalIsEquivalent` method of the `Illuminate\Database\Eloquent\Concerns\HasAttributes` trait [has been changed](https://github.com/laravel/framework/pull/26391) from `protected` to `public`.
+El método `originalIsEquivalent` del trait `Illuminate\Database\Eloquent\Concerns\HasAttributes` [ha sido cambiado](https://github.com/laravel/framework/pull/26391) de `protected` a `public`.
 
-#### Automatic Soft-Deleted Casting Of `deleted_at` Property
+#### Conversión (Casting) Automática De La Propiedad Soft-Deleted `deleted_at` 
 
-**Likelihood Of Impact: Low**
+**Probabilidad De Impacto: Baja**
 
-The `deleted_at` property [will now be automatically casted](https://github.com/laravel/framework/pull/26985) to a `Carbon` instance when your Eloquent model uses the `Illuminate\Database\Eloquent\SoftDeletes` trait. You can override this behavior by writing your custom accessor for that property or by manually adding it to the `casts` attribute:
+La propiedad `deleted_at` [ahora se convertirá automáticamente](https://github.com/laravel/framework/pull/26985) en una instancia de` Carbon` cuando tu modelo Eloquent use el trait `Illuminate\Database\Eloquent\SoftDeletes`. Puedes sobreescribir este comportamiento escribiendo tu accesador personalizado para esa propiedad o agregándolo manualmente al atributo `casts`:
 
     protected $casts = ['deleted_at' => 'string'];
 
-#### BelongsTo `getForeignKey` Method
+#### Métodos `getForeignKey` Y `getOwnerKey` De BelongsTo
 
-**Likelihood Of Impact: Low**
+**Probabilidad De Impacto: Baja**
 
-The `getForeignKey` and `getQualifiedForeignKey` methods of the `BelongsTo` relationship have been renamed to `getForeignKeyName` and `getQualifiedForeignKeyName` respectively, making the method names consistent with the other relationships offered by Laravel.
+Los métodos `getForeignKey`, `getQualifiedForeignKey` y `getOwnerKey` de la relación `BelongsTo` han sido renombrados a `getForeignKeyName`, `getQualifiedForeignKeyName` y `getOwnerKeyName`  respectivamente, haciendo que los nombres de los métodos sean consistentes con las otras relaciones ofrecidas por Laravel.
+
+<a name="#environment-variable-parsing"></a>
+### Parseo De Variables De Entorno
+
+**Probabilidad de Impacto: Alto**
+
+El paquete [phpdotenv](https://github.com/vlucas/phpdotenv) que es usado para parsear archivos .env ha liberado una nueva versión, que podría impactar en los resultados retornados desde el helper `env`. Especificamente, el carácter `#` en un valor sin comillas ahora será considerado como un comentario en lugar de parte del valor.
+
+Comportamiento anterior:
+
+    ENV_VALUE=foo#bar
+
+    env('ENV_VALUE'); // foo#bar
+
+Nuevo comportamiento:
+
+    ENV_VALUE=foo#bar
+    env('ENV_VALUE'); // foo
+
+Para mantener el comportamiento anterior, puedes envolver los valores de entorno en comillas:
+
+    ENV_VALUE="foo#bar"
+
+    env('ENV_VALUE'); // foo#bar
+
+Para más información, por favor revisa la [guía de actualización de phpdotenv](https://github.com/vlucas/phpdotenv/blob/master/UPGRADING.md)
 
 <a name="events"></a>
-### Events
+### Eventos
 
-#### The `fire` Method
+#### El Método `fire` 
 
-**Likelihood Of Impact: Low**
+**Probabilidad De Impacto: Baja**
 
-The `fire` method (which was deprecated in Laravel 5.4) of the `Illuminate/Events/Dispatcher` class [has been removed](https://github.com/laravel/framework/pull/26392).
-You should use the `dispatch` method instead.
+El método `fire` (que fue puesto en desuso en Laravel 5.4) de la clase `Illuminate/Events/Dispatcher` [ha sido eliminado](https://github.com/laravel/framework/pull/26392). 
+Debes usar el método `dispatch` en su lugar.
 
 <a name="exception-handling"></a>
-### Exception Handling
+### Manejo De Excepciones 
 
-#### The `ExceptionHandler` Contract
+#### El Contrato de `ExceptionHandler` 
 
-**Likelihood Of Impact: Low**
+**Probabilidad De Impacto: Baja**
 
-The `shouldReport` method [has been added to the `Illuminate\Contracts\Debug\ExceptionHandler` contract](https://github.com/laravel/framework/pull/26193). If you are implementing this interface, you should add this method to your implementation.
+El método `shouldReport` [se ha agregado al contrato `Illuminate\Contracts\Debug\ExceptionHandler`](https://github.com/laravel/framework/pull/26193). Si estás implementando esta interfaz, debes agregar este método a tu implementación.
 
-#### The `renderHttpException` Method
+#### El Método `renderHttpException`
 
-**Likelihood Of Impact: Low**
+**Probabilidad De Impacto: Baja**
 
-The `renderHttpException` method signature of the `Illuminate\Foundation\Exceptions\Handler` class [has changed](https://github.com/laravel/framework/pull/25975). If you are overriding this method in your exception handler, you should update the method signature to match its parent:
+La firma del método `renderHttpException` de la clase `Illuminate\Foundation\Exceptions\Handler` [ha cambiado](https://github.com/laravel/framework/pull/25975). Si está sobreescribiendo este método en tu manejador de excepciones, debes actualizar la firma del método para que coincida con su padre:
 
     /**
      * Render the given HttpException.
@@ -359,74 +395,65 @@ The `renderHttpException` method signature of the `Illuminate\Foundation\Excepti
      */
     protected function renderHttpException(HttpExceptionInterface $e);
 
-<a name="facades"></a>
-### Facades
-
-#### Facade Service Resolving
-
-**Likelihood Of Impact: Low**
-
-The `getFacadeAccessor` method may now [only return the string value representing the container identifier of the service](https://github.com/laravel/framework/pull/25525). Previously, this method may have returned an object instance.
-
 <a name="mail"></a>
-### Mail
+### Correo electrónico
 
 <a name="markdown-file-directory-change"></a>
 <a name="markdown-file-directory-change"></a>
-### Markdown File Directory Change
+### Cambio de Directorio de Archivos Markdown
 
-**Likelihood Of Impact: High**
+**Probabilidad De Impacto: Alta**
 
-If you have published Laravel's Markdown mail components using the `vendor:publish` command, you should rename the `/resources/views/vendor/mail/markdown` directory to `text`.
+Si has publicado los componentes de correo de Markdown de Laravel usando el comando `vendor: publish`, debes cambiar el nombre del directorio `/resources/views/vendor/mail/markdown` a `text`.
 
-In addition, the `markdownComponentPaths` method [has been renamed](https://github.com/laravel/framework/pull/26938) to `textComponentPaths`. If you are overriding this method, you should update the method name to match its parent.
+Además, el método `markdownComponentPaths` [ha sido renombrado](https://github.com/laravel/framework/pull/26938) a `textComponentPaths`. Si estás anulando este método, debes actualizar el nombre del método para que coincida con su padre.
 
-#### Method Signature Changes In The `PendingMail` Class
+#### Cambio De Firma En Métodos De La Clase `PendingMail`
 
-**Likelihood Of Impact: Very Low**
+**Probabilidad De Impacto: Muy Baja**
 
-The `send`, `sendNow`, `queue`, `later` and `fill` methods of the `Illuminate\Mail\PendingMail` class [have been changed](https://github.com/laravel/framework/pull/26790) to accept an `Illuminate\Contracts\Mail\Mailable` instance instead of `Illuminate\Mail\Mailable`. If you are overriding some of these methods, you should update their signature to match its parent.
+Los métodos `send`,` sendNow`, `queue`,` later` y `fill` de la clase `Illuminate\Mail\PendingMail` [se han cambiado](https://github.com/laravel/framework/pull/26790) para aceptar una instancia `Illuminate\Contracts\Mail\Mailable` en lugar de `Illuminate\Mail\Mailable`. Si estás sobreescribiendo algunos de estos métodos, debes actualizar su firma para que coincida con su padre.
 
 <a name="queue"></a>
-### Queue
+### Colas
 
 <a name="pheanstalk-4"></a>
 #### Pheanstalk 4.0
 
-**Likelihood Of Impact: Medium**
+**Probabilidad De Impacto: Media**
 
-Laravel 5.8 provides support for the `~4.0` release of the Pheanstalk queue library. If you are using Pheanstalk library in your application, please upgrade your library to the `~4.0` release via Composer.
+Laravel 5.8 proporciona soporte para la versión `~ 4.0` de los paquetes de colas Pheanstalk. Si estás utilizando el paquetes de terceros Pheanstalk en tu aplicación, actualiza tus paquetes a la versión `~ 4.0` a través de Composer.
 
-#### The `Job` Contract
+#### El Contrato `Job` 
 
-**Likelihood Of Impact: Very Low**
+**Probabilidad De Impacto: Muy Baja**
 
-The `isReleased`, `hasFailed` and `markAsFailed` methods [have been added to the `Illuminate\Contracts\Queue\Job` contract](https://github.com/laravel/framework/pull/26908). If you are implementing this interface, you should add these methods to your implementation.
+Los métodos `isReleased`,` hasFailed` y `markAsFailed` [se han agregado al contrato `Illuminate\Contracts\Queue\Job`](https://github.com/laravel/framework/pull/26908). Si estás implementando esta interfaz, debes agregar estos métodos a tu implementación.
 
-#### The `Job::failed` & `FailingJob` Class
+#### Las Clases `Job::failed` Y `FailingJob` 
 
-**Likelihood Of Impact: Very Low**
+**Probabilidad De Impacto: Muy Baja**
 
-When a queued job failed in Laravel 5.7, the queue worker executed the `FailingJob::handle` method. In Laravel 5.8, the logic contained in the `FailingJob` class has been moved to a `fail` method directly on the job class itself. Because of this, a `fail` method has been added to the `Illuminate\Contracts\Queue\Job` contract.
+Cuando un trabajo en cola falla en Laravel 5.7, el worker de la cola ejecuta el método `FailingJob::handle`. En Laravel 5.8, la lógica contenida en la clase `FailingJob` se ha movido al método `fail` directamente en la misma clase de trabajo. Debido a esto, se ha agregado un método `fail` al contrato `Illuminate\Contracts\Queue\Job`.
 
-The base `Illuminate\Queue\Jobs\Job` class contains the implementation of `fail` and no code changes should be required by typical application code. However, if you are building custom queue driver which utilizes a job class that **does not** extend the base job class offered by Laravel, you should implement the `fail` method manually in your custom job class. You may refer to Laravel's base job class as a reference implementation.
+La clase base `Illuminate\Queue\Jobs\Job` contiene la implementación de `fail` así que una aplicación típica no debe requerir cambios de código. Sin embargo, si estás creando un worker de cola personalizado que utiliza una clase de trabajo que **no** extiende la clase de trabajo base ofrecida por Laravel, debes implementar el método `fail` manualmente en tu clase de trabajo personalizado. Puedes revisar la clase de trabajo base de Laravel como una implementación de referencia.
 
-This change allows custom queue drivers to have more control over the job deletion process.
+Este cambio permite que los workers de cola personalizados tengan más control sobre el proceso de eliminación de trabajos.
 
 #### Redis Blocking Pop
 
-**Likelihood Of Impact: Very Low**
+**Probabilidad De Impacto: Muy Baja**
 
-Using the "blocking pop" feature of the Redis queue driver is now safe. Previously, there was a small chance that a queued job could be lost if the Redis server or worker crashed at the same time the job was retrieved. In order to make blocking pops safe, a new Redis list with suffix `:notify` is created for each Laravel queue.
+El uso de la función de "bloqueo emergente" del driver de cola Redis ahora es seguro. Anteriormente, había una pequeña posibilidad de que un trabajo en cola pudiera perderse si el servidor o el trabajador de Redis fallaba al mismo tiempo que se recuperaba el trabajo. Para hacer que el bloqueo emergente sea seguro, se crea una nueva lista de Redis con el sufijo `:notify` para cada cola de Laravel.
 
 <a name="requests"></a>
-### Requests
+### Solicitudes (Requests)
 
 #### The `TransformsRequest` Middleware
 
-**Likelihood Of Impact: Low**
+**Probabilidad De Impacto: Baja**
 
-The `transform` method of the `Illuminate\Foundation\Http\Middleware\TransformsRequest` middleware now receives the "fully-qualified" request input key when the input is an array:
+El método `transform` del middleware `Illuminate\Foundation\Http\Middleware\TransformsRequest` ahora recibe la clave de entrada de solicitud "fully-qualified" cuando la entrada es un arreglo:
 
     'employee' => [
         'name' => 'Taylor Otwell',
@@ -446,70 +473,94 @@ The `transform` method of the `Illuminate\Foundation\Http\Middleware\TransformsR
     }
 
 <a name="routing"></a>
-### Routing
+### Enrutamiento (Routing)
 
-#### The `UrlGenerator` Contract
+#### El Contrato `UrlGenerator` 
 
-**Likelihood Of Impact: Very Low**
+**Probabilidad De Impacto: Muy Baja**
 
-The `previous` method [has been added to the `Illuminate\Contracts\Routing\UrlGenerator` contract](https://github.com/laravel/framework/pull/25616). If you are implementing this interface, you should add this method to your implementation.
+El método `previous` [se ha agregado al contrato `Illuminate\Contracts\Routing\UrlGenerator`](https://github.com/laravel/framework/pull/25616). Si estás implementando esta interfaz, debes agregar este método a tu implementación.
 
-#### The `cachedSchema` Property Of `Illuminate/Routing/UrlGenerator`
+#### La Propiedad `cachedSchema` De `Illuminate/Routing/UrlGenerator`
 
-**Likelihood Of Impact: Very Low**
+**Probabilidad De Impacto: Muy Baja**
 
-The `$cachedSchema` property name (which has been deprecated in Laravel `5.7`) of `Illuminate/Routing/UrlGenerator` [has been changed to](https://github.com/laravel/framework/pull/26728) `$cachedScheme`.
+El nombre de la propiedad `$cachedSchema` (que ha quedado en desuso en Laravel` 5.7`) de `Illuminate/Routing/UrlGenerator` [se ha cambiado a](https://github.com/laravel/framework/pull/26728) `$cachedScheme`.
 
 <a name="sessions"></a>
-### Sessions
+### Sesiones
 
-#### The `StartSession` Middleware
+#### El middleware `StartSession`
 
-**Likelihood Of Impact: Very Low**
+**Probabilidad De Impacto: Muy Baja**
 
-The session persistence logic has been [moved from the `terminate()` method to the `handle()` method](https://github.com/laravel/framework/pull/26410). If you are overriding one or both of these methods, you should update them to reflect these changes.
+La lógica de persistencia de la sesión se ha [movido del método `terminate()` al método `handle()`](https://github.com/laravel/framework/pull/26410). Si estás sobreescribiendo uno o ambos de estos métodos, debes actualizarlos para reflejar estos cambios.
 
 <a name="support"></a>
-### Support
+### Soporte 
 
 <a name="string-and-array-helpers"></a>
-#### Prefer String And Array Classes Over Helpers
+#### Preferir Clases String Y Array Sobre Helpers
 
-**Likelihood Of Impact: Medium**
+**Probabilidad De Impacto: Media**
 
-All `array_*` and `str_*` global helpers [have been deprecated](https://github.com/laravel/framework/pull/26898). You should use the `Illuminate\Support\Arr` and `Illuminate\Support\Str` methods directly.
+Todos los helpers globales `array_ *` y `str_ *` [han sido puestos en desuso](https://github.com/laravel/framework/pull/26898). Debe usar los métodos de `Illuminate\Support\Arr` y `Illuminate\Support\Str` directamente.
 
-The impact of this change has been marked as `medium` since the helpers have been moved to the new [laravel/helpers](https://github.com/laravel/helpers) package which offers a backwards compatibility layer for all of the global array and string functions.
+El impacto de este cambio se ha marcado como "medio" desde que las funciones helpers se han trasladado al nuevo paquete [laravel/helpers](https://github.com/laravel/helpers) que ofrece una capa de compatibilidad hacia atrás para todos las funciones globales de arreglos y de cadenas.
 
 <a name="deferred-service-providers"></a>
-#### Deferred Service Providers
+#### Proveedores De Servicios Diferidos
 
-**Likelihood Of Impact: Medium**
+**Probabilidad De Impacto: Media**
 
-The `defer` boolean property on the service provider which is/was used to indicate if a provider is deferred [has been deprecated](https://github.com/laravel/framework/pull/27067). In order to mark the service provider as deferred it should implement the `Illuminate\Contracts\Support\DeferrableProvider` contract.
+La propiedad booleana `defer` en el proveedor de servicios que se usa para indicar si un proveedor está diferido [ha quedado en desuso](https://github.com/laravel/framework/pull/27067). Para marcar el proveedor de servicios como diferido, debes implementar el contrato `Illuminate\Contracts\Support\DeferrableProvider`.
+
+#### Helper De Sólo Lectura `env`
+
+**Probabilidad De Impacto: Bajo**
+
+Anteriormente, el helper `env` podia retornar valores de variables de entorno que eran cambiadas en tiempo de ejecución. En Laravel 5.8, el helper `env` trata a las variables de entorno como inmutables. Si quisieras cambiar una variable de entorno en tiempo de ejecución, considera usar un valor de configuración que puede ser retornado usando el helper `config`:
+
+Comportamiento anterior:
+
+    dump(env('APP_ENV')); // local
+
+    putenv('APP_ENV=staging');
+
+    dump(env('APP_ENV')); // staging
+
+Nuevo comportamiento:
+
+    dump(env('APP_ENV')); // local
+
+    putenv('APP_ENV=staging');
+
+    dump(env('APP_ENV')); // local
 
 <a name="testing"></a>
-### Testing
+### Pruebas
 
-#### PHPUnit 8
+#### Los metodos `setUp` Y `tearDown`
 
-**Likelihood Of Impact: Optional**
-
-By default, Laravel 5.8 uses PHPUnit 7. However, you may optionally upgrade to PHPUnit 8, which requires PHP >= 7.2. In addition, please read through the entire list of changes in [the PHPUnit 8 release announcement](https://phpunit.de/announcements/phpunit-8.html).
-
-The `setUp` and `tearDown` methods now require a void return type:
+Los métodos `setUp` y` tearDown` ahora requieren un tipo de retorno nulo:
 
     protected function setUp(): void
     protected function tearDown(): void
 
+#### PHPUnit 8
+
+**Probabilidad De Impacto: Opcional**
+
+De forma predeterminada, Laravel 5.8 usa PHPUnit 7. Sin embargo, opcionalmente puedes actualizar a PHPUnit 8, que requiere PHP> = 7.2. Además, lee la lista completa de cambios en [el anuncio de la versión de PHPUnit 8](https://phpunit.de/announcements/phpunit-8.html).
+
 <a name="validation"></a>
-### Validation
+### Validación
 
-#### The `Validator` Contract
+#### El Contrato `Validator` 
 
-**Likelihood Of Impact: Very Low**
+**Probabilidad De Impacto: Muy Baja**
 
-The `validated` method [was added to the `Illuminate\Contracts\Validation\Validator` contract](https://github.com/laravel/framework/pull/26419):
+El método `validated` [se agregó al contrato `Illuminate\Contracts\Validation\Validator`](https://github.com/laravel/framework/pull/26419):
 
     /**
      * Get the attributes and values that were validated.
@@ -518,57 +569,57 @@ The `validated` method [was added to the `Illuminate\Contracts\Validation\Valida
      */
     public function validated();
 
-If you are implementing this interface, you should add this method to your implementation.
+Si estás implementando esta interfaz, debes agregar este método a tu implementación.
 
-#### The `ValidatesAttributes` Trait
+#### El trait `ValidatesAttributes`
 
-**Likelihood Of Impact: Very Low**
+**Probabilidad De Impacto: Muy Baja**
 
-The `parseTable`, `getQueryColumn` and `requireParameterCount` methods of the `Illuminate\Validation\Concerns\ValidatesAttributes` trait have been changed from `protected` to `public`.
+Los métodos `parseTable`,` getQueryColumn` y `requireParameterCount` del trait `Illuminate\Validation\Concerns\ValidatesAttributes` se han cambiado de `protected` a` public`.
 
-#### The `DatabasePresenceVerifier` Class
+#### La Clase `DatabasePresenceVerifier` 
 
-**Likelihood Of Impact: Very Low**
+**Probabilidad De Impacto: Muy Baja**
 
-The `table` method of the `Illuminate\Validation\DatabasePresenceVerifier` class has been changed from `protected` to `public`.
+El método `table` de la clase `Illuminate\Validation\DatabasePresenceVerifier` se ha cambiado de `protected` a` public`.
 
-#### The `Validator` Class
+#### La Clase `Validator` 
 
-**Likelihood Of Impact: Very Low**
+**Probabilidad De Impacto: Muy Baja**
 
-The `getPresenceVerifierFor` method of the `Illuminate\Validation\Validator` class [has been changed](https://github.com/laravel/framework/pull/26717) from `protected` to `public`.
+El método `getPresenceVerifierFor` de la clase `Illuminate\Validation\Validator` [ha sido cambiado](https://github.com/laravel/framework/pull/26717) de `protected` a` public`.
 
-#### Email Validation
+#### Validación De Correo Electrónico
 
-**Likelihood Of Impact: Very Low**
+**Probabilidad De Impacto: Muy Baja**
 
-The email validation rule now checks if the email is [RFC5630](https://tools.ietf.org/html/rfc6530) compliant, making the validation logic consistent with the logic used by SwiftMailer. In Laravel `5.7`, the `email` rule only verified that the email was [RFC822](https://tools.ietf.org/html/rfc822) compliant.
+La regla de validación de correo electrónico ahora comprueba si el correo electrónico es compatible con [RFC6530](https://tools.ietf.org/html/rfc6530), lo que hace que la lógica de validación sea coherente con la lógica utilizada por SwiftMailer. En Laravel `5.7`, la regla` email` solo verificaba que el correo electrónico era compatible con [RFC822](https://tools.ietf.org/html/rfc822).
 
-Therefore, when using Laravel 5.8, emails that were previously incorrectly considered invalid will now be considered valid (e.g `hej@bär.se`).  Generally, this should be considered a bug fix; however, it is listed as a breaking change out of caution. [Please let us know if you encounter any issues surrounding this change](https://github.com/laravel/framework/pull/26503).
+Por lo tanto, cuando se usa Laravel 5.8, los correos electrónicos que antes se consideraban incorrectamente no válidos ahora se considerarán válidos (por ejemplo, `hej@bär.se`). En general, esto debería considerarse una corrección de errores; sin embargo, está listado como un cambio de ruptura por precaución. [Por favor háznos saber si tienes algún problema relacionado con este cambio](https://github.com/laravel/framework/pull/26503).
 
 <a name="view"></a>
-### View
+### Vistas
 
-#### The `getData` Method
+#### El Método `getData` 
 
-**Likelihood Of Impact: Very Low**
+**Probabilidad De Impacto: Muy Baja**
 
-The `getData` method [was added to the `Illuminate\Contracts\View\View` contract](https://github.com/laravel/framework/pull/26754). If you are implementing this interface, you should add this method to your implementation.
+El método `getData` [se agregó al contrato `Illuminate\Contracts\View\View`](https://github.com/laravel/framework/pull/26754). Si estás implementando esta interfaz, debes agregar este método a tu implementación.
 
 <a name="notifications"></a>
-### Notifications
+### Notificaciones
 
 <a name="nexmo-slack-notification-channels"></a>
-#### Nexmo / Slack Notification Channels
+#### Canales De Notificación Nexmo / Slack
 
-**Likelihood Of Impact: High**
+**Probabilidad De Impacto: Alta**
 
-The Nexmo and Slack Notification channels have been extracted into first-party packages. To use these channels in your application, require the following packages:
+Los canales de notificación de Nexmo y Slack se han extraído en paquetes oficiales. Para usar estos canales en su aplicación, requiera los siguientes paquetes:
 
     composer require laravel/nexmo-notification-channel
     composer require laravel/slack-notification-channel
 
 <a name="miscellaneous"></a>
-### Miscellaneous
+### Miseláneaos
 
-We also encourage you to view the changes in the `laravel/laravel` [GitHub repository](https://github.com/laravel/laravel). While many of these changes are not required, you may wish to keep these files in sync with your application. Some of these changes will be covered in this upgrade guide, but others, such as changes to configuration files or comments, will not be. You can easily view the changes with the [GitHub comparison tool](https://github.com/laravel/laravel/compare/5.7...master) and choose which updates are important to you.
+También te recomendamos que veas los cambios en el repositorio `laravel/laravel` [de GitHub](https://github.com/laravel/laravel). Si bien muchos de estos cambios no son necesarios, es posible que desees mantener estos archivos sincronizados con tu aplicación. Algunos de estos cambios se tratarán en esta guía de actualización, pero otros, como los cambios en los archivos de configuración o los comentarios, no lo estarán. Puedes ver fácilmente los cambios con la [herramienta de comparación GitHub](https://github.com/laravel/laravel/compare/5.7...master) y elegir qué actualizaciones son importantes para ti.
