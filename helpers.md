@@ -1313,9 +1313,9 @@ La función `cache` puede ser usada para obtener un valor de la [cache](/docs/{{
     
     $value = cache('key', 'default');
 
-Puedes agregar elementos a la cache pasando un arreglo de pares clave / valor a la función. También debes pasar la cantidad de minutos o la duración que el valor almacenado en caché debe considerarse válido:
+Puedes agregar elementos a la cache pasando un arreglo de pares clave / valor a la función. También debes pasar la cantidad de segundos o la duración que el valor almacenado en caché debe considerarse válido:
 
-    cache(['key' => 'value'], 5);
+    cache(['key' => 'value'], 300);
     
     cache(['key' => 'value'], now()->addSeconds(10));
 
