@@ -275,7 +275,7 @@ A partir de Laravel 5.8, la [versión SQLite más antigua soportada](https://git
 
 **Probabilidad de Impacto: Ninguna**
 
-[A partir de Laravel 5.8](https://github.com/laravel/framework/pull/26454), las nuevas migraciones usan el método `bigIncrements` para las columnas ID de forma predeterminada. Anteriormente, las columnas ID eran creadas usando el método `increments`. 
+[A partir de Laravel 5.8](https://github.com/laravel/framework/pull/26472), las nuevas migraciones usan el método `bigIncrements` para las columnas ID de forma predeterminada. Anteriormente, las columnas ID eran creadas usando el método `increments`. 
 
 Esto no afectará algún código que exista en tu proyecto; sin embargo, debes estar consciente que las columnas de clave foránea deben ser del mismo tipo. Por lo tanto, una columna creada usando el método `increments` no puede hacer referencia a una columna creada usando el método `bigIncrements`.
 
