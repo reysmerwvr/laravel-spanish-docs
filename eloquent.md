@@ -432,7 +432,7 @@ El método `firstOrNew`, al igual que `firstOrCreate`, intentará localizar un r
 
     // Recupera vuelo por nombre o lo crea con los atributos name, delayed y arrival_time...
     $flight = App\Flight::firstOrCreate(
-        ['name' => 'Flight 10'], 
+        ['name' => 'Flight 10'],
         ['delayed' => 1, 'arrival_time' => '11:30']
     );
 
@@ -441,7 +441,7 @@ El método `firstOrNew`, al igual que `firstOrCreate`, intentará localizar un r
 
     // Recupera por nombre o crea una instancia con los atributos name, delayed y arrival_time...
     $flight = App\Flight::firstOrNew(
-        ['name' => 'Flight 10'], 
+        ['name' => 'Flight 10'],
         ['delayed' => 1, 'arrival_time' => '11:30']
     );
 
@@ -700,7 +700,7 @@ Los scopes deberían devolver siempre una instancia del constructor de consultas
         /**
          * Scope a query to only include popular users.
          *
-         * @param \Illuminate\Database\Eloquent\Builder $query
+         * @param  \Illuminate\Database\Eloquent\Builder  $query
          * @return \Illuminate\Database\Eloquent\Builder
          */
         public function scopePopular($query)
@@ -711,7 +711,7 @@ Los scopes deberían devolver siempre una instancia del constructor de consultas
         /**
          * Scope a query to only include active users.
          *
-         * @param \Illuminate\Database\Eloquent\Builder $query
+         * @param  \Illuminate\Database\Eloquent\Builder  $query
          * @return \Illuminate\Database\Eloquent\Builder
          */
         public function scopeActive($query)
@@ -751,8 +751,8 @@ Algunas veces, puedes desear definir un scope que acepte parámetros. Para empez
         /**
          * Scope a query to only include users of a given type.
          *
-         * @param  \Illuminate\Database\Eloquent\Builder $query
-         * @param  mixed $type
+         * @param  \Illuminate\Database\Eloquent\Builder  $query
+         * @param  mixed  $type
          * @return \Illuminate\Database\Eloquent\Builder
          */
         public function scopeOfType($query, $type)
