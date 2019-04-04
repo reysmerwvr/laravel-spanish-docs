@@ -19,7 +19,7 @@ La mayoría de las aplicaciones web proporciona una forma para que los usuarios 
 <a name="resetting-database"></a>
 ## Consideraciones de la Base de Datos
 
-Para comenzar, verifica que tu modelo `App\User` implementa el contrato `Illuminate\Contracts\Auth\CanResetPassword`. El modelo `App\User` incluído con el framework ya implementa esta interfaz y usa el trait `Illuminate\Auth\Passwords\CanResetPassword` para incluir los métodos necesarios para implementar la interfaz.
+Para comenzar, verifica que tu modelo `App\User` implementa la interfaz `Illuminate\Contracts\Auth\CanResetPassword`. El modelo `App\User` incluído con el framework ya implementa esta interfaz y usa el trait `Illuminate\Auth\Passwords\CanResetPassword` para incluir los métodos necesarios para implementar la interfaz.
 
 #### Generando La Migración Para La Tabla de Tokens de Restablecimiento
 

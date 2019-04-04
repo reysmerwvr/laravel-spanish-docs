@@ -138,7 +138,7 @@ Esta sentencia le dice al contenedor que debe inyectar `RedisEventPusher` cuando
 <a name="contextual-binding"></a>
 ### Enlaces Contextuales
 
-Algunas veces tendrás dos clases que usan la misma interfaz, pero quieres inyectar diferentes implementaciones en cada clase. Por ejemplo, dos controladores pueden depender de diferentes implementaciones del [contrato](/docs/{{version}}/contracts) `Illuminate\Contracts\Filesystem\Filesystem`. Laravel proporciona una simple y fluida interfaz para definir este comportamiento:
+Algunas veces tendrás dos clases que usan la misma interfaz, pero quieres inyectar diferentes implementaciones en cada clase. Por ejemplo, dos controladores pueden depender de diferentes implementaciones de la [interfaz](/docs/{{version}}/contracts) `Illuminate\Contracts\Filesystem\Filesystem`. Laravel proporciona una simple y fluida interfaz para definir este comportamiento:
 
     use Illuminate\Support\Facades\Storage;
     use App\Http\Controllers\PhotoController;

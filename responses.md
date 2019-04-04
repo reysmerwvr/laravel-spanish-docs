@@ -190,7 +190,7 @@ Después de que el usuario es redireccionado, puedes mostrar el mensaje enviado 
 <a name="other-response-types"></a>
 ## Otros Tipos de Respuesta
 
-El helper `response` puede ser usado para generar otros tipos de instancias de respuesta. Cuando el helper `response` es ejecutado sin argumentos, una implementación del [contrato](/docs/{{version}}/contracts) `Illuminate\Contracts\Routing\ResponseFactory` es devuelta. Este contrato proporciona varios métodos útiles para generar respuestas.
+El helper `response` puede ser usado para generar otros tipos de instancias de respuesta. Cuando el helper `response` es ejecutado sin argumentos, una implementación de la [interfaz](/docs/{{version}}/contracts) `Illuminate\Contracts\Routing\ResponseFactory` es devuelta. Esta interfaz proporciona varios métodos útiles para generar respuestas.
 
 <a name="view-responses"></a>
 ### Respuestas de Vista

@@ -104,7 +104,7 @@ Ocasionalmente, puedes necesitar compartir una pieza de datos con todas las vist
 
 Los view composers son funciones de retorno o métodos de clase que son ejecutados cuando una vista es renderizada. Si tienes datos que quieres que estén enlazados a una vista cada vez que la vista es renderizada, un view composer puede ayudarte a organizar esa lógica dentro de una sola ubicación.
 
-Para este ejemplo, vamos a registrar los View Composers dentro de un [proveedor de servicio](/docs/{{version}}/providers). Usaremos la clase facade `View` para acceder a la implementación de contrato `Illuminate\Contracts\View\Factory` subyacente. Recuerda, Laravel no incluye un directorio predeterminado para los View Composers. Eres libre de organizarlos del modo que desees. Por ejemplo, podrías crear un directorio `app/Http/View/Composers`:
+Para este ejemplo, vamos a registrar los View Composers dentro de un [proveedor de servicio](/docs/{{version}}/providers). Usaremos la clase facade `View` para acceder a la implementación de la interfaz `Illuminate\Contracts\View\Factory` subyacente. Recuerda, Laravel no incluye un directorio predeterminado para los View Composers. Eres libre de organizarlos del modo que desees. Por ejemplo, podrías crear un directorio `app/Http/View/Composers`:
 
     <?php
 

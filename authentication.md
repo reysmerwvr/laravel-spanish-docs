@@ -20,8 +20,8 @@
 - [Agregar Guards Personalizados](#adding-custom-guards)
     - [Guards De Closures De Peticiones](#closure-request-guards)
 - [Agregar User Providers Personalizados](#adding-custom-user-providers)
-    - [El Contrato De Proveedor De Usuario](#the-user-provider-contract)
-    - [El Contrato Authenticatable](#the-authenticatable-contract)
+    - [La Interfaz UserProvider](#the-user-provider-contract)
+    - [La Interfaz Authenticatable](#the-authenticatable-contract)
 - [Eventos](#events)
 
 <a name="introduction"></a>
@@ -299,7 +299,7 @@ Si estás "recordando" usuarios, puedes utilizar el método `viaRemember` para d
 
 #### Autenticar Una Instancia De Usuario
 
-Si necesitas registrar una instancia de usuario existente en tu aplicación, puedes llamar al método `login` con la instancia de usuario. El objeto proporcionado deberá ser una implementación del [contract](/docs/{{version}}/contracts) `Illuminate\Contracts\Auth\Authenticatable`. El modelo `App\User` incluido en Laravel ya implementa esta interface:
+Si necesitas registrar una instancia de usuario existente en tu aplicación, puedes llamar al método `login` con la instancia de usuario. El objeto proporcionado deberá ser una implementación de la [interfaz](/docs/{{version}}/contracts) `Illuminate\Contracts\Auth\Authenticatable`. El modelo `App\User` incluido en Laravel ya implementa esta interfaz:
 
     Auth::login($user);
 
@@ -530,11 +530,11 @@ Finalmente, puedes utilizar este proveedor en tu configuración de `guards`:
     ],
 
 <a name="the-user-provider-contract"></a>
-### El Contrato De Proveedor De Usuario
+### La Interfaz UserProvider
 
 Las implementaciones `Illuminate\Contracts\Auth\UserProvider` son responsables solamente de obtener una implementación de `Illuminate\Contracts\Auth\Authenticatable` desde un sistema de almacenamiento persistente, como MySQL, Riak, etc. Estas dos interfaces permiten a los mecanismos de autenticación de Laravel continuar funcionando independientemente de cómo esté almacenada la información del usuario o qué tipo de clase es utilizado para representarlo.
 
-Echemos un vistaso al contract `Illuminate\Contracts\Auth\UserProvider`:
+Echemos un vistaso a la interfaz `Illuminate\Contracts\Auth\UserProvider`:
 
     <?php
 
@@ -561,9 +561,9 @@ El método `retrieveByCredentials` recupera el arreglo de credenciales pasadas a
 El método `validateCredentials` deberá comparar el `$user` proporcionado con sus `$credentials` para autenticar el usuario. Por ejemplo, este método puede utilizar `Hash::check` para comparar los valores de `$user->getAuthPassword()` al valor de `$credentials['password']`. Este método deberá retornar `true` o `false` indicando si la contraseña es válida o no.
 
 <a name="the-authenticatable-contract"></a>
-### El Contrato Authenticatable
+### La Interfaz Authenticatable
 
-Ahora que hemos explorado cada uno de los métodos en `UserProvider`, vamos a echar un vistazo al contract `Authenticatable`. Recuerda, el proveedor deberá retornar implementaciones de esta interfaz desde los métodos `retrieveById`, `retrieveByToken` y `retrieveByCredentials`:
+Ahora que hemos explorado cada uno de los métodos en `UserProvider`, vamos a echar un vistazo a la interfaz `Authenticatable`. Recuerda, el proveedor deberá retornar implementaciones de esta interfaz desde los métodos `retrieveById`, `retrieveByToken` y `retrieveByCredentials`:
 
     <?php
 

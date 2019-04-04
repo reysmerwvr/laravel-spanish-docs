@@ -829,7 +829,7 @@ La configuración regional de múltiples entradas notificables también puede se
 
 ### Configuración Regional Preferida Por El Usuario
 
-A veces, las aplicaciones almacenan la configuración regional preferida de cada usuario. Al implementar el contrato `HasLocalePreference` en tu modelo notificable, puedes instruir a Laravel que use esta configuración almacenada al enviar una notificación:
+A veces, las aplicaciones almacenan la configuración regional preferida de cada usuario. Al implementar la interfaz `HasLocalePreference` en tu modelo notificable, puedes instruir a Laravel que use esta configuración almacenada al enviar una notificación:
 
     use Illuminate\Contracts\Translation\HasLocalePreference;
 
