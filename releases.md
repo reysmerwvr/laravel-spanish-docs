@@ -127,7 +127,7 @@ Sin embargo, esto puede volverse engorroso y repetitivo si estás especificando 
 
 ### Eventos Para Modelos Pivote O Tabla intermedia 
 
-En versiones anteriores de Laravel, los eventos del modelo Eloquent no se distribuían al adjuntar, separar o sincronizar modelos personalizados de tabla intermedia / pivote de una relación de muchos a muchos. Cuando usas [modelos personalizados para tablas intermedias](/docs/{{version}}/eloquent-relationships#defining-custom-intermediate-table-models) en Laravel 5.8, estos eventos ahora serán enviados.
+En versiones anteriores de Laravel, [los eventos del modelo Eloquent](/docs/{{version}}/eloquent#events) no se disparaban al adjuntar, separar o sincronizar modelos personalizados de tabla intermedia / pivote de una relación de muchos a muchos. Cuando usas [modelos personalizados para tablas intermedias](/docs/{{version}}/eloquent-relationships#defining-custom-intermediate-table-models) en Laravel 5.8, los eventos aplicables al modelo ahora serán disparados.
 
 ### Mejoras Al Método Call De Artisan
 
