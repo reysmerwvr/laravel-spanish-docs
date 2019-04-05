@@ -9,7 +9,7 @@
 - [Joins](#joins)
 - [Uniones](#unions)
 - [Cláusulas Where](#where-clauses)
-    - [Agrupamiento de Parametros](#parameter-grouping)
+    - [Agrupamiento de parámetros](#parameter-grouping)
     - [Cláusulas Exists Where](#where-exists-clauses)
     - [Cláusulas Where JSON](#json-where-clauses)
 - [Ordenamiento, Agrupamiento, Límite, y Desplazamiento](#ordering-grouping-limit-and-offset)

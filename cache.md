@@ -361,7 +361,7 @@ Solo necesitas implementar cada uno de estos métodos utilizando una conexión d
         return Cache::repository(new MongoStore);
     });
 
-> {tip} Si te preguntas dónde puedes colocar el código de tu driver de caché personalizado, puedes crear un nombre de espacio `Extensions` en tu directorio `app`. Sin embargo, ten en cuenta que Laravel no tiene una estructura de aplicación rígida y por tanto eres libre de organizar tu aplicación de acuerdo a tus preferencias.
+> {tip} Si te preguntas dónde puedes colocar el código de tu driver de caché personalizado, puedes crear un espacio de nombre `Extensions` en tu directorio `app`. Sin embargo, ten en cuenta que Laravel no tiene una estructura de aplicación rígida y por tanto eres libre de organizar tu aplicación de acuerdo a tus preferencias.
 
 <a name="registering-the-driver"></a>
 ### Registrando El Driver

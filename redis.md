@@ -108,7 +108,7 @@ Para utilizar la extensión PhpRedis, deberás cambiar la opción `client` de tu
         // Resto de la configuración de Redis...
     ],
 
-Además de las opciones predeterminadas de configuración del servidor `host`, `port`, `database` y `password`, PhpRedis admite los siguientes parametros de conexión adicionales: `persistent`, `prefix`, `read_timeout` y `timeout`. Puedes agregar cualquiera de estas opciones a la configuración del servidor de Redis en el archivo de configuración `config/database.php`:
+Además de las opciones predeterminadas de configuración del servidor `host`, `port`, `database` y `password`, PhpRedis admite los siguientes parámetros de conexión adicionales: `persistent`, `prefix`, `read_timeout` y `timeout`. Puedes agregar cualquiera de estas opciones a la configuración del servidor de Redis en el archivo de configuración `config/database.php`:
 
     'default' => [
         'host' => env('REDIS_HOST', 'localhost'),

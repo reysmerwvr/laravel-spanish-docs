@@ -103,7 +103,7 @@ El directorio `vendor` contiene tus dependencias de [Composer](https://getcompos
 <a name="the-app-directory"></a>
 ## Directorio App
 
-La mayoría de tu aplicación está almacenada el directorio `app`. Por defecto, este directorio está regido por el nombre de espacio `App` y es cargado automáticamente por Composer usando el [estándar de autocarga PSR-4](https://www.php-fig.org/psr/psr-4/).
+La mayoría de tu aplicación está almacenada el directorio `app`. Por defecto, este directorio está regido por el espacio de nombre `App` y es cargado automáticamente por Composer usando el [estándar de autocarga PSR-4](https://www.php-fig.org/psr/psr-4/).
 
 El directorio `app` contiene una variedad de directorios adicionales tales como `Console`, `Http` y `Providers`. Piensa en los directorios `Console` y `Http` como si proporcionaran una API al núcleo de tu aplicación, pero no contienen lógica de la aplicación como tal. En otras palabras, son dos formas de emtir comandos a tu aplicación. El directorio `Console` contiene todos tus comandos de Artisan, mientras que el directorio `Http` contiene tus controladores, middleware y solicitudes.
 
