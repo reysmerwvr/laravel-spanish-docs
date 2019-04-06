@@ -42,7 +42,7 @@ Telescope de Laravel es un elegante asistente para depurar código para el frame
 
 Puedes usar Composer para instalar Telescope dentro de tu proyecto de Laravel:
 
-    composer require laravel/telescope
+    composer require "laravel/telescope":"~1.0"
 
 Después de instalar Telescope, publica sus recursos usando el comando Artisan `telescope:install`. Después de instalar Telescope, también deberías ejecutar el comando `migrate`:
 
