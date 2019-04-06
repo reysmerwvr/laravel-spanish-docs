@@ -158,7 +158,7 @@ La interfaz `ShouldBroadcast` requiere que nuestro evento defina un método `bro
     /**
      * Get the channels the event should broadcast on.
      *
-     * @return array
+     * @return \Illuminate\Broadcasting\PrivateChannel
      */
     public function broadcastOn()
     {
