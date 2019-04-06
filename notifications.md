@@ -94,7 +94,7 @@ Alternativamente, puedes enviar notificaciones mediante la [facade](/docs/{{vers
 <a name="specifying-delivery-channels"></a>
 ### Especificar Canales De Entrega
 
-Cada clase de notificación tiene un método `via` que determina mediante cuáles canales será entregada la notificación. Por defecto, las notificaciones pueden ser enviadas por los canales  `mail`, `database`, `broadcast`, `nexmo`, y `slack`.
+Cada clase de notificación tiene un método `via` que determina mediante cuáles canales será entregada la notificación. Las notificaciones pueden ser enviadas por los canales  `mail`, `database`, `broadcast`, `nexmo`, y `slack`.
 
 > {tip} Si estás interesado en utilizar otros canales de entrega como Telegram o Pusher, revisa el sitio dirigido por la comunidad [Laravel Notification Channels](http://laravel-notification-channels.com).
 
