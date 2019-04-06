@@ -25,7 +25,14 @@ En otras palabras, es un entorno de desarrollo de Laravel sorprendentemente ráp
 
 Por defecto, Valet brinda soporte para las siguientes tecnologías, pero no está limitado a sólo ellas:
 
-<div class="content-list" markdown="1">
+<style>
+    #valet-support > ul {
+        column-count: 3; -moz-column-count: 3; -webkit-column-count: 3;
+        line-height: 1.9;
+    }
+</style>
+
+<div id="valet-support" markdown="1">
 - [Laravel](https://laravel.com)
 - [Lumen](https://lumen.laravel.com)
 - [Bedrock](https://roots.io/bedrock/)
