@@ -347,14 +347,14 @@ Puedes encadenar en conjunto las restricciones where así como añadir cláusula
 
 #### Cláusulas Where Adicionales
 
-**whereBetween**
+**whereBetween / orWhereBetween**
 
 El método `whereBetween` verifica que un valor de columna esté en un intervalo de valores:
 
     $users = DB::table('users')
                         ->whereBetween('votes', [1, 100])->get();
 
-**whereNotBetween**
+**whereNotBetween / orWhereNotBetween**
 
 El método `whereNotBetween` verifica que un valor de columna no esté en un intervalo de valores:
 
@@ -362,7 +362,7 @@ El método `whereNotBetween` verifica que un valor de columna no esté en un int
                         ->whereNotBetween('votes', [1, 100])
                         ->get();
 
-**whereIn / whereNotIn**
+**whereIn / whereNotIn / orWhereIn / orWhereNotIn**
 
 El método `whereIn` verifica que un valor de una columna dada esté contenido dentro del arreglo dado:
 
@@ -376,7 +376,7 @@ El método `whereNotIn` verifica que el valor de una columna dada **no** esté c
                         ->whereNotIn('id', [1, 2, 3])
                         ->get();
 
-**whereNull / whereNotNull**
+**whereNull / whereNotNull / orWhereNull / orWhereNotNull**
 
 El método `whereNull` verifica que el valor de una columna dada sea `NULL`:
 
@@ -422,7 +422,7 @@ El método `whereTime` puede ser usado para comparar el valor de una columna con
                     ->whereTime('created_at', '=', '11:20')
                     ->get();
 
-**whereColumn**
+**whereColumn / orWhereColumn**
 
 El método `whereColumn` puede ser usado para verificar que dos columnas son iguales:
 
