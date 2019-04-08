@@ -67,7 +67,7 @@ O, puedes usar el método `withHeaders` para especificar un arreglo de encabezad
 
 ##### Middleware para Control de Cache
 
-Laravel incluye un middleware llamado `cache.headers` que puede usarse para configurar rápidamente el encabezado` Cache-Control` para un grupo de rutas:
+Laravel incluye un middleware llamado `cache.headers` que puede usarse para configurar rápidamente el encabezado` Cache-Control` para un grupo de rutas. Si se especifica `etag` en la lista de directivas, un hash MD5 del contenido de la respuesta se establecerá automáticamente como el identificador de ETag:
 
     Route::middleware('cache-control:public,max-age=2628000;etag')->group(function() {
 
