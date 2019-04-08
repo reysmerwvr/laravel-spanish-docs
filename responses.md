@@ -65,6 +65,22 @@ O, puedes usar el método `withHeaders` para especificar un arreglo de encabezad
                     'X-Header-Two' => 'Header Value',
                 ]);
 
+##### Middleware para Control de Cache
+
+Laravel se envía con un middleware conveniente llamado `cache.headers`. El middleware adjuntará sus directivas de caché personalizadas al encabezado `Cache-Control` de la respuesta, siempre que se haya realizado a través de las solicitudes` GET` y `HEAD` y el contenido no esté vacío.
+
+    Route::middleware('cache-control:public,max-age=2628000;etag')->group(function() {
+
+        Route::get('privacy-policy', function () {
+            // ...
+        });
+
+        Route::get('terms-and-conditions', function () {
+            // ...
+        });
+
+    });
+
 <a name="attaching-cookies-to-responses"></a>
 #### Adjuntando Cookies a las Respuestas
 
