@@ -10,6 +10,7 @@
     - [Notificaciones Bajo Demanda](#on-demand-notifications)
 - [Notificaciones Por Correo](#mail-notifications)
     - [Formato Para Mensajes Por Correo](#formatting-mail-messages)
+    - [Personalizar El Remitente](#customizing-the-sender)
     - [Personalizar El Destinatario](#customizing-the-recipient)
     - [Personalizar El Asunto](#customizing-the-subject)
     - [Personalizar Las Plantillas](#customizing-the-templates)
@@ -233,6 +234,24 @@ Algunas notificaciones informan a los usuarios acerca de errores, como un pago f
         return (new MailMessage)
                     ->error()
                     ->subject('Notification Subject')
+                    ->line('...');
+    }
+
+<a name="customizing-the-sender"></a>
+### Personalizar El Remitente
+
+Por defecto, el remitente del correo electrónico es definido en el archivo `config/mail.php`. Sin embargo, también puedes definir un remitente a través de una notificación específica:
+    
+    /**
+     * Get the mail representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return \Illuminate\Notifications\Messages\MailMessage
+     */
+    public function toMail($notifiable)
+    {
+        return (new MailMessage)
+                    ->from('noreply@laravel.com', 'Laravel')
                     ->line('...');
     }
 
