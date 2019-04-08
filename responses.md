@@ -67,15 +67,15 @@ O, puedes usar el método `withHeaders` para especificar un arreglo de encabezad
 
 ##### Middleware para Control de Cache
 
-Laravel se envía con un middleware conveniente llamado `cache.headers`. El middleware adjuntará sus directivas de caché personalizadas al encabezado `Cache-Control` de la respuesta, siempre que se haya realizado a través de las solicitudes` GET` y `HEAD` y el contenido no esté vacío.
+Laravel incluye un middleware llamado `cache.headers` que puede usarse para configurar rápidamente el encabezado` Cache-Control` para un grupo de rutas. Si se especifica `etag` en la lista de directivas, un hash MD5 del contenido de la respuesta se establecerá automáticamente como el identificador de ETag:
 
     Route::middleware('cache-control:public,max-age=2628000;etag')->group(function() {
 
-        Route::get('privacy-policy', function () {
+        Route::get('privacy', function () {
             // ...
         });
 
-        Route::get('terms-and-conditions', function () {
+        Route::get('terms', function () {
             // ...
         });
 
