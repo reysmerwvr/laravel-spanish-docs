@@ -28,7 +28,7 @@ El constructor de consultas (query builder) de Base de datos de Laravel, proporc
 
 El constructor de consultas de Laravel usa enlazamiento de parámetros PDO para proteger tu aplicación contra ataques de inyección SQL. No hay necesidad de limpiar cadenas que están siendo pasadas como enlaces.
 
-> {note} PDO no admite nombres de columna de enlace. Por lo tanto, nunca debe permitir que la entrada del usuario dicte los nombres de columna a los que hacen referencia sus consultas, incluidas las columnas "ordenar por", etc. Si debe permitir que el usuario seleccione ciertas columnas para consultar, siempre valide los nombres de las columnas con un blanco. Lista de columnas permitidas.
+> {note} PDO no admite nombres de columna de enlace (binding). Por lo tanto, nunca debes permitir que la entrada de usuario dicte los nombres de columna a los que hacen referencia tus consultas, incluidas las columnas "ordenar por", etc. Si debes permitir que el usuario seleccione ciertas columnas para consultar, valida siempre los nombres de las columnas con un una lista blanca de columnas permitidas.
 
 <a name="retrieving-results"></a>
 ## Obteniendo Los Resultados
