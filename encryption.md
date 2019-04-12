@@ -1,3 +1,5 @@
+::: v-pre
+
 # Cifrado
 
 - [Introducción](#introduction)
@@ -21,51 +23,57 @@ Antes de usar el cifrado de Laravel, debes establecer la opción `key` en tu arc
 
 Puedes cifrar un valor usando el helper o función de ayuda `encrypt`. Todos los valores cifrados se cifran utilizando OpenSSL y el cifrado `AES-256-CBC`. Además, todos los valores cifrados están firmados con un código de autenticación de mensaje (MAC) para detectar cualquier modificación en la cadena cifrada:
 
-    <?php
+```php
+<?php
 
-    namespace App\Http\Controllers;
+namespace App\Http\Controllers;
 
-    use App\User;
-    use Illuminate\Http\Request;
-    use App\Http\Controllers\Controller;
+use App\User;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
-    class UserController extends Controller
+class UserController extends Controller
+{
+    /**
+    * Store a secret message for the user.
+    *
+    * @param  Request  $request
+    * @param  int  $id
+    * @return Response
+    */
+    public function storeSecret(Request $request, $id)
     {
-        /**
-         * Store a secret message for the user.
-         *
-         * @param  Request  $request
-         * @param  int  $id
-         * @return Response
-         */
-        public function storeSecret(Request $request, $id)
-        {
-            $user = User::findOrFail($id);
+        $user = User::findOrFail($id);
 
-            $user->fill([
-                'secret' => encrypt($request->secret)
-            ])->save();
-        }
+        $user->fill([
+            'secret' => encrypt($request->secret)
+        ])->save();
     }
+}
+```
 
 #### Cifrado sin serialización
 
 Los valores cifrados se pasan a través de una serialización durante el proceso de cifrado, lo que permite el cifrado de objetos y matrices. De este modo, los clientes que no son PHP y reciben valores cifrados tendrán que des-serializar los datos. Si deseas cifrar y descifrar valores sin serialización, puede usar los métodos `encryptString` y` decryptString` de la facade `Crypt`:
 
-    use Illuminate\Support\Facades\Crypt;
+```php
+use Illuminate\Support\Facades\Crypt;
 
-    $encrypted = Crypt::encryptString('Hello world.');
+$encrypted = Crypt::encryptString('Hello world.');
 
-    $decrypted = Crypt::decryptString($encrypted);
+$decrypted = Crypt::decryptString($encrypted);
+```
 
 #### Descifrando un valor
 
 Puedes descifrar los valores usando el helper o función de ayuda `decrypt`. Si el valor no se puede descifrar correctamente, como cuando el MAC no es válido, se lanzará una `Illuminate\Contracts\Encryption\DecryptException`:
 
-    use Illuminate\Contracts\Encryption\DecryptException;
+```php
+use Illuminate\Contracts\Encryption\DecryptException;
 
-    try {
-        $decrypted = decrypt($encryptedValue);
-    } catch (DecryptException $e) {
-        //
-    }
+try {
+    $decrypted = decrypt($encryptedValue);
+} catch (DecryptException $e) {
+    //
+}
+```
