@@ -126,10 +126,6 @@ El comando `make:policy` generar una clase de política vacía. Si quieres gener
 
     php artisan make:policy PostPolicy --model=Post
 
-El nombre de la política corresponde al nombre del método público en la política.
-
-    Gate::allows('view', Post::class);
-
 > {tip} Todas las políticas son resueltas a través del [contenedor de servicios de Laravel](/docs/{{version}}/container), lo que te permite especificar las dependencias necesarias en el constructor de la política y estas serán automaticamente inyectadas.
 
 <a name="registering-policies"></a>
@@ -169,10 +165,6 @@ Una vez que la política exista, ésta necesita ser registrada. La clase `AuthSe
             //
         }
     }
-
-Los métodos públicos de la política quedan disponibles como tal 
-
-    Gate::allows('view', Post::class);
 
 #### Política De Auto-Descubrimiento
 
