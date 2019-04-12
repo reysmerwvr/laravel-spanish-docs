@@ -376,13 +376,11 @@ Los suscriptores de eventos son clases que pueden suscribirse a múltiples event
         {
             $events->listen(
                 'Illuminate\Auth\Events\Login',
-                'App\Listeners\UserEventSubscriber@onUserLogin'
                 'App\Listeners\UserEventSubscriber@handleUserLogin'
             );
 
             $events->listen(
                 'Illuminate\Auth\Events\Logout',
-                'App\Listeners\UserEventSubscriber@onUserLogout'
                 'App\Listeners\UserEventSubscriber@handleUserLogout'
             );
         }
