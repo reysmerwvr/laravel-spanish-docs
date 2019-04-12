@@ -75,6 +75,10 @@ Si no necesitas una fila completa, puedes extraer un solo valor de un registro u
 
     $email = DB::table('users')->where('name', 'John')->value('email');
 
+Para obtener una sola fila por su ID, use el método `find`:
+
+    $user = DB::table('users')->find(3);
+
 #### Obteniendo una Lista de Valores de Columna
 
 Si prefieres obtener una Colección que contenga los valores de una sola columna, puedes usar el método `pluck`. En el siguiente ejemplo, obtendrémos una colección de títulos de rol:
