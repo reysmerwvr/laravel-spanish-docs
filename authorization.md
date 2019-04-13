@@ -64,26 +64,6 @@ Los gates además pueden ser definidos escribiendo la clase y método a llamar c
         Gate::define('update-post', 'App\Policies\PostPolicy@update');
     }
 
-#### Gates de Recursos
-
-También puedes definir las habilidades de múltiples gates a la vez usando el método `resource`:
-
-    Gate::resource('posts', 'App\Policies\PostPolicy');
-
-Esto es idéntico a definir los siguientes Gates uno por uno:
-
-    Gate::define('posts.view', 'App\Policies\PostPolicy@view');
-    Gate::define('posts.create', 'App\Policies\PostPolicy@create');
-    Gate::define('posts.update', 'App\Policies\PostPolicy@update');
-    Gate::define('posts.delete', 'App\Policies\PostPolicy@delete');
-
-Por defecto, las habilidades `view`, `create`, `update`, y `delete` serán definidas. Además puedes sobrescribir las habilidades por defecto pasando un arreglo como tercer argumento al método `resource`. Las llaves del arreglo definen los nombre de las habilidades mientras que los valores definen los nombres de los métodos. Por ejemplo, el siguiente código creará dos nuevas definiciones de Gate - `posts.image` y `posts.photo`:
-
-    Gate::resource('posts', 'PostPolicy', [
-        'image' => 'updateImage',
-        'photo' => 'updatePhoto',
-    ]);
-
 <a name="authorizing-actions-via-gates"></a>
 ### Autorizando Acciones
 

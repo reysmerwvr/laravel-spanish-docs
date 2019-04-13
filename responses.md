@@ -65,6 +65,22 @@ O, puedes usar el método `withHeaders` para especificar un arreglo de encabezad
                     'X-Header-Two' => 'Header Value',
                 ]);
 
+##### Middleware para Control de Cache
+
+Laravel incluye un middleware llamado `cache.headers` que puede usarse para configurar rápidamente el encabezado` Cache-Control` para un grupo de rutas. Si se especifica `etag` en la lista de directivas, un hash MD5 del contenido de la respuesta se establecerá automáticamente como el identificador de ETag:
+
+    Route::middleware('cache.headers:public;max_age=2628000;etag')->group(function() {
+
+        Route::get('privacy', function () {
+            // ...
+        });
+
+        Route::get('terms', function () {
+            // ...
+        });
+
+    });
+
 <a name="attaching-cookies-to-responses"></a>
 #### Adjuntando Cookies a las Respuestas
 

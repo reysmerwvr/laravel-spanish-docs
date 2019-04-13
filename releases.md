@@ -9,7 +9,7 @@
 
 El esquema de versiones de Laravel mantiene la siguiente convención: `paradigma.mayor.menor`. Los lanzamientos mayores del framework se publican cada seis meses (febrero y agosto), mientras que los lanzamientos menores se liberan cada semana. Los lanzamientos menores **nunca** deben contener cambios de ruptura (breaking changes).
 
-Cuando haces referencia al framework Laravel o sus componentes desde tu aplicación o paquete, debes utilizar siempre una restricción de versión como `5.7.*`, ya que las versiones mayores de Laravel no incluyen cambios de ruptura. Sin embargo, nos esforzamos por asegurarnos siempre de que puedas actualizar a una nueva versión mayor en un día o menos.
+Cuando haces referencia al framework Laravel o sus componentes desde tu aplicación o paquete, debes utilizar siempre una restricción de versión como `5.8.*`, ya que las versiones mayores de Laravel no incluyen cambios de ruptura. Sin embargo, nos esforzamos por asegurarnos siempre de que puedas actualizar a una nueva versión mayor en un día o menos.
 
 Los lanzamientos de cambios de paradigma están separados por muchos años y representan cambios fundamentales en la arquitectura y las convenciones del framework. Actualmente, no hay ningún cambio de paradigma en desarrollo.
 
