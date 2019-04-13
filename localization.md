@@ -6,7 +6,7 @@
     - [Usando Claves Cortas](#using-short-keys)
     - [Usando Cadenas De Traducciones Como Claves](#using-translation-strings-as-keys)
 - [Retornando Cadenas De Traducciones](#retrieving-translation-strings)
-    - [Reemplazando Parametros En Cadenas De Traducciones](#replacing-parameters-in-translation-strings)
+    - [Reemplazando parámetros En Cadenas De Traducciones](#replacing-parameters-in-translation-strings)
     - [Pluralización](#pluralization)
 - [Sobrescribiendo Archivos del Paquete de Idioma](#overriding-package-language-files)
 
@@ -111,7 +111,7 @@ Si la cadena de traducción especificada no existe, la función `__` retornará 
 > {note} La directiva `@lang` no escapa ningún resultado. Eres **totalmente responsable** de escapar la salida al usar esta directiva.
 
 <a name="replacing-parameters-in-translation-strings"></a>
-### Reemplazando Parametros en Cadenas de Traducciones
+### Reemplazando parámetros en Cadenas de Traducciones
 
 Si lo deseas, puedes definir placeholders en tus cadenas de traducción. Todos los placeholders son precedidos por `:`. Por ejemplo, puedes definir un mensaje de bienvenida con un nombre como placeholder: 
 

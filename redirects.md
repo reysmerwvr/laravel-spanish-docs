@@ -58,7 +58,7 @@ Si te gustaría personalizar el valor que es colocado en el parámetro de la rut
 <a name="redirecting-controller-actions"></a>
 ## Redireccionando A Acciones de Controlador
 
-Puedes también generar redirecciones a [acciones de controlador](/docs/{{version}}/controllers). Para ello, pasa el nombre del controlador y la acción al método `action`. Recuerda, no necesitas especificar el nombre de espacio completo para el controlador dado que el `RouteServiceProvider` de Laravel automáticamente establecerá el nombre de espacio del controlador base:
+Puedes también generar redirecciones a [acciones de controlador](/docs/{{version}}/controllers). Para ello, pasa el nombre del controlador y la acción al método `action`. Recuerda, no necesitas especificar el espacio de nombre completo para el controlador dado que el `RouteServiceProvider` de Laravel automáticamente establecerá el espacio de nombre del controlador base:
 
     return redirect()->action('HomeController@index');
 

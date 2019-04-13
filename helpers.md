@@ -789,7 +789,7 @@ Si la cadena o llave de traducción especificada no existe, la función `__` ret
 <a name="method-class-basename"></a>
 #### `class_basename()` {#collection-method}
 
-La función `class_basename` retorna el nombre de la clase dada con el nombre de espacio de la clase removido:
+La función `class_basename` retorna el nombre de la clase dada con el espacio de nombre de la clase removido:
 
     $class = class_basename('Foo\Bar\Baz');
     
@@ -1136,7 +1136,7 @@ Si la clave de traducción dada no existe, la función `trans_choice` retornará
 <a name="method-action"></a>
 #### `action()` {#collection-method}
 
-La función `action` genera una URL para la acción del controlador dada. No necesitas pasar el nombre de espacio completo. En lugar de eso, pasa al controlador el nombre de clase relativo al nombre de espacio `App\Http\Controllers`:
+La función `action` genera una URL para la acción del controlador dada. No necesitas pasar el espacio de nombre completo. En lugar de eso, pasa al controlador el nombre de clase relativo al espacio de nombre `App\Http\Controllers`:
 
     $url = action('HomeController@index');
 

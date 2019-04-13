@@ -100,7 +100,7 @@ Por ejemplo, un método de controlador que inicializa / refresca el token para u
         }
     }
 
-> {tip} Dado que los tokens de la API en el ejemplo supierior tienen suficiente entropía, es impractico crear "tablas arcoiris" que buscar el valor original del token con hash. Por lo tanto, métodos de hashing lentos como `bcrypt` son innecesarios. 
+> {tip} Dado que los tokens API en el ejemplo anterior tienen suficiente entropía, no es práctico crear "tablas arcoiris" para buscar el valor original del token hash. Por lo tanto, los métodos de hashing lento como bcrypt son innecesarios. 
 
 <a name="protecting-routes"></a>
 ## Protegiendo Rutas
@@ -126,7 +126,7 @@ Los usuarios de tu API pueden especificar su token como un valor de cadena de co
 
 #### Request Payload
 
-Los usuarios de tu API pueden incluir su token de API en los parametros del formulario de la petición como `api_token`: 
+Los usuarios de tu API pueden incluir su token de API en los parámetros del formulario de la petición como `api_token`: 
 
     $response = $client->request('POST', '/api/user', [
         'headers' => [
