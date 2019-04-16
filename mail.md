@@ -524,16 +524,16 @@ Los correos con Markdown utilizan una combinación de componentes Blade y sintax
 
 ```blade
 @component('mail::message')
-# Order Shipped
+    # Order Shipped
 
-Your order has been shipped!
+    Your order has been shipped!
 
-@component('mail::button', ['url' => $url])
-View Order
-@endcomponent
+    @component('mail::button', ['url' => $url])
+        View Order
+    @endcomponent
 
-Thanks,<br>
-{{ config('app.name') }}
+    Thanks,<br>
+    {{ config('app.name') }}
 @endcomponent
 ```
 
@@ -545,7 +545,7 @@ El componente de botón representa un enlace de botón centrado. El componente a
 
 ```blade
 @component('mail::button', ['url' => $url, 'color' => 'success'])
-View Order
+    View Order
 @endcomponent
 ```
 
@@ -555,7 +555,7 @@ El componente del panel representa el bloque de texto dado en un panel que tiene
 
 ```blade
 @component('mail::panel')
-This is the panel content.
+    This is the panel content.
 @endcomponent
 ```
 
@@ -565,10 +565,10 @@ El componente de tabla le permite transformar una tabla en Markdown a una tabla 
 
 ```blade
 @component('mail::table')
-| Laravel       | Table         | Example  |
-| ------------- |:-------------:| --------:|
-| Col 2 is      | Centered      | $10      |
-| Col 3 is      | Right-Aligned | $20      |
+    | Laravel       | Table         | Example  |
+    | ------------- |:-------------:| --------:|
+    | Col 2 is      | Centered      | $10      |
+    | Col 3 is      | Right-Aligned | $20      |
 @endcomponent
 ```
 
