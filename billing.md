@@ -59,7 +59,9 @@ Al actualizar a una nueva versión mayor de Cashier, es importante que revises c
 
 Primero, instala el paquete de Cashier para Stripe Con Composer:
 
-    composer require laravel/cashier
+```bash
+composer require laravel/cashier
+```
 
 <a name="configuration"></a>
 ## Configuración
