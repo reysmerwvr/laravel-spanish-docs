@@ -1,3 +1,5 @@
+::: v-pre
+
 # Base de datos: Paginación
 
 - [Introducción](#introduction)
@@ -25,27 +27,29 @@ Hay varias formas de paginar los elementos. La más simple es usando el método 
 
 En este ejemplo, el único argumento pasado al método `paginate` es el número de elementos que prefieres que sean mostrados "por página". En este caso, vamos a especificar que nos gustaría mostrar `15` elementos por página:
 
-    <?php
+```php
+<?php
 
-    namespace App\Http\Controllers;
+namespace App\Http\Controllers;
 
-    use Illuminate\Support\Facades\DB;
-    use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 
-    class UserController extends Controller
+class UserController extends Controller
+{
+    /**
+     * Show all of the users for the application.
+     *
+     * @return Response
+     */
+    public function index()
     {
-        /**
-         * Show all of the users for the application.
-         *
-         * @return Response
-         */
-        public function index()
-        {
-            $users = DB::table('users')->paginate(15);
+        $users = DB::table('users')->paginate(15);
 
-            return view('user.index', ['users' => $users]);
-        }
+        return view('user.index', ['users' => $users]);
     }
+}
+```
 
 > {note} Actualmente, las operaciones de paginación que usan una instrucción `GroupBy` no pueden ser ejecutados eficientemente por Laravel. Si necesitas usar una cláusula `GroupBy` con un conjunto de resultados paginados, es recomendable que consultes la base de datos y crees un paginador manualmente.
 
@@ -53,22 +57,30 @@ En este ejemplo, el único argumento pasado al método `paginate` es el número 
 
 Si necesitas mostrar solamente enlaces "Siguiente" y "Anterior" en tu vista de paginación, puedes usar el método `simplePaginate` para ejecutar una consulta más eficiente. Esto es muy útil para grandes colecciones de datos cuando no necesitas mostrar un enlace para cada número de página al momento de renderizar tu vista.
 
-    $users = DB::table('users')->simplePaginate(15);
+```php
+$users = DB::table('users')->simplePaginate(15);
+```
 
 <a name="paginating-eloquent-results"></a>
 ### Paginando Resultados De Eloquent
 
 También puedes paginar consultas de [Eloquent](/docs/{{version}}/eloquent). En este ejemplo, paginaremos el modelo `User` con `15` elementos por página. Como puedes ver, la sintaxis es casi idéntica a la paginación de los resultados del constructor de consultas.
 
-    $users = App\User::paginate(15);
+```php
+$users = App\User::paginate(15);
+```
 
 Puedes ejecutar `paginate` después de configurar otras restricciones en la consulta, tal como las cláusulas `where`:
 
-    $users = User::where('votes', '>', 100)->paginate(15);
+```php
+$users = User::where('votes', '>', 100)->paginate(15);
+```
 
 También puedes usar el método `simplePaginate` al momento de paginar los modelos de Eloquent.
 
-    $users = User::where('votes', '>', 100)->simplePaginate(15);
+```php
+$users = User::where('votes', '>', 100)->simplePaginate(15);
+```
 
 <a name="manually-creating-a-paginator"></a>
 ### Creando Un Paginador Manualmente
@@ -86,13 +98,15 @@ En otras palabras, la clase `Paginator` corresponde al método `simplePaginate` 
 
 Cuando ejecutas el método `paginate`, recibirás una instancia de la clase `Illuminate\Pagination\LengthAwarePaginator`. Cuando ejecutas el método `simplePaginate`, recibirás una instancia de la clase `Illuminate\Pagination\Paginator`. Estos objetos proporcionan varios métodos que afectan la presentación del conjunto de resultados. Además de estos métodos helpers, las instancias del paginador son iteradoras, es decir, pueden ser recorridas por un ciclo repetitivo igual que un arreglo. Así, una vez que has obtenido los resultados, puedes mostrar los resultados y renderizar los enlaces de página usando [Blade](/docs/{{version}}/blade):
 
-    <div class="container">
-        @foreach ($users as $user)
-            {{ $user->name }}
-        @endforeach
-    </div>
+```blade
+<div class="container">
+    @foreach ($users as $user)
+        {{ $user->name }}
+    @endforeach
+</div>
 
-    {{ $users->links() }}
+{{ $users->links() }}
+```
 
 El método `links` renderizará los enlaces para el resto de las páginas en el conjunto de resultados. Cada uno de estos enlaces ya contendrá la variable de cadena de consulta `page` apropiada. Recuerda, el HTML generado por el método `links` es compatible con el [Framework de CSS Boostrap](https://getbootstrap.com).
 
@@ -100,89 +114,107 @@ El método `links` renderizará los enlaces para el resto de las páginas en el 
 
 El método `withPath` permite personalizar la URI usada por el paginador al momento de generar enlaces. Por ejemplo, si quieres que el paginador genere enlaces como `http://example.com/custom/url?page=N`, deberías pasar `custom/url` al método `withPath`:
 
-    Route::get('users', function () {
-        $users = App\User::paginate(15);
+```php
+Route::get('users', function () {
+    $users = App\User::paginate(15);
 
-        $users->withPath('custom/url');
+    $users->withPath('custom/url');
 
-        //
-    });
+    //
+});
+```
 
 #### Agregando Enlaces de Paginación
 
 Puedes agregar la cadena de consulta a los enlaces de paginación usando el método `appends`. Por ejemplo, para agregar `sort=votes` a cada enlace de paginación, deberías hacer la siguiente ejecución del método `appends`:
 
-    {{ $users->appends(['sort' => 'votes'])->links() }}
+```php
+{{ $users->appends(['sort' => 'votes'])->links() }}
+```
 
 Si deseas agregar un "fragmento con el símbolo numeral `#`" a las URLs del paginador, puedes usar el método `fragment`. Por ejemplo, para agregar `#foo` al final de cada enlace de paginación, haz la siguiente ejecución del método `fragment`:
 
-    {{ $users->fragment('foo')->links() }}
+```php
+{{ $users->fragment('foo')->links() }}
+```
 
 #### Ajustando La Ventana De Enlace De Paginación
 
 Puedes controlar cuántos enlaces adicionales son mostrados en cada lado de la "ventana" de la URL del paginador. Por defecto, tres enlaces son mostrados en cada lado de los enlaces primarios del paginador. Sin embargo, puedes controlar este número usando el método `onEachSide`:
 
-    {{ $users->onEachSide(5)->links() }}
+```php
+{{ $users->onEachSide(5)->links() }}
+```
 
 <a name="converting-results-to-json"></a>
 ### Convirtiendo Resultados A JSON
 
 Las clases resultantes del paginador de Laravel implementan el contrato por Interfaz `Illuminate\Contracts\Support\Jsonable` y exponen el método `toJson`, así es muy fácil convertir los resultados de tu paginación a JSON. También puedes convertir una instancia del paginador al devolverlo desde una ruta o acción de controlador:
 
-    Route::get('users', function () {
-        return App\User::paginate();
-    });
+```php
+Route::get('users', function () {
+    return App\User::paginate();
+});
+```
 
 El JSON devuelto por el paginador incluirá meta información tal como `total`, `current_page`, `last_page` y más. Los objetos de resultados reales estarán disponibles por medio de la clave `data` en el arreglo JSON. Aquí está un ejemplo del JSON creado al regresar una instancia del paginador desde una ruta:
 
-    {
-       "total": 50,
-       "per_page": 15,
-       "current_page": 1,
-       "last_page": 4,
-       "first_page_url": "http://laravel.app?page=1",
-       "last_page_url": "http://laravel.app?page=4",
-       "next_page_url": "http://laravel.app?page=2",
-       "prev_page_url": null,
-       "path": "http://laravel.app",
-       "from": 1,
-       "to": 15,
-       "data":[
-            {
-                // Result Object
-            },
-            {
-                // Result Object
-            }
-       ]
-    }
+```json
+{
+   "total": 50,
+   "per_page": 15,
+   "current_page": 1,
+   "last_page": 4,
+   "first_page_url": "http://laravel.app?page=1",
+   "last_page_url": "http://laravel.app?page=4",
+   "next_page_url": "http://laravel.app?page=2",
+   "prev_page_url": null,
+   "path": "http://laravel.app",
+   "from": 1,
+   "to": 15,
+   "data":[
+        {
+            // Result Object
+        },
+        {
+            // Result Object
+        }
+   ]
+}
+```
 
 <a name="customizing-the-pagination-view"></a>
 ## Personalizando La Vista De La Paginación
 
 De forma predeterminada, las vistas que son renderizadas para mostrar los enlaces de paginación son compatibles con el framework de CSS Bootstrap. Sin embargo, si no estás usando Bootstrap, eres libre de definir tus propias vistas para renderizar esos enlaces. Al momento de ejecutar el método `links` en una instancia del paginador, pasa el nombre de la vista como primer argumento del método:
 
-    {{ $paginator->links('view.name') }}
+```blade
+{{ $paginator->links('view.name') }}
 
-    // Passing data to the view...
-    {{ $paginator->links('view.name', ['foo' => 'bar']) }}
+// Passing data to the view...
+{{ $paginator->links('view.name', ['foo' => 'bar']) }}
+```
 
 Sin embargo, la forma más fácil de personalizar las vistas de paginación es exportándolas a tu directorio `resources/views/vendor` usando el comando `vendor:publish`:
 
-    php artisan vendor:publish --tag=laravel-pagination
+```bash
+php artisan vendor:publish --tag=laravel-pagination
+```
 
 Este comando ubicará las vistas dentro del directorio `resources/views/vendor/pagination`. El archivo `default.blade.php` dentro de este directorio corresponde a la vista de paginación predeterminada. Edita este archivo para modificar el HTML de paginación.
 
 Si quieres designar un archivo distinto como la vista de paginación por defecto, se pueden usar los métodos de paginador `defaultView` y `defaultSimpleView` en tu `AppServiceProvider`:
 
-    use Illuminate\Pagination\Paginator;
+```php
+use Illuminate\Pagination\Paginator;
 
-    public function boot()
-    {
-        Paginator::defaultView('view-name');
+public function boot()
+{
+    Paginator::defaultView('view-name');
 
-        Paginator::defaultSimpleView('view-name');
-    }
+    Paginator::defaultSimpleView('view-name');
+}
+```
 
 <a name="paginator-instance-methods"></a>
 ## Métodos de la Instancia Paginadora
