@@ -38,10 +38,10 @@ use App\Http\Controllers\Controller;
 class UserController extends Controller
 {
     /**
-     * Show all of the users for the application.
-     *
-     * @return Response
-     */
+    * Show all of the users for the application.
+    *
+    * @return Response
+    */
     public function index()
     {
         $users = DB::table('users')->paginate(15);
@@ -51,7 +51,9 @@ class UserController extends Controller
 }
 ```
 
-> {note} Actualmente, las operaciones de paginación que usan una instrucción `GroupBy` no pueden ser ejecutados eficientemente por Laravel. Si necesitas usar una cláusula `GroupBy` con un conjunto de resultados paginados, es recomendable que consultes la base de datos y crees un paginador manualmente.
+::: danger Nota
+Actualmente, las operaciones de paginación que usan una instrucción `GroupBy` no pueden ser ejecutados eficientemente por Laravel. Si necesitas usar una cláusula `GroupBy` con un conjunto de resultados paginados, es recomendable que consultes la base de datos y crees un paginador manualmente.
+:::
 
 #### "Paginación Sencilla"
 
@@ -91,14 +93,16 @@ La clase `Paginator` no necesita conocer el número total de elementos en el con
 
 En otras palabras, la clase `Paginator` corresponde al método `simplePaginate` en el constructor de consultas y Eloquent, mientras la clase `LengthAwarePaginator` corresponde al método `paginate`.
 
-> {note} Cuando creas manualmente una instancia del paginador, deberías manualmente "recortar en partes" el arreglo de resultados que pasas al paginador. Si estás inseguro de cómo hacer esto, inspecciona la función de PHP [array_slice](https://secure.php.net/manual/en/function.array-slice.php).
+::: danger Nota
+Cuando creas manualmente una instancia del paginador, deberías manualmente "recortar en partes" el arreglo de resultados que pasas al paginador. Si estás inseguro de cómo hacer esto, inspecciona la función de PHP [array_slice](https://secure.php.net/manual/en/function.array-slice.php).
+:::
 
 <a name="displaying-pagination-results"></a>
 ## Mostrando Los Resultados De La Paginación
 
 Cuando ejecutas el método `paginate`, recibirás una instancia de la clase `Illuminate\Pagination\LengthAwarePaginator`. Cuando ejecutas el método `simplePaginate`, recibirás una instancia de la clase `Illuminate\Pagination\Paginator`. Estos objetos proporcionan varios métodos que afectan la presentación del conjunto de resultados. Además de estos métodos helpers, las instancias del paginador son iteradoras, es decir, pueden ser recorridas por un ciclo repetitivo igual que un arreglo. Así, una vez que has obtenido los resultados, puedes mostrar los resultados y renderizar los enlaces de página usando [Blade](/docs/{{version}}/blade):
 
-```blade
+```php
 <div class="container">
     @foreach ($users as $user)
         {{ $user->name }}
@@ -149,7 +153,7 @@ Puedes controlar cuántos enlaces adicionales son mostrados en cada lado de la "
 <a name="converting-results-to-json"></a>
 ### Convirtiendo Resultados A JSON
 
-Las clases resultantes del paginador de Laravel implementan el contrato por Interfaz `Illuminate\Contracts\Support\Jsonable` y exponen el método `toJson`, así es muy fácil convertir los resultados de tu paginación a JSON. También puedes convertir una instancia del paginador al devolverlo desde una ruta o acción de controlador:
+Las clases resultantes del paginador de Laravel implementan la interfaz `Illuminate\Contracts\Support\Jsonable` y exponen el método `toJson`, así es muy fácil convertir los resultados de tu paginación a JSON. También puedes convertir una instancia del paginador al devolverlo desde una ruta o acción de controlador:
 
 ```php
 Route::get('users', function () {
@@ -159,27 +163,27 @@ Route::get('users', function () {
 
 El JSON devuelto por el paginador incluirá meta información tal como `total`, `current_page`, `last_page` y más. Los objetos de resultados reales estarán disponibles por medio de la clave `data` en el arreglo JSON. Aquí está un ejemplo del JSON creado al regresar una instancia del paginador desde una ruta:
 
-```json
+```php
 {
-   "total": 50,
-   "per_page": 15,
-   "current_page": 1,
-   "last_page": 4,
-   "first_page_url": "http://laravel.app?page=1",
-   "last_page_url": "http://laravel.app?page=4",
-   "next_page_url": "http://laravel.app?page=2",
-   "prev_page_url": null,
-   "path": "http://laravel.app",
-   "from": 1,
-   "to": 15,
-   "data":[
+    "total": 50,
+    "per_page": 15,
+    "current_page": 1,
+    "last_page": 4,
+    "first_page_url": "http://laravel.app?page=1",
+    "last_page_url": "http://laravel.app?page=4",
+    "next_page_url": "http://laravel.app?page=2",
+    "prev_page_url": null,
+    "path": "http://laravel.app",
+    "from": 1,
+    "to": 15,
+    "data":[
         {
             // Result Object
         },
         {
             // Result Object
         }
-   ]
+    ]
 }
 ```
 
@@ -188,7 +192,7 @@ El JSON devuelto por el paginador incluirá meta información tal como `total`, 
 
 De forma predeterminada, las vistas que son renderizadas para mostrar los enlaces de paginación son compatibles con el framework de CSS Bootstrap. Sin embargo, si no estás usando Bootstrap, eres libre de definir tus propias vistas para renderizar esos enlaces. Al momento de ejecutar el método `links` en una instancia del paginador, pasa el nombre de la vista como primer argumento del método:
 
-```blade
+```php
 {{ $paginator->links('view.name') }}
 
 // Passing data to the view...
@@ -197,7 +201,7 @@ De forma predeterminada, las vistas que son renderizadas para mostrar los enlace
 
 Sin embargo, la forma más fácil de personalizar las vistas de paginación es exportándolas a tu directorio `resources/views/vendor` usando el comando `vendor:publish`:
 
-```bash
+```php
 php artisan vendor:publish --tag=laravel-pagination
 ```
 
