@@ -78,6 +78,7 @@ Homestead puede ejecutarse en sistemas Windows, Mac y Linux e incluye el servido
 - Neo4j (Opcional)
 - MongoDB (Opcional)
 - Elasticsearch (Opcional)
+- avahi
 - ngrok
 - xdebug
 - xhprof / tideways / xhgui
@@ -185,9 +186,11 @@ También puedes indicar cualquier opción soportada por los [Directorios Sincron
 
 Si cambias la propiedad `sites` apropiadamente después de haber provisionado el box de Homestead, deberás volver a ejecutar `vagrant reload --provision` para actualizar la configuración de Nginx en la máquina virtual.
 
-#### El Archivo Hosts
+#### Resolución del Nombre de Host
 
-Debes agregar los "dominios" para tus sitios de Nginx en el archivo `hosts` en tu máquina. El archivo `hosts` va a redirigir las peticiones de los sitios Homstead hacia tu máquina Homestead. En Mac y Linux, este archivo está ubicado en `/etc/hosts`. En Windows, este archivo está ubicado en `C:\Windows\System32\drivers\etc\hosts`. Las líneas que agregues a este archivo deberán verse de la siguiente forma:
+Homestead publica nombres de host sobre `mDNS` para la resolución automática de host. Si configuras `hostname: homestead` en tu archivo `Homestead.yaml`, el host estará disponible en `homestead.local`. Las distribuciones de escritorio de macOS, iOS y Linux incluyen la compatibilidad con `mDNS` de forma predeterminada. Windows requiere la instalación de [Servicios de impresión Bonjour para Windows](https://support.apple.com/kb/DL999?viewlocale=en_US&locale=en_US). Android no admite la resolución mDNS en absoluto.
+
+El uso de nombres de host automáticos funciona mejor para las instalaciones "locales del sitio" de Homestead. Si alojas varios sitios en una única instancia de Homestead, puedes agregar los "dominios" para tus sitios web al archivo `hosts` en tu máquina. El archivo `hosts` redirigirá las solicitudes de tus sitios de Homestead a tu máquina Homestead. En Mac y Linux, este archivo se encuentra en `/etc/hosts`. En Windows, se encuentra en `C:\Windows\System32\drivers\etc\hosts`. Las líneas que agregues a este archivo tendrán el siguiente aspecto:
 
     192.168.10.10  homestead.test
 
@@ -221,7 +224,7 @@ Windows:
 
     vendor\\bin\\homestead make
 
-Después, ejecuta el comando `vagrant up` en tu terminal y podrás acceder a tu proyecto desde el navegador en `http://homestead.test`. Recuerda que aún vas a necesitar agregar una entrada para `homestead.test` en tu archivo `/etc/hosts` para el dominio de tu elección.
+Después, ejecuta el comando `vagrant up` en tu terminal y podrás acceder a tu proyecto desde el navegador en `http://homestead.test`. Recuerda que aún vas a necesitar agregar una entrada para `homestead.test` en tu archivo `/etc/hosts` o el dominio de tu elección si no estás usando mDNS.
 
 <a name="installing-mariadb"></a>
 ### Instalación De MariaDB
