@@ -549,7 +549,7 @@ Tenga en cuenta que no hay proceso de duplicación entre las instantáneas. Por 
 
 Homestead incluye compatibilidad inmediata para la depuración por pasos con [Xdebug](https://xdebug.org). Por ejemplo, puede cargar una página web desde un navegador y PHP se conectará nuevamente a su IDE para permitir la inspección y modificación del código en ejecución.
 
-Para habilitar la depuración, dentro del cuadro vagrant ejecute:
+Para habilitar la depuración, dentro de la caja vagrant ejecute:
 
     $ sudo phpenmod xdebug
     $ sudo systemctl restart php7.3-fpm # Replacing the version with whatever PHP version are using.
