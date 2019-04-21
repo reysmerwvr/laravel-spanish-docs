@@ -26,6 +26,7 @@
     - [Múltiples Versiones PHP](#multiple-php-versions)
     - [Servidores Web](#web-servers)
     - [Correo Electrónico](#mail)
+    - [Instantáneas de la Base de Datos](#database-snapshots)    
 - [Depuración y Perfilado](#debugging-and-profiling)
     - [Depuración de Solicitudes Web con Xdebug](#debugging-web-requests)
     - [Depuración de Scripts CLI](#debugging-cli-scripts)
@@ -67,6 +68,7 @@ Homestead puede ejecutarse en sistemas Windows, Mac y Linux e incluye el servido
 - Apache (Opcional)
 - MySQL
 - MariaDB (Opcional)
+- lmm para instantáneas de la base de batos con MySQL o MariaDB
 - Sqlite3
 - PostgreSQL
 - Composer
@@ -529,6 +531,15 @@ Homestead utiliza por defecto el servidor web Nginx. Sin embargo, también se pu
 ### Correo Electrónico
 
 Homestead incluye el agente de transferencia de correo Postfix, que está escuchando por defecto en el puerto `1025`. Así que puedes indicarle a tu aplicación que use el controlador de correo `smtp` en el puerto `1025` de `localhost`. Entonces, todos los correos enviados serán manejados por Postfix y atrapados por Mailhog. Para ver tus correos enviados, abre en tu navegador [http://localhost:8025](http://localhost:8025).
+
+<a name="database-snapshots"></a>
+### Instantáneas de la Base de Datos
+
+Homestead admite la congelación del estado de las bases de datos MySQL y MariaDB y se ramifica entre ellas con [Logical MySQL Manager](https://github.com/Lullabot/lmm). Por ejemplo, imagine trabajar en un sitio con una base de datos de varios gigabytes. Puede importar la base de datos y tomar una instantánea. Después de realizar un trabajo y crear un contenido de prueba localmente, para revertir a un estado en buen estado, puede restaurar rápidamente al estado original. Por debajo, LMM usa la funcionalidad de instantáneas delgadas de LVM con soporte de copia en escritura. En la práctica, esto significa que el cambio de una sola fila en una tabla solo hará que los cambios que realice se escriban en el disco, ahorrando tiempo y espacio de disco significativos durante las restauraciones.
+
+Como `lmm` interactúa con LVM, debe ejecutarse como root. Para ver todos los comandos disponibles, ejecute `sudo lmm`.
+
+Tenga en cuenta que no hay proceso de duplicación entre las instantáneas. Por ejemplo, si crea una instantánea con `sudo lmm branch production-2019-03-20`, elimina todas las tablas y vuelve a importar la base de datos de origen, tendrá dos conjuntos de datos completamente independientes en el disco. Para ahorrar espacio en el disco, considere importar una base de datos, luego ejecutar actualizaciones y migraciones sobre ella, además asegúrese de eliminar las instantáneas antiguas con `sudo lmm delete`.
 
 <a name="debugging-and-profiling"></a>
 ## Depuración y Perfilado
