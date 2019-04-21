@@ -82,7 +82,7 @@ Homestead puede ejecutarse en sistemas Windows, Mac y Linux e incluye el servido
 - Elasticsearch (Opcional)
 - avahi
 - ngrok
-- xdebug
+- Xdebug
 - xhprof / tideways / xhgui
 - wp-cli
 - Zend Z-Ray
