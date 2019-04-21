@@ -83,7 +83,7 @@ Homestead puede ejecutarse en sistemas Windows, Mac y Linux e incluye el servido
 - avahi
 - ngrok
 - Xdebug
-- xhprof / tideways / xhgui
+- XHProf / Tideways / XHGui
 - wp-cli
 - Zend Z-Ray
 - Go
@@ -573,7 +573,7 @@ Al depurar pruebas funcionales que realizan solicitudes al servidor web, a menud
     xdebug.remote_host = 192.168.10.1
     xdebug.remote_autostart = 1
 
-### Perfilando el rendimiento de PHP con XHGui
+### Perfilando el Rendimiento de PHP con XHGui
 
 [XHGui](https://www.github.com/perftools/xhgui) es una interfaz de usuario para explorar el rendimiento de sus programas PHP. Para habilitar XHGui, agregue `xhgui: 'true'` a la configuración de su sitio:
 
