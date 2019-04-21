@@ -537,7 +537,14 @@ Homestead incluye el agente de transferencia de correo Postfix, que está escuch
 
 Homestead admite la congelación del estado de las bases de datos MySQL y MariaDB y se ramifica entre ellas con [Logical MySQL Manager](https://github.com/Lullabot/lmm). Por ejemplo, imagine trabajar en un sitio con una base de datos de varios gigabytes. Puede importar la base de datos y tomar una instantánea. Después de realizar un trabajo y crear un contenido de prueba localmente, para revertir a un estado en buen estado, puede restaurar rápidamente al estado original. Por debajo, LMM usa la funcionalidad de instantáneas delgadas de LVM con soporte de copia en escritura. En la práctica, esto significa que el cambio de una sola fila en una tabla solo hará que los cambios que realice se escriban en el disco, ahorrando tiempo y espacio de disco significativos durante las restauraciones.
 
-Como `lmm` interactúa con LVM, debe ejecutarse como root. Para ver todos los comandos disponibles, ejecute `sudo lmm`.
+Como `lmm` interactúa con LVM, debe ejecutarse como root. Para ver todos los comandos disponibles, ejecute `sudo lmm` dentro de la caja de vagrant. Un flujo de trabajo común sería:
+
+1. Importe una base de datos a la rama predeterminada de `master` lmm.
+1. Guarde una instantánea de la base de datos sin cambios con `sudo lmm branch prod-YYYY-MM-DD`.
+1. Cree contenido de prueba y ejecute actualizaciones de esquema de base de datos según sea necesario.
+1. Para deshacer todos los cambios, ejecute `sudo lmm merge prod-YYYY-MM-DD`.
+1. Si trabaja con múltiples ramas de funcionalidad en git, considere crear ramas de base de datos por funcionalidad y cambiar entre ellas con `sudo lmm checkout <branch>`.
+1. Para eliminar las ramas viejas que ya no son necesarias, ejecute `sudo lmm delete <branch>`.
 
 Tenga en cuenta que no hay proceso de duplicación entre las instantáneas. Por ejemplo, si crea una instantánea con `sudo lmm branch production-2019-03-20`, elimina todas las tablas y vuelve a importar la base de datos de origen, tendrá dos conjuntos de datos completamente independientes en el disco. Para ahorrar espacio en el disco, considere importar una base de datos, luego ejecutar actualizaciones y migraciones sobre ella, además asegúrese de eliminar las instantáneas antiguas con `sudo lmm delete`.
 
