@@ -1,3 +1,5 @@
+::: v-pre
+
 # Eloquent: Colecciones
 
 - [Introducción](#introduction)
@@ -11,24 +13,30 @@ Todos los conjuntos de multi-resultados retornados por Eloquent son instancias d
 
 Todas las colecciones tambien sirven como iteradores, permitiendo que iteres sobre ellas como si fueran simples arreglos de PHP:
 
-    $users = App\User::where('active', 1)->get();
+```php
+$users = App\User::where('active', 1)->get();
 
-    foreach ($users as $user) {
-        echo $user->name;
-    }
+foreach ($users as $user) {
+    echo $user->name;
+}
+```
 
 Sin embargo, las colecciones son mucho más poderosas que los arreglos y exponen una variedad de mapeos / reduce operaciones que pueden ser encadenadas usando una interfaz intuitiva. Por ejemplo, vamos a remover todos los modelos inactivos y traeremos el primer nombre para cada usuario restante:
 
-    $users = App\User::all();
+```php
+$users = App\User::all();
 
-    $names = $users->reject(function ($user) {
-        return $user->active === false;
-    })
-    ->map(function ($user) {
-        return $user->name;
-    });
+$names = $users->reject(function ($user) {
+    return $user->active === false;
+})
+->map(function ($user) {
+    return $user->name;
+});
+```
 
-> {note} Mientras los métodos de colección de Eloquent devuelven una nueva instancia de una colección de Eloquent, los métodos `pluck`, `keys`, `zip`, `collapse`, `flatten` y `flip` devuelven una instancia de [colección base](/docs/{{version}}/collections). De igual forma, si una operación devuelve una colección que no contiene modelos Eloquent, será automáticamente convertida a una colección base.
+::: danger Nota
+Mientras los métodos de colección de Eloquent devuelven una nueva instancia de una colección de Eloquent, los métodos `pluck`, `keys`, `zip`, `collapse`, `flatten` y `flip` devuelven una instancia de [colección base](/docs/{{version}}/collections). De igual forma, si una operación devuelve una colección que no contiene modelos Eloquent, será automáticamente convertida a una colección base.
+:::
 
 <a name="available-methods"></a>
 ## Métodos Disponibles
@@ -148,25 +156,27 @@ Todas las colecciones de Eloquent extienden el objeto de [colección de Laravel]
 
 Si necesitas usar un objeto `Collection` personalizado con tus propios métodos de extensión, puedes sobrescribir el método `newCollection` en tu modelo:
 
-    <?php
+```php
+<?php
 
-    namespace App;
+namespace App;
 
-    use App\CustomCollection;
-    use Illuminate\Database\Eloquent\Model;
+use App\CustomCollection;
+use Illuminate\Database\Eloquent\Model;
 
-    class User extends Model
+class User extends Model
+{
+    /**
+        * Create a new Eloquent Collection instance.
+        *
+        * @param  array  $models
+        * @return \Illuminate\Database\Eloquent\Collection
+        */
+    public function newCollection(array $models = [])
     {
-        /**
-         * Create a new Eloquent Collection instance.
-         *
-         * @param  array  $models
-         * @return \Illuminate\Database\Eloquent\Collection
-         */
-        public function newCollection(array $models = [])
-        {
-            return new CustomCollection($models);
-        }
+        return new CustomCollection($models);
     }
+}
+```
 
 Una vez que has definido un método `newCollection`, recibirás una instancia de tu colección personalizada cada vez que Eloquent devuelva una instancia `Collection` de ese modelo. Si prefieres usar una colección personalizada para cada modelo en tu aplicación, deberías sobrescribir el método `newCollection` en una clase del modelo base que es extendida por todos tus modelos.
