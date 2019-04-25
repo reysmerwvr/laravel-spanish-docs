@@ -1,3 +1,5 @@
+::: v-pre
+
 # Pruebas: Primeros Pasos
 
 - [Introducción](#introduction)
@@ -27,32 +29,38 @@ Además, puedes crear un archivo `.env.testing` en la raíz de tu proyecto. Este
 
 Para crear un nuevo caso de prueba, usa el comando Artisan `make:test`:
 
-    // Create a test in the Feature directory...
-    php artisan make:test UserTest
+```php
+// Create a test in the Feature directory...
+php artisan make:test UserTest
 
-    // Create a test in the Unit directory...
-    php artisan make:test UserTest --unit
+// Create a test in the Unit directory...
+php artisan make:test UserTest --unit
+```
 
 Una vez que la prueba ha sido generada, puedes definir métodos de pruebas como lo harías normalmente usando PHPUnit. Para ejecutar tus pruebas, ejecuta el comando `phpunit` desde tu terminal:
 
-    <?php
+```php
+<?php
 
-    namespace Tests\Unit;
+namespace Tests\Unit;
 
-    use Tests\TestCase;
-    use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
-    class ExampleTest extends TestCase
+class ExampleTest extends TestCase
+{
+    /**
+    * A basic test example.
+    *
+    * @return void
+    */
+    public function testBasicTest()
     {
-        /**
-         * A basic test example.
-         *
-         * @return void
-         */
-        public function testBasicTest()
-        {
-            $this->assertTrue(true);
-        }
+        $this->assertTrue(true);
     }
+}
+```
 
-> {note} Si defines tus propios métodos `setUp` / `tearDown` dentro de una clase de prueba, asegurate de ejecutar los respectivos `parent::setUp()` / `parent::tearDown()` metodos en la clase padre.
+::: danger Nota
+Si defines tus propios métodos `setUp` / `tearDown` dentro de una clase de prueba, asegurate de ejecutar los respectivos `parent::setUp()` / `parent::tearDown()` metodos en la clase padre.
+:::
