@@ -280,7 +280,13 @@ Usando el método `emailOutputTo`, puedes enviar el resultado a una dirección d
              ->sendOutputTo($filePath)
              ->emailOutputTo('foo@example.com');
 
-> {note} Los métodos `emailOutputTo`, `sendOutputTo` y `appendOutputTo` son exclusivos para el método `command` y no son soportados por `call`.
+Si solo quieres enviar por correo la salida si el comando falla, usa el método `emailOnFailure`:
+
+$schedule->command('foo')
+             ->daily()
+             ->emailOnFailure('foo@example.com');
+
+> {note} Los métodos `emailOutputTo`, `emailOnFailure`, `sendOutputTo` y `appendOutputTo` son exclusivos para los métodos `command` y `exec`.
 
 <a name="task-hooks"></a>
 ## Hooks De Tareas
@@ -294,6 +300,17 @@ Usando los métodos `before` y `after`, puedes especificar código que será eje
              })
              ->after(function () {
                  // Task is complete...
+             });
+
+Los métpodos `onSuccess` y `onFailure` te permiten especificar el código a ser ejecutado si la tarea programada tiene éxito o falla:
+
+    $schedule->command('emails:send')
+             ->daily()
+             ->onSuccess(function () {
+                 // The task succeeded...
+             })
+             ->onFailure(function () {
+                 // The task failed...
              });
 
 #### Haciendo Ping a URLs
@@ -311,6 +328,13 @@ Los métodos `pingBeforeIf` y `thenPingIf` pueden ser usados para hacer ping a u
              ->daily()
              ->pingBeforeIf($condition, $url)
              ->thenPingIf($condition, $url);
+
+Los métodos `pingOnSuccess` y `pingOnFailure` pueden ser usados para hacer ping a una URL dada solo si la tarea tiene éxito o falla:
+
+    $schedule->command('emails:send')
+             ->daily()
+             ->pingOnSuccess($successUrl)
+             ->pingOnFailure($failureUrl);
 
 Todos los métodos de ping requieren el paquete HTTP Guzzle. Puedes agregar Guzzle a tu proyecto usando el gestor de paquetes Composer:
 
