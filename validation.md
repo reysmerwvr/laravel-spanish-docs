@@ -578,6 +578,7 @@ Debajo hay una lista con todas las reglas de validación disponibles y su funci�
 [Required Without All](#rule-required-without-all)
 [Same](#rule-same)
 [Size](#rule-size)
+[Sometimes](#conditionally-adding-rules)
 [Starts With](#rule-starts-with)
 [String](#rule-string)
 [Timezone](#rule-timezone)
@@ -1003,9 +1004,11 @@ El campo bajo validación debe ser un identificador de zona horaria válida de a
 <a name="rule-unique"></a>
 #### unique:_table_,_column_,_except_,_idColumn_
 
-El campo bajo validación debe ser único en una tabla de base de datos dada. Si la opción `column` no es especificada, el nombre del campo será usado.
+El valor del campo bajo validación no debe existir dentro de la tabla de base de datos dada.
 
 **Especificando Un Nombre de Columna Personalizado:**
+
+La opción `column` puede ser usada para especificar la columna de base de datos correspondiente al campo. Si la opción `column` no es especificada, el nombre del campo será usado.
 
     'email' => 'unique:users,email_address'
 

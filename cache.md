@@ -74,9 +74,9 @@ Para más información sobre cómo configurar Redis, consulta la [página de la 
 <a name="obtaining-a-cache-instance"></a>
 ### Obtener Una Instancia De Caché
 
-Los [contratos](/docs/{{version}}/contracts) `Illuminate\Contracts\Cache\Factory` y `Illuminate\Contracts\Cache\Repository` proporcionan acceso a los servicios de caché de Laravel. El contrato `Factory` proporciona acceso a todos los controladores de caché definidos para tu aplicación. El contrato `Repository` típicamente es una implementación del controlador de caché predeterminado para tu aplicación según lo especificado en tu archivo de configuración de `cache`.
+Las [interfaces](/docs/{{version}}/contracts) `Illuminate\Contracts\Cache\Factory` y `Illuminate\Contracts\Cache\Repository` proporcionan acceso a los servicios de caché de Laravel. La interfaz `Factory` proporciona acceso a todos los controladores de caché definidos para tu aplicación. La interfaz `Repository` típicamente es una implementación del controlador de caché predeterminado para tu aplicación según lo especificado en tu archivo de configuración de `cache`.
 
-Sin embargo, también puedes usar el facade `Cache`, que es lo que usaremos a lo largo de esta documentación. El facade `Cache` proporciona acceso conveniente y directo a las implementaciones subyacientes de los contratos de Laravel.
+Sin embargo, también puedes usar el facade `Cache`, que es lo que usaremos a lo largo de esta documentación. El facade `Cache` proporciona acceso conveniente y directo a las implementaciones subyacientes de las interfaces de Laravel.
 
     <?php
 
@@ -275,7 +275,7 @@ Si prefieres liberar un bloqueo sin necesidad de indicar su propietario, puedes 
 <a name="the-cache-helper"></a>
 ### El Helper Cache
 
-Además de usar el facade `Cache` o [el contrato de caché](/docs/{{version}}/contracts), también puedes usar la función global `cache` para recuperar y almacenar información a través del caché. Cuando se llama a la función `cache` con un solo argumento, devolverá el valor de la clave dada:
+Además de usar el facade `Cache` o [la interfaz de caché](/docs/{{version}}/contracts), también puedes usar la función global `cache` para recuperar y almacenar información a través del caché. Cuando se llama a la función `cache` con un solo argumento, devolverá el valor de la clave dada:
 
     $value = cache('key');
 
@@ -333,7 +333,7 @@ Por el contrario, la siguiente sentencia eliminará solamente los cachés con la
 <a name="writing-the-driver"></a>
 ### Escribir El Controlador
 
-Para crear el controlador de caché, primero se debe implementar el [contract](/docs/{{version}}/contracts) `Illuminate\Contracts\Cache\Store`. Por lo tanto, una implementación de caché de MongoDB se vería de la siguiente manera:
+Para crear el controlador de caché, primero se debe implementar la [interfaz](/docs/{{version}}/contracts) `Illuminate\Contracts\Cache\Store`. Por lo tanto, una implementación de caché de MongoDB se vería de la siguiente manera:
 
     <?php
 
@@ -361,7 +361,7 @@ Solo necesitas implementar cada uno de estos métodos utilizando una conexión d
         return Cache::repository(new MongoStore);
     });
 
-> {tip} Si te preguntas dónde puedes colocar el código de tu driver de caché personalizado, puedes crear un nombre de espacio `Extensions` en tu directorio `app`. Sin embargo, ten en cuenta que Laravel no tiene una estructura de aplicación rígida y por tanto eres libre de organizar tu aplicación de acuerdo a tus preferencias.
+> {tip} Si te preguntas dónde puedes colocar el código de tu driver de caché personalizado, puedes crear un espacio de nombre `Extensions` en tu directorio `app`. Sin embargo, ten en cuenta que Laravel no tiene una estructura de aplicación rígida y por tanto eres libre de organizar tu aplicación de acuerdo a tus preferencias.
 
 <a name="registering-the-driver"></a>
 ### Registrando El Driver

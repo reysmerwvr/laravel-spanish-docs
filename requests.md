@@ -39,7 +39,7 @@ Para obtener una instancia de la solicitud HTTP actual por medio de una inyecci�
         }
     }
 
-#### Inyección de Dependencias Y Parametros de Rutas
+#### Inyección de Dependencias Y parámetros de Rutas
 
 Si tu método de controlador también está esperando la entrada de un parámetro de ruta deberías listar tus parámetros de ruta después de tus otras dependencias. Por ejemplo, si tu ruta es definida como sigue:
 

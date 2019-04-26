@@ -85,6 +85,7 @@ Por el resto de esta documentación, discutiremos cada método disponible en la 
 [diffAssoc](#method-diffassoc)
 [diffKeys](#method-diffkeys)
 [dump](#method-dump)
+[duplicates](#method-duplicates)
 [each](#method-each)
 [eachSpread](#method-eachspread)
 [every](#method-every)
@@ -498,6 +499,17 @@ El método `dump` volca los elementos de la colección:
     */
 
 Si deseas detener la ejecución del script después de volcar la colección, use el método [`dd`](#method-dd).
+
+<a name="method-duplicates"><a>
+#### `duplicates()` {#collection-method}
+
+el método `duplicates` recupera y devuelve valores duplicados de la colección:
+
+    $collection = collect(['a', 'b', 'a', 'c', 'b']);
+
+    $collection->duplicates();
+
+    // [ 2 => 'a', 4 => 'b' ]
 
 <a name="method-each"></a>
 #### `each()` {#collection-method}

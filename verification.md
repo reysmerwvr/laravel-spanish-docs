@@ -15,7 +15,7 @@ Muchas aplicaciones web requieren que los usuarios verifiquen sus correos electr
 
 ### Preparación Del Modelo
 
-Para comenzar, verifica que tu modelo `App\User` implementa el contrato `Illuminate\Contracts\Auth\MustVerifyEmail`:
+Para comenzar, verifica que tu modelo `App\User` implementa la interfaz `Illuminate\Contracts\Auth\MustVerifyEmail`:
 
     <?php
 

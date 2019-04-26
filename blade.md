@@ -148,7 +148,7 @@ Una vez que el alias ha sido agregado al componente, puedes renderizarlo usando 
 	    You are not allowed to access this resource!
 	@endalert
 	
-Puedes omitir los parametros del componente si este no tiene slots adicionales:
+Puedes omitir los parámetros del componente si este no tiene slots adicionales:
 	
 	@alert
 	    You are not allowed to access this resource!

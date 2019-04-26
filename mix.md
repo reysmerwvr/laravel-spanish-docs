@@ -53,7 +53,7 @@ El único paso restante es instalar Laravel Mix. Dentro de una instalación nuev
 <a name="running-mix"></a>
 ## Ejecutando Mix
 
-Mix es una capa de configuración basado en [Webpack](https://webpack.js.org), así que para ejecutar tus tareas de Mix sólo necesitas ejecutar uno de los scripts de NPM incluídos en el archivo `package.json` por defecto de Laravel:
+Mix es una capa de configuración basado en [Webpack](https://webpack.js.org), así que para ejecutar tus tareas de Mix sólo necesitas ejecutar uno de los scripts de NPM incluidos en el archivo `package.json` por defecto de Laravel:
 
     // Run all Mix tasks...
     npm run dev

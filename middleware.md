@@ -250,7 +250,7 @@ Los parámetros en los middleware pueden ser especificados al definir la ruta se
 <a name="terminable-middleware"></a>
 ## Middleware Terminable
 
-Algunas veces un middleware puede necesitar hacer algún trabajo después de que la respuesta HTTP ha sido preparada. Por ejemplo, el middleware "session" incluído con Laravel escribe los datos de la sesión para almacenarlos después de que la respuesta ha sido totalmente preparada. Si defines un método `terminate` en tu middleware, este automáticamente será llamado despúes de que la respuesta esté lista para ser enviada al navegador.
+Algunas veces un middleware puede necesitar hacer algún trabajo después de que la respuesta HTTP ha sido preparada. Por ejemplo, el middleware "session" incluido con Laravel escribe los datos de la sesión para almacenarlos después de que la respuesta ha sido totalmente preparada. Si defines un método `terminate` en tu middleware, este automáticamente será llamado despúes de que la respuesta esté lista para ser enviada al navegador.
 
     <?php
     

@@ -20,20 +20,20 @@
 - [Agregar Guards Personalizados](#adding-custom-guards)
     - [Guards De Closures De Peticiones](#closure-request-guards)
 - [Agregar User Providers Personalizados](#adding-custom-user-providers)
-    - [El Contrato De Proveedor De Usuario](#the-user-provider-contract)
-    - [El Contrato Authenticatable](#the-authenticatable-contract)
+    - [La Interfaz UserProvider](#the-user-provider-contract)
+    - [La Interfaz Authenticatable](#the-authenticatable-contract)
 - [Eventos](#events)
 
 <a name="introduction"></a>
 ## Introducción
 
-> {tip} **¿Quieres comenzar rápido?** Simplemente ejecuta `php artisan make:auth` y `php artisan migrate` en una nueva aplicación de Laravel. Luego, dirigete en tu navegador a `http://tu-app.test/register` o cualquier otra URL asignada a tu aplicación. ¡Estos dos comandos se encargarán de generar todo el sistema de autenticación!
+> {tip} **¿Quieres comenzar rápido?** Simplemente ejecuta `php artisan make:auth` y `php artisan migrate` en una nueva aplicación de Laravel. Luego, dirígete en tu navegador a `http://tu-app.test/register` o cualquier otra URL asignada a tu aplicación. ¡Estos dos comandos se encargarán de generar todo el sistema de autenticación!
 
-Laravel hace la implementación de la autenticación algo muy sencillo. De hecho, casi todo se configura para ti por defecto. El archivo de configuración de la autenticación está localizado en `config/auth.php`, el cual contiene varias opciones bien documentadas para ajustar el comportmiento de los servicios de autenticación.
+Laravel hace la implementación de la autenticación algo muy sencillo. De hecho, casi todo se configura para ti por defecto. El archivo de configuración de la autenticación está localizado en `config/auth.php`, el cual contiene varias opciones bien documentadas para ajustar el comportamiento de los servicios de autenticación.
 
 En esencia, las características de la autenticación de Laravel están compuestas de "guards" (guardias) y "providers" (proveedores). Los Guards definen cómo los usuarios son autenticados para cada petición. Por ejemplo, Laravel contiene un guard `session` el cual mantiene el estado utilizando el almacenamiento de sesión y las cookies.
 
-Los proveedores definen cómo se retornan los usuarios de tu almacenamiento persistente. Laravel cuenta con soporte para recuperar los usuarios utilizando Eloquent y el constructor de consultas de la base de datos. Sin embargo, eres libre de definir los proveedores adicionales que requiera tu aplicación.
+Los providers definen cómo se recuperan los usuarios de su almacenamiento persistente. Laravel viene con soporte para recuperar usuarios usando Eloquent y el generador de consultas de base de datos. Sin embargo, es libre de definir providers adicionales según sea necesario para su aplicación.
 
 ¡No te preocupes si esto suena confuso por el momento! Muchas aplicaciones nunca necesitarán modificar la configuración predeterminada de la autenticación.
 
@@ -49,7 +49,7 @@ Además, debes verificar que tu tabla `users` (o equivalente) contenga un campo 
 <a name="authentication-quickstart"></a>
 ## Inicio Rápido De Autenticación
 
-Laravel viene con varios controladores de autenticación preconstruidos, los cuales están localizados en el nombre de espacio `App\Http\Controllers\Auth`. `RegisterController` maneja el registro de usuarios nuevos, `LoginController` maneja la autenticación, `ForgotPasswordController` maneja el envío de correos electrónicos para restablecer la contraseña y el `ResetPasswordController` contiene la lógica para reiniciar contraseñas. Cada uno de estos controladores utiliza un trait para incluir los métodos necesarios. En la mayoría de los casos no tendrás que modificar estos controladores en lo absoluto.
+Laravel viene con varios controladores de autenticación preconstruidos, los cuales están localizados en el espacio de nombre `App\Http\Controllers\Auth`. `RegisterController` maneja el registro de usuarios nuevos, `LoginController` maneja la autenticación, `ForgotPasswordController` maneja el envío de correos electrónicos para restablecer la contraseña y el `ResetPasswordController` contiene la lógica para reiniciar contraseñas. Cada uno de estos controladores utiliza un trait para incluir los métodos necesarios. En la mayoría de los casos no tendrás que modificar estos controladores en lo absoluto.
 
 <a name="included-routing"></a>
 ### Enrutamiento
@@ -132,7 +132,7 @@ Puedes acceder al usuario autenticado por medio del facade `Auth`:
     // Get the currently authenticated user's ID...
     $id = Auth::id();
 
-Alternativamente, una vez que el usuario haya sido autenticado, puedes aceder al usuario autenticado mediante una instancia de `Illuminate\Http\Request`. Recuerda que las clases a las cuales se le declaren el tipo serán inyectadas automáticamente en los métodos de tu controlador:
+Alternativamente, una vez que el usuario haya sido autenticado, puedes acceder al usuario autenticado mediante una instancia de `Illuminate\Http\Request`. Recuerda que las clases a las cuales se le declaren el tipo serán inyectadas automáticamente en los métodos de tu controlador:
 
     <?php
 
@@ -164,7 +164,7 @@ Para determinar si el usuario actual está loggeado en tu aplicación, puedes us
         // The user is logged in...
     }
 
-> {tip} Aún cuando es posible determinar si un usuario está autenticado utilizando el método `check`, típicamente deberás usar un middleware para verificar que el usuario está autenticado antes de permitir al usuario acceder a ciertas rutas / controladores. Para aprender más acerca de esto, echa un vistazo a la documentación para [proteger rutas](/docs/{{version}}/authentication#protecting-routes).
+> {tip} Aun cuando es posible determinar si un usuario está autenticado utilizando el método `check`, típicamente deberás usar un middleware para verificar que el usuario está autenticado antes de permitir al usuario acceder a ciertas rutas / controladores. Para aprender más acerca de esto, echa un vistazo a la documentación para [proteger rutas](/docs/{{version}}/authentication#protecting-routes).
 
 <a name="protecting-routes"></a>
 ### Proteger Rutas
@@ -209,7 +209,7 @@ Cuando adjuntes el middleware `auth` a una ruta, también puedes especificar cua
 <a name="login-throttling"></a>
 ### Regulación De Inicio De Sesión
 
-Si estás utilizando la clase `LoginController` incorporada en Laravel, el trait `Illuminate\Foundation\Auth\ThrottlesLogins` se encontrará incluído en tu controlador. De manera predeterminada, el usuario no será capaz de iniciar sesión durante un minuto si falla al proveer las credenciales correctas después de varios intentos. El regulador (o throttle) es único para el nombre de usuario / dirección de correo electrónico del usuario y su dirección IP.
+Si estás utilizando la clase `LoginController` incorporada en Laravel, el trait `Illuminate\Foundation\Auth\ThrottlesLogins` se encontrará incluido en tu controlador. De manera predeterminada, el usuario no será capaz de iniciar sesión durante un minuto si falla al proveer las credenciales correctas después de varios intentos. El regulador (o throttle) es único para el nombre de usuario / dirección de correo electrónico del usuario y su dirección IP.
 
 <a name="authenticating-users"></a>
 ## Autenticar Usuarios Manualmente
@@ -299,7 +299,7 @@ Si estás "recordando" usuarios, puedes utilizar el método `viaRemember` para d
 
 #### Autenticar Una Instancia De Usuario
 
-Si necesitas registrar una instancia de usuario existente en tu aplicación, puedes llamar al método `login` con la instancia de usuario. El objeto proporcionado deberá ser una implementación del [contract](/docs/{{version}}/contracts) `Illuminate\Contracts\Auth\Authenticatable`. El modelo `App\User` incluido en Laravel ya implementa esta interface:
+Si necesitas registrar una instancia de usuario existente en tu aplicación, puedes llamar al método `login` con la instancia de usuario. El objeto proporcionado deberá ser una implementación de la [interfaz](/docs/{{version}}/contracts) `Illuminate\Contracts\Auth\Authenticatable`. El modelo `App\User` incluido en Laravel ya implementa esta interfaz:
 
     Auth::login($user);
 
@@ -452,7 +452,7 @@ Como puedes ver en el ejemplo anterior, el callback pasado al método `extend` d
 
 La forma más sencilla de implementar un sistema de autenticación basado en peticiones HTTP es usando el método `Auth:viaRequest`. Este método te permite definir rápidamente tu proceso de autenticación usando sólo un Closure.
 
-Para comenzar, llama al método `Auth::viaRequest` dentro del método `boot` de tu `AuthServiceProvider`. El método `viaRequest` acepta el nombre de un driver de autenticación como su primer argumento. Este nombre puede ser cualquier cadena que describa tu guard personalizado. El segundo argumento pasado al método método debe ser un Closure que reciba la petición HTTP entrante y retorne una instancia de usuario o, si la autenticación falla, `null`:
+Para comenzar, llama al método `Auth::viaRequest` dentro del método `boot` de tu `AuthServiceProvider`. El método `viaRequest` acepta el nombre de un driver de autenticación como su primer argumento. Este nombre puede ser cualquier cadena que describa tu guard personalizado. El segundo argumento pasado al método  debe ser un Closure que reciba la petición HTTP entrante y retorne una instancia de usuario o, si la autenticación falla, `null`:
 
     use App\User;
     use Illuminate\Http\Request;
@@ -530,11 +530,11 @@ Finalmente, puedes utilizar este proveedor en tu configuración de `guards`:
     ],
 
 <a name="the-user-provider-contract"></a>
-### El Contrato De Proveedor De Usuario
+### La Interfaz UserProvider
 
 Las implementaciones `Illuminate\Contracts\Auth\UserProvider` son responsables solamente de obtener una implementación de `Illuminate\Contracts\Auth\Authenticatable` desde un sistema de almacenamiento persistente, como MySQL, Riak, etc. Estas dos interfaces permiten a los mecanismos de autenticación de Laravel continuar funcionando independientemente de cómo esté almacenada la información del usuario o qué tipo de clase es utilizado para representarlo.
 
-Echemos un vistaso al contract `Illuminate\Contracts\Auth\UserProvider`:
+Echemos un vistaso a la interfaz `Illuminate\Contracts\Auth\UserProvider`:
 
     <?php
 
@@ -561,9 +561,9 @@ El método `retrieveByCredentials` recupera el arreglo de credenciales pasadas a
 El método `validateCredentials` deberá comparar el `$user` proporcionado con sus `$credentials` para autenticar el usuario. Por ejemplo, este método puede utilizar `Hash::check` para comparar los valores de `$user->getAuthPassword()` al valor de `$credentials['password']`. Este método deberá retornar `true` o `false` indicando si la contraseña es válida o no.
 
 <a name="the-authenticatable-contract"></a>
-### El Contrato Authenticatable
+### La Interfaz Authenticatable
 
-Ahora que hemos explorado cada uno de los métodos en `UserProvider`, vamos a echar un vistazo al contract `Authenticatable`. Recuerda, el proveedor deberá retornar implementaciones de esta interfaz desde los métodos `retrieveById`, `retrieveByToken` y `retrieveByCredentials`:
+Ahora que hemos explorado cada uno de los métodos en `UserProvider`, vamos a echar un vistazo a la interfaz `Authenticatable`. Recuerda, el proveedor deberá retornar implementaciones de esta interfaz desde los métodos `retrieveById`, `retrieveByToken` y `retrieveByCredentials`:
 
     <?php
 

@@ -10,6 +10,7 @@
     - [Notificaciones Bajo Demanda](#on-demand-notifications)
 - [Notificaciones Por Correo](#mail-notifications)
     - [Formato Para Mensajes Por Correo](#formatting-mail-messages)
+    - [Personalizar El Remitente](#customizing-the-sender)
     - [Personalizar El Destinatario](#customizing-the-recipient)
     - [Personalizar El Asunto](#customizing-the-subject)
     - [Personalizar Las Plantillas](#customizing-the-templates)
@@ -94,7 +95,7 @@ Alternativamente, puedes enviar notificaciones mediante la [facade](/docs/{{vers
 <a name="specifying-delivery-channels"></a>
 ### Especificar Canales De Entrega
 
-Cada clase de notificación tiene un método `via` que determina mediante cuáles canales será entregada la notificación. Por defecto, las notificaciones pueden ser enviadas por los canales  `mail`, `database`, `broadcast`, `nexmo`, y `slack`.
+Cada clase de notificación tiene un método `via` que determina mediante cuáles canales será entregada la notificación. Las notificaciones pueden ser enviadas por los canales  `mail`, `database`, `broadcast`, `nexmo`, y `slack`.
 
 > {tip} Si estás interesado en utilizar otros canales de entrega como Telegram o Pusher, revisa el sitio dirigido por la comunidad [Laravel Notification Channels](http://laravel-notification-channels.com).
 
@@ -233,6 +234,24 @@ Algunas notificaciones informan a los usuarios acerca de errores, como un pago f
         return (new MailMessage)
                     ->error()
                     ->subject('Notification Subject')
+                    ->line('...');
+    }
+
+<a name="customizing-the-sender"></a>
+### Personalizar El Remitente
+
+Por defecto, el remitente del correo electrónico es definido en el archivo `config/mail.php`. Sin embargo, también puedes definir un remitente a través de una notificación específica:
+    
+    /**
+     * Get the mail representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return \Illuminate\Notifications\Messages\MailMessage
+     */
+    public function toMail($notifiable)
+    {
+        return (new MailMessage)
+                    ->from('noreply@laravel.com', 'Laravel')
                     ->line('...');
     }
 
@@ -829,7 +848,7 @@ La configuración regional de múltiples entradas notificables también puede se
 
 ### Configuración Regional Preferida Por El Usuario
 
-A veces, las aplicaciones almacenan la configuración regional preferida de cada usuario. Al implementar el contrato `HasLocalePreference` en tu modelo notificable, puedes instruir a Laravel que use esta configuración almacenada al enviar una notificación:
+A veces, las aplicaciones almacenan la configuración regional preferida de cada usuario. Al implementar la interfaz `HasLocalePreference` en tu modelo notificable, puedes instruir a Laravel que use esta configuración almacenada al enviar una notificación:
 
     use Illuminate\Contracts\Translation\HasLocalePreference;
 

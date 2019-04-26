@@ -158,7 +158,7 @@ La interfaz `ShouldBroadcast` requiere que nuestro evento defina un método `bro
     /**
      * Get the channels the event should broadcast on.
      *
-     * @return array
+     * @return \Illuminate\Broadcasting\PrivateChannel
      */
     public function broadcastOn()
     {
@@ -248,7 +248,7 @@ Por defecto, Laravel transmitirá el evento usando el nombre de clase del evento
         return 'server.created';
     }
 
-Si personalizas el nombre de la transmisión usando el método `broadcastAs`, debes asegurarte de registrar tu listener prefijándolo con un caracter `.`. Esto instruíra a Echo a no agregar el nombre de espacio de la aplicación al evento:
+Si personalizas el nombre de la transmisión usando el método `broadcastAs`, debes asegurarte de registrar tu listener prefijándolo con un caracter `.`. Esto instruíra a Echo a no agregar el espacio de nombre de la aplicación al evento:
 
     .listen('.server.created', function (e) {
         ....
@@ -530,7 +530,7 @@ Si te gustaría abandonar un canal y también sus canales privados y presenciale
 <a name="namespaces"></a>
 ### Nombres De Espacio
 
-Puedes haber notado en los ejemplos superiores que no especificamos un nombre de espacio completo para las clases del evento. Esto es debido a que Echo automáticamente asumirá que los eventos están ubicados en el nombre de espacio `App\Events`. Sin embargo, puedes configurar el nombre de espacio principal cuando instancias Echo pasando una opción de configuración `namespace`:
+Puedes haber notado en los ejemplos superiores que no especificamos un espacio de nombre completo para las clases del evento. Esto es debido a que Echo automáticamente asumirá que los eventos están ubicados en el espacio de nombre `App\Events`. Sin embargo, puedes configurar el espacio de nombre principal cuando instancias Echo pasando una opción de configuración `namespace`:
 
     window.Echo = new Echo({
         broadcaster: 'pusher',

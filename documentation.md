@@ -15,7 +15,7 @@
     - [Contenedor de Servicios](/docs/{{version}}/container)
     - [Proveedores de Servicios](/docs/{{version}}/providers)
     - [Facades](/docs/{{version}}/facades)
-    - [Contratos](/docs/{{version}}/contracts)
+    - [Interfaces](/docs/{{version}}/contracts)
 - ## Fundamentos
     - [Enrutamiento](/docs/{{version}}/routing)
     - [Middleware](/docs/{{version}}/middleware)

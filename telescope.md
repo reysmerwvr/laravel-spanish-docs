@@ -38,8 +38,6 @@ Telescope de Laravel es un elegante asistente para depurar código para el frame
 <a name="installation"></a>
 ## Instalación
 
-> {note} Telescope necesita Laravel 5.7.7+.
-
 Puedes usar Composer para instalar Telescope dentro de tu proyecto de Laravel:
 
     composer require laravel/telescope

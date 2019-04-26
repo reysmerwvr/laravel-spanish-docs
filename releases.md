@@ -9,7 +9,7 @@
 
 El esquema de versiones de Laravel mantiene la siguiente convención: `paradigma.mayor.menor`. Los lanzamientos mayores del framework se publican cada seis meses (febrero y agosto), mientras que los lanzamientos menores se liberan cada semana. Los lanzamientos menores **nunca** deben contener cambios de ruptura (breaking changes).
 
-Cuando haces referencia al framework Laravel o sus componentes desde tu aplicación o paquete, debes utilizar siempre una restricción de versión como `5.7.*`, ya que las versiones mayores de Laravel no incluyen cambios de ruptura. Sin embargo, nos esforzamos por asegurarnos siempre de que puedas actualizar a una nueva versión mayor en un día o menos.
+Cuando haces referencia al framework Laravel o sus componentes desde tu aplicación o paquete, debes utilizar siempre una restricción de versión como `5.8.*`, ya que las versiones mayores de Laravel no incluyen cambios de ruptura. Sin embargo, nos esforzamos por asegurarnos siempre de que puedas actualizar a una nueva versión mayor en un día o menos.
 
 Los lanzamientos de cambios de paradigma están separados por muchos años y representan cambios fundamentales en la arquitectura y las convenciones del framework. Actualmente, no hay ningún cambio de paradigma en desarrollo.
 
@@ -127,7 +127,7 @@ Sin embargo, esto puede volverse engorroso y repetitivo si estás especificando 
 
 ### Eventos Para Modelos Pivote O Tabla intermedia 
 
-En versiones anteriores de Laravel, los eventos del modelo Eloquent no se distribuían al adjuntar, separar o sincronizar modelos personalizados de tabla intermedia / pivote de una relación de muchos a muchos. Cuando usas [modelos personalizados para tablas intermedias](/docs/{{version}}/eloquent-relationships#defining-custom-intermediate-table-models) en Laravel 5.8, estos eventos ahora serán enviados.
+En versiones anteriores de Laravel, [los eventos del modelo Eloquent](/docs/{{version}}/eloquent#events) no se disparaban al adjuntar, separar o sincronizar modelos personalizados de tabla intermedia / pivote de una relación de muchos a muchos. Cuando usas [modelos personalizados para tablas intermedias](/docs/{{version}}/eloquent-relationships#defining-custom-intermediate-table-models) en Laravel 5.8, los eventos aplicables al modelo ahora serán disparados.
 
 ### Mejoras Al Método Call De Artisan
 

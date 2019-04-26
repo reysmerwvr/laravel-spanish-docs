@@ -138,7 +138,7 @@ Esta sentencia le dice al contenedor que debe inyectar `RedisEventPusher` cuando
 <a name="contextual-binding"></a>
 ### Enlaces Contextuales
 
-Algunas veces tendrás dos clases que usan la misma interfaz, pero quieres inyectar diferentes implementaciones en cada clase. Por ejemplo, dos controladores pueden depender de diferentes implementaciones del [contrato](/docs/{{version}}/contracts) `Illuminate\Contracts\Filesystem\Filesystem`. Laravel proporciona una simple y fluida interfaz para definir este comportamiento:
+Algunas veces tendrás dos clases que usan la misma interfaz, pero quieres inyectar diferentes implementaciones en cada clase. Por ejemplo, dos controladores pueden depender de diferentes implementaciones de la [interfaz](/docs/{{version}}/contracts) `Illuminate\Contracts\Filesystem\Filesystem`. Laravel proporciona una simple y fluida interfaz para definir este comportamiento:
 
     use Illuminate\Support\Facades\Storage;
     use App\Http\Controllers\PhotoController;
@@ -208,7 +208,7 @@ Si algunas de las dependencias de tu clase no son resueltas mediante el contened
 <a name="automatic-injection"></a>
 #### Inyección Automática
 
-Alternativamente, y de forma importante, puedes "determinar el tipo" de la dependencia en el constructor (o el método handle() para trabajos en cola) de una clase que es resuelta por el contenedor, incluyendo [controladores](/docs/{{version}}/controllers), [listeners de eventos](/docs/{{version}}/events), [colas](/docs/{{version}}/queues), [middleware](/docs/{{version}}/middleware) y más. En la práctica, así es como la mayoría de tus objetos deben ser resueltos por el contenedor.
+Alternativamente, y de forma importante, puedes "determinar el tipo" de la dependencia en el constructor de una clase que es resuelta por el contenedor, incluyendo [controladores](/docs/{{version}}/controllers), [listeners de eventos](/docs/{{version}}/events), [middleware](/docs/{{version}}/middleware) y más. Adicionalmente, también puedes "determinar el tipo" de dependencias en el método `handle` de [trabajos en cola](/docs/{{version}}/queues) .En la práctica, así es como la mayoría de tus objetos deben ser resueltos por el contenedor.
 
 Por ejemplo, puedes determinar el tipo de un repositorio definido por tu aplicación en el constructor de un controlador. El repositorio será automáticamente resuelto e inyectado en la clase:
 

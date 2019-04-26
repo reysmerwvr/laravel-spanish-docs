@@ -790,7 +790,7 @@ Si la cadena o llave de traducción especificada no existe, la función `__` ret
 <a name="method-class-basename"></a>
 #### `class_basename()` {#collection-method}
 
-La función `class_basename` retorna el nombre de la clase dada con el nombre de espacio de la clase removido:
+La función `class_basename` retorna el nombre de la clase dada con el espacio de nombre de la clase removido:
 
     $class = class_basename('Foo\Bar\Baz');
     
@@ -1146,7 +1146,7 @@ The `Str::uuid` method generates a UUID (version 4):
 <a name="method-action"></a>
 #### `action()` {#collection-method}
 
-La función `action` genera una URL para la acción del controlador dada. No necesitas pasar el nombre de espacio completo. En lugar de eso, pasa al controlador el nombre de clase relativo al nombre de espacio `App\Http\Controllers`:
+La función `action` genera una URL para la acción del controlador dada. No necesitas pasar el espacio de nombre completo. En lugar de eso, pasa al controlador el nombre de clase relativo al espacio de nombre `App\Http\Controllers`:
 
     $url = action('HomeController@index');
 
@@ -1323,9 +1323,9 @@ La función `cache` puede ser usada para obtener un valor de la [cache](/docs/{{
     
     $value = cache('key', 'default');
 
-Puedes agregar elementos a la cache pasando un arreglo de pares clave / valor a la función. También debes pasar la cantidad de minutos o la duración que el valor almacenado en caché debe considerarse válido:
+Puedes agregar elementos a la cache pasando un arreglo de pares clave / valor a la función. También debes pasar la cantidad de segundos o la duración que el valor almacenado en caché debe considerarse válido:
 
-    cache(['key' => 'value'], 5);
+    cache(['key' => 'value'], 300);
     
     cache(['key' => 'value'], now()->addSeconds(10));
 

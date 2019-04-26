@@ -26,7 +26,7 @@ Por otro lado, otros paquetes están específicamente destinados para su uso con
 <a name="a-note-on-facades"></a>
 ### Una nota sobre Facades
 
-Al escribir una aplicación Laravel, generalmente no importa si usas contratos o facades ya que ambos brindan niveles esencialmente iguales de capacidad de pruebas. Sin embargo, al escribir paquetes, tu paquete normalmente no tendrá acceso a todos las funciones helpers de prueba de Laravel. Si deseas escribir pruebas para el paquete como si existiera dentro de una típica aplicación Laravel puedes usar el paquete [Orchestral Testbench](https://github.com/orchestral/testbench).
+Al escribir una aplicación Laravel, generalmente no importa si usas interfaces o facades ya que ambos brindan niveles esencialmente iguales de capacidad de pruebas. Sin embargo, al escribir paquetes, tu paquete normalmente no tendrá acceso a todos las funciones helpers de prueba de Laravel. Si deseas escribir pruebas para el paquete como si existiera dentro de una típica aplicación Laravel puedes usar el paquete [Orchestral Testbench](https://github.com/orchestral/testbench).
 
 <a name="package-discovery"></a>
 ## Descubrimiento de Paquetes

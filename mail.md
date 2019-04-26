@@ -616,7 +616,7 @@ Como todas las clases mailable generadas usando el comando `make:mail` usan el t
 
 #### En Cola Por Defecto
 
-Si tienes clases mailables que deseas que siempre se pongan en cola, puedes implementar el contrato `ShouldQueue` en la clase. Ahora, incluso si llamas al método `send` cuando envies correos el mailable se pondrá en cola ya que implementa el contrato:
+Si tienes clases mailables que deseas que siempre se pongan en cola, puedes implementar la interfaz `ShouldQueue` en la clase. Ahora, incluso si llamas al método `send` cuando envies correos el mailable se pondrá en cola ya que implementa la interfaz:
 
     use Illuminate\Contracts\Queue\ShouldQueue;
 
@@ -638,7 +638,7 @@ Para lograr esto, el facade `Mail` ofrece un método `locale` para establecer el
 
 ### Configuración Regional De Usuarios
 
-Algunas veces, las aplicaciones almacenan la configuración regional preferida de cada usuario. Al implementar el contrato `HasLocalePreference` en uno o más de tus modelos, puedes instruir a Laravel a usar dicha configuración almacenado al enviar correos electrónicos:
+Algunas veces, las aplicaciones almacenan la configuración regional preferida de cada usuario. Al implementar la interfaz `HasLocalePreference` en uno o más de tus modelos, puedes instruir a Laravel a usar dicha configuración almacenado al enviar correos electrónicos:
 
     use Illuminate\Contracts\Translation\HasLocalePreference;
 

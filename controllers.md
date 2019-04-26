@@ -305,7 +305,7 @@ El [contenedor de servicio](/docs/{{version}}/container) de Laravel es usado par
         }
     }
 
-También puedes declarar el tipo de cualquier [Contrato de Laravel](/docs/{{version}}/contracts). Si el contenedor puede resolverlo, puedes declararlo. Dependiendo de tu aplicación, inyectar tus dependencias dentro de tu controlador puede proporcionar mejo capacidad para pruebas.
+También puedes declarar el tipo de cualquier [interfaz de Laravel](/docs/{{version}}/contracts). Si el contenedor puede resolverlo, puedes declararlo. Dependiendo de tu aplicación, inyectar tus dependencias dentro de tu controlador puede proporcionar mejo capacidad para pruebas.
 
 #### Inyección de Métodos
 

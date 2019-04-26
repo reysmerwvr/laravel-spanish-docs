@@ -9,7 +9,7 @@
 - [Joins](#joins)
 - [Uniones](#unions)
 - [Cláusulas Where](#where-clauses)
-    - [Agrupamiento de Parametros](#parameter-grouping)
+    - [Agrupamiento de parámetros](#parameter-grouping)
     - [Cláusulas Exists Where](#where-exists-clauses)
     - [Cláusulas Where JSON](#json-where-clauses)
 - [Ordenamiento, Agrupamiento, Límite, y Desplazamiento](#ordering-grouping-limit-and-offset)
@@ -27,6 +27,8 @@
 El constructor de consultas (query builder) de Base de datos de Laravel, proporciona una interface fluida y conveniente para la creación y ejecución de consultas de bases de datos. Puede ser usado para ejecutar las principales operaciones de bases de datos en tu aplicación y funciona en todos los sistemas de bases de datos soportados.
 
 El constructor de consultas de Laravel usa enlazamiento de parámetros PDO para proteger tu aplicación contra ataques de inyección SQL. No hay necesidad de limpiar cadenas que están siendo pasadas como enlaces.
+
+> {note} PDO no admite nombres de columna de enlace (binding). Por lo tanto, nunca debes permitir que la entrada de usuario dicte los nombres de columna a los que hacen referencia tus consultas, incluidas las columnas "ordenar por", etc. Si debes permitir que el usuario seleccione ciertas columnas para consultar, valida siempre los nombres de las columnas con un una lista blanca de columnas permitidas.
 
 <a name="retrieving-results"></a>
 ## Obteniendo Los Resultados
@@ -74,6 +76,10 @@ Si solamente necesitas recuperar una sola fila de la tabla de la base de datos, 
 Si no necesitas una fila completa, puedes extraer un solo valor de un registro usando el método `value`. Este método devolverá directamente el valor de la columna:
 
     $email = DB::table('users')->where('name', 'John')->value('email');
+
+Para obtener una sola fila por su valor de columna `id`, use el método` find`:
+
+    $user = DB::table('users')->find(3);
 
 #### Obteniendo una Lista de Valores de Columna
 
@@ -347,14 +353,14 @@ Puedes encadenar en conjunto las restricciones where así como añadir cláusula
 
 #### Cláusulas Where Adicionales
 
-**whereBetween**
+**whereBetween / orWhereBetween**
 
 El método `whereBetween` verifica que un valor de columna esté en un intervalo de valores:
 
     $users = DB::table('users')
                         ->whereBetween('votes', [1, 100])->get();
 
-**whereNotBetween**
+**whereNotBetween / orWhereNotBetween**
 
 El método `whereNotBetween` verifica que un valor de columna no esté en un intervalo de valores:
 
@@ -362,7 +368,7 @@ El método `whereNotBetween` verifica que un valor de columna no esté en un int
                         ->whereNotBetween('votes', [1, 100])
                         ->get();
 
-**whereIn / whereNotIn**
+**whereIn / whereNotIn / orWhereIn / orWhereNotIn**
 
 El método `whereIn` verifica que un valor de una columna dada esté contenido dentro del arreglo dado:
 
@@ -376,7 +382,7 @@ El método `whereNotIn` verifica que el valor de una columna dada **no** esté c
                         ->whereNotIn('id', [1, 2, 3])
                         ->get();
 
-**whereNull / whereNotNull**
+**whereNull / whereNotNull / orWhereNull / orWhereNotNull**
 
 El método `whereNull` verifica que el valor de una columna dada sea `NULL`:
 
@@ -422,7 +428,7 @@ El método `whereTime` puede ser usado para comparar el valor de una columna con
                     ->whereTime('created_at', '=', '11:20:45')
                     ->get();
 
-**whereColumn**
+**whereColumn / orWhereColumn**
 
 El método `whereColumn` puede ser usado para verificar que dos columnas son iguales:
 

@@ -1,37 +1,37 @@
-# Contratos
+# Interfaces
 
 - [Introducción](#introduction)
-    - [Contratos Vs. Facades](#contracts-vs-facades)
-- [Cuando Usar Contratos](#when-to-use-contracts)
+    - [Interfaces Vs. Facades](#contracts-vs-facades)
+- [Cuando Usar Interfaces](#when-to-use-contracts)
     - [Bajo Acoplamiento](#loose-coupling)
     - [Simplicidad](#simplicity)
-- [Cómo Usar Contratos](#how-to-use-contracts)
-- [Referencia de Contratos](#contract-reference)
+- [Cómo Usar Interfaces](#how-to-use-contracts)
+- [Referencia de Interfaces](#contract-reference)
 
 <a name="introduction"></a>
 ## Introducción
 
-Los Contratos de Laravel son un conjunto de interfaces que definen los servicios principales proporcionados por el framework. Por ejemplo, un contrato `Illuminate\Contracts\Queue\Queue` define los métodos necesarios para las colas de trabajo, mientras que el contrato `Illuminate\Contracts\Mail\Mailer` define los métodos necesarios para el envío de correos electrónicos.
+Las Interfaces de Laravel son un conjunto de contratos que definen los servicios principales proporcionados por el framework. Por ejemplo, una interfaz `Illuminate\Contracts\Queue\Queue` define los métodos necesarios para las colas de trabajo, mientras que la interfaz `Illuminate\Contracts\Mail\Mailer` define los métodos necesarios para el envío de correos electrónicos.
 
-Cada contrato tiene una implementación correspondiente provista por el framework. Por ejemplo, laravel proporciona una implementación de cola con una variedad de conductores (drivers), y una implementación de envío de correo electrónico que funciona con [SwiftMailer](https://swiftmailer.symfony.com/).
+Cada interfaz tiene una implementación correspondiente provista por el framework. Por ejemplo, laravel proporciona una implementación de cola para una variedad de controladores (drivers) y una implementación de envío de correo electrónico que funciona con [SwiftMailer](https://swiftmailer.symfony.com/).
 
-Todos los contratos de Laravel viven en [su repositorio de GitHub propio](https://github.com/illuminate/contracts). Esto proporciona un punto de referencia rápido para todos los contratos disponibles, así como un paquete único y desacoplado que puede ser utilizado por los desarrolladores de paquetes.
+Todos las interfaces de Laravel viven en [su repositorio de GitHub propio](https://github.com/illuminate/contracts). Esto proporciona un punto de referencia rápido para todos las interfaces disponibles, así como un paquete único y desacoplado que puede ser utilizado por los desarrolladores de paquetes.
 
 <a name="contracts-vs-facades"></a>
-### Contratos Vs. Facades
+### Interfaces Vs. Facades
 
-Los [facades](/docs/{{version}}/facades) de Laravel y las funciones de ayuda (helpers) proporcionan una forma sencilla de utilizar los servicios de Laravel sin necesidad de determinar el tipo y resolver contratos fuera del contenedor de servicios. En la mayoría de los casos, cada facade tiene un contrato equivalente.
+Los [facades](/docs/{{version}}/facades) de Laravel y las funciones de ayuda (helpers) proporcionan una forma sencilla de utilizar los servicios de Laravel sin necesidad de declarar el tipo y resolver interfaces del contenedor de servicios. En la mayoría de los casos, cada facade tiene una interfaz equivalente.
 
-A diferencia de las facades, que no necesitan que las requieras en el constructor de su clase, los contratos te permiten definir dependencias explícitas para tus clases. Algunos desarrolladores prefieren definir explícitamente sus dependencias de esta manera y, por lo tanto, prefieren usar contratos, mientras que otros desarrolladores disfrutan de la conveniencia de las facades.
+A diferencia de las facades, que no necesitan que las requieras en el constructor de tu clase, las interfaces te permiten definir dependencias explícitas para tus clases. Algunos desarrolladores prefieren definir explícitamente sus dependencias de esta manera y, por lo tanto, prefieren usar interfaces, mientras que otros desarrolladores disfrutan de la conveniencia de las facades.
 
-> {tip} La mayoría de las aplicaciones funcionarán bien sin importar si prefieres facades o contratos. Sin embargo, si estás construyendo un paquete, debes considerar seriamente el uso de contratos, ya que será más fáciles de probar en un contexto paquete.
+> {tip} La mayoría de las aplicaciones funcionarán bien sin importar si prefieres facades o interfaces. Sin embargo, si estás construyendo un paquete, debes considerar seriamente el uso de interfaces, ya que será más fáciles de probar en un contexto paquete.
 
 <a name="when-to-use-contracts"></a>
-## Cuando Usar Contratos
+## Cuando Usar Interfaces
 
-Como se discutió en otro lugar, gran parte de la decisión de usar contratos o facades se reducirá a los gustos personales y los gustos de su equipo de desarrollo. Tanto los contratos como las facades se pueden utilizar para crear aplicaciones Laravel robustas y bien probadas. Mientras mantengas enfocadas las responsabilidades de tu clase, notarás muy pocas diferencias prácticas entre el uso de contratos y facades.
+Como se discutió anteriormente, gran parte de la decisión de usar interfaces o facades se reducirá a los gustos personales y los gustos de tu equipo de desarrollo. Tanto las interfaces como las facades se pueden utilizar para crear aplicaciones Laravel robustas y bien probadas. Mientras mantengas enfocadas las responsabilidades de tu clase, notarás muy pocas diferencias prácticas entre el uso de interfaces y facades.
 
-Sin embargo, todavía puede tener varias preguntas con respecto a los contratos. Por ejemplo, ¿por qué usar interfaces? ¿No es más complicado usar interfaces? Detallemos las razones para utilizar interfaces en los siguientes encabezados: bajo acoplamiento y simplicidad.
+Sin embargo, todavía puede tener varias preguntas con respecto a las interfaces. Por ejemplo, ¿por qué usar interfaces? ¿No es más complicado usar interfaces? Detallemos las razones para utilizar interfaces en los siguientes encabezados: bajo acoplamiento y simplicidad.
 
 <a name="loose-coupling"></a>
 ### Bajo Acoplamiento
@@ -105,23 +105,23 @@ Del mismo modo, si queremos reemplazar nuestra tecnología de caché subyacente 
         }
     }
 
-Ahora el código no está acoplado a ningún proveedor específico, ni siquiera a Laravel. Dado que el paquete de contratos no contiene implementación ni dependencias, puede escribir fácilmente una implementación alternativa de cualquier contrato dado, lo que le permite reemplazar su implementación de caché sin modificar ninguno de los códigos que consumen caché.
+Ahora el código no está acoplado a ningún proveedor específico, ni siquiera a Laravel. Dado que el paquete de interfaces no contiene implementación ni dependencias, puede escribir fácilmente una implementación alternativa de cualquier interfaz dada, lo que le permite reemplazar su implementación de caché sin modificar ninguno de los códigos que consumen caché.
 
 <a name="simplicity"></a>
 ### Simplicidad
 
-Cuando todos los servicios de Laravel están claramente definidos dentro de interfaces simples, es muy fácil determinar la funcionalidad ofrecida por un servicio dado. **Los contratos sirven como documentación sucinta de las características del framework.**
+Cuando todos los servicios de Laravel están claramente definidos dentro de interfaces simples, es muy fácil determinar la funcionalidad ofrecida por un servicio dado. **Las interfaces sirven como documentación sucinta de las características del framework.**
 
 Además, cuando dependes de interfaces simples, tu código es más fácil de entender y mantener. En lugar de rastrear qué métodos están disponibles dentro de una clase grande y complicada, puedes hacer referencia a una interfaz sencilla y limpia.
 
 <a name="how-to-use-contracts"></a>
-## Cómo Usar Contratos
+## Cómo Usar Interfaces
 
-Entonces, ¿Cómo se obtiene una implementación de un contrato? En realidad es bastante simple.
+Entonces, ¿Cómo se obtiene una implementación de una interfaz? En realidad es bastante simple.
 
-Muchos tipos de clases en Laravel se resuelven a través del [contenedor de servicio](/docs/{{version}}/container), incluyendo controladores, los escuchadores de eventos, middleware, trabajos de cola e incluso una Closure de ruta. Por lo tanto, para obtener una implementación de un contrato, puede simplemente "declarar el tipo" de la interfaz en el constructor de la clase que se está resolviendo.
+Muchos tipos de clases en Laravel se resuelven a través del [contenedor de servicio](/docs/{{version}}/container), incluyendo controladores, los listeners de eventos, middleware, trabajos de cola e incluso una Closure de ruta. Por lo tanto, para obtener una implementación de una interfaz, puede simplemente "declarar el tipo" de la interfaz en el constructor de la clase que se está resolviendo.
 
-Por ejemplo, veamos este escuchador (listener) de evento:
+Por ejemplo, veamos este listener de evento:
 
     <?php
 
@@ -161,14 +161,14 @@ Por ejemplo, veamos este escuchador (listener) de evento:
         }
     }
 
-Cuando se resuelve el escuchador de evento, el contenedor de servicios leerá las declaraciones de tipo en el constructor de la clase e inyectará el valor apropiado. Para obtener más información sobre cómo registrar cosas en el contenedor de servicios, consulte [su documentación](/docs/{{version}}/container).
+Cuando se resuelve el listener de evento, el contenedor de servicios leerá las declaraciones de tipo en el constructor de la clase e inyectará el valor apropiado. Para obtener más información sobre cómo registrar cosas en el contenedor de servicios, consulta [su documentación](/docs/{{version}}/container).
 
 <a name="contract-reference"></a>
-## Referencia de Contratos
+## Referencia de Interfaces
 
-Esta tabla proporciona una referencia rápida a todos los contratos de Laravel y sus facades equivalentes:
+Esta tabla proporciona una referencia rápida a todos las interfaces de Laravel y sus facades equivalentes:
 
-Contrato  |  Referencias de la Facade
+Interfaz  |  Referencias de la Facade
 --------- | -------------------------
 [Illuminate\Contracts\Auth\Access\Authorizable](https://github.com/illuminate/contracts/blob/{{version}}/Auth/Access/Authorizable.php) | &nbsp;
 [Illuminate\Contracts\Auth\Access\Gate](https://github.com/illuminate/contracts/blob/{{version}}/Auth/Access/Gate.php) | `Gate`

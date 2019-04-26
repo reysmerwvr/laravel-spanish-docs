@@ -4,6 +4,7 @@
 - [Registro de Eventos y Oyentes](#registering-events-and-listeners)
     - [Generación de Eventos y Oyentes](#generating-events-and-listeners)
     - [Registro Manual de Eventos](#manually-registering-events)
+    - [Descubrimiento de Eventos](#event-discovery)
 - [Definiendo Eventos](#defining-events)
 - [Definiendo Oyentes](#defining-listeners)
 - [Oyentes de Eventos en Cola](#queued-event-listeners)
@@ -70,6 +71,43 @@ Puedes incluso registrar oyentes usando el `*` como un parámetro comodín, lo q
     Event::listen('event.*', function ($eventName, array $data) {
         //
     });
+
+<a name="event-discovery"></a>
+### Descubrimiento de Eventos
+
+> {note} El Descubrimiento de Eventos solo está disponible para Laravel 5.8.9 o posterior.
+
+En vez de registrar eventos y oyentes (listeners) manualmente en el arreglo `$listen` del `EventServiceProvider`, puedes habilitar la detección automática de eventos. Cuando se habilita la detección de eventos, Laravel encontrará y registrará automáticamente tus eventos y oyentes escaneando el directorio `Listeners` de tu aplicación. Además, todos los eventos definidos explícitamente listados en el `EventServiceProvider` seguirán registrados.
+
+La detección de eventos está deshabilitada de forma predeterminada, pero puedes habilitarla sobreescribiendo el método `shouldDiscoverEvents` del `EventServiceProvider` de tu aplicación:
+
+    /**
+     * Determine if events and listeners should be automatically discovered.
+     *
+     * @return bool
+     */
+    public function shouldDiscoverEvents()
+    {
+        return true;
+    }
+
+Por defecto, se escanearán todos los oyentes dentro del directorio `Listeners` de tu aplicación. Si deseas definir directorios adicionales para analizar, puedes sobreescribir el método `discoverEventsWithin` en tu `EventServiceProvider`:
+
+    /**
+     * Get the listener directories that should be used to discover events.
+     *
+     * @return array
+     */
+    protected function discoverEventsWithin()
+    {
+        return [
+            $this->app->path('Listeners'),
+        ];
+    }
+
+En producción, es probable que no desees que el framework analice todos tus oyentes en cada petición. Por lo tanto, durante tu proceso de despliegue, debes ejecutar el comando Artisan `event:cache` para almacenar en caché un manifiesto de todos los eventos y oyentes de tu aplicación. Este manifiesto será utilizado por el framework para acelerar el proceso de registro de eventos. El comando `event:clear` puede ser usado para destruir la caché.
+
+> {tip} El comando `event:list` puede ser usado para mostrar una lista de todos los eventos y oyentes registrados por tu aplicación.
 
 <a name="defining-events"></a>
 ## Definiendo Eventos
@@ -322,12 +360,12 @@ Los suscriptores de eventos son clases que pueden suscribirse a múltiples event
         /**
          * Handle user login events.
          */
-        public function onUserLogin($event) {}
+        public function handleUserLogin($event) {}
 
         /**
          * Handle user logout events.
          */
-        public function onUserLogout($event) {}
+        public function handleUserLogout($event) {}
 
         /**
          * Register the listeners for the subscriber.
@@ -338,12 +376,12 @@ Los suscriptores de eventos son clases que pueden suscribirse a múltiples event
         {
             $events->listen(
                 'Illuminate\Auth\Events\Login',
-                'App\Listeners\UserEventSubscriber@onUserLogin'
+                'App\Listeners\UserEventSubscriber@handleUserLogin'
             );
 
             $events->listen(
                 'Illuminate\Auth\Events\Logout',
-                'App\Listeners\UserEventSubscriber@onUserLogout'
+                'App\Listeners\UserEventSubscriber@handleUserLogout'
             );
         }
     }

@@ -127,7 +127,7 @@ Puedes controlar cuántos enlaces adicionales son mostrados en cada lado de la "
 <a name="converting-results-to-json"></a>
 ### Convirtiendo Resultados A JSON
 
-Las clases resultantes del paginador de Laravel implementan el contrato por Interfaz `Illuminate\Contracts\Support\Jsonable` y exponen el método `toJson`, así es muy fácil convertir los resultados de tu paginación a JSON. También puedes convertir una instancia del paginador al devolverlo desde una ruta o acción de controlador:
+Las clases resultantes del paginador de Laravel implementan la interfaz `Illuminate\Contracts\Support\Jsonable` y exponen el método `toJson`, así es muy fácil convertir los resultados de tu paginación a JSON. También puedes convertir una instancia del paginador al devolverlo desde una ruta o acción de controlador:
 
     Route::get('users', function () {
         return App\User::paginate();
