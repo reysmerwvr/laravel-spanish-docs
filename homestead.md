@@ -26,7 +26,11 @@
     - [Múltiples Versiones PHP](#multiple-php-versions)
     - [Servidores Web](#web-servers)
     - [Correo Electrónico](#mail)
-    - [Interfaces De Red](#network-interfaces)
+    - [Instantáneas de la Base de Datos](#database-snapshots)    
+- [Depuración y Perfilado](#debugging-and-profiling)
+    - [Depuración de Solicitudes Web con Xdebug](#debugging-web-requests)
+    - [Depuración de Scripts CLI](#debugging-cli-scripts)
+- [Interfaces De Red](#network-interfaces)
 - [Extender Homestead](#extending-homestead)
 - [Actualizar Homestead](#updating-homestead)
 - [Configuraciones Específicas De Proveedor](#provider-specific-settings)
@@ -64,6 +68,7 @@ Homestead puede ejecutarse en sistemas Windows, Mac y Linux e incluye el servido
 - Apache (Opcional)
 - MySQL
 - MariaDB (Opcional)
+- lmm para instantáneas de la base de batos con MySQL o MariaDB
 - Sqlite3
 - PostgreSQL
 - Composer
@@ -75,7 +80,10 @@ Homestead puede ejecutarse en sistemas Windows, Mac y Linux e incluye el servido
 - Neo4j (Opcional)
 - MongoDB (Opcional)
 - Elasticsearch (Opcional)
+- avahi
 - ngrok
+- Xdebug
+- XHProf / Tideways / XHGui
 - wp-cli
 - Zend Z-Ray
 - Go
@@ -180,9 +188,11 @@ También puedes indicar cualquier opción soportada por los [Directorios Sincron
 
 Si cambias la propiedad `sites` apropiadamente después de haber provisionado el box de Homestead, deberás volver a ejecutar `vagrant reload --provision` para actualizar la configuración de Nginx en la máquina virtual.
 
-#### El Archivo Hosts
+#### Resolución del Nombre de Host
 
-Debes agregar los "dominios" para tus sitios de Nginx en el archivo `hosts` en tu máquina. El archivo `hosts` va a redirigir las peticiones de los sitios Homstead hacia tu máquina Homestead. En Mac y Linux, este archivo está ubicado en `/etc/hosts`. En Windows, este archivo está ubicado en `C:\Windows\System32\drivers\etc\hosts`. Las líneas que agregues a este archivo deberán verse de la siguiente forma:
+Homestead publica nombres de host sobre `mDNS` para la resolución automática de host. Si configuras `hostname: homestead` en tu archivo `Homestead.yaml`, el host estará disponible en `homestead.local`. Las distribuciones de escritorio de macOS, iOS y Linux incluyen la compatibilidad con `mDNS` de forma predeterminada. Windows requiere la instalación de [Servicios de impresión Bonjour para Windows](https://support.apple.com/kb/DL999?viewlocale=en_US&locale=en_US). Android no admite la resolución mDNS en absoluto.
+
+El uso de nombres de host automáticos funciona mejor para las instalaciones "locales del sitio" de Homestead. Si alojas varios sitios en una única instancia de Homestead, puedes agregar los "dominios" para tus sitios web al archivo `hosts` en tu máquina. El archivo `hosts` redirigirá las solicitudes de tus sitios de Homestead a tu máquina Homestead. En Mac y Linux, este archivo se encuentra en `/etc/hosts`. En Windows, se encuentra en `C:\Windows\System32\drivers\etc\hosts`. Las líneas que agregues a este archivo tendrán el siguiente aspecto:
 
     192.168.10.10  homestead.test
 
@@ -216,7 +226,7 @@ Windows:
 
     vendor\\bin\\homestead make
 
-Después, ejecuta el comando `vagrant up` en tu terminal y podrás acceder a tu proyecto desde el navegador en `http://homestead.test`. Recuerda que aún vas a necesitar agregar una entrada para `homestead.test` en tu archivo `/etc/hosts` para el dominio de tu elección.
+Después, ejecuta el comando `vagrant up` en tu terminal y podrás acceder a tu proyecto desde el navegador en `http://homestead.test`. Recuerda que aún vas a necesitar agregar una entrada para `homestead.test` en tu archivo `/etc/hosts` o el dominio de tu elección si no estás usando mDNS.
 
 <a name="installing-mariadb"></a>
 ### Instalación De MariaDB
@@ -521,6 +531,79 @@ Homestead utiliza por defecto el servidor web Nginx. Sin embargo, también se pu
 ### Correo Electrónico
 
 Homestead incluye el agente de transferencia de correo Postfix, que está escuchando por defecto en el puerto `1025`. Así que puedes indicarle a tu aplicación que use el controlador de correo `smtp` en el puerto `1025` de `localhost`. Entonces, todos los correos enviados serán manejados por Postfix y atrapados por Mailhog. Para ver tus correos enviados, abre en tu navegador [http://localhost:8025](http://localhost:8025).
+
+<a name="database-snapshots"></a>
+### Instantáneas de la Base de Datos
+
+Homestead admite la congelación del estado de las bases de datos MySQL y MariaDB y se ramifica entre ellas con [Logical MySQL Manager](https://github.com/Lullabot/lmm). Por ejemplo, imagine trabajar en un sitio con una base de datos de varios gigabytes. Puede importar la base de datos y tomar una instantánea. Después de realizar un trabajo y crear un contenido de prueba localmente, para revertir a un estado en buen estado, puede restaurar rápidamente al estado original. Por debajo, LMM usa la funcionalidad de instantáneas delgadas de LVM con soporte de copia en escritura. En la práctica, esto significa que el cambio de una sola fila en una tabla solo hará que los cambios que realice se escriban en el disco, ahorrando tiempo y espacio de disco significativos durante las restauraciones.
+
+Como `lmm` interactúa con LVM, debe ejecutarse como root. Para ver todos los comandos disponibles, ejecute `sudo lmm` dentro de la caja de vagrant. Un flujo de trabajo común sería:
+
+1. Importe una base de datos a la rama predeterminada de `master` lmm.
+1. Guarde una instantánea de la base de datos sin cambios con `sudo lmm branch prod-YYYY-MM-DD`.
+1. Cree contenido de prueba y ejecute actualizaciones de esquema de base de datos según sea necesario.
+1. Para deshacer todos los cambios, ejecute `sudo lmm merge prod-YYYY-MM-DD`.
+1. Si trabaja con múltiples ramas de funcionalidad en git, considere crear ramas de base de datos por funcionalidad y cambiar entre ellas con `sudo lmm checkout <branch>`.
+1. Para eliminar las ramas viejas que ya no son necesarias, ejecute `sudo lmm delete <branch>`.
+
+Tenga en cuenta que no hay proceso de duplicación entre las instantáneas. Por ejemplo, si crea una instantánea con `sudo lmm branch production-2019-03-20`, elimina todas las tablas y vuelve a importar la base de datos de origen, tendrá dos conjuntos de datos completamente independientes en el disco. Para ahorrar espacio en el disco, considere importar una base de datos, luego ejecutar actualizaciones y migraciones sobre ella, además asegúrese de eliminar las instantáneas antiguas con `sudo lmm delete`.
+
+<a name="debugging-and-profiling"></a>
+## Depuración y Perfilado
+
+<a name="debugging-web-requests"></a>
+### Depuración de Solicitudes Web con Xdebug
+
+Homestead incluye compatibilidad inmediata para la depuración por pasos con [Xdebug](https://xdebug.org). Por ejemplo, puede cargar una página web desde un navegador y PHP se conectará nuevamente a su IDE para permitir la inspección y modificación del código en ejecución.
+
+Para habilitar la depuración, dentro de la caja vagrant ejecute:
+
+    $ sudo phpenmod xdebug
+    $ sudo systemctl restart php7.3-fpm # Replacing the version with whatever PHP version are using.
+
+Luego, siga las instrucciones de su IDE para habilitar la depuración. Finalmente, configure su navegador para activar Xdebug con una extensión o [un bookmarklet](https://www.jetbrains.com/phpstorm/marklets/).
+
+Cargar Xdebug por sí mismo, incluso cuando no se está depurando activamente, puede ralentizar significativamente a PHP. Para deshabilitar Xdebug, ejecute `sudo phpdismod xdebug` y reinicie el servicio FPM nuevamente.
+
+Si bien Xdebug se incluye para todas las versiones de PHP, tenga en cuenta que las primeras versiones menores de PHP a menudo tienen algunas incompatibilidades con Xdebug inmediatamente después de la versión. Si PHP realiza un error o arroja errores de Zend, intente cambiar a la versión estable anterior de PHP.
+
+<a name="debugging-cli-scripts"></a>
+### Depuración de scripts CLI
+
+Para depurar un programa CLI de PHP, use el alias de shell `xphp` dentro de la caja vagrant:
+
+    $ xphp path/to/script
+
+Al depurar pruebas funcionales que realizan solicitudes al servidor web, a menudo es más fácil iniciar automáticamente la depuración en lugar de modificar las pruebas para pasar a través de un encabezado personalizado o una cookie para activar la depuración. Para forzar el inicio de Xdebug, modifique `/etc/php/7.#/Fpm/conf.d/20-xdebug.ini` (reemplazando la versión de PHP) dentro de la caja vagrant y agregue:
+
+    ; If Homestead.yml contains a different subnet for the ip setting, this may be different.
+    xdebug.remote_host = 192.168.10.1
+    xdebug.remote_autostart = 1
+
+### Perfilando el Rendimiento de PHP con XHGui
+
+[XHGui](https://www.github.com/perftools/xhgui) es una interfaz de usuario para explorar el rendimiento de sus programas PHP. Para habilitar XHGui, agregue `xhgui: 'true'` a la configuración de su sitio:
+
+   sites:
+        -
+            map: drupal8.test
+            to: /home/vagrant/code/web
+            type: "apache"
+            xhgui: 'true'
+
+Para agregar XHGui a un sitio existente, ejecute `vagrant provision`.
+
+Para perfilar una solicitud web, agregue `xhgui = on` como parámetro de consulta a una solicitud. Se establecerá una cookie con una caducidad de 1 hora a partir de la última solicitud para facilitar el perfil de las solicitudes AJAX y POST desde un navegador. Vea los resultados navegando a `/xhgui` en su sitio.
+
+Para perfilar una solicitud de CLI, prefije el comando con `XHGUI = on`:
+
+    $ XHGUI=on path/to/script
+
+Los resultados se mostrarán en `/xhgui` junto con las solicitudes web.
+
+Tenga en cuenta que el acto de perfilar ralentiza la ejecución del script y los tiempos absolutos pueden ser el doble de las solicitudes del mundo real. Siempre compare las mejoras porcentuales y no los números absolutos. Además, tenga en cuenta que el tiempo de ejecución (o "Tiempo de pared") incluye cualquier tiempo que se pase en pausa en un depurador.
+
+Como los perfiles de rendimiento ocupan un espacio de disco significativo, se eliminan automáticamente después de unos días.
 
 <a name="network-interfaces"></a>
 ## Interfaces De Red
