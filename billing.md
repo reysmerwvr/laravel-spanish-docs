@@ -45,9 +45,13 @@
 
 Laravel Cashier proporciona una expresiva interfaz fluida para los servicios de pagos en línea por suscripción de [Stripe](https://stripe.com). Maneja casi todo el código de facturación de suscripción que estás teniendo pavor de escribir. Además de la gestión de suscripción, Cashier puede manejar cupones, cambio de suscripciones, "cantidades" de suscripción, cancelación de períodos de gracia e incluso generar PDFs de facturas.
 
-> {note} Esta documentación es para la integración de Stripe de Cashier. Si estás utilizando Braintree, consulta la [documentación de integración de Braintree](/docs/{{version}}/braintree).
+::: danger Nota
+Esta documentación es para la integración de Stripe de Cashier. Si estás utilizando Braintree, consulta la [documentación de integración de Braintree](/docs/{{version}}/braintree).
+:::
 
-> {note} Si solamente estás trabajando con cargos de "un pago-único" y no ofreces subscripciones, no deberías usar Cashier. En lugar de eso, usa directamente los SDKs de Stripe.
+::: danger Nota
+Si solamente estás trabajando con cargos de "un pago-único" y no ofreces subscripciones, no deberías usar Cashier. En lugar de eso, usa directamente los SDKs de Stripe.
+:::
 
 <a name="upgrading-cashier"></a>
 ## Actualizando Cashier
@@ -59,7 +63,7 @@ Al actualizar a una nueva versión mayor de Cashier, es importante que revises c
 
 Primero, instala el paquete de Cashier para Stripe Con Composer:
 
-```bash
+```php
 composer require laravel/cashier
 ```
 
@@ -172,8 +176,8 @@ Si prefieres aplicar un cupón al momento de crear la suscripción, puedes usar 
 
 ```php
 $user->newSubscription('main', 'monthly')
-     ->withCoupon('code')
-     ->create($token);
+        ->withCoupon('code')
+        ->create($token);
 ```
 
 <a name="checking-subscription-status"></a>
@@ -319,7 +323,9 @@ public function taxPercentage()
 
 El método `taxPercentage` le permite aplicar una tasa de impuesto modelo por modelo, lo que puede ser útil para una base de usuarios que abarca varios países y tasas de impuestos.
 
-> {note} El método `taxPercentage` solamente aplica para cargos por suscripción. Si usas Cashier para hacer cargos de "pago único", necesitarás especificar manualmente la tasa de impuesto en ese momento.
+::: danger Nota
+El método `taxPercentage` solamente aplica para cargos por suscripción. Si usas Cashier para hacer cargos de "pago único", necesitarás especificar manualmente la tasa de impuesto en ese momento.
+:::
 
 #### Sincronizando Los Porcentajes Del Impuesto
 
@@ -332,7 +338,9 @@ $user->subscription('main')->syncTaxPercentage();
 <a name="subscription-anchor-date"></a>
 ### Fecha De Anclaje De La Suscripción
 
-> {note} Modificar la fecha de suscripción sólo es soportado por la versión de Stripe de Cashier.
+::: danger Nota
+Modificar la fecha de suscripción sólo es soportado por la versión de Stripe de Cashier.
+:::
 
 Por defecto, el anclaje del ciclo de facturación es la fecha en que se creó la suscripción o, si se usa un período de prueba, la fecha en que finaliza la prueba. Si deseas modificar la fecha de anclaje de facturación, puedes usar el método `anchorBillingCycleOn`:
 
@@ -405,7 +413,9 @@ $user->newSubscription('main', 'monthly')
 
 Este método establecerá la fecha de finalización del período de prueba del registro de suscripción dentro de la base de datos, al igual que le indicará a Stripe a no empezar a facturar al cliente hasta después de esta fecha.
 
-> {note} Si la suscripción del cliente no es cancelada antes de la fecha de finalización del período de prueba, será cargada tan pronto como expire el período de prueba, así que deberías asegurarte de notificar a tus usuarios de la fecha de finalización de su período de prueba.
+::: danger Nota
+Si la suscripción del cliente no es cancelada antes de la fecha de finalización del período de prueba, será cargada tan pronto como expire el período de prueba, así que deberías asegurarte de notificar a tus usuarios de la fecha de finalización de su período de prueba.
+:::
 
 El método `trialUntil` te permite proporcionar una instancia `DateTime` para especificar cuando el periodo de prueba debería terminar:
 
@@ -441,7 +451,9 @@ $user = User::create([
 ]);
 ```
 
-> {note}  Asegúrate de agregar un [mutador de fecha](/docs/{{version}}/loquent-mutators#date-mutators) para `trial_ends_at` en tu definición de modelo.
+::: danger Nota
+Asegúrate de agregar un [mutador de fecha](/docs/{{version}}/loquent-mutators#date-mutators) para `trial_ends_at` en tu definición de modelo.
+:::
 
 Cashier se refiere a este tipo de período de prueba como un "período de prueba genérico", debido a que no está conectado a ninguna suscripción existente. El método `onTrial` en la instancia `User` devolverá `true` si la fecha actual no es mayor al valor de `trial_ends_at`:
 
@@ -536,7 +548,9 @@ foreach ($user->cards() as $card) {
 }
 ```
 
-> {note} Si eliminas la tarjeta por defecto, por favor asegurate de que sincronizas la nueva tarjeta por defecto con tu base de datos usando método `updateCardFromStripe`.
+::: danger Nota
+Si eliminas la tarjeta por defecto, por favor asegurate de que sincronizas la nueva tarjeta por defecto con tu base de datos usando método `updateCardFromStripe`.
+:::
 
 El método `deleteCards` eliminará toda la información de la tarjeta almacenada por tu aplicación:
 
@@ -544,7 +558,9 @@ El método `deleteCards` eliminará toda la información de la tarjeta almacenad
 $user->deleteCards();
 ```
 
-> {note} Si el usuario tiene una suscripción activa, debes considerar evitar que eliminen la última forma de pago restante.
+::: danger Nota
+Si el usuario tiene una suscripción activa, debes considerar evitar que eliminen la última forma de pago restante.
+:::
 
 <a name="handling-stripe-webhooks"></a>
 ## Manejando Webhooks de Stripe
@@ -558,11 +574,15 @@ Route::post(
 );
 ```
 
-> {note} Una vez que hayas resgistrado tu ruta, asegúrate de configurar la URL de webhook en tus opciones de configuración de panel de control de Stripe.
+::: danger Nota
+Una vez que hayas resgistrado tu ruta, asegúrate de configurar la URL de webhook en tus opciones de configuración de panel de control de Stripe.
+:::
 
 De forma predeterminada, este controlador manejará automáticamente la cancelación de suscripciones que tengan demasiados cargos fallidos (como sean definidos por tus opciones de configuración de Stripe), actualizaciones de clientes, eliminaciones de clientes, actualizaciones de suscripciones y cambios de tarjetas de crédito; sin embargo, como vamos a descubrir pronto, puedes extender este controlador para manejar cualquier evento de webhook que quieras.
 
-> {note} Asegurate de proteger las peticiones entrantes con el middleware [webhook de verificación de firma][(/docs/{{version}}/billing#verifying-webhook-signatures] incluido en Cashier.
+::: danger Nota
+Asegurate de proteger las peticiones entrantes con el middleware [webhook de verificación de firma][(/docs/{{version}}/billing#verifying-webhook-signatures] incluido en Cashier.
+:::
 
 #### Webhooks & Protección CSRF
 
@@ -589,11 +609,11 @@ use Laravel\Cashier\Http\Controllers\WebhookController as CashierController;
 class WebhookController extends CashierController
 {
     /**
-     * Handle invoice payment succeeded.
-     *
-     * @param  array  $payload
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
+    * Handle invoice payment succeeded.
+    *
+    * @param  array  $payload
+    * @return \Symfony\Component\HttpFoundation\Response
+    */
     public function handleInvoicePaymentSucceeded($payload)
     {
         // Handle The Event
@@ -637,7 +657,9 @@ Para habilitar la verificación de webhook, asegurate de que el valor de configu
 <a name="simple-charge"></a>
 ### Cargo Simple
 
-> {note} El método `charge` acepta la cantidad que prefieras cargar en el **denominador más bajo de la moneda usada por tu aplicación**.
+::: danger Nota
+El método `charge` acepta la cantidad que prefieras cargar en el **denominador más bajo de la moneda usada por tu aplicación**.
+:::
 
 Si desea realizar un "cargo único" en la tarjeta de crédito de un cliente suscrito, puedes usar el método `charge` en una instancia de modelo facturable.
 
@@ -684,7 +706,9 @@ $user->invoiceFor('Stickers', 500, [
 ]);
 ```
 
-> {note} El método `invoiceFor` creará una factura de Stripe la cual reintentará intentos de facturación fallidos. Si no quieres que las facturas reintenten cargos fallidos, necesitarás cerrarlas usando la API de Stripe después del primer cargo fallido.
+::: danger Nota
+El método `invoiceFor` creará una factura de Stripe la cual reintentará intentos de facturación fallidos. Si no quieres que las facturas reintenten cargos fallidos, necesitarás cerrarlas usando la API de Stripe después del primer cargo fallido.
+:::
 
 <a name="refunding-charges"></a>
 ### Reembolsando Cargos
@@ -711,7 +735,7 @@ $invoices = $user->invoicesIncludingPending();
 
 Al momento de listar las facturas para el cliente, puedes usar los métodos helper de factura para mostrar la información de factura relevante. Por ejemplo, puedes querer listar todas las facturas en una tabla, permitiendo que el usuario descargue fácilmente algunas de ellas:
 
-```blade
+```php
 <table>
     @foreach ($invoices as $invoice)
         <tr>
@@ -738,4 +762,3 @@ Route::get('user/invoice/{invoice}', function (Request $request, $invoiceId) {
     ]);
 });
 ```
-

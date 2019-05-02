@@ -37,13 +37,13 @@ Actualmente, Scout viene con el controlador (driver) [Algolia](https://www.algol
 
 Primero, instala Scout por medio del paquete administrador de Composer:
 
-```bash
+```php
 composer require laravel/scout
 ```
 
 Después de instalar Scout, debes publicar la configuración de Scout usando el comando Artisan `vendor:publish`. Este comando publicará el archivo de configuración `scout.php` en tu directorio `config`:
 
-```bash
+```php
 php artisan vendor:publish --provider="Laravel\Scout\ScoutServiceProvider"
 ```
 
@@ -106,10 +106,10 @@ class Post extends Model
     use Searchable;
 
     /**
-     * Get the index name for the model.
-     *
-     * @return string
-     */
+    * Get the index name for the model.
+    *
+    * @return string
+    */
     public function searchableAs()
     {
         return 'posts_index';
@@ -135,10 +135,10 @@ class Post extends Model
     use Searchable;
 
     /**
-     * Get the indexable data array for the model.
-     *
-     * @return array
-     */
+    * Get the indexable data array for the model.
+    *
+    * @return array
+    */
     public function toSearchableArray()
     {
         $array = $this->toArray();
@@ -168,10 +168,10 @@ class User extends Model
     use Searchable;
 
     /**
-     * Get the value used to index the model.
-     *
-     * @return mixed
-     */
+    * Get the value used to index the model.
+    *
+    * @return mixed
+    */
     public function getScoutKey()
     {
         return $this->email;
@@ -187,13 +187,13 @@ class User extends Model
 
 Si estás instalando Scout en un proyecto existente, puede que ya tengas registros de base de datos que necesites importar dentro de tu manejador de búsqueda. Scout proporciona un comando Artisan `import` que puedes usar para importar todos tus registros existentes a tus índices de búsqueda:
 
-```bash
+```php
 php artisan scout:import "App\Post"
 ```
 
 The `flush` command may be used to remove all of a model's records from your search indexes:
 
-```bash
+```php
 php artisan scout:flush "App\Post"
 ```
 
@@ -375,7 +375,7 @@ $orders = App\Order::search('Star Trek')->paginate(15);
 
 Una vez que has obtenido los resultados, puedes mostrar los resultados y renderizar los enlaces de página usando [Blade](/docs/{{version}}/blade) justo como si hubieras paginado una consulta Eloquent tradicional:
 
-```blade
+```php
 <div class="container">
     @foreach ($orders as $order)
         {{ $order->price }}
@@ -404,12 +404,14 @@ $orders = App\Order::withTrashed()->search('Star Trek')->get();
 $orders = App\Order::onlyTrashed()->search('Star Trek')->get();
 ```
 
-> {tip} Cuando un modelo eliminado lógicamente es eliminado permanentemente utilizando `forceDelete`, Scout lo removerá del índice de búsqueda automáticamente.
+::: tip
+Cuando un modelo eliminado lógicamente es eliminado permanentemente utilizando `forceDelete`, Scout lo removerá del índice de búsqueda automáticamente.
+:::
 
 <a name="customizing-engine-searches"></a>
 ### Personalizando Motores de Búsqueda
 
-Si necesitas personalizar el comportamiento de un motor de búsqueda, puedes pasar una función de retorno (callback) como el segundo argumento al método `search`. Por ejemplo, podrías usar este callback para añadir datos de geolocalización a tus opciones de búsqueda antes de que la consulta de búsqueda sea pasada a Algolia:
+Si necesitas personalizar el comportamiento de un motor de búsqueda, puedes pasar una función de retorno (callback) como el segundo argumento al método `search`. Por ejemplo, podrías usar este callback para añadir datos de geolocalización a tus opciones de búsqueda antes de que la consulta de búsqueda sea pasada a Algolia: 
 
 ```php
 use Algolia\AlgoliaSearch\SearchIndex;
@@ -454,10 +456,10 @@ Una vez que hayas escrito tu motor personalizado, puedes registrarlo con Scout u
 use Laravel\Scout\EngineManager;
 
 /**
- * Bootstrap any application services.
- *
- * @return void
- */
+* Bootstrap any application services.
+*
+* @return void
+*/
 public function boot()
 {
     resolve(EngineManager::class)->extend('mysql', function () {
@@ -489,10 +491,10 @@ use Illuminate\Support\Facades\Response;
 class ScoutMacroServiceProvider extends ServiceProvider
 {
     /**
-     * Register the application's scout macros.
-     *
-     * @return void
-     */
+    * Register the application's scout macros.
+    *
+    * @return void
+    */
     public function boot()
     {
         Builder::macro('count', function () {
