@@ -23,7 +23,6 @@ El framework Laravel tiene algunos requisitos del sistema. Todos estos requisito
 
 Sin embargo, si no estás utilizando Homestead, deberás asegurarte de que tu servidor cumpla con los siguientes requisitos:
 
-<div class="content-list" markdown="1">
 - PHP >= 7.1.3
 - Extensión OpenSSL de PHP 
 - Extensión PDO de PHP 
@@ -33,7 +32,6 @@ Sin embargo, si no estás utilizando Homestead, deberás asegurarte de que tu se
 - Extensión Ctype de PHP
 - Extensión JSON de PHP
 - Extensión BCMath de PHP
-</div>
 
 <a name="installing-laravel"></a>
 ### Instalar Laravel
@@ -50,11 +48,9 @@ composer global require laravel/installer
 
 Asegurate de colocar el directorio `vendor/bin` en tu `$PATH` para que el ejecutable de Laravel pueda ser localizado en tu sistema. Este directorio existe en diferentes ubicaciones según el sistema operativo que estés utilizando; sin embargo, algunas de las ubicaciones más comunes son las siguientes:
 
-<div class="content-list" markdown="1">
 - macOS: `$HOME/.composer/vendor/bin`
 - GNU / Distribuciones Linux: `$HOME/.config/composer/vendor/bin`
 - Windows: `%USERPROFILE%\AppData\Roaming\Composer\vendor\bin`
-</div>
 
 Una vez instalado, el comando `laravel new` creará una nueva instalación de Laravel en el directorio que especifiques. Por ejemplo, `laravel new blog` creará un directorio `blog` que contendrá una nueva instalación de Laravel con todas las dependiencias de Laravel ya instaladas:
 
