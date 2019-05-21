@@ -84,9 +84,63 @@ module.exports = {
 					'/collections',
 					'/events',
 					'/filesystem',
-					'/helpers'
+					'/helpers',
+					'/mail',
+					'/notifications',
+					'/packages',
+					'/queues',
+					'/scheduling'
 				]
-			}           
+			},
+			{
+				title: 'Bases De Datos',
+				collapsable: true,
+				children: [
+					'/database.md',
+					'/queries.md',
+					'/pagination.md',
+					'/migrations.md',
+					'/seeding.md',
+					'/redis.md'
+				]
+			},
+			{
+				title: 'ORM Eloquent',
+				collapsable: true,
+				children: [
+					'/eloquent.md',
+					'/eloquent-relationships.md',
+					'/eloquent-collections.md',
+					'/eloquent-mutators.md',
+					'/eloquent-serialization.md'
+				]
+			},
+			{
+				title: 'Pruebas',
+				collapsable: true,
+				children: [
+					'/testing.md',
+					'/http-tests.md',
+					'/console-tests.md',
+					'/dusk.md',
+					'/database-testing.md',
+					'/mocking.md'
+				]
+			},
+			{
+				title: 'Paquetes oficiales',
+				collapsable: true,
+				children: [
+					'/billing.md',
+					'/dusk.md',
+					'/envoy.md',
+					'/horizon.md',
+					'/passport.md',
+					'/scout.md',
+					'/socialite.md',
+					'/telescope.md'
+				]
+			}			           
 		]
    	},
 }
