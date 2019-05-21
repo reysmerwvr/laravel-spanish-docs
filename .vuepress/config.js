@@ -8,7 +8,7 @@ module.exports = {
     	nav: [
         	{ text: 'Inicio', link: '/' },
        	],
-		search: false,
+		search: true,
 		sidebar: [
 			{
 				title: 'Primeros Pasos',
