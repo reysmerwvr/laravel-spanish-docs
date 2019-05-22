@@ -698,7 +698,7 @@ Por defecto, Homestead configura la opcion `natdnshostresolver` como `on`. Esto 
 
 ```php
 provider: virtualbox
-natdnshostresolver: off
+natdnshostresolver: 'off'
 ```
 
 #### Enlaces Simbólicos En Windows
