@@ -74,6 +74,12 @@ En tu archivo de configuración `auth.php`, puedes configurar múltiples "guards
 ```php
 use Illuminate\Support\Facades\Auth;
 
+/**
+* Get the guard to be used during password reset.
+*
+* @return StatefulGuard
+*/
+
 protected function guard()
 {
     return Auth::guard('guard-name');
