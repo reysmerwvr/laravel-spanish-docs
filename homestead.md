@@ -56,9 +56,7 @@ Si estás utilizando Windows, puede que necesites habilitar la virtualización p
 - PHP 7.2
 - PHP 7.1
 - Nginx
-- Apache (Opcional)
 - MySQL
-- MariaDB (Opcional)
 - Sqlite3
 - PostgreSQL
 - Composer
@@ -67,14 +65,35 @@ Si estás utilizando Windows, puede que necesites habilitar la virtualización p
 - Memcached
 - Beanstalkd
 - Mailhog
-- Neo4j (Opcional)
-- MongoDB (Opcional)
-- Elasticsearch (Opcional)
 - ngrok
 - wp-cli
-- Zend Z-Ray
-- Go
 - Minio
+
+<a name="optional-software"></a>
+### Software Opcional
+
+<style>
+    #software-list > ul {
+        column-count: 3; -moz-column-count: 3; -webkit-column-count: 3;
+        column-gap: 5em; -moz-column-gap: 5em; -webkit-column-gap: 5em;
+        line-height: 1.9;
+    }
+</style>
+
+<div id="software-list" markdown="1">
+- Apache
+- Crystal & Lucky Framework
+- Dot Net Core
+- Elasticsearch
+- Go
+- MariaDB
+- MongoDB
+- Neo4j
+- Oh My Zsh
+- Ruby & Rails
+- Webdriver & Laravel Dusk Utilities
+- Zend Z-Ray
+</div>
 
 <a name="installation-and-setup"></a>
 ## Instalación Y Configuración
