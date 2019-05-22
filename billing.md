@@ -144,7 +144,7 @@ Cashier::useCurrency('eur', '€');
 <a name="webhooks"></a>
 ### Webhooks
 
-Para asegurarte de que Cashier maneja apropiadamente todos los eventos de Stripe y los datos se mantienen sincronizados, recomendamos [configurar los Webhooks de Cashier](#handling-stripe-webhooks).
+Para asegurarte de que Cashier maneja apropiadamente todos los eventos de Stripe, recomendamos profundamente [configurar el manejador de webhook de Cashier](#handling-stripe-webhooks).
 
 <a name="subscriptions"></a>
 ## Subscripciones
