@@ -77,7 +77,7 @@ use Illuminate\Support\Facades\Auth;
 /**
 * Get the guard to be used during password reset.
 *
-* @return StatefulGuard
+* @return \Illuminate\Contracts\Auth\StatefulGuard
 */
 
 protected function guard()
