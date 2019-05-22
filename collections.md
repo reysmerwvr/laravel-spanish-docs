@@ -1526,6 +1526,19 @@ $plucked->all();
 // ['Tesla' => 'black', 'Pagani' => 'orange']
 ```
 
+<a name="method-duplicates"><a>
+#### `duplicates()` {#collection-method}
+
+El método `duplicates` obtiene y retorna valores duplicados de la colección:
+
+```php  
+    $collection = collect(['a', 'b', 'a', 'c', 'b']);
+    
+    $collection->duplicates();
+    
+    // [ 2 => 'a', 4 => 'b' ]
+```
+
 <a name="method-pop"></a>
 #### `pop()` {#collection-method}
 
