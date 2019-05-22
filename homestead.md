@@ -123,7 +123,7 @@ Debes hacer checkout a alguna versión etiquetada de Homestead ya que la rama `m
 cd ~/Homestead
 
 // Clonar el release deseado...
-git checkout v8.2.0
+git checkout v8.3.1
 ```
 
 Una vez que hayas clonado el repositorio, ejecuta el comando `bash init.sh` desde el directorio Homestead para crear el archivo de configuración `Homestead.yaml`. El archivo `Homestead.yaml` estará situado en el directorio Homestead:
