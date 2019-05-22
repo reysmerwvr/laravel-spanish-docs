@@ -77,14 +77,14 @@ composer require laravel/cashier
 Antes de usar Cashier, también necesitaremos [preparar la base de datos](/docs/{{version}}/migrations). Necesitas agregar varias columnas a tu tabla `users` y crear una nueva tabla `subscriptions` para manejar todas las subscripciones de nuestros clientes:
 
 ```php
-Schema::table('users', function ($table) {
+Schema::table('users', function (Blueprint $table) {
     $table->string('stripe_id')->nullable()->collation('utf8mb4_bin');
     $table->string('card_brand')->nullable();
     $table->string('card_last_four', 4)->nullable();
     $table->timestamp('trial_ends_at')->nullable();
 });
 
-Schema::create('subscriptions', function ($table) {
+Schema::create('subscriptions', function (Blueprint $table) {
     $table->bigIncrements('id');
     $table->unsignedBigInteger('user_id');
     $table->string('name');
