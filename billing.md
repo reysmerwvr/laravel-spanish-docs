@@ -120,7 +120,7 @@ Finalmente, deberías configurar tu clave de Stripe en tu archivo de configuraci
 
 ```php
 'stripe' => [
-    'model'  => App\User::class,
+    'model' => App\User::class,
     'key' => env('STRIPE_KEY'),
     'secret' => env('STRIPE_SECRET'),
     'webhook' => [
