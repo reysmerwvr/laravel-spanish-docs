@@ -667,7 +667,7 @@ Después, debes actualizar el código fuente de Homestead. Si clonaste el reposi
 ```php
 git fetch
 
-git checkout v8.2.0
+git checkout v8.4.0
 ```
 
 Estos comandos traen el código más reciente de Homestead del repositorio de GitHub, recuperan las últimas etiquetas y luego revisan la última versión etiquetada. Puede encontrar la última versión de lanzamiento estable en la [página de lanzamientos de GitHub](https://github.com/laravel/homestead/releases).
