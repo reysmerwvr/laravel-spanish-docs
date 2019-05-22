@@ -10,6 +10,7 @@
     - [Modelo Facturable](#billable-model)
     - [API Keys](#api-keys)
     - [Configuración de Moneda](#currency-configuration)
+    - [Webhooks](#webhooks)
 - [Suscripciones](#subscriptions)
     - [Creando Suscripciones](#creating-subscriptions)
     - [Verificando El Estado De Suscripción](#checking-subscription-status)
@@ -139,6 +140,11 @@ use Laravel\Cashier\Cashier;
 
 Cashier::useCurrency('eur', '€');
 ```
+
+<a name="webhooks"></a>
+### Webhooks
+
+Para asegurarte de que Cashier maneja apropiadamente todos los eventos de Stripe y los datos se mantienen sincronizados, recomendamos [configurar los Webhooks de Cashier](#handling-stripe-webhooks).
 
 <a name="subscriptions"></a>
 ## Subscripciones
