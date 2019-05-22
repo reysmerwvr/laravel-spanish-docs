@@ -548,7 +548,7 @@ $collection->dump();
 
 Si deseas detener la ejecución del script después de volcar la colección, use el método [`dd`](#method-dd).
 
-<a name="method-duplicates"><a>
+<a name="method-duplicates"></a>
 #### `duplicates()` {#collection-method}
 
 El método `duplicates` obtiene y retorna valores duplicados de la colección:
