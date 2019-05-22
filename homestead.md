@@ -169,7 +169,7 @@ folders:
 ```
 
 ::: danger Nota
-Cuando uses NFS, debes considerar instalar el plugin [vagrant-winnfsd](https://github.com/winnfsd/vagrant-winnfsd). Este plugin mantendrá correctamente el usuario / grupo para los archivos y directorios dentro del box de Homestead.
+Cuando uses NFS en Windows, debes considerar instalar el plugin [vagrant-winnfsd](https://github.com/winnfsd/vagrant-winnfsd). Este plugin mantendrá correctamente el usuario / grupo para los archivos y directorios dentro del box de Homestead.
 :::
 
 También puedes indicar cualquier opción soportada por los [Directorios Sincronizados](https://www.vagrantup.com/docs/synced-folders/basic_usage.html) de Vagrant, listándolos bajo la clave `options`:
