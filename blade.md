@@ -727,25 +727,28 @@ use Illuminate\Support\ServiceProvider;
 class AppServiceProvider extends ServiceProvider
 {
     /**
-    * Perform post-registration booting of services.
-    *
-    * @return void
-    */
-    public function boot()
-    {
-        Blade::directive('datetime', function ($expression) {
-            return "<?php echo ($expression)->format('m/d/Y H:i'); ?>";
-        });
-    }
-
-    /**
     * Register bindings in the container.
     *
     * @return void
     */
     public function register()
     {
+        Blade::directive('datetime', function ($expression) {
+            return "<?php echo ($expression)->format('m/d/Y H:i'); ?>";
+        });
         //
+    }
+    /**
+    * Bootstrap any application services.
+    *
+    * @return void
+    */
+    public function boot()
+    {
+        //
+        Blade::directive('datetime', function ($expression) {
+            return "<?php echo ($expression)->format('m/d/Y H:i'); ?>";
+        });
     }
 }
 ```
