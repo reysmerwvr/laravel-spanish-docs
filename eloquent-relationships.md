@@ -1393,7 +1393,7 @@ $user->save();
 <a name="default-models"></a>
 #### Modelos Predeterminados
 
-La relación `belongsTo` te permite definir un modelo predeterminado que se devolverá si la relación dada es `null`. A este patrón se le conoce comúnmente como [patrón Null Object](https://en.wikipedia.org/wiki/Null_Object_pattern) y puede ayudar a quitar comprobaciones condicionales en tu código. En el ejemplo siguiente, la relación `user` devolverá un modelo `App\User` vacío si no hay un `user` adjunto a la publicación:
+Las relaciones `belongsTo`, `hasOne`, `hasOneThrough` y `morphOne` te permiten definir un modelo predeterminado que se devolverá si la relación dada es `null`. A este patrón se le conoce comúnmente como [patrón Null Object](https://en.wikipedia.org/wiki/Null_Object_pattern) y puede ayudar a quitar comprobaciones condicionales en tu código. En el ejemplo siguiente, la relación `user` devolverá un modelo `App\User` vacío si no hay un `user` adjunto a la publicación:
 
 ```php
 /**
