@@ -18,7 +18,8 @@
     - [PHP](#php)
 - [Forms](#forms)
 	- [Campo CSRF](#csrf-field)
-    - [Campo Method](#method-field)    
+    - [Campo Method](#method-field)
+    - [Errores De Validación](#validation-errors)  
 - [Incluyendo Sub-Vistas](#including-sub-views)
     - [Renderizar Vistas Para Colecciones](#rendering-views-for-collections)
 - [Stacks](#stacks)
@@ -558,6 +559,20 @@ Dado que los formularios HTML no pueden hacer solicitudes `PUT`, `PATCH` o `DELE
 
         ...
 </form>
+```
+
+<a name="validation-errors"></a>
+### Errores De Validación
+
+La directiva `@error` puede ser usada para comprobar rápidamente si existen [mensajes de error de validación](/docs/{{version}}/validation#quick-displaying-the-validation-errors) para un atributo dado. Para una directiva `@error`, puedes imprimir la variable `$message` para mostrar el mensaje de error:
+
+```php
+<!-- /resources/views/post/create.blade.php -->
+<label for="title">Post Title</label>
+<input type="text" class=@error('title') is-invalid @enderror">
+@error('title')
+    <div class="alert alert-danger">{{ $message }}</div>
+@enderror
 ```
 
 <a name="including-sub-views"></a>
