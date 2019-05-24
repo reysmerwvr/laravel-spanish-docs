@@ -1141,7 +1141,7 @@ $books = App\Book::with('author.contacts')->get();
 
 #### Cargando previamente Columnas Específicas
 
-No siempre necesitas todas las columna de las relaciones que estás obteniendo. Por esta razón, Eloquent te permite que especificar cuáles columnas de la relación te gustaría obtener. Para relaciones "tiene uno":
+No siempre necesitas todas las columna de las relaciones que estás obteniendo. Por esta razón, Eloquent te permite que especificar cuáles columnas de la relación te gustaría obtener:
 
 ```php
 $books = App\Book::with('author:id,name')->get();
@@ -1156,6 +1156,10 @@ Para relaciones "tiene muchos" necesitas especificar tanto `id` como `foreign_ke
 ```php
 $books = App\Book::with('chapter:id,book_id,name')->get();
 ```
+
+::: danger Nota
+Al usar esta caracteristica, siempre debes incluir la columna `id` y cualquier columna de clave foranea relevante en la lista de columnas que deseas retornar.
+:::
 
 <a name="constraining-eager-loads"></a>
 ### Restringiendo Cargas Previas
