@@ -639,6 +639,7 @@ Debajo hay una lista con todas las reglas de validaci처n disponibles y su funci�
 [Dimensions (Image Files)](#rule-dimensions)
 [Distinct](#rule-distinct)
 [E-Mail](#rule-email)
+[Ends With](#rule-ends-with)
 [Exists (Database)](#rule-exists)
 [File](#rule-file)
 [Filled](#rule-filled)
@@ -833,6 +834,11 @@ Al momento de trabajar con arreglos, el campo bajo validaci처n no debe tener nin
 #### email
 
 El campo bajo validaci처n debe estar formateado como una direcci처n de correo electr처nico.
+
+<a name="rule-ends-with"></a>
+#### ends_with:_foo_,_bar_,...
+
+El campo bajo validaci처n debe terminar con alguno de los valores dados.
 
 <a name="rule-exists"></a>
 #### exists:_table_,_column_
