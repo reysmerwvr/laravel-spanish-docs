@@ -180,7 +180,7 @@ También puedes usar la directiva `@error` de [Blade](/docs/{{version}}/blade) p
 <!-- /resources/views/post/create.blade.php -->
 
 <label for="title">Post Title</label>
-<input type="text" class="@error('title') is-invalid @enderror">
+<input id="title" type="text" class="@error('title') is-invalid @enderror">
 
 @error('title')
     <div class="alert alert-danger">{{ $message }}</div>
