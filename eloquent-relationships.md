@@ -453,6 +453,10 @@ class Role extends Model
 }
 ```
 
+::: danger Nota
+**Nota:** Los modelos Pivot no pueden usar el trait `SoftDeletes`. Si necesitas hacer soft delete de registros pivot considera convertir tu modelo pivot a un modelo de Eloquent.
+:::
+
 #### Modelos De Pivote Personalizados E IDs Incrementales
 
 Si has definido una relación de muchos a muchos que usa un modelo de pivote personalizado, y ese modelo de pivote tiene una clave primaria de incremento automático, debes asegurarte de que su clase de modelo de pivote personalizado defina una propiedad `incrementing` que se establece en` true `.
