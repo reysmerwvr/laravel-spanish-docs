@@ -1161,6 +1161,42 @@ $books = App\Book::with('chapter:id,book_id,name')->get();
 Al usar esta caracteristica, siempre debes incluir la columna `id` y cualquier columna de clave foranea relevante en la lista de columnas que deseas retornar.
 :::
 
+#### Carga Previa Por Defecto
+
+Algunas veces vas a querer cargar siempre algunas relaciones al retornar un modelo. Para lograr esto, puedes definir una propiedad `$with` en el modelo:
+
+```php
+<?php
+
+namespace App;
+use Illuminate\Database\Eloquent\Model;
+
+class Book extends Model
+{
+    /**
+    * Always load the related author when retrieving a book
+    * The relationships that should always be loaded.
+    *
+    * @var array
+    */
+    protected $with = ['author'];
+    
+    /**
+    * Get the author that wrote the book.
+    */
+    public function author()
+    {
+        return $this->belongsTo('App\Author');
+    }
+}
+```   
+
+Si te gustaria remover un elemento de la propiedad `$with` para una sola petición, puedes usar el método `without`:
+
+```php
+$books = App\Book::without('author')->get();
+```
+
 <a name="constraining-eager-loads"></a>
 ### Restringiendo Cargas Previas
 
