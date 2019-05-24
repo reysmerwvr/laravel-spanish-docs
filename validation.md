@@ -172,6 +172,21 @@ Así, en nuestro ejemplo, el usuario será redirigido al método `create` de nue
 <!-- Create Post Form -->
 ```
 
+#### Directiva `@error`
+
+También puedes usar la directiva `@error` de [Blade](/docs/{{version}}/blade) para rápidamente comprobar si los mensajes de error de validación existen para un atributo dado. Dentro de una directiva `@error`, puedes mostrar la variable `$message` para mostrar el mensaje de error:
+
+```php
+<!-- /resources/views/post/create.blade.php -->
+
+<label for="title">Post Title</label>
+<input type="text" class=@error('title') is-invalid @enderror">
+
+@error('title')
+    <div class="alert alert-danger">{{ $message }}</div>
+@enderror
+```
+
 <a name="a-note-on-optional-fields"></a>
 ### Una Observación Sobre los Campos Opcionales
 
