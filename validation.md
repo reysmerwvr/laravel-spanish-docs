@@ -1383,6 +1383,16 @@ use Illuminate\Support\Facades\Validator;
 class AppServiceProvider extends ServiceProvider
 {
     /**
+    * Register any application services.
+    *
+    * @return void
+    */
+    public function register()
+    {
+        //
+    }
+
+    /**
     * Bootstrap any application services.
     *
     * @return void
@@ -1392,16 +1402,6 @@ class AppServiceProvider extends ServiceProvider
         Validator::extend('foo', function ($attribute, $value, $parameters, $validator) {
             return $value == 'foo';
         });
-    }
-
-    /**
-    * Register the service provider.
-    *
-    * @return void
-    */
-    public function register()
-    {
-        //
     }
 }
 ```
