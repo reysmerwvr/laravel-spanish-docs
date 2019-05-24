@@ -91,6 +91,12 @@ En este ejemplo, la sección `sidebar` está utilizando la directiva `@@parent` 
 Contrario al ejemplo anterior, esta sección `sidebar` termina con `@endsection` en lugar de `@show`. La directiva `@endsection` sólo definirá una sección mientras que `@show` definirá y **automáticamente creará un yield** de la sección.
 :::
 
+Una directiva `@yield` puede tener un valor por defecto como segundo parametro. El parametro también puede ser una vista de Blade:
+
+```php
+@yield('content', Illuminate\Support\Facades\View::make('view.name'))
+```
+
 Las vistas de Blade se pueden retornar desde las rutas usando el helper global `view`:
 
 ```php
