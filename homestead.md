@@ -653,6 +653,10 @@ sudo apt-get -y \
     install your-package
 ```
 
+Al usar Homestead en una configuración de equipo puedes querer cambiar algunos valores por defecto que tu equipo podría no apreciar. Mientras que puedes ser un usuario estricto de Vim pero el resto de tu equipo prefiere Nano, `user-costumizations.sh` te tiene cubierto. Crea el archivo `user-customizations.sh` en la raiz de tu directorio Homestead (el mismo directorio que contiene tu `Homestead.yaml`) y haz las personalizaciones que quieras allí. Recuerda: `user-customizations.sh` *no* debe ser versionado dado que son TUS personalizaciones.
+
+    sudo update-alternatives --set editor /usr/bin/vim.basic
+
 <a name="updating-homestead"></a>
 ## Actualizar Homestead
 
