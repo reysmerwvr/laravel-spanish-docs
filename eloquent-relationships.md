@@ -940,6 +940,34 @@ $user->posts()->where('active', 1)->get();
 
 Puedes usar cualquiera de los métodos de [constructor de consultas](/docs/{{version}}/queries) y así que asegúrate de revisar la documentación del constructor de consultas para aprender sobre todos los métodos disponibles.
 
+#### Encadenando Cláusulas `orWhere` En Relaciones
+
+Como se demostró en el ejemplo superior, eres libre de agregar restriciones adicionales a las relaciones al momento de realizar peticiones. Sin embargo, ten cuidado al encadenar cláusulas `orWhere` a una relación, dado que las cláusulas `orWhere` serán agrupadas lógicamente en el mismo nivel que la restricción de la relación:
+
+```php
+$user->posts()
+        ->where('active', 1)
+        ->orWhere('votes', '>=', 100)
+        ->get();
+
+// select * from posts 
+// where user_id = ? and active = 1 or votes >= 100
+```
+
+En la mayoria de los casos, probablemente pretendes usar [grupos de restricciones](/docs/{{version}}/queries#parameter-grouping) para agrupar logicamente las comprobaciones condicionales entre parentisis:
+
+```php
+$user->posts()
+        ->where(function ($query) {
+            return $query->where('active', 1)
+                            ->orWhere('votes', '>=', 100);
+        })
+        ->get();
+
+// select * from posts 
+// where user_id = ? and (active = 1 or votes >= 100)
+```
+
 <a name="relationship-methods-vs-dynamic-properties"></a>
 ### Métodos De Relación Vs. Propiedades Dinámicas
 
