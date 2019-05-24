@@ -569,7 +569,7 @@ La directiva `@error` puede ser usada para comprobar rápidamente si existen [me
 ```php
 <!-- /resources/views/post/create.blade.php -->
 <label for="title">Post Title</label>
-<input type="text" class=@error('title') is-invalid @enderror">
+<input type="text" class="@error('title') is-invalid @enderror">
 @error('title')
     <div class="alert alert-danger">{{ $message }}</div>
 @enderror
