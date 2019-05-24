@@ -1066,7 +1066,7 @@ echo $posts[0]->pending_comments_count;
 Si estás combinando `withCount` con una instrucción `select`, asegúrate de llamar a `withCount` después del método `select`:
 
 ```php
-$posts = App\Post::select(['title', 'body'])->withCount('comments');
+$posts = App\Post::select(['title', 'body'])->withCount('comments')->get();
 
 echo $posts[0]->title;
 echo $posts[0]->body;
