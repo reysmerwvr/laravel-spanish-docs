@@ -653,6 +653,8 @@ sudo apt-get -y \
     install your-package
 ```
 
+### Personalizaciones de Usuario
+
 Al usar Homestead en un ambiente de equipo, puedes querer configurar Homestead para que se ajuste mejor a tu estilo de desarrollo personal. Puedes crear un archivo `user-customizations.sh` en la raiz de tu directorio Homestead (el mismo directorio que contiene tu `Homestead.yaml`). Dentro de este archivo, puedes hacer cualquier personalización que quieras; sin embargo, `user-customizations.sh` no debe ser versionado.
 
 <a name="updating-homestead"></a>
