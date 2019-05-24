@@ -16,6 +16,7 @@
     - [Personalizar El Destinatario](#customizing-the-recipient)
     - [Personalizar El Asunto](#customizing-the-subject)
     - [Personalizar Las Plantillas](#customizing-the-templates)
+    - [Previsualizar Notificaciones De Correo](#previewing-mail-notifications)
 - [Notificaciones Por Correo En Markdown](#markdown-mail-notifications)
     - [Generar El Mensaje](#generating-the-message)
     - [Escribir El Mensaje](#writing-the-message)
@@ -352,6 +353,19 @@ Puedes modificar las plantillas HTML y de texto simple usadas por las notificaci
 
 ```php
 php artisan vendor:publish --tag=laravel-notifications
+```
+
+<a name="previewing-mail-notifications"></a>
+### Previsualizar Notificaciones De Correo
+
+Al diseñar una plantilla de notificación de correo, es conveniente previsualizar rápidamente el mensaje de correo renderizado en tu navegador como una plantilla normal de Blade. Por esta razón, Laravel te permite retornar cualquier mensaje de correo generado por una notificación de correo directamente desde un Closure de ruta o un controlador. Cuando un `MailMessage` es retornado, este será renderizado y mostrado en el navegador, permitiendote previsualizar rápidamente su diseño sin necesidad de enviarlo a un correo electrónico real:
+
+```php
+Route::get('mail', function () {
+    $invoice = App\Invoice::find(1);
+    return (new App\Notifications\InvoicePaid($invoice))
+                ->toMail($invoice->user);
+});
 ```
 
 <a name="markdown-mail-notifications"></a>
