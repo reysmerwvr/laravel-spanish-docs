@@ -73,7 +73,7 @@ class CreateFlightsTable extends Migration
     public function up()
     {
         Schema::create('flights', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->string('name');
             $table->string('airline');
             $table->timestamps();
@@ -171,7 +171,7 @@ Para crear una nueva tabla en la base de datos, usa el método `create` en la cl
 
 ```php
 Schema::create('users', function (Blueprint $table) {
-    $table->increments('id');
+    $table->bigIncrements('id');
 });
 ```
 
@@ -197,7 +197,7 @@ Si quieres ejecutar una operación de esquema en una conexión de base de datos 
 
 ```php
 Schema::connection('foo')->create('users', function (Blueprint $table) {
-    $table->increments('id');
+    $table->bigIncrements('id');
 });
 ```
 
