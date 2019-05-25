@@ -222,6 +222,16 @@ $url = Storage::temporaryUrl(
 );
 ```
 
+Si necesitas especificar [parametros de petición de S3](https://docs.aws.amazon.com/AmazonS3/latest/API/RESTObjectGET.html#RESTObjectGET-requests) adicionales, puedes pasar el arreglo de parametros de petición como tercer argumento del método `temporaryUrl`:
+
+```php
+$url = Storage::temporaryUrl(
+    'file.jpg', 
+    now()->addMinutes(5), 
+    ['ResponseContentType' => 'application/octet-stream'],
+);
+```
+
 #### Personalización Del Host De URL Local
 
 Si te gustaría predefinir el host para archivos almacenados en un disco usando el driver `local`, puedes agregar una opción `url` al arreglo de configuración del disco:
@@ -493,7 +503,7 @@ class DropboxServiceProvider extends ServiceProvider
     {
         //
     }
-    
+
     /**
     * Bootstrap any application services.
     *
