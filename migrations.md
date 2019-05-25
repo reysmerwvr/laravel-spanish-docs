@@ -411,13 +411,14 @@ Eliminar o modificar múltiples columnas dentro de una sola migración al moment
 
 #### Alias de Comandos Disponibles
 
-| Comando                        | Descripción                                        |
-| ------------------------------ | -------------------------------------------------- |
-| `$table->dropRememberToken();` | Eliminar la columna `remember_token`.              |
-| `$table->dropSoftDeletes();`   | Eliminar la columna `deleted_at`.                  |
-| `$table->dropSoftDeletesTz();` | Alias del método `dropSoftDeletes()`.              |
-| `$table->dropTimestamps();`    | Eliminar las columnas `created_at` y `updated_at`. |
-| `$table->dropTimestampsTz();`  | Alias del método `dropTimestamps()`.               |
+| Comando                            | Descripción                                             |
+| ---------------------------------- | ------------------------------------------------------- |
+| `$table->dropMorphs('morphable');` | Elimina las columnas `morphable_id` y `morphable_type`. |
+| `$table->dropRememberToken();`     | Eliminar la columna `remember_token`.                   |
+| `$table->dropSoftDeletes();`       | Eliminar la columna `deleted_at`.                       |
+| `$table->dropSoftDeletesTz();`     | Alias del método `dropSoftDeletes()`.                   |
+| `$table->dropTimestamps();`        | Eliminar las columnas `created_at` y `updated_at`.      |
+| `$table->dropTimestampsTz();`      | Alias del método `dropTimestamps()`.                    |
 
 <a name="indexes"></a>
 ## Índices
