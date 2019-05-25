@@ -285,6 +285,7 @@ Comando  |  Descripción
 `$table->point('position');`  |  Tipo de columna equivalente a POINT.
 `$table->polygon('positions');`  |  Tipo de columna equivalente a POLYGON.
 `$table->rememberToken();`  |  Permite nulos en el tipo de columna equivalente a VARCHAR(100) `remember_token`.
+`$table->set('flavors', ['strawberry', 'vanilla']);`  |  Establece una columna equivalente.
 `$table->smallIncrements('id');`  |  Tipo de columna equivalente a Auto-incremento UNSIGNED SMALLINT (clave primaria).
 `$table->smallInteger('votes');`  |  Tipo de columna equivalente a SMALLINT.                      
 `$table->softDeletes();`  |  Permite nulos en el tipo de columna equivalente a TIMESTAMP `deleted_at` para eliminaciones.
