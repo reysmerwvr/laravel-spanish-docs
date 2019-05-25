@@ -226,6 +226,7 @@ La interfaz `ShouldBroadcast` requiere que implementes un sólo método: `broadc
 
 namespace App\Events;
 
+use App\User;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
