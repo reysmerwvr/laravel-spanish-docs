@@ -452,7 +452,7 @@ Storage::makeDirectory($directory);
 
 #### Eliminar Un Directorio
 
-Finalmente, `deleteDirectory` puede ser usado para eliminar un directorio y todos sus archivos:
+Finalmente, el método `deleteDirectory` puede ser usado para eliminar un directorio y todos sus archivos:
 
 ```php
 Storage::deleteDirectory($directory);
