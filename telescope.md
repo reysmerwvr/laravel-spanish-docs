@@ -73,7 +73,7 @@ composer require laravel/telescope --dev
 Después de ejecutar `telescope:install`, deberías remover el registro de proveedor de servicio `TelescopeServiceProvider` de tu archivo de configuración `app`. En su lugar, registra manualmente el proveedor de servicio en el método `register` de tu `AppServiceProvider`:
 
 ```php
-use Laravel\Telescope\TelescopeServiceProvider;
+use App\Providers\TelescopeServiceProvider;
 
 /**
 * Register any application services.
