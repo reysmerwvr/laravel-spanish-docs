@@ -309,8 +309,9 @@ class LocalValetDriver extends LaravelValetDriver
 Comando  | Descripción
 ------------- | -------------
 `valet forget` | Ejecuta este comando desde el directorio donde ejecutaste el comando `park` para eliminarlo de la lista de directorios configurados.
+`valet log` | Ver una lista de logs escritos por servicios de Valet.
 `valet paths` | Ver una lista de directorios configurados.
 `valet restart` | Reiniciar el daemon de Valet.
 `valet start` | Iniciar el daemon de Valet.
 `valet stop` | Detener el daemon de Valet.
-`valet uninstall` | Desinstalar el daemon de Valet completamente.
+`valet uninstall` | Desinstalar el daemon de Valet.
