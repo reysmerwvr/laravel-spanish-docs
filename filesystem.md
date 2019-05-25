@@ -485,7 +485,17 @@ use Spatie\FlysystemDropbox\DropboxAdapter;
 class DropboxServiceProvider extends ServiceProvider
 {
     /**
-    * Perform post-registration booting of services.
+    * Register bindings in the container.
+    *
+    * @return void
+    */
+    public function register()
+    {
+        //
+    }
+    
+    /**
+    * Bootstrap any application services.
     *
     * @return void
     */
@@ -498,16 +508,6 @@ class DropboxServiceProvider extends ServiceProvider
 
             return new Filesystem(new DropboxAdapter($client));
         });
-    }
-
-    /**
-    * Register bindings in the container.
-    *
-    * @return void
-    */
-    public function register()
-    {
-        //
     }
 }
 ```
