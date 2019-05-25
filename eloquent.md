@@ -1016,7 +1016,7 @@ use Illuminate\Support\ServiceProvider;
 class AppServiceProvider extends ServiceProvider
 {
     /**
-    * Register the service provider.
+    * Register any application services.
     *
     * @return void
     */
