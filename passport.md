@@ -219,7 +219,7 @@ public function boot()
 <a name="token-lifetimes"></a>
 ### Duración De Tokens
 
-De forma predeterminada, Passport emite tokens de acceso de larga duración que caducan después de un año. Si prefieres configurar una duración de token más larga o más corta, puedes usar los métodos `tokensExpireIn` y `refreshTokensExpireIn`. Estos métodos deberían ser ejecutados desde el método `boot` de tu `AuthServiceProvider`:
+De forma predeterminada, Passport emite tokens de acceso de larga duración que caducan después de un año. Si prefieres configurar una duración de token más larga o más corta, puedes usar los métodos `tokensExpireIn`, `refreshTokensExpireIn` y `personalAccessTokensExpireIn`. Estos métodos deberían ser ejecutados desde el método `boot` de tu `AuthServiceProvider`:
 
 ```php
 /**
@@ -236,6 +236,8 @@ public function boot()
     Passport::tokensExpireIn(now()->addDays(15));
 
     Passport::refreshTokensExpireIn(now()->addDays(30));
+
+    Passport::personalAccessTokensExpireIn(now()->addMonths(6));
 }
 ```
 
