@@ -67,6 +67,10 @@ php artisan horizon:assets
 
 Después de publicar los assets de Horizon, su principal archivo de configuración será colocado en `config/horizon.php`. Este archivo de configuración permite que configures las opciones del worker y cada opción de configuración incluye una descripción de su propósito, así que asegurate de explorar con gran detalle este archivo.
 
+::: danger Nota
+Debes asegurarte de que la porción `environments` de tu archivo de configuración `horizon` contiene una entrada para cada entorno en el que planeas ejecutrar Horizon.
+:::
+
 #### Opciones de Balance
 
 Horizon permite que elijas entre tres estrategias de balance: `simple`, `auto` y `false`. La estrategia `simple`, que es la opción por defecto del archivo de configuración, divide los trabajos entrantes de manera uniforme entre procesos:
