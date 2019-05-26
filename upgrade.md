@@ -11,6 +11,7 @@
 - [Parseo De Variables De Entorno](#environment-variable-parsing)
 - [Cambio de Directorio de Archivos Markdown](#markdown-file-directory-change)
 - [Canales De Notificación Nexmo / Slack](#nexmo-slack-notification-channels)
+- [Nuevo Tamaño Por Defecto De Contraseña](#new-default-password-length)
 </div>
 
 <a name="medium-impact-changes"></a>
@@ -83,11 +84,14 @@ Pero cuando se usa Laravel 5.8, el token se pasa al helper `route` como un pará
 
 Por lo tanto, si estás definiendo tu propia ruta `password.reset`, debes asegurarte de que contenga un parámetro` {token} `en tu URI.
 
+<a name="new-default-password-length"></a>
 #### Nueva Longitud De Contraseña Por Defecto
 
-**Probabilidad De Impacto: Baja**
+**Probabilidad De Impacto: Alta**
 
-La longitud de la contraseña requerida al elegir o restablecer una contraseña se [cambió a al menos ocho caracteres](https://github.com/laravel/framework/pull/25957).
+La longitud de la contraseña requerida al elegir o restablecer una contraseña se [cambió a ocho caracteres](https://github.com/laravel/framework/pull/25957). Debes actualizar cualquier regla de validación o lógica dentro de tu aplicación para que coincida con esta regla por defecto.
+
+Si necesitas preservar los anteriores seis caracteres o un tamaño diferente, puedes extender la clase `Illuminate\Auth\Passwords\PasswordBroker` y sobrescribir el método `validatePasswordWithDefaults` con tu lógica personalizada.
 
 <a name="cache"></a>
 ### Caché
