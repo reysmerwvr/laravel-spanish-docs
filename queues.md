@@ -712,6 +712,23 @@ Entonces, al ejecutar el [worker de cola](#running-the-queue-worker), debes espe
 php artisan queue:work redis --tries=3
 ```
 
+Adicionalmente, puedes especificar cuantos segundos debe esperar Laravel antes de volver a intentar un trabajo que ha fallado usando la opción `--delay`. Por defecto, un trabajo se vuelve a intentar inmediatamente:
+
+```php
+php artisan queue:work redis --tries=3 --delay=3
+```
+
+Si te gustaría configurar la demora del trabajo fallido por cada trabajo, puedes hacerlo definiendo una propiedad `retryAfter` en tu clase de cola de trabajos:
+
+```php
+/**
+* The number of seconds to wait before retrying the job.
+*
+* @var int
+*/
+public $retryAfter = 3;
+```
+
 <a name="cleaning-up-after-failed-jobs"></a>
 ### Limpiar Después De Un Trabajo Fallido
 
