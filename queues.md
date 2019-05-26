@@ -391,6 +391,24 @@ ProcessPodcast::dispatch($podcast)
                 ->onQueue('processing');
 ```
 
+Alternativamente, puedes especificar `connection` como una propiedad en la clase del trabajo:
+
+```php
+<?php
+
+namespace App\Jobs;
+
+class ProcessPodcast implements ShouldQueue
+{
+    /**
+        * The queue connection that should handle the job.
+        *
+        * @var string
+        */
+    public $connection = 'sqs';
+}
+```
+
 <a name="max-job-attempts-and-timeout"></a>
 ### Especificar Intentos Máximos De Un Trabajo Y Valores De Tiempos De Espera (Timeout)
 
