@@ -72,7 +72,7 @@ $users = $users->diff(User::whereIn('id', [1, 2, 3])->get());
 El método `except` retorna todos los modelos que no tienen las claves primarias dadas:
 
 ```php
-$users = $users->only([1, 2, 3]);
+$users = $users->except([1, 2, 3]);
 ```
 
 #### `find($key)` {#collection-method .first-collection-method}
