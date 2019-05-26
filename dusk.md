@@ -97,7 +97,7 @@ php artisan dusk:chrome-driver --all
 ```
 
 ::: danger Nota
-Dusk requiere que los binarios de `chromedriver` sean ejecutables. Si tienes problemas para ejecutar Dusk, asegurate de que los binarios sean ejecutables con el siguiente comando: `chmod -R 0755 vendor/laravel/dusk/bin`.
+Dusk requiere que los binarios de `chromedriver` sean ejecutables. Si tienes problemas para ejecutar Dusk, asegurate de que los binarios sean ejecutables con el siguiente comando: `chmod -R 0755 vendor/laravel/dusk/bin/`.
 :::
 
 <a name="using-other-browsers"></a>
