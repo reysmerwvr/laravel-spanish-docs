@@ -91,7 +91,7 @@ Por lo tanto, si estás definiendo tu propia ruta `password.reset`, debes asegur
 
 La longitud de la contraseña requerida al elegir o restablecer una contraseña se [cambió a ocho caracteres](https://github.com/laravel/framework/pull/25957). Debes actualizar cualquier regla de validación o lógica dentro de tu aplicación para que coincida con esta regla por defecto.
 
-Si necesitas preservar los anteriores seis caracteres o un tamaño diferente, puedes extender la clase `Illuminate\Auth\Passwords\PasswordBroker` y sobrescribir el método `validatePasswordWithDefaults` con tu lógica personalizada.
+Si necesitas preservar los anteriores seis caracteres o un tamaño diferente, puedes extender la clase `Illuminate\Auth\Passwords\PasswordBroker` y sobrescribir el método `validatePasswordWithDefaults` con lógica personalizada.
 
 <a name="cache"></a>
 ### Caché
