@@ -48,7 +48,7 @@ Luego, examina cualquier paquete de terceros que sean consumidos por tu aplicaci
 
 **Probabilidad De Impacto: Muy Baja** 
 
-La firma del método `environment` del contrato `Illuminate/Contracts/Foundation/Application` [ha cambiado](https://github.com/laravel/framework/pull/26296). Si estás implementando este contrato en tu aplicación, debes actualizar la firma del método:
+La firma del método `environment` del contrato `Illuminate\Contracts\Foundation\Application` [ha cambiado](https://github.com/laravel/framework/pull/26296). Si estás implementando este contrato en tu aplicación, debes actualizar la firma del método:
 
     /**
      * Get or check the current application environment.
@@ -62,7 +62,7 @@ La firma del método `environment` del contrato `Illuminate/Contracts/Foundation
 
 **Probabilidad De Impacto: Muy Baja**
 
-Los métodos `bootstrapPath`, `configPath`, `databasePath`, `environmentPath`, `resourcePath`, `storagePath`, `resolveProvider`, `bootstrapWith`, `configurationIsCached`, `detectEnvironment`, `environmentFile`, `environmentFilePath`, `getCachedConfigPath`, `getCachedRoutesPath`, `getLocale`, `getNamespace`, `getProviders`, `hasBeenBootstrapped`, `loadDeferredProviders`, `loadEnvironmentFrom`, `routesAreCached`, `setLocale`, `shouldSkipMiddleware` y `terminate`  [Fueron añadidos a la interfaz `Illuminate/Contracts/Foundation/Application`](https://github.com/laravel/framework/pull/26477).
+Los métodos `bootstrapPath`, `configPath`, `databasePath`, `environmentPath`, `resourcePath`, `storagePath`, `resolveProvider`, `bootstrapWith`, `configurationIsCached`, `detectEnvironment`, `environmentFile`, `environmentFilePath`, `getCachedConfigPath`, `getCachedRoutesPath`, `getLocale`, `getNamespace`, `getProviders`, `hasBeenBootstrapped`, `loadDeferredProviders`, `loadEnvironmentFrom`, `routesAreCached`, `setLocale`, `shouldSkipMiddleware` y `terminate`  [Fueron añadidos a la interfaz `Illuminate\Contracts\Foundation\Application`](https://github.com/laravel/framework/pull/26477).
 
 En el caso poco probable de que implementes esta interfaz, debes añadir estos métodos a la implementación. 
 
@@ -195,7 +195,7 @@ La firma del método `firstWhere` [ha cambiado](https://github.com/laravel/frame
 
 **Probabilidad De Impacto: Muy Baja**
 
-El método `terminate` [se ha agregado al contrato `Illuminate/Contracts/Console/Kernel`](https://github.com/laravel/framework/pull/26393). Si estás implementando esta interfaz, debes agregar este método a tu implementación.
+El método `terminate` [se ha agregado al contrato `Illuminate\Contracts\Console\Kernel`](https://github.com/laravel/framework/pull/26393). Si estás implementando esta interfaz, debes agregar este método a tu implementación.
 
 <a name="container"></a>
 ### Contenedor
@@ -361,7 +361,7 @@ Para más información, por favor revisa la [guía de actualización de phpdoten
 
 **Probabilidad De Impacto: Baja**
 
-El método `fire` (que fue puesto en desuso en Laravel 5.4) de la clase `Illuminate/Events/Dispatcher` [ha sido eliminado](https://github.com/laravel/framework/pull/26392). 
+El método `fire` (que fue puesto en desuso en Laravel 5.4) de la clase `Illuminate\Events\Dispatcher` [ha sido eliminado](https://github.com/laravel/framework/pull/26392). 
 Debes usar el método `dispatch` en su lugar.
 
 <a name="exception-handling"></a>
@@ -473,11 +473,11 @@ El método `transform` del middleware `Illuminate\Foundation\Http\Middleware\Tra
 
 El método `previous` [se ha agregado al contrato `Illuminate\Contracts\Routing\UrlGenerator`](https://github.com/laravel/framework/pull/25616). Si estás implementando esta interfaz, debes agregar este método a tu implementación.
 
-#### La Propiedad `cachedSchema` De `Illuminate/Routing/UrlGenerator`
+#### La Propiedad `cachedSchema` De `Illuminate\Routing\UrlGenerator`
 
 **Probabilidad De Impacto: Muy Baja**
 
-El nombre de la propiedad `$cachedSchema` (que ha quedado en desuso en Laravel` 5.7`) de `Illuminate/Routing/UrlGenerator` [se ha cambiado a](https://github.com/laravel/framework/pull/26728) `$cachedScheme`.
+El nombre de la propiedad `$cachedSchema` (que ha quedado en desuso en Laravel` 5.7`) de `Illuminate\Routing\UrlGenerator` [se ha cambiado a](https://github.com/laravel/framework/pull/26728) `$cachedScheme`.
 
 <a name="sessions"></a>
 ### Sesiones
