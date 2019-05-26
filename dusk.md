@@ -4,6 +4,7 @@
 
 - [Introducción](#introduction)
 - [Instalación](#installation)
+    - [Administrando Las Instalaciones De ChromeDriver](#managing-chromedriver-installations)
     - [Usando Otros Navegadores](#using-other-browsers)
 - [Primeros Pasos](#getting-started)
     - [Generando Pruebas](#generating-tests)
@@ -77,6 +78,22 @@ Si tuviste fallos en las pruebas la última vez que se ejecutó el comando `dusk
 
 ```php
 php artisan dusk:fails
+```
+
+<a name="managing-chromedriver-installations"></a>
+### Administrando Las Instalaciones De ChromeDriver
+
+Si te gustaria instalar una versión diferente de ChromeDriver a la incluida con Laravel Dusk, puedes usar el comando `dusk:chrome-driver`:
+
+```php
+# Install the latest version of ChromeDriver for your OS...
+php artisan dusk:chrome-driver
+
+# Install a given version of ChromeDriver for your OS...
+php artisan dusk:chrome-driver 74
+
+# Install a given version of ChromeDriver for all supported OSs...
+php artisan dusk:chrome-driver --all
 ```
 
 ::: danger Nota
