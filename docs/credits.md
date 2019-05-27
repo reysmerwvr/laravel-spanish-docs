@@ -13,4 +13,4 @@ Esta traducción al español de la documentación oficial de Laravel es un esfue
 - [Simon Montoya](https://twitter.com/SimonMontoyaP3)
 - [Jerson Moreno](https://twitter.com/JersonMorenoR)
 
-Puedes contribuir a mantener esta traducción actualizada en el [repositorio de GitHub de la documentación](https://github.com/StydeNet/laravel-spanish-docs). Si tienes alguna duda o sugerencia recuerda que puedes compartirla en el [Slack oficial de Styde](https://styde.slack.com).
+Puedes contribuir a mantener esta traducción actualizada o compartir cualquier duda o sugerencia en el [repositorio de GitHub de la documentación](https://github.com/StydeNet/laravel-spanish-docs).
