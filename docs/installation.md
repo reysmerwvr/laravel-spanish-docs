@@ -13,7 +13,7 @@
 ## Instalación
 
 ::: tip
-¿Eres un aprediz visual? Laracasts proporciona una [introducción gratuita a Laravel](http://laravelfromscratch.com) para los recién llegados al framework. Es un excelente lugar para comenzar tu aventura.
+¿Te gustaría un curso en video para profundizar tu aprendizaje? En Styde cuentas con un [completo curso de Laravel](https://styde.net/laravel-5/) totalmente gratuito que incluye más de 40 lecciones.
 :::
 
 <a name="server-requirements"></a>
