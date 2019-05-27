@@ -326,6 +326,10 @@ Route::domain('{account}.myapp.com')->group(function () {
 });
 ```
 
+::: danger Nota
+Para asegurarte de que tus rutas de subdominios son accesibles, debes registrar rutas de subdominios antes de registrar rutas de dominio principal. Esto evitará que las rutas princripales sobrescriban rutas de subdominios que tienen la misma URI.
+:::
+
 <a name="route-group-prefixes"></a>
 ### Prefijos de Rutas
 
