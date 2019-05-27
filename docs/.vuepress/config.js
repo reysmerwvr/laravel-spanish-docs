@@ -8,6 +8,7 @@ module.exports = {
     	nav: [
 			{ text: 'Inicio', link: '/' },
 			{ text: 'Créditos', link: '/credits' },
+			{ text: 'Styde', link: 'https://styde.net/'},
        	],
 		search: true,
 		sidebar: [
