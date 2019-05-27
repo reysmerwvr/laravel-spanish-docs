@@ -6,7 +6,8 @@ module.exports = {
   	description: 'Documentación de Laravel en Español',
   	themeConfig: {
     	nav: [
-        	{ text: 'Inicio', link: '/' },
+			{ text: 'Inicio', link: '/' },
+			{ text: 'Créditos', link: '/credits' },
        	],
 		search: true,
 		sidebar: [
