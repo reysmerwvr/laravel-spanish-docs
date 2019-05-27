@@ -67,7 +67,7 @@ Route::match(['get', 'post'], '/', function () {
     //
 });
 
-Route::any('foo', function () {
+Route::any('/', function () {
     //
 });
 ```
