@@ -1,5 +1,5 @@
 module.exports = {
-	title: 'Documentación de Laravel en Español',
+	title: 'Documentación de Laravel 5.8 en Español',
   	head: [
   		['link', {rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Catamaran:300,700|Miriam+Libre'}]
   	],
