@@ -73,10 +73,15 @@ Para ver cómo las conexiones de lectura / escritura deberían ser configuradas,
 ```php
 'mysql' => [
     'read' => [
-        'host' => ['192.168.1.1'],
+        'host' => [
+            '192.168.1.1',
+            '196.168.1.2',
+        ],
     ],
     'write' => [
-        'host' => ['196.168.1.2'],
+        'host' => [
+            '196.168.1.3',
+        ],
     ],
     'sticky'    => true,
     'driver'    => 'mysql',
@@ -91,7 +96,7 @@ Para ver cómo las conexiones de lectura / escritura deberían ser configuradas,
 
 Observa que tres claves han sido agregadas al arreglo de configuración: `read`, `write` y `sticky`. Las claves `read` y `write` tienen valores de arreglo conteniendo una sola clave: la dirección ip del `host`. El resto de las opciones de la base de datos para las conexiones `read` y `write` serán tomadas del arreglo principal `mysql`.
 
-Únicamente necesitas colocar elementos en los arreglos `read` y `write` si deseas sobreescribir los valores del arreglo principal. Así, en este caso, `192.168.1.1` será usado como la máquina para la conexión de "lectura", mientras que `192.168.1.2` será usada para la conexión de "escritura".  Las credenciales de bases de datos, prefijo, conjunto de caracteres, y todas las demás opciones en el arreglo principal `mysql` serán compartidas a través de ambas conexiones.
+Únicamente necesitas colocar elementos en los arreglos `read` y `write` si deseas sobreescribir los valores del arreglo principal. Así, en este caso, `192.168.1.1` será usado como la máquina para la conexión de "lectura", mientras que `192.168.1.3` será usada para la conexión de "escritura".  Las credenciales de bases de datos, prefijo, conjunto de caracteres, y todas las demás opciones en el arreglo principal `mysql` serán compartidas a través de ambas conexiones.
 
 #### La Opción `sticky`
 
