@@ -398,10 +398,10 @@ Cuando esta opción de configuración es `true`, Scout no removerá del índice 
 
 ```php
 // Include trashed records when retrieving results...
-$orders = App\Order::withTrashed()->search('Star Trek')->get();
+$orders = App\Order::search('Star Trek')->withTrashed()->get();
 
 // Only include trashed records when retrieving results...
-$orders = App\Order::onlyTrashed()->search('Star Trek')->get();
+$orders = App\Order::search('Star Trek')->onlyTrashed()->get();
 ```
 
 ::: tip
