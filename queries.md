@@ -22,6 +22,7 @@
     - [Incremento Y Decremento](#increment-and-decrement)
 - [Eliminaciones](#deletes)
 - [Bloqueo Pesimista](#pessimistic-locking)
+- [Depuración](#debugging)
 
 <a name="introduction"></a>
 ## Introducción
@@ -872,4 +873,12 @@ Alternativamente, puedes usar el método `lockForUpdate`. Un bloqueo "para actua
 
 ```php
 DB::table('users')->where('votes', '>', 100)->lockForUpdate()->get();
+```
+
+Puedes usar los métodos `dd` o `dump` al construir una consulta para vaciar los enlaces de consulta y SQL. El método `dd` mostrará la información de depuración y luego dejará de ejecutar la solicitud. El método `dump` mostrará la información de depuración pero permitirá que la solicitud se siga ejecutando:
+
+```php
+DB::table('users')->where('votes', '>', 100)->dd();
+
+DB::table('users')->where('votes', '>', 100)->dump();
 ```
