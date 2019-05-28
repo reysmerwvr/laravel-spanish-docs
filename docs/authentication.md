@@ -3,27 +3,27 @@
 # Autenticación
 
 - [Introducción](#introduction)
-    - [Consideraciones De La Base De Datos](#introduction-database-considerations)
-- [Inicio Rápido De Autenticación](#authentication-quickstart)
+    - [Consideraciones de la Base de datos](#introduction-database-considerations)
+- [Inicio rápido de dutenticación](#authentication-quickstart)
     - [Enrutamiento](#included-routing)
     - [Vistas](#included-views)
     - [Autenticando](#included-authenticating)
-    - [Recuperando El Usuario Autenticado](#retrieving-the-authenticated-user)
+    - [Retornando el usuario autenticado](#retrieving-the-authenticated-user)
     - [Proteger Rutas](#protecting-routes)
     - [Regulación De Inicio De Sesión](#login-throttling)
-- [Autenticar Usuarios Manualmente](#authenticating-users)
-    - [Recordar Usuarios](#remembering-users)
-    - [Otros Métodos De Autenticación](#other-authentication-methods)
-- [Autenticación HTTP Básica](#http-basic-authentication)
-    - [Autenticación HTTP Básica Sin Estado](#stateless-http-basic-authentication)
-- [Cerrar Sesión](#logging-out)
-    - [Invalidar Sesiones En Otros Dispositivos](#invalidating-sessions-on-other-devices)    
-- [Autenticar Con Redes Sociales](https://github.com/laravel/socialite)
-- [Agregar Guards Personalizados](#adding-custom-guards)
-    - [Guards De Closures De Peticiones](#closure-request-guards)
-- [Agregar User Providers Personalizados](#adding-custom-user-providers)
-    - [La Interfaz UserProvider](#the-user-provider-contract)
-    - [La Interfaz Authenticatable](#the-authenticatable-contract)
+- [Autenticar usuarios manualmente](#authenticating-users)
+    - [Recordar usuarios](#remembering-users)
+    - [Otros métodos de autenticación](#other-authentication-methods)
+- [Autenticación HTTP básica](#http-basic-authentication)
+    - [Autenticación HTTP básica sin estado](#stateless-http-basic-authentication)
+- [Cerrar sesión](#logging-out)
+    - [Invalidar sesiones en otros dispositivos](#invalidating-sessions-on-other-devices)    
+- [Autenticar con redes sociales](https://github.com/laravel/socialite)
+- [Agregar guards personalizados](#adding-custom-guards)
+    - [Guards de closures de peticiones](#closure-request-guards)
+- [Agregar proveedores de usuarios personalizados](#adding-custom-user-providers)
+    - [La interfaz UserProvider](#the-user-provider-contract)
+    - [La interfaz Authenticatable](#the-authenticatable-contract)
 - [Eventos](#events)
 
 <a name="introduction"></a>
@@ -138,7 +138,7 @@ El método `validator` de `RegisterController` contiene las reglas de validació
 El método `create` de `RegisterController` es responsable de crear registros nuevos de `App\User` en tu base de datos usando el [ORM Eloquent](/docs/{{version}}/eloquent). Eres libre de modificar este método de acuerdo a las necesidades de tu base de datos.
 
 <a name="retrieving-the-authenticated-user"></a>
-### Recuperando el usuario autenticado
+### Retornando el usuario autenticado
 
 Puedes acceder al usuario autenticado por medio del facade `Auth`:
 

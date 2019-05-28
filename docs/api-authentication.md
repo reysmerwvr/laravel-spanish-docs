@@ -4,11 +4,11 @@
 
 - [Introducción](#introduction)
 - [Configuración](#configuration)
-    - [Migraciones De La Base De Datos](#database-preparation)
-- [Generando Tokens](#generating-tokens)
-    - [Hashing Tokens](#hashing-tokens)
-- [Protegiendo Rutas](#protecting-routes)
-- [Pasando Tokens En Peticiones](#passing-tokens-in-requests)
+    - [Migraciones de la base de datos](#database-preparation)
+- [Generando tokens](#generating-tokens)
+    - [Hashing tokens](#hashing-tokens)
+- [Protegiendo rutas](#protecting-routes)
+- [Pasando tokens en peticiones](#passing-tokens-in-requests)
 
 <a name="introduction"></a>
 ## Introducción
