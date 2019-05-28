@@ -1,18 +1,18 @@
 ::: v-pre
 
-# Contenedor de Servicios (Service Container)
+# Contenedor de servicios (service container)
 
 - [Introducción](#introduction)
 - [Enlaces](#binding)
-    - [Fundamentos de los Enlaces](#binding-basics)
-    - [Enlazando Interfaces A Implementaciones](#binding-interfaces-to-implementations)
-    - [Enlaces Contextuales](#contextual-binding)
+    - [Fundamentos de los enlaces](#binding-basics)
+    - [Enlazando interfaces a implementaciones](#binding-interfaces-to-implementations)
+    - [Enlaces contextuales](#contextual-binding)
     - [Etiquetado](#tagging)
-    - [Extendiendo Enlaces](#extending-bindings)
+    - [Extendiendo enlaces](#extending-bindings)
 - [Resolviendo](#resolving)
-    - [Método Make](#the-make-method)
-    - [Inyección Automática](#automatic-injection)
-- [Eventos del Contenedor](#container-events)
+    - [Método make](#the-make-method)
+    - [Inyección automática](#automatic-injection)
+- [Eventos del contenedor](#container-events)
 - [PSR-11](#psr-11)
 
 <a name="introduction"></a>
@@ -74,7 +74,7 @@ Un conocimiento profundo del contenedor de servicios de Laravel es esencial para
 ## Enlaces
 
 <a name="binding-basics"></a>
-### Fundamentos de los Enlaces
+### Fundamentos de los enlaces
 
 La mayoría de los enlaces de tu contenedor de servicios serán registrados dentro de [proveedores de servicios](/docs/5.8/providers), así que la mayoría de estos ejemplos muestra el uso del contenedor en ese contexto.
 
@@ -82,7 +82,7 @@ La mayoría de los enlaces de tu contenedor de servicios serán registrados dent
 No hay necesidad de enlazar clases al contenedor si no dependen de ninguna interfaz. El contenedor no necesita ser instruido en cómo construir esos objetos, dado que puede resolver dichos objetos automáticamente usando reflejos.
 :::
 
-#### Enlaces Sencillos
+#### Enlaces sencillos
 
 Dentro de un proveedor de servicios, siempre tienes acceso al contenedor mediante la propiedad `$this->app`. Podemos registrar un enlace usando el método `bind`, pasando el nombre de la clase o interfaz que deseamos registrar junto con una `Closure` que retorna una instancia de la clase:
 
@@ -94,7 +94,7 @@ $this->app->bind('HelpSpot\API', function ($app) {
 
 Observa que recibimos el contenedor como argumento. Podemos entonces usar el contenedor para resolver sub-dependencias del objeto que estamos construyendo.
 
-#### Enlazando un Singleton
+#### Enlazando un singleton
 
 El método `singleton` enlaza una clase o interfaz al contenedor que debería ser resuelto una sola vez. Una vez que el enlace de un singleton es resuelto, la misma instancia de objeto será retornada en llamadas siguientes al contenedor:
 
@@ -104,7 +104,7 @@ $this->app->singleton('HelpSpot\API', function ($app) {
 });
 ```
 
-#### Enlazando Instancias
+#### Enlazando instancias
 
 También puedes enlazar una instancia de objeto existente al contenedor usando el método `instance`. La instancia dada siempre será retornada en llamadas siguientes al contenedor:
 
@@ -114,7 +114,7 @@ $api = new HelpSpot\API(new HttpClient);
 $this->app->instance('HelpSpot\API', $api);
 ```
 
-#### Enlazando Valores Primitivos
+#### Enlazando valores primitivos
 
 Algunas veces tendrás una clase que recibe algunas clases inyectadas, pero que también necesita un valor primitivo inyectado, como un entero. Puedes fácilmente usar enlaces contextuales para inyectar cualquier valor que tu clase pueda necesitar:
 
@@ -125,7 +125,7 @@ $this->app->when('App\Http\Controllers\UserController')
 ```
 
 <a name="binding-interfaces-to-implementations"></a>
-### Enlazando Interfaces A Implementaciones
+### Enlazando interfaces a implementaciones
 
 Una característica muy poderosa del contenedor de servicios es su habilidad para enlazar una interfaz a una implementación dada. Por ejemplo, vamos a suponer que tenemos una interfaz `EventPusher` y una implementación `RedisEventPusher`. Una vez que hemos programado nuestra implementación `RedisEventPusher` de esta interfaz, podemos registrarla con el contenedor de servicios de la siguiente manera:
 
@@ -154,7 +154,7 @@ public function __construct(EventPusher $pusher)
 ```
 
 <a name="contextual-binding"></a>
-### Enlaces Contextuales
+### Enlaces contextuales
 
 Algunas veces tendrás dos clases que usan la misma interfaz, pero quieres inyectar diferentes implementaciones en cada clase. Por ejemplo, dos controladores pueden depender de diferentes implementaciones del [contrato](/docs/5.8/contracts) `Illuminate\Contracts\Filesystem\Filesystem`. Laravel proporciona una simple y fluida interfaz para definir este comportamiento:
 
@@ -203,7 +203,7 @@ $this->app->bind('ReportAggregator', function ($app) {
 ```
 
 <a name="extending-bindings"></a>
-### Extendiendo Enlaces
+### Extendiendo enlaces
 
 El método `extend` te permite modificar servicios resueltos. Por ejemplo, cuando un servicio es resuelto, puedes ejecutar código adicional para decorar o configurar el servicio. El método `extend` acepta un Closure, que debe retornar el servicio modificado, como único argumento:
 
@@ -238,7 +238,7 @@ $api = $this->app->makeWith('HelpSpot\API', ['id' => 1]);
 ```
 
 <a name="automatic-injection"></a>
-#### Inyección Automática
+#### Inyección automática
 
 Alternativamente, y de forma importante, puedes "determinar el tipo" de la dependencia en el constructor de una clase que es resuelta por el contenedor, incluyendo [controladores](/docs/5.8/controllers), [listeners de eventos](/docs/5.8/events), [colas](/docs/5.8/queues), [middleware](/docs/5.8/middleware) y más. En la práctica, así es como la mayoría de tus objetos deben ser resueltos por el contenedor.
 
@@ -283,7 +283,7 @@ class UserController extends Controller
 ```
 
 <a name="container-events"></a>
-## Eventos del Contenedor
+## Eventos del contenedor
 
 El contenedor de servicios ejecuta un evento cada vez que resuelve un objeto. Puedes escuchar a este evento usando el método `resolving`:
 

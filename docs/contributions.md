@@ -1,16 +1,16 @@
 # Guía De Contribución
 
-- [Reporte De Errores](#bug-reports)
-- [Discusión De Desarrollo De Código](#core-development-discussion)
+- [Reporte de errores](#bug-reports)
+- [Discusión sobre el desarrollo del núcleo](#core-development-discussion)
 - [¿Cuál rama?](#which-branch)
-- [Assets Compilados](#compiled-assets)
-- [Vulnerabilidades De Seguridad](#security-vulnerabilities)
-- [Estilo De Código](#coding-style)
+- [Recursos compilados](#compiled-assets)
+- [Vulnerabilidades de seguridad](#security-vulnerabilities)
+- [Estilo de código](#coding-style)
     - [PHPDoc](#phpdoc)
     - [StyleCI](#styleci)
 
 <a name="bug-reports"></a>
-## Reportes De Errores
+## Reportes de errores
 
 Para fomentar la colaboración activa, Laravel alenta fuertemente el uso de pull requests, no solo reportes de errores. "Los reportes de errores" pueden además ser enviados en el formulario de un pull request que contenga un test fallido.
 
@@ -38,8 +38,12 @@ El código fuente de Laravel es manejado en GitHub, y allí están los repositor
 - [Laravel Website](https://github.com/laravel/laravel.com)
 </div>
 
+::: danger Nota importante sobre la traducción
+Para realizar reportes sobre errores o detalles encontrados en esta traducción, estos deben ser realizados en el repositorio oficial de la traducción.
+:::
+
 <a name="core-development-discussion"></a>
-## Discusión De Desarrollo De Código
+## Discusión sobre el desarrollo del núcleo
 
 Tu puedes proponer nuevas funcionalidades o mejoras del comportamiento existente de Laravel en el [tablero de ideas](https://github.com/laravel/ideas/issues) de ideas de Laravel. Si propones una nueva funcionalidad, esté dispuesto a implementar al menos parte del código que se necesitaría para completar la funcionalidad.
 
@@ -57,7 +61,7 @@ Las nuevas funcionalidades **mayores** deben siempre ser enviadas a la rama `mas
 Si no estás seguro si tu funcionalidad califica como mayor o menor, por favor pregúntale a Taylor Otwell en el canal `#internals` del [servidor Discord de Laravel](https://discordapp.com/invite/mPZNm7A).
 
 <a name="compiled-assets"></a>
-## Assets Compilados
+## Recursos compilados
 
 Si estás enviando un cambio que afectará un archivo compilado, tal como muchos de los archivos en `resources/sass` o `resources/js` del repositorio `laravel/laravel`, no hagas commit de los archivos compilados. Debido a su gran tamaño, ellos no pueden realistamente ser revisado por el encargado. Esto podría ser usado como una forma de inyectar código malicioso dentro de Laravel. Para evitar esto de manera defensiva, todos los archivos compilados serán generados y confirmados por los mantenedores de Laravel.
 
@@ -67,7 +71,7 @@ Si estás enviando un cambio que afectará un archivo compilado, tal como muchos
 Si tu descubres una vulnerabilidad de seguridad dentro de Laravel, por favor envía un email a Taylor Otwell a <a href="mailto:taylor@laravel.com">taylor@laravel.com</a>. Todas las vulnerabilidades de seguridad serán tratadas con prontitud.
 
 <a name="coding-style"></a>
-## Estilo De Código
+## Estilo de código
 
 Laravel sigue el estándar de código [PSR-2](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md) y el estándar de auto carga [PSR-4](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader.md).
 

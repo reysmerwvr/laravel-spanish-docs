@@ -3,12 +3,12 @@
 # Contratos
 
 - [Introducción](#introduction)
-    - [Contratos Vs. Facades](#contracts-vs-facades)
-- [Cuando Usar Contratos](#when-to-use-contracts)
-    - [Bajo Acoplamiento](#loose-coupling)
+    - [Contratos vs. facades](#contracts-vs-facades)
+- [Cuando usar contratos](#when-to-use-contracts)
+    - [Bajo acoplamiento](#loose-coupling)
     - [Simplicidad](#simplicity)
-- [Cómo Usar Contratos](#how-to-use-contracts)
-- [Referencia de Contratos](#contract-reference)
+- [Cómo usar contratos](#how-to-use-contracts)
+- [Referencia de contratos](#contract-reference)
 
 <a name="introduction"></a>
 ## Introducción
@@ -20,7 +20,7 @@ Cada contrato tiene una implementación correspondiente provista por el framewor
 Todos los contratos de Laravel viven en [su repositorio de GitHub propio](https://github.com/illuminate/contracts). Esto proporciona un punto de referencia rápido para todos los contratos disponibles, así como un paquete único y desacoplado que puede ser utilizado por los desarrolladores de paquetes.
 
 <a name="contracts-vs-facades"></a>
-### Contratos Vs. Facades
+### Contratos vs. facades
 
 Los [facades](/docs/5.8/facades) de Laravel y las funciones de ayuda (helpers) proporcionan una forma sencilla de utilizar los servicios de Laravel sin necesidad de determinar el tipo y resolver contratos fuera del contenedor de servicios. En la mayoría de los casos, cada facade tiene un contrato equivalente.
 
@@ -31,14 +31,14 @@ La mayoría de las aplicaciones funcionarán bien sin importar si prefieres faca
 :::
 
 <a name="when-to-use-contracts"></a>
-## Cuando Usar Contratos
+## Cuando usar contratos
 
 Como se discutió en otro lugar, gran parte de la decisión de usar contratos o facades se reducirá a los gustos personales y los gustos de su equipo de desarrollo. Tanto los contratos como las facades se pueden utilizar para crear aplicaciones Laravel robustas y bien probadas. Mientras mantengas enfocadas las responsabilidades de tu clase, notarás muy pocas diferencias prácticas entre el uso de contratos y facades.
 
 Sin embargo, todavía puede tener varias preguntas con respecto a los contratos. Por ejemplo, ¿por qué usar interfaces? ¿No es más complicado usar interfaces? Detallemos las razones para utilizar interfaces en los siguientes encabezados: bajo acoplamiento y simplicidad.
 
 <a name="loose-coupling"></a>
-### Bajo Acoplamiento
+### Bajo acoplamiento
 
 Primero, revisemos algunos códigos que están estrechamente acoplado a una implementación de caché. Considera lo siguiente:
 
@@ -123,13 +123,13 @@ Cuando todos los servicios de Laravel están claramente definidos dentro de inte
 Además, cuando dependes de interfaces simples, tu código es más fácil de entender y mantener. En lugar de rastrear qué métodos están disponibles dentro de una clase grande y complicada, puedes hacer referencia a una interfaz sencilla y limpia.
 
 <a name="how-to-use-contracts"></a>
-## Cómo Usar Contratos
+## Cómo usar contratos
 
 Entonces, ¿Cómo se obtiene una implementación de un contrato? En realidad es bastante simple.
 
 Muchos tipos de clases en Laravel se resuelven a través del [contenedor de servicio](/docs/5.8/container), incluyendo controladores, los escuchadores de eventos, middleware, trabajos de cola e incluso una Closure de ruta. Por lo tanto, para obtener una implementación de un contrato, puede simplemente "declarar el tipo" de la interfaz en el constructor de la clase que se está resolviendo.
 
-Por ejemplo, veamos este escuchador (listener) de evento:
+Por ejemplo, veamos este listener de eventos:
 
 ```php
 <?php
@@ -174,7 +174,7 @@ class CacheOrderInformation
 Cuando se resuelve el escuchador de evento, el contenedor de servicios leerá las declaraciones de tipo en el constructor de la clase e inyectará el valor apropiado. Para obtener más información sobre cómo registrar cosas en el contenedor de servicios, consulte [su documentación](/docs/5.8/container).
 
 <a name="contract-reference"></a>
-## Referencia de Contratos
+## Referencia de contratos
 
 Esta tabla proporciona una referencia rápida a todos los contratos de Laravel y sus facades equivalentes:
 

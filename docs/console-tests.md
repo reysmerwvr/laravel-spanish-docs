@@ -3,14 +3,14 @@
 # Pruebas de consola
 
 - [Introducción](#introduction)
-- [Esperando Entrada / Salida](#expecting-input-and-output)
+- [Esperando entrada / salida](#expecting-input-and-output)
 
 ## Introducción
 
 Además de simplificar las pruebas de HTTP, Laravel proporciona una API simple para probar las aplicaciones de consola que solicitan información al usuario.
 
 <a name="expecting-input-and-output"></a>
-## Esperando Entrada / Salida
+## Esperando entrada / salida
 
 Laravel te permite "simular" (mock) fácilmente la entrada de datos por parte del usuario mediante la consola utilizando el método `expectsQuestion`. Además, puedes especificar el código de salida y el texto que esperas que genere el comando de la consola utilizando los métodos `assertExitCode` y` expectsOutput`. Por ejemplo, considera el siguiente comando de consola:
 
