@@ -3,8 +3,8 @@
 # Eloquent: Colecciones
 
 - [Introducción](#introduction)
-- [Métodos Disponibles](#available-methods)
-- [Colecciones Personalizadas](#custom-collections)
+- [Métodos disponibles](#available-methods)
+- [Colecciones personalizadas](#custom-collections)
 
 <a name="introduction"></a>
 ## Introducción
@@ -41,7 +41,7 @@ Mientras los métodos de colección de Eloquent devuelven una nueva instancia de
 <a name="available-methods"></a>
 ## Métodos Disponibles
 
-### La Colección Base
+### La colección base
 
 Todas las colecciones de Eloquent extienden el objeto de [colección de Laravel](/docs/{{version}}/collections) base; sin embargo, heredan todos los métodos poderosos proporcionados por la clase de colección base:
 
@@ -168,7 +168,7 @@ $users = $users->unique();
 ```
 
 <a name="custom-collections"></a>
-## Colecciones Personalizadas
+## Colecciones personalizadas
 
 Si necesitas usar un objeto `Collection` personalizado con tus propios métodos de extensión, puedes sobrescribir el método `newCollection` en tu modelo:
 

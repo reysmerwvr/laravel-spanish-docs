@@ -3,13 +3,13 @@
 # Despliegue
 
 - [Introducción](#introduction)
-- [Configuración Del Servidor](#server-configuration)
+- [Configuración del servidor](#server-configuration)
     - [Nginx](#nginx)
 - [Optimización](#optimization)
-    - [Optimizar Autoloader](#autoloader-optimization)
-    - [Optimizar Configuración Local](#optimizing-configuration-loading)
-    - [Optimizar Carga De Rutas](#optimizing-route-loading)
-- [Deploy En Forge](#deploying-with-forge)
+    - [Optimizar autoloader](#autoloader-optimization)
+    - [Optimizar configuración local](#optimizing-configuration-loading)
+    - [Optimizar carga de rutas](#optimizing-route-loading)
+- [Deploy en forge](#deploying-with-forge)
 
 <a name="introduction"></a>
 ## Introducción
@@ -17,7 +17,7 @@
 Una vez que estés listo para hacer deploy de tu aplicación de Laravel a producción, deberías considerar algunos aspectos importantes para hacer que tu aplicación se ejecute de la forma más eficientemente posible. En este documento, vamos a cubrir muy buenos puntos para hacer que tu aplicación de Laravel sea desplegada correctamente.
 
 <a name="server-configuration"></a>
-## Configuración Del Servidor
+## Configuración del servidor
 
 <a name="nginx"></a>
 ### Nginx
@@ -64,7 +64,7 @@ server {
 ## Optimización
 
 <a name="autoloader-optimization"></a>
-### Optimizar Autoloader
+### Optimizar autoloader
 
 Al hacer deploy a producción, debes asegurarte de optimizar el autoloader de Composer, para que éste pueda localizar rápidamente el archivo apropiado para cargar una clase dada:
 
@@ -77,7 +77,7 @@ Adicionalmente, para optimizar el autoloader, deberás asegurarte de incluir sie
 :::
 
 <a name="optimizing-configuration-loading"></a>
-### Optimizar Configuración Local
+### Optimizar configuración local
 
 Al hacer deploy de tu aplicación a producción, deberás asegurarte de ejecutar el comando de Artisan `config:cache` durante el proceso de deploy:
 
@@ -92,7 +92,7 @@ Si ejecutas el comando `config:cache` durante el proceso de despliegue, debes as
 :::
 
 <a name="optimizing-route-loading"></a>
-### Optimizar Configuración Local
+### Optimizar carga de rutas
 
 Si estás construyendo una aplicación muy grande que contenga muchas rutas, deberías asegurarte de ejecutar el comando `route:cache` de Artisan durante el proceso de deploy.
 
@@ -107,7 +107,7 @@ Ya que esta característica utiliza la serialización de PHP, sólo se pueden al
 :::
 
 <a name="deploying-with-forge"></a>
-## Deploy En Forge
+## Deploy en forge
 
 Si no estás del todo listo para administrar la configuración de tu servidor o si no te sientes cómodo configurando los diferentes servicios necesarios para ejecutar aplicaciones robustas de Laravel, [Laravel Forge](https://forge.laravel.com) es una excelente alternativa.
 
