@@ -8,4 +8,4 @@ Si está enviando documentación para la **versión estable actual**, envíala a
 
 ## Sobre esta traducción
 
-Para saber más sobre esta traducción [dirigete a la sección créditos](/credits.html).
+Para saber más sobre esta traducción puedes dirigirte a la sección de créditos.

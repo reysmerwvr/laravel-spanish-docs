@@ -13,7 +13,7 @@ module.exports = {
 		search: true,
 		sidebar: [
 			{
-				title: 'Primeros Pasos',
+				title: 'Primeros pasos',
 				collapsable: true,
 				children: [
 					'/installation',
@@ -25,7 +25,7 @@ module.exports = {
 				]
 			},
 			{
-				title: 'Conceptos De Arquitectura',
+				title: 'Conceptos de arquitectura',
 				collapsable: true,
 				children: [
 					'/lifecycle',
@@ -95,7 +95,7 @@ module.exports = {
 				]
 			},
 			{
-				title: 'Bases De Datos',
+				title: 'Bases de datos',
 				collapsable: true,
 				children: [
 					'/database.md',
