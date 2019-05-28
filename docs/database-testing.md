@@ -3,16 +3,16 @@
 # Pruebas de Base de Datos
 
 - [Introducción](#introduction)
-- [Generando Factories](#generating-factories)
-- [Reinicializando la Base de Datos Después de Cada Prueba](#resetting-the-database-after-each-test)
-- [Escribiendo Factories](#writing-factories)
-    - [Estados de un Factory](#factory-states)
-    - [LLamadas de retorno de un Factory](#factory-callbacks)
-- [Usando Factories](#using-factories)
-    - [Creando Modelos](#creating-models)
-    - [Persistiendo Modelos](#persisting-models)
+- [Generando factories](#generating-factories)
+- [Reiniciando la base de datos después de cada prueba](#resetting-the-database-after-each-test)
+- [Escribiendo factories](#writing-factories)
+    - [Estados de un factory](#factory-states)
+    - [LLamadas de retorno de un factory](#factory-callbacks)
+- [Usando factories](#using-factories)
+    - [Creando modelos](#creating-models)
+    - [Persistiendo modelos](#persisting-models)
     - [Relaciones](#relationships)
-- [Aserciones Disponibles](#available-assertions)
+- [Aserciones disponibles](#available-assertions)
 
 <a name="introduction"></a>
 ## Introducción
@@ -35,7 +35,7 @@ También podrías usar el método `assertDatabaseMissing` para comprobar que eso
 El método `assertDatabaseHas` y otros métodos como éste son por conveniencia. Eres libre de usar cualquiera de los métodos de aserción de PHPUnit integrados para complementar tus pruebas.
 
 <a name="generating-factories"></a>
-## Generando Factories
+## Generando factories
 
 Para crear un factory, usa el [comando Artisan](/docs/{{version}}/artisan) `make:factory`:
 
@@ -52,7 +52,7 @@ php artisan make:factory PostFactory --model=Post
 ```
 
 <a name="resetting-the-database-after-each-test"></a>
-## Reinicializando la Base de Datos Después de Cada Prueba
+## Reiniciando la base de datos después de cada prueba
 
 Con frecuencia es útil reinicializar tu base de datos después de cada prueba de modo que los datos de una prueba previa no interfieran con las pruebas subsecuentes. El trait `RefreshDatabase` toma el enfoque más óptimo para migrar tu base de datos de pruebas, dependiendo de si estás usando una base de datos en memoria o una base de datos tradicional. Usa el trait en tu clase de prueba y todo será manejado por ti:
 
@@ -84,7 +84,7 @@ class ExampleTest extends TestCase
 ```
 
 <a name="writing-factories"></a>
-## Escribiendo Factories
+## Escribiendo factories
 
 Al momento de probar, puedes necesitar insertar unos pocos registros dentro de tu base de datos antes de ejecutar tu prueba. En lugar de especificar manualmente el valor de cada columna cuando crees estos datos de prueba, Laravel permite que definas un conjunto de atributos predeterminados para cada uno de tus [modelos de Eloquent](/docs/{{version}}/eloquent) usando factories de modelos. Para empezar, echemos un vistazo al archivo `database/factories/UserFactory.php` en tu aplicación. De forma predeterminada, este archivo contiene una definición de factory:
 
@@ -112,7 +112,7 @@ Puedes establecer la configuración regional de Faker agregando una opción `fak
 :::
 
 <a name="factory-states"></a>
-### Estados de un Factory
+### Estados de un factory
 
 Los estados te permiten definir modificaciones discretas que pueden ser aplicadas a tus factories de modelos en cualquier combinación. Por ejemplo, tu modelo `User` podría tener un estado `delinquent` que modifique uno de sus valores de atributo predeterminados. Puedes definir tus transformaciones de estado usando el método `state`. Para estados simples, puedes pasar un arreglo de modificaciones de atributos:
 
@@ -133,7 +133,7 @@ $factory->state(App\User::class, 'address', function ($faker) {
 ```
 
 <a name="factory-callbacks"></a>
-### LLamadas de retorno de un Factory
+### LLamadas de retorno de un factory
 
 Las llamadas de retorno de un Factory son registradas usando los métodos `afterMaking` y `afterCreating` y te permiten realizar tareas adicionales de hacer o crear un modelo. Por ejemplo, puedes usar llamadas de retorno para relacionar modelos adicionales con el modelo creado:
 
@@ -160,10 +160,10 @@ $factory->afterCreatingState(App\User::class, 'delinquent', function ($user, $fa
 ```
 
 <a name="using-factories"></a>
-## Usando Factories
+## Usando factories
 
 <a name="creating-models"></a>
-### Creando Modelos
+### Creando modelos
 
 Una vez que has definido tus factories, puedes usar la función global `factory` en tus pruebas o en archivos seeder para generar instancias de un modelo. Así, vamos a echar un vistazo en unos pocos ejemplos de creación de modelos. Primero, usaremos el método `make` para crear modelos pero sin guardarlos en la base de datos:
 
@@ -183,7 +183,7 @@ También puedes crear una colección de muchos modelos o crear modelos de un tip
 $users = factory(App\User::class, 3)->make();
 ```
 
-#### Aplicando Estados
+#### Aplicando estados
 
 También puedes aplicar cualquiera de tus [estados](#factory-states) a los modelos. Si prefieres aplicar múltiples transformaciones de estado a los modelos, deberías especificar el nombre de cada estado que quisieras aplicar:
 
@@ -193,7 +193,7 @@ $users = factory(App\User::class, 5)->states('delinquent')->make();
 $users = factory(App\User::class, 5)->states('premium', 'delinquent')->make();
 ```
 
-#### Sobrescribiendo Atributos
+#### Sobrescribiendo atributos
 
 Si prefieres sobreescribir algunos de los valores predeterminados de tus modelos, puedes pasar un arreglo de valores al método `make`. Solamente, los valores especificados serán reemplazados mientras que el resto de los valores permanecerán con sus valores predeterminados cómo se especificó en el factory:
 
@@ -204,7 +204,7 @@ $user = factory(App\User::class)->make([
 ```
 
 <a name="persisting-models"></a>
-### Persistiendo Modelos
+### Persistiendo modelos
 
 El método `create` no solamente crea las instancias de un modelo sino que también los almacena en la base de datos usando el método `save` de Eloquent:
 
@@ -242,7 +242,7 @@ $users = factory(App\User::class, 3)
             });
 ```
 
-#### Relaciones y Closures de Atributos
+#### Relaciones y closures de atributos
 
 También puedes adjuntar relaciones a los modelos usando atributos de Closure en tus definiciones del factory. Por ejemplo, si prefieres crear una nueva instancia `User` al momento de crear un `Post`, puedes hacer lo siguiente:
 
@@ -276,7 +276,7 @@ $factory->define(App\Post::class, function ($faker) {
 ```
 
 <a name="available-assertions"></a>
-## Aserciones Disponibles
+## Aserciones disponibles
 
 Laravel proporciona varias aserciones de base de datos para tus pruebas [PHPUnit](https://phpunit.de/):
 

@@ -30,7 +30,7 @@ El [middleware](/docs/{{version}}/middleware) `VerifyCsrfToken`, el cual es incl
 Cuando se crean aplicaciones controladas por JavaScript, es conveniente hacer que tu biblioteca HTTP de JavaScript agregue el token CSRF a cada petición saliente. Por defecto, el archivo `resources/js/bootstrap.js` registra el valor de la meta etiqueta `csrf-token` con la biblioteca HTTP Axios. Si no estás usando esta biblioteca, necesitarás configurar este comportamiento de forma manual para tu aplicación.
 
 <a name="csrf-excluding-uris"></a>
-## Excluyendo las URIs de la Protección CSRF
+## Excluyendo las URIs de la protección CSRF
 
 Algunas veces puedes desear excluir un conjunto de URIs de la protección CSRF. Por ejemplo, si estás usando [Stripe](https://stripe.com) para procesar pagos y estás utilizando su sistema webhook, necesitarás excluir tu ruta de manejador webhook de Stripe de la protección CSRF ya que Stripe no sabrá que token CSRF enviar a sus rutas.
 
