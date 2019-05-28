@@ -1,6 +1,6 @@
 ::: v-pre
 
-# Consola Artisan
+# Consola artisan
 
 - [Introducción](#introduction)
     - [Tinker (REPL)](#tinker)
@@ -50,7 +50,7 @@ Puedes publicar el archivo de configuración de Tinker usando el comando vendor:
 php artisan vendor:publish --provider="Laravel\Tinker\TinkerServiceProvider"
 ```
 
-#### Lista Blanca de Comandos
+#### Lista blanca de comandos
 
 Tinker utiliza una lista blanca para determinar qué comandos de Artisan pueden ejecutarse dentro de su shell. Por defecto, puedes ejecutar los comandos `clear-compiled`, `down`, `env`, `inspire`, `migrate`, `optimize` y `up`. Si deseas hacer una lista blanca de más comandos, puede agregarlos al arreglo `command` en tu archivo de configuración `tinker.php`:
 
@@ -60,7 +60,7 @@ Tinker utiliza una lista blanca para determinar qué comandos de Artisan pueden 
 ],
 ```
 
-#### Lista Negra de Alias
+#### Lista negra de alias
 
 Por lo general, Tinker automáticamente asigna alias a las clases según las necesites en Tinker. Sin embargo, es posible que desees que nunca se agreguen alias a algunas clases. Puedes lograr esto listando las clases en el arreglo `dont_alias` de tu archivo de configuración `tinker.php`:
 
@@ -71,12 +71,12 @@ Por lo general, Tinker automáticamente asigna alias a las clases según las nec
 ```
 
 <a name="writing-commands"></a>
-## Escritura de Comandos
+## Escritura de comandos
 
 Además de los comandos proporcionados por Artisan, también puedes crear tus propios comandos personalizados. Los comandos son típicamente almacenados en el directorio `app/Console/Commands`; sin embargo, eres libre de escoger tu propia ubicación de almacenamiento, siempre y cuando tus comandos puedan ser cargados por Composer.
 
 <a name="generating-commands"></a>
-### Generación de Comandos
+### Generación de comandos
 
 Para crear un nuevo comando, usa el comando Artisan `make:command`. Este comando creará una nueva clase de comando en el directorio `app/Console/Commands`. No te preocupes si este directorio no existe en tu aplicación, pues éste será creado la primera vez que ejecutes el comando Artisan `make:command`. El comando generado incluirá el conjunto de propiedades y métodos por defecto que están presentes en todos los comandos:
 
@@ -85,7 +85,7 @@ php artisan make:command SendEmails
 ```
 
 <a name="command-structure"></a>
-### Estructura de un Comando
+### Estructura de un comando
 
 Después de generar tu comando, debes rellenar las propiedades `signature` y `description` de la clase, las cuales serán usadas cuando se muestra tu comando en la pantalla `list`. El método `handle` será llamado cuando tu comando es ejecutado. Puedes colocar tu lógica del comando en este método.
 
@@ -144,7 +144,7 @@ class SendEmails extends Command
 ```
 
 <a name="closure-commands"></a>
-### Comandos usando una función anónima (Closure)
+### Comandos usando una función anónima (closure)
 
 Los comandos basados en Closure proporcionan una alternativa para definir comandos de consola como clases. De la misma manera que los Closures de rutas son una alternativa para los controladores, piensa en los Closures de comandos como una alternativa a las clases de comandos. Dentro del método `commands` de tu archivo `app/Console/Kernel.php`, Laravel carga el archivo `routes/console.php`:
 
@@ -170,7 +170,7 @@ Artisan::command('build {project}', function ($project) {
 
 El Closure está vinculado a la instancia del comando subyacente, así tienes acceso completo a todos los métodos helper a los que normalmente podrías acceder en una clase de comando completa.
 
-#### Determinación de tipos (Type-Hinting) de Dependencias
+#### Determinación de tipos (type-hinting) de dependencias
 
 Además de recibir los argumentos y opciones de tu comando, en los Closures de comandos puedes también determinar los tipos de las dependencias adicionales que te gustaría resolver del [contenedor de servicios](/docs/{{version}}/container):
 
@@ -183,7 +183,7 @@ Artisan::command('email:send {user}', function (DripEmailer $drip, $user) {
 });
 ```
 
-#### Descripciones de un Closure de Comando
+#### Descripciones de un closure de comando
 
 Al definir un comando basado en Closure, puedes usar el método `describe` para agregar una descripción al comando. Esta descripción será mostrada cuando ejecutes los comandos `php artisan list` o `php artisan help`:
 
@@ -194,7 +194,7 @@ Artisan::command('build {project}', function ($project) {
 ```
 
 <a name="defining-input-expectations"></a>
-## Definición de Expectativas de Entrada
+## Definición de expectativas de entrada
 
 Al escribir comandos de consola, es común recopilar información del usuario a través de argumentos u opciones. Laravel hace que sea muy conveniente definir la entrada que esperas del usuario usando la propiedad `signature` en tus comandos. La propiedad `signature` te permite definir el nombre, los argumentos y las opciones para el comando en una sintaxis tipo ruta simple y expresiva.
 
@@ -243,7 +243,7 @@ php artisan email:send 1 --queue
 ```
 
 <a name="options-with-values"></a>
-#### Opciones Con Valores
+#### Opciones con valores
 
 Vamos a ver una opción que espera un valor. Si el usuario debe especificar un valor para una opción, agrega como sufijo el signo `=` al nombre de la opción:
 
@@ -301,7 +301,7 @@ Al definir una opción que espera un arreglo como entrada, cada valor de la opci
 ```
 
 <a name="input-descriptions"></a>
-### Descripciones de Entrada
+### Descripciones de entrada
 
 Puedes asignar descripciones para los argumentos y opciones de entrada separando el parámetro de la opción usando dos puntos `:`. Si necesitas un poco más de espacio para definir tu comando, no dudes en extender la definición a través de múltiples líneas:
 
@@ -317,10 +317,10 @@ protected $signature = 'email:send
 ```
 
 <a name="command-io"></a>
-## Entrada y salida (E/S) de Comandos
+## Entrada y salida (E/S) de comandos
 
 <a name="retrieving-input"></a>
-### Recuperación de Entrada
+### Recuperación de entrada
 
 Cuando tu comando es ejecutado, obviamente necesitarás acceder a los valores de los argumentos y opciones aceptados por tu comando. Para ello, puedes usar los métodos `argument` y `option`:
 
@@ -357,7 +357,7 @@ $options = $this->options();
 Si el argumento o la opción no existe, será retornado `null`.
 
 <a name="prompting-for-input"></a>
-### Solicitud de Entrada
+### Solicitud de entrada
 
 Además de mostrar salidas, puedes también pedir al usuario que proporcione información durante la ejecución del comando. El método `ask` le indicará al usuario la pregunta dada, aceptará su entrada, y luego devolverá la entrada del usuario a tu comando:
 
@@ -406,7 +406,7 @@ $name = $this->choice('What is your name?', ['Taylor', 'Dayle'], $defaultIndex);
 ```
 
 <a name="writing-output"></a>
-### Escritura de Salida
+### Escritura de salida
 
 Para enviar datos de salida a la consola, usa los métodos `line`, `info`, `comment`, `question` y `error`. Cada uno de estos métodos usará colores ANSI apropiados para su propósito. Por ejemplo, vamos a mostrar alguna información general al usuario. Normalmente, el método `info` se mostrará en la consola como texto verde:
 
@@ -469,7 +469,7 @@ $bar->finish();
 Para opciones más avanzadas, verifica la [documentación del componente Progress Bar de Symfony](https://symfony.com/doc/current/components/console/helpers/progressbar.html).
 
 <a name="registering-commands"></a>
-## Registro de Comandos
+## Registro de comandos
 
 Debido a la llamada al método `load` en el método `commands` del kernel de tu consola, todos los comandos dentro del directorio `app/Console/Commands` se registrarán automáticamente con Artisan. De hecho, puedes realizar llamadas adicionales al método `load` para escanear otros directorios en busca de comandos Artisan:
 
@@ -497,7 +497,7 @@ protected $commands = [
 ```
 
 <a name="programmatically-executing-commands"></a>
-## Ejecución de Comandos de Forma Programática
+## Ejecución de comandos de forma programática
 
 En ocasiones, es posible que desees ejecutar un comando de Artisan fuera de la interfaz de línea de comandos (CLI). Por ejemplo, puedes desear ejecutar un comando Artisan de una ruta o controlador. Puedes usar el método `call` en el facade `Artisan` para lograr esto. El método `call` acepta el nombre o la clase del comando como primer argumento y un arreglo de parámetros del comando como segundo argumento. El código de salida será devuelto:
 
@@ -537,7 +537,7 @@ Artisan::queue('email:send', [
 ])->onConnection('redis')->onQueue('commands');
 ```
 
-#### Pasando valores de tipo Arreglo
+#### Pasando valores de tipo arreglo
 
 Si tu comando define una opción que acepta un arreglo, puedes pasar un arreglo de valores a la opción:
 
@@ -549,7 +549,7 @@ Route::get('/foo', function () {
 });
 ```
 
-#### Pasando valores Booleanos
+#### Pasando valores booleanos
 
 Si necesitas especificar el valor de una opción que no acepta valores de tipo cadena, tal como la opción `--force` en el comando `migrate:refresh`, debes pasar `true` o `false`:
 
@@ -560,7 +560,7 @@ $exitCode = Artisan::call('migrate:refresh', [
 ```
 
 <a name="calling-commands-from-other-commands"></a>
-### Llamado de Comandos Desde Otros Comandos
+### Llamando comandos desde otros comandos
 
 Algunas veces puedes desear llamar otros comandos desde un comando Artisan existente. Puedes hacerlo usando el método `call`. Este método acepta el nombre del comando y un arreglo de parámetros del comando:
 

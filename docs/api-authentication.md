@@ -21,7 +21,7 @@ Por defecto, Laravel viene con una sencilla solución para autenticación de API
 ## Configuración
 
 <a name="database-preparation"></a>
-### Preparando La Base De Datos
+### Preparando la base de datos
 
 Antes de usar el driver `token`, necesitarás [crear una migración](/docs/{{version}}/migrations) que agrega una columna `api_token` a tu tabla `users`:
 
@@ -37,7 +37,7 @@ Schema::table('users', function ($table) {
 Una vez que la migración ha sido creada, ejecuta el comando de Artisan `migrate`.
 
 <a name="generating-tokens"></a>
-## Generando Tokens
+## Generando tokens
 
 Una vez que la columna `api_token` ha sido agregada a tu tabla `users`, estás listo para asignar tokens de API aleatorios a cada usuario que se registra en tu aplicación. Debes asignar dichos tokens cuando un modelo `User` es creado para el usuario durante el registro. Al usar el [scaffolding de autenticación](/docs/{{version}}/authentication#authentication-quickstart) proporcionado por el comando de Artisan `make:auth`, esto puede ser hecho en el método `create` de `RegisterController`:
 
@@ -63,7 +63,7 @@ protected function create(array $data)
 ```
 
 <a name="hashing-tokens"></a>
-### Hashing Tokens
+### Hashing tokens
 
 En los ejemplos de arriba, los tokens de API son almacenados en tu base de datos como texto plano. Si te gustaría agregar un hash a tus tokens de API usando hashing SHA-256, puedes establecer la opción `hash` de la configuración del guard de tu `api` a `true`. El guard `api` está definido en tu archivo de configuración `config/auth.php`:
 
@@ -75,7 +75,7 @@ En los ejemplos de arriba, los tokens de API son almacenados en tu base de datos
 ],
 ```
 
-#### Generando Tokens Con Hash
+#### Generando tokens con hash
 
 Al usar tokens de API con hash, no debes generar tus tokens de API durante el registro del usuario. En su lugar, necesitarás implementar tu propia página de administración de tokens de API dentro de tu aplicación. Esta página debe permitir a los usuarios inicializar y refrescar sus token de API. Cuando un usuario realiza una petición para inicializar o refrescar su token, debes almacenar una copia con hash del token en la base de datos y retornar una copia de texto plano del token a la vista / frontend del cliente para ser mostrado una sola vez.
 
@@ -115,7 +115,7 @@ Dado que los tokens de la API en el ejemplo supierior tienen suficiente entropí
 :::
 
 <a name="protecting-routes"></a>
-## Protegiendo Rutas
+## Protegiendo rutas
 
 Laravel incluye un [guard de autenticación](/docs/{{version}}/authentication#adding-custom-guards) que validará automáticamente tokens de API en peticiones entrantes. Sólo necesitas especificar el middleware `auth:api` en cualquier ruta que requiera un token de acceso válido:
 
@@ -128,11 +128,11 @@ Route::middleware('auth:api')->get('/user', function(Request $request) {
 ```
 
 <a name="passing-tokens-in-requests"></a>
-## Pasando Tokens En Peticiones
+## Pasando tokens En peticiones
 
 Hay muchas formas de pasar el token de la API a tu aplicación. Discutiremos cada una de esas formas mientras usamos el paquete HTTP Guzzle para demostrar su uso. Puedes elegir cualquiera de estas formas dependiendo de las necesidades de tu aplicación.
 
-#### Query String
+#### Query string
 
 Los usuarios de tu API pueden especificar su token como un valor de cadena de consulta `api_token`:
 
@@ -140,7 +140,7 @@ Los usuarios de tu API pueden especificar su token como un valor de cadena de co
 $response = $client->request('GET', '/api/user?api_token='.$token);
 ```
 
-#### Request Payload
+#### Request payload
 
 Los usuarios de tu API pueden incluir su token de API en los parametros del formulario de la petición como `api_token`: 
 
@@ -155,7 +155,7 @@ $response = $client->request('POST', '/api/user', [
 ]);
 ```
 
-#### Bearer Token
+#### Bearer token
 
 Los usuarios de tu API pueden proporcionar su token de API como un token `Bearer` en el encabezado `Authorization` de la petición:
 
