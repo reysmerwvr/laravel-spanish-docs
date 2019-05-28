@@ -3,43 +3,43 @@
 # Laravel Cashier
 
 - [Introducción](#introduction)
-- [Actualizando Cashier](#upgrading-cashier)
+- [Actualizando cashier](#upgrading-cashier)
 - [Instalación](#installation)
 - [Configuración](#configuration)
-    - [Migraciones De Base De Datos](#database-migrations)
-    - [Modelo Facturable](#billable-model)
+    - [Migraciones de base de datos](#database-migrations)
+    - [Modelo Billable](#billable-model)
     - [API Keys](#api-keys)
-    - [Configuración de Moneda](#currency-configuration)
+    - [Configuración de moneda](#currency-configuration)
     - [Webhooks](#webhooks)
 - [Suscripciones](#subscriptions)
-    - [Creando Suscripciones](#creating-subscriptions)
-    - [Verificando El Estado De Suscripción](#checking-subscription-status)
-    - [Cambiando Planes](#changing-plans)
-    - [Cantidad De Suscripción](#subscription-quantity)
-    - [Impuestos De Suscripción](#subscription-taxes)
-    - [Fecha De Anclaje De Suscripción](#subscription-anchor-date)
-    - [Cancelando Suscripciones](#cancelling-subscriptions)
-    - [Reanudando Suscripciones](#resuming-subscriptions)
-- [Periodos De Prueba De Suscripción](#subscription-trials)
-    - [Con Tarjeta De Crédito](#with-credit-card-up-front)
-    - [Sin Tarjeta De Crédito](#without-credit-card-up-front)
+    - [Creando suscripciones](#creating-subscriptions)
+    - [Verificando el estado de suscripción](#checking-subscription-status)
+    - [Cambiando planes](#changing-plans)
+    - [Cantidad de suscripción](#subscription-quantity)
+    - [Impuestos de suscripción](#subscription-taxes)
+    - [Fecha de anclaje de suscripción](#subscription-anchor-date)
+    - [Cancelando suscripciones](#cancelling-subscriptions)
+    - [Reanudando suscripciones](#resuming-subscriptions)
+- [Periodos de prueba de suscripción](#subscription-trials)
+    - [Con tarjeta de crédito](#with-credit-card-up-front)
+    - [Sin tarjeta de crédito](#without-credit-card-up-front)
 - [Clientes](#customers)
-    - [Creando Clientes](#creating-customers)
+    - [Creando clientes](#creating-customers)
 - [Tarjetas](#cards)
-    - [Retornando Tarjetas de Crédito](#retrieving-credit-cards)
-    - [Determina Si Una Tarjeta Está En El Archivo](#determining-if-a-card-is-on-file)
-    - [Actualizando Tarjetas de Crédito](#updating-credit-cards)
-    - [Eliminación Tarjetas de Crédito](#deleting-credit-cards)
-- [Manejando Webhooks de Stripe](#handling-stripe-webhooks)
-    - [Definiendo Manejadores de Eventos Webhooks](#defining-webhook-event-handlers)
-    - [Suscripciones Fallidas](#handling-failed-subscriptions)
-    - [Verificando las Firmas del Webhook](#verifying-webhook-signatures)
-- [Cargos Únicos](#single-charges)
-    - [Carga Simple](#simple-charge)
-    - [Carga con Factura](#charge-with-invoice)
-    - [Reembolsar Cargos](#refunding-charges)
+    - [Retornando tarjetas de crédito](#retrieving-credit-cards)
+    - [Determinando si una tarjeta está en el archivo](#determining-if-a-card-is-on-file)
+    - [Actualizando tarjetas de crédito](#updating-credit-cards)
+    - [Eliminando tarjetas de crédito](#deleting-credit-cards)
+- [Manejando webhooks de Stripe](#handling-stripe-webhooks)
+    - [Definiendo manejadores de eventos de webhooks](#defining-webhook-event-handlers)
+    - [Suscripciones fallidas](#handling-failed-subscriptions)
+    - [Verificando las firmas del webhook](#verifying-webhook-signatures)
+- [Cargos únicos](#single-charges)
+    - [Carga simple](#simple-charge)
+    - [Carga con factura](#charge-with-invoice)
+    - [Reembolsar cargos](#refunding-charges)
 - [Facturas](#invoices)
-    - [Generando PDFs de Factura](#generating-invoice-pdfs)
+    - [Generando PDFs de facturas](#generating-invoice-pdfs)
 
 <a name="introduction"></a>
 ## Introducción
@@ -55,7 +55,7 @@ Si solamente estás trabajando con cargos de "un pago-único" y no ofreces subsc
 :::
 
 <a name="upgrading-cashier"></a>
-## Actualizando Cashier
+## Actualizando cashier
 
 Al actualizar a una nueva versión mayor de Cashier, es importante que revises cuidadosamente [la guía de actualización](https://github.com/laravel/cashier/blob/master/UPGRADE.md).
 
@@ -72,7 +72,7 @@ composer require laravel/cashier
 ## Configuración
 
 <a name="database-migrations"></a>
-### Migraciones de Bases de Datos
+### Migraciones de bases de datos
 
 Antes de usar Cashier, también necesitaremos [preparar la base de datos](/docs/{{version}}/migrations). Necesitas agregar varias columnas a tu tabla `users` y crear una nueva tabla `subscriptions` para manejar todas las subscripciones de nuestros clientes:
 
@@ -100,7 +100,7 @@ Schema::create('subscriptions', function (Blueprint $table) {
 Una vez que las migraciones han sido creadas, ejecuta el comando Artisan `migrate`.
 
 <a name="billable-model"></a>
-#### Modelo Facturable
+#### Modelo Billable
 
 A continuación, agrega el trait `Billable` a tu definición de modelo. Este trait proporciona varios métodos para permitirte realizar tareas comunes de facturación, tales como creación de subscripciones, aplicación de cupones y actualización de la información de la tarjeta de crédito:
 
@@ -131,7 +131,7 @@ Finalmente, deberías configurar tu clave de Stripe en tu archivo de configuraci
 ```
 
 <a name="currency-configuration"></a>
-### Configuración de Moneda
+### Configuración de moneda
 
 La moneda predeterminada de Cashier es Dólares estadounidenses (USD). Puedes cambiar la moneda predeterminada al ejecutar el método `Cashier::useCurrency` dentro del método `boot` de uno de tus proveedores de servicio. El método `Cashier::useCurrency` acepta dos parámetros de cadena: la moneda y el símbolo de la moneda:
 
@@ -150,7 +150,7 @@ Para asegurarte de que Cashier maneja apropiadamente todos los eventos de Stripe
 ## Subscripciones
 
 <a name="creating-subscriptions"></a>
-### Creando Suscripciones
+### Creando suscripciones
 
 Para crear una suscripción, primero obtén una instancia de tu modelo facturable, el cual será típicamente una instancia de `App\User`. Una vez que has obtenido la instancia de modelo, puedes usar el método `newSubscription` para crear la suscripción del modelo:
 
@@ -164,7 +164,7 @@ El primer argumento pasado al método `newSubscription` debería ser el nombre d
 
 El método `create` el cual acepta una tarjeta de crédito /  token source de Stripe, comenzará la suscripción al igual que actualizará tu base de datos con el ID del cliente y otra información de facturación relevante.
 
-#### Detalles De Usuario Adicionales
+#### Detalles de usuario adicionales
 
 Si prefieres especificar detalles de cliente adicionales, puedes hacerlo pasándolos como segundo argumento del método `create`:
 
@@ -187,7 +187,7 @@ $user->newSubscription('main', 'monthly')
 ```
 
 <a name="checking-subscription-status"></a>
-### Verificando El Estado De La Suscripción
+### Verificando el estado de la suscripción
 
 Una vez que un usuario está suscrito a tu aplicación, puedes verificar fácilmente su estado de suscripción usando una variedad conveniente de métodos. Primero, el método `subscribed` devuelve `true` si el usuario tiene una suscripción activa, incluso si la suscripción está actualmente en su período de prueba:
 
@@ -235,7 +235,7 @@ if ($user->subscription('main')->recurring()) {
 }
 ```
 
-#### Estado de Suscripción Cancelada
+#### Estado de suscripción cancelada
 
 Para determinar si el usuario fue alguna vez un suscriptor activo, pero que ha cancelado su suscripción, puedes usar el método `cancelled`:
 
@@ -262,7 +262,7 @@ if ($user->subscription('main')->ended()) {
 ```
 
 <a name="changing-plans"></a>
-### Cambiando Planes
+### Cambiando planes
 
 Después que un usuario esté suscrito en tu aplicación, ocasionalmente puede querer cambiar a un nuevo plan de suscripción. Para cambiar un usuario a una nueva suscripción, pasa el identificador de plan al método `swap`:
 
@@ -283,7 +283,7 @@ $user->subscription('main')
 ```
 
 <a name="subscription-quantity"></a>
-### Cantidad De La Suscripción
+### Cantidad de la suscripción
 
 Algunas veces las suscripciones son afectadas por la "cantidad". Por ejemplo, tu aplicación podría cargar 10$ por mes **por usuario** en una cuenta. Para incrementar o disminuir fácilmente tu cantidad de suscripción, usa los métodos `incrementQuantity` y `decrementQuantity`:
 
@@ -316,7 +316,7 @@ $user->subscription('main')->noProrate()->updateQuantity(10);
 Para más información sobre cantidades de suscripción, consulta la [documentación de Stripe](https://stripe.com/docs/subscriptions/quantities).
 
 <a name="subscription-taxes"></a>
-### Impuestos de Suscripción
+### Impuestos de suscripción
 
 Para especificar el porcentaje de impuesto que un usuario paga en una suscrípción, implementa el método `taxPercentage` en tu modelo facturable y devuelve un valor numérico entre 0 y 100, sin más de 2 posiciones decimales.
 
@@ -333,7 +333,7 @@ El método `taxPercentage` le permite aplicar una tasa de impuesto modelo por mo
 El método `taxPercentage` solamente aplica para cargos por suscripción. Si usas Cashier para hacer cargos de "pago único", necesitarás especificar manualmente la tasa de impuesto en ese momento.
 :::
 
-#### Sincronizando Los Porcentajes Del Impuesto
+#### Sincronizando los porcentajes del impuesto
 
 Al cambiar el valor retornado por el método `taxPercentage`, las configuraciones de impuesto en cualquier suscripción existente del usuario permanecerán igual. Si deseas actualizar el valor del impuesto para un suscripción existente con el valor `taxPercentage` retornado, debes llamar al método `syncTaxPercentage` en la instancia de suscripción del usuario:
 
@@ -342,7 +342,7 @@ $user->subscription('main')->syncTaxPercentage();
 ```
 
 <a name="subscription-anchor-date"></a>
-### Fecha De Anclaje De La Suscripción
+### Fecha de anclaje de la suscripción
 
 ::: danger Nota
 Modificar la fecha de suscripción sólo es soportado por la versión de Stripe de Cashier.
@@ -366,7 +366,7 @@ $user->newSubscription('main', 'premium')
 Para más información sobre administrar ciclos de facturación, consulta la [documentación del ciclo de facturación de Stripe](https://stripe.com/docs/billing/subscriptions/billing-cycle)
 
 <a name="cancelling-subscriptions"></a>
-### Cancelando Suscripciones
+### Cancelando suscripciones
 
 Para cancelar una suscripción, ejecuta el método `cancel` en la suscripción del usuario:
 
@@ -391,7 +391,7 @@ $user->subscription('main')->cancelNow();
 ```
 
 <a name="resuming-subscriptions"></a>
-### Reanudando Suscripciones
+### Reanudando suscripciones
 
 Si un usuario ha cancelado su suscripción y deseas reanudarla, usa el método `resume`. El usuario **debe** estár aún en su período de gracia con el propósito de reanudar una suscripción:
 
@@ -402,10 +402,10 @@ $user->subscription('main')->resume();
 Si el usuario cancela una suscripción y después reanuda esa suscripción antes que la suscripción haya expirado completamente, no será facturada inmediatamente. En lugar de eso, su suscripción será reactivada y será facturada en el ciclo de facturación original.
 
 <a name="subscription-trials"></a>
-## Períodos de Prueba (Trials) De Suscripción
+## Períodos de prueba de suscripción
 
 <a name="with-credit-card-up-front"></a>
-### Con Información Anticipada De La Tarjeta De Crédito
+### Con información anticipada de la tarjeta de crédito
 
 Si prefieres ofrecer períodos de prueba a tus clientes mientras continuas coleccionando información anticipada del método de pago, deberías usar el método `trialDays` al momento de crear tus suscripciones:
 
@@ -446,7 +446,7 @@ if ($user->subscription('main')->onTrial()) {
 ```
 
 <a name="without-credit-card-up-front"></a>
-### Sin Información Anticipada de la Tarjeta de Crédito
+### Sin información anticipada de la tarjeta de crédito
 
 Si prefieres ofrecer períodos de prueba sin coleccionar la información anticipada del método de pago del usuario, puedes establecer la columna `trial_ends_at` del registro del usuario con la fecha de finalización del período de prueba deseado. Esto es hecho típicamente durante el registro del usuario:
 
@@ -489,7 +489,7 @@ $user->newSubscription('main', 'monthly')->create($token);
 ## Clientes
 
 <a name="creating-customers"></a>
-### Creando Clientes
+### Creando clientes
 	
 Ocasionalmente, puedes desear crear un cliente de Stripe sin iniciar una suscripción. Puedes lograr esto usando el método `createAsStripeCustomer`:
 
@@ -503,7 +503,7 @@ Una vez el cliente ha sido creado en Stripe, puedes iniciar una suscripción en 
 ## Tarjetas
 
 <a name="retrieving-credit-cards"></a>
-### Recuperando Tarjetas De Crédito
+### Recuperando tarjetas de crédito
 
 El método `card` en la instancia del modelo facturable retorna una colección de instancias `Laravel\Cashier\Card`:
 
@@ -518,7 +518,7 @@ $card = $user->defaultCard();
 ```
 
 <a name="determining-if-a-card-is-on-file"></a>
-### Determinando Si Una Tarjeta Están En El Archivo
+### Determinando si una tarjeta está en el archivo
 
 Puedes comprobar si un cliente tiene una tarjeta de credito agregada a su cuenta usando el método `hasCardOnFile`:
 
@@ -529,7 +529,7 @@ if ($user->hasCardOnFile()) {
 ```
 
 <a name="updating-credit-cards"></a>
-### Actualizando Tarjetas De Crédito
+### Actualizando tarjetas de crédito
 
 El método `updateCard` puede ser usado para actualizar la información de tarjeta de crédito de un cliente. Este método acepta un token de Stripe y asignará la nueva tarjeta de crédito como el método de pago por defecto:
 
@@ -544,7 +544,7 @@ $user->updateCardFromStripe();
 ```
 
 <a name="deleting-credit-cards"></a>
-### Eliminando Tarjetas De Crédito
+### Eliminando tarjetas de crédito
 
 Para eliminar una tarjeta, debes primero recuperar las tarjetas del cliente con el método `cards`. Luego, puedes llamar al método `delete` en la instancia de la tarjeta que deseas eliminar:
 
@@ -569,7 +569,7 @@ Si el usuario tiene una suscripción activa, debes considerar evitar que elimine
 :::
 
 <a name="handling-stripe-webhooks"></a>
-## Manejando Webhooks de Stripe
+## Manejando webhooks de Stripe
 
 Stripe puede notificar tu aplicación de una variedad de eventos por medio de Webhooks. Para manejar webhooks, define una ruta que apunte al controlador de webhook de Cashier. Este controlador manejará todas las solicitudes de webhook entrantes y despacharlos al método de controlador apropiado.
 
@@ -601,7 +601,7 @@ protected $except = [
 ```
 
 <a name="defining-webhook-event-handlers"></a>
-### Definiendo Manejadores de Evento de Webhook
+### Definiendo manejadores de eventos de webhooks
 
 Cashier maneja automáticamente la cancelación de suscripción por cargos fallidos, pero si tienes eventos de webhook adicionales que te gustaría manejar, extiende el controlador de Webhook. Tus nombres de métodos deberían corresponder con la convención esperada por Cashier, específicamente, los métodos deberían tener como prefijo `handle` y el nombre "camel case" del webhook que deseas manejar. Por ejemplo, si deseas manejar el webhook `invoice.payment_succeeded`, deberías agregar un método `handleInvoicePaymentSucceeded` al controlador:
 
@@ -637,7 +637,7 @@ Route::post(
 ```
 
 <a name="handling-failed-subscriptions"></a>
-### Suscripciones Fallidas
+### Suscripciones fallidas
 
 ¿Qué sucedería si una tarjeta de crédito expira? No importa - Cashier incluye un controlador de Webhook que puede cancelar fácilmente la suscripción del cliente por ti. Como notaste antes, todo lo que necesitas hacer es apuntar una ruta al controlador:
 
@@ -651,17 +651,17 @@ Route::post(
 ¡Y eso es todo! Los pagos fallidos serán capturados y manejados por el controlador. El controlador cancelará la suscripción del cliente cuando Stripe determina que la suscripción ha fallado (normalmente después de tres intentos de pagos fallidos).
 
 <a name="verifying-webhook-signatures"></a>
-### Verificando Las Firmas De Los Webhook
+### Verificando las firmas de los webhooks
 
 Para asegurar tus webhooks, puedes usar [las firmas de webhook de Stripe](https://stripe.com/docs/webhooks/signatures). Por conveniencia, Cashier automáticamente incluye un middleware que verifica si la petición del webhook de Stripe entrante es válida.
 
 Para habilitar la verificación de webhook, asegurate de que el valor de configuración `stripe.webhook.secret` está establecido en tu archivo de configuración `services`. El valor `secret` del webhook puede ser retornado desde el dashboard de tu cuenta de Stripe.
 
 <a name="single-charges"></a>
-## Cargos Únicos
+## Cargos únicos
 
 <a name="simple-charge"></a>
-### Cargo Simple
+### Cargo simple
 
 ::: danger Nota
 El método `charge` acepta la cantidad que prefieras cargar en el **denominador más bajo de la moneda usada por tu aplicación**.
@@ -693,7 +693,7 @@ try {
 ```
 
 <a name="charge-with-invoice"></a>
-### Cargo con Factura
+### Cargo con factura
 
 Algunas veces puedes necesitar hacer un cargo único pero también generar una factura por el cargo de modo que puedas ofrecer un recibo PDF a tu cliente. El método `invoiceFor` permite que hagas justamente eso. Por ejemplo, vamos a facturar al cliente $5.00 por una "cuota única":
 
@@ -717,7 +717,7 @@ El método `invoiceFor` creará una factura de Stripe la cual reintentará inten
 :::
 
 <a name="refunding-charges"></a>
-### Reembolsando Cargos
+### Reembolsando cargos
 
 Si necesitas reembolsar un cargo de Stripe, puedes usar el método `refund`. Este método acepta el id del cargo de Stripe como su único argumento:
 
@@ -754,7 +754,7 @@ Al momento de listar las facturas para el cliente, puedes usar los métodos help
 ```
 
 <a name="generating-invoice-pdfs"></a>
-### Generando PDFs de Facturas
+### Generando PDFs de facturas
 
 Dentro de una ruta o controlador, usa el método `downloadInvoice` para generar una descarga en PDF de la factura. Este método generará automáticamente la respuesta HTTP apropiada para enviar la descarga al navegador:
 

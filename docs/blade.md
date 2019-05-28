@@ -3,29 +3,29 @@
 # Plantillas Blade
 
 - [Introducción](#introduction)
-- [Herencia De Plantillas](#template-inheritance)
-    - [Definir Un Layout](#defining-a-layout)
-    - [Extender Un Layout](#extending-a-layout)
-- [Componentes Y Slots](#components-and-slots)
-- [Mostrando Datos](#displaying-data)
-    - [Frameworks De Blade Y JavaScript](#blade-and-javascript-frameworks)
-- [Estructuras De Control](#control-structures)
-    - [Sentencias If](#if-statements)
-    - [Sentencias Switch](#switch-statements)
+- [Herencia de plantillas](#template-inheritance)
+    - [Definir un layout](#defining-a-layout)
+    - [Extender un layout](#extending-a-layout)
+- [Componentes y slots](#components-and-slots)
+- [Mostrando datos](#displaying-data)
+    - [Frameworks de Blade y JavaScript](#blade-and-javascript-frameworks)
+- [Estructuras de control](#control-structures)
+    - [Sentencias if](#if-statements)
+    - [Sentencias switch](#switch-statements)
     - [Bucles](#loops)
-    - [La Variable Loop](#the-loop-variable)
+    - [La variable loop](#the-loop-variable)
     - [Comentarios](#comments)
     - [PHP](#php)
 - [Forms](#forms)
 	- [Campo CSRF](#csrf-field)
-    - [Campo Method](#method-field)
-    - [Errores De Validación](#validation-errors)  
-- [Incluyendo Sub-Vistas](#including-sub-views)
-    - [Renderizar Vistas Para Colecciones](#rendering-views-for-collections)
+    - [Campo method](#method-field)
+    - [Errores de validación](#validation-errors)  
+- [Incluyendo sub-vistas](#including-sub-views)
+    - [Renderizar vistas para colecciones](#rendering-views-for-collections)
 - [Stacks](#stacks)
-- [Inyeción De Servicios](#service-injection)
+- [Inyeción de servicios](#service-injection)
 - [Extendiendo Blade](#extending-blade)
-    - [Sentencias If Personalizadas](#custom-if-statements)
+    - [Sentencias if personalizadas](#custom-if-statements)
 
 <a name="introduction"></a>
 ## Introducción
@@ -33,10 +33,10 @@
 Blade es un motor de plantillas simple y a la vez poderoso proporcionado por Laravel. A diferencia de otros motores de plantillas populares de PHP, Blade no te impide utilizar código PHP plano en sus vistas. De hecho, todas las vistas de Blade son compiladas en código PHP plano y almacenadas en caché hasta que sean modificadas, lo que significa que Blade no añade sobrecarga a tu aplicación. Los archivos de las vistas de Blade tienen la extensión `.blade.php` y son usualmente almacenados en el directorio `resources/views`.
 
 <a name="template-inheritance"></a>
-## Herencia De Plantillas
+## Herencia de plantillas
 
 <a name="defining-a-layout"></a>
-### Definir Un Layout
+### Definir un layout
 
 Dos de los principales beneficios de usar Blade son _la herencia de plantillas_ y _secciones_. Para empezar, veamos un ejemplo simple. Primero, vamos a examinar una página de layout "master". Ya que la mayoría de las aplicaciones web mantienen el mismo layout general a través de varias páginas, es conveniente definir este layout como una sola vista de Blade:
 
@@ -64,7 +64,7 @@ Como puedes ver, este archivo contiene el marcado típico de HTML. Sin embargo, 
 Ahora que hemos definido un layout para nuestra aplicación, vamos a definir una página hija que herede el layout.
 
 <a name="extending-a-layout"></a>
-### Extender Un Layout
+### Extender un layout
 
 Al definir una vista hija, utiliza la directiva de Blade `@extends` para indicar el layout que deberá "heredarse" en la vista hija. Las vistas que extiendan un layout de Blade pueden inyectar contenido en la sección del layout usando la directiva `@section`. Recuerda, como vimos en el ejemplo anterior, los contenidos de estas secciones se mostrarán en el layout usando `@yield`:
 
@@ -107,7 +107,7 @@ Route::get('blade', function () {
 ```
 
 <a name="components-and-slots"></a>
-## Componentes Y Slots
+## Componentes y slots
 
 Los componentes y slots proporcionan beneficios similares a secciones y layouts; sin embargo, algunos encontrarán el modelo mental de componentes y slots más fácil de comprender. Primero, imginemos un componente "alert" reutilizable que queremos que se reutilice en toda nuestra aplicación:
 
@@ -151,7 +151,7 @@ Ahora, podemos inyectar contenido en el slot nombrado usando la directiva `@slot
 @endcomponent
 ```
 
-#### Pasando Información Adicional A Los Componentes
+#### Pasando información adicional a los componentes
 
 En ocasiones puedes necesitar pasar información adicional al componente. Por esta razón, puedes pasar un arreglo de información como segundo argumento a la directiva `@component`. Toda la información se hará disponible para la plantilla del componente como variables:
 
@@ -161,7 +161,7 @@ En ocasiones puedes necesitar pasar información adicional al componente. Por es
 @endcomponent
 ```
 
-#### Agregando Alias A Componentes
+#### Agregando alias a componentes
 
 Si tus componentes de Blade están almacenados en un subdirectorio, puedes querer agregarles un alias para tener un acceso más fácil. Por ejemplo, imagina un componente de Blade que está almacenado en `resources/views/components/alert.blade.php`. Puedes usar el método `component` para agregar un alias al componente de `components.alert` a `alert`. Típicamente, esto debe ser realizado en el método `boot` de tu `AppServiceProvider`:
 
@@ -188,7 +188,7 @@ Puedes omitir los parametros del componente si este no tiene slots adicionales:
 ```
 
 <a name="displaying-data"></a>
-## Mostrando Datos
+## Mostrando datos
 
 Puedes mostrar datos pasados a tu vista de Blade al envolver la variable entre llaves. Por ejemplo, dada la siguiente ruta:
 
@@ -214,7 +214,7 @@ The current UNIX timestamp is {{ time() }}.
 Las declaraciones de Blade `{{  }}` son enviadas automáticamente mediante la función `htmlspecialchars` de PHP para prevenir ataques XSS.
 :::
 
-#### Mostrar Datos No Escapados
+#### Mostrar datos no escapados
 
 De manera predeterminada, las declaraciónes `{{  }}` de Blade son enviadas mediante la función `htmlspecialchars` de PHP para prevenir ataques XSS. Si no deseas que tu información sea escapada, puedes utilizar la siguiente sintáxis:
 
@@ -254,7 +254,7 @@ La directiva `@json` es también útil para trabajar con componentes de Vue o at
 El uso de `@json` en atributos de elementos requiere que esté rodeado por comillas simples.
 :::
 
-#### Codificación De Entidades HTML
+#### Codificación de entidades HTML
 
 Por defecto, Blade (y el helper `e` de Laravel) codificarán doblemente las entidades HTML. Si te gustaría deshabilitar la codificación doble, llama al método `Blade::withoutDoubleEncoding` desde el método `boot` de tu `AppServiceProvider`:
 
@@ -281,7 +281,7 @@ class AppServiceProvider extends ServiceProvider
 ```
 
 <a name="blade-and-javascript-frameworks"></a>
-### Frameworks De Blade Y JavaScript
+### Frameworks de Blade Y JavaScript
 
 Dado que muchos frameworks de JavaScript también usan llaves para indicar que una expresión dada debe mostrarse en el navegador, puedes utilizar el símbolo `@` para informar al motor de renderizado de Blade que una expresión debe permanecer intacta. Por ejemplo:
 
@@ -293,7 +293,7 @@ Hello, @{{ name }}.
 
 En este ejemplo, el símbolo `@` será removido por Blade; sin embargo, la expresión `{{ name }}` permanecerá intacta por el motor de Blade, lo que permitirá que pueda ser procesada por tu framework de JavaScript.
 
-#### La Directiva `@verbatim`
+#### La directiva `@verbatim`
 
 Si estás mostrando variables de JavaScript en una gran parte de tu plantilla, puedes ajustar el HTML en la directiva `@verbatim` para que no tengas que poner un prefijo en cada instrucción echo de Blade con un símbolo `@`:
 
@@ -306,12 +306,12 @@ Si estás mostrando variables de JavaScript en una gran parte de tu plantilla, p
 ```
 
 <a name="control-structures"></a>
-## Estructuras De Control
+## Estructuras de control
 
 Además de la herencia de plantillas y la visualización de datos, Blade también proporciona accesos directos y convenientes para las estructuras de control comunes de PHP, tales como sentencias condicionales y bucles. Estos accesos directos proporcionan una manera muy limpia y concisa de trabajar con estructuras de control de PHP, al tiempo que permanecen familiares para sus contrapartes de PHP.
 
 <a name="if-statements"></a>
-### Sentencias If
+### Sentencias if
 
 Puede construir sentencias `if` usando las directivas `@if`, `@elseif`, `@else` y `@endif`. Estas directivas funcionan idénticamente a sus contrapartes PHP:
 
@@ -345,7 +345,7 @@ Además de las directivas condicionales previamente mencionadas, las directivas 
 @endempty
 ```
 
-#### Directivas de Autenticación
+#### Directivas de autenticación
 
 Las directivas `@auth` y `@guest` pueden ser utilizadas para determinar rápidamente si el usuario actual está autenticado o si es un invitado:
 
@@ -371,7 +371,7 @@ Si es necesario, puede especificar el [guard de autenticación](/docs/{{version}
 @endguest
 ```
 
-#### Directivas De Sección
+#### Directivas de sección
 
 Puede verificar si una sección tiene contenido usando la directiva `@hasSection`:
 
@@ -386,7 +386,7 @@ Puede verificar si una sección tiene contenido usando la directiva `@hasSection
 ```
 
 <a name="switch-statements"></a>
-### Sentencias Switch
+### Sentencias switch
 
 Las sentencias switch pueden ser construidas usando las directivas `@switch`, `@case`, `@break`, `@default` y `@endswitch`:
 
@@ -463,7 +463,7 @@ También puede incluir la condición con la declaración en una línea:
 ```
 
 <a name="the-loop-variable"></a>
-### La Variable Loop
+### La variable loop
 
 Al realizar un ciclo, una variable `$loop` estará disponible dentro del ciclo. Esta variable proporciona acceso a un poco de información útil, como el índice del ciclo actual y si es la primera o la última iteración del ciclo:
 
@@ -549,7 +549,7 @@ Cada vez que defines un formulario HTML en tu aplicación, debes incluir un camp
 ```
     
 <a name="method-field"></a>
-### Campo Method
+### Campo method
 	
 Dado que los formularios HTML no pueden hacer solicitudes `PUT`, `PATCH` o `DELETE` necesitarás agregar un campo `_method` oculto para suplantar estos verbos HTTP. La directiva `@method` de Blade puede crear este campo por ti:
 	
@@ -562,7 +562,7 @@ Dado que los formularios HTML no pueden hacer solicitudes `PUT`, `PATCH` o `DELE
 ```
 
 <a name="validation-errors"></a>
-### Errores De Validación
+### Errores de validación
 
 La directiva `@error` puede ser usada para comprobar rápidamente si existen [mensajes de error de validación](/docs/{{version}}/validation#quick-displaying-the-validation-errors) para un atributo dado. Para una directiva `@error`, puedes imprimir la variable `$message` para mostrar el mensaje de error:
 
@@ -576,7 +576,7 @@ La directiva `@error` puede ser usada para comprobar rápidamente si existen [me
 ```
 
 <a name="including-sub-views"></a>
-## Incluyendo Sub-Vistas
+## Incluyendo sub-vistas
 
 La directiva `@include` de Blade te permite incluir una vista de Blade desde otra vista. Todas las variables que estén disponibles en la vista padre estarán disponibles para la vista incluida:
 
@@ -618,7 +618,7 @@ Para incluir la primera vista que exista para un arreglo dado de vistas, puedes 
 Debes evitar usar las constantes `__DIR__` y `__FILE__` en tus vistas de Blade, ya que se referirán a la ubicación de la vista compilada en caché.
 :::
 
-#### Alias De Includes
+#### Alias de includes
 
 Si tus includes de Blade están almacenados en un subdirectorio, puedes desear crear un alias de ellos para un acceso más fácil. Por ejemplo, imagina un include de Blade que está almacenado en `resources/views/includes/input.blade.php` con el siguiente contenido:
 
@@ -641,7 +641,7 @@ Una vez que el include tiene un alias asignado, puedes renderizalo usando el nom
 ```
 
 <a name="rendering-views-for-collections"></a>
-### Renderizar Vistas Para Colecciones
+### Renderizar vistas para colecciones
 
 Puedes combinar bucles e incluirlos en una sola línea con la directiva `@each` de Blade:
 
@@ -697,7 +697,7 @@ Si te gustaría agregar contenido al inicio de una pila, debes usar la directiva
 ```
 
 <a name="service-injection"></a>
-## Inyeción De Servicios
+## Inyeción de servicios
 
 La directiva `@inject` puede ser utilizada para recuperar un servicio del [contenedor de servicios](/docs/{{version}}/container) de Laravel. El primer argumento pasado a `@inject` es el nombre de la variable en la que se colocará el servicio, mientras que el segundo argumento es el nombre de la clase o interfaz del servicio que desea resolver:
 
@@ -764,7 +764,7 @@ Después de actualizar la lógica de la directiva de Blade, vas a necesitar elim
 :::
 
 <a name="custom-if-statements"></a>
-### Sentencias If Personalizadas
+### Sentencias if personalizadas
 
 Programar una directiva personalizada algunas veces es más complejo de lo necesario al definir sentencias condicionales simples personalizadas. Por esa razón, Blade proporciona un método `Blade:if` que le permitirá rápidamente definir directivas condicionales utilizando Closures. Por ejemplo, vamos a definir una condicional personalizada que verifica el entorno actual de la aplicación. Podemos hacer esto en el método `boot` de `AppServiceProvider`:
 
