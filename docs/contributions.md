@@ -20,7 +20,6 @@ Recuerda, los reportes de errores son creados con la esperanza de que otros con 
 
 El código fuente de Laravel es manejado en GitHub, y allí están los repositorios para cada uno de los proyectos de Laravel:
 
-<div class="content-list" markdown="1">
 - [Laravel Application](https://github.com/laravel/laravel)
 - [Laravel Art](https://github.com/laravel/art)
 - [Laravel Documentation](https://github.com/laravel/docs)
@@ -36,10 +35,9 @@ El código fuente de Laravel es manejado en GitHub, y allí están los repositor
 - [Laravel Socialite](https://github.com/laravel/socialite)
 - [Laravel Telescope](https://github.com/laravel/telescope)
 - [Laravel Website](https://github.com/laravel/laravel.com)
-</div>
 
 ::: danger Nota importante sobre la traducción
-Para realizar reportes sobre errores o detalles encontrados en esta traducción, estos deben ser realizados en el repositorio oficial de la traducción.
+Los reportes sobre errores o detalles encontrados en esta traducción deben ser realizados en el repositorio oficial de la traducción.
 :::
 
 <a name="core-development-discussion"></a>
