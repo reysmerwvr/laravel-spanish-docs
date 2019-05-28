@@ -4,30 +4,30 @@
 
 - [Introducción](#introduction)
     - [Configuración](#configuration)
-    - [Prerrequisitos Del Driver](#driver-prerequisites)
-- [Descripción General](#concept-overview)
-    - [Usando Una Aplicación De Ejemplo](#using-example-application)
-- [Definiendo Eventos De Transmisión](#defining-broadcast-events)
-    - [Nombre De La Transmisión](#broadcast-name)
-    - [Datos De La Transmisión](#broadcast-data)
-    - [Cola De La Transmisión](#broadcast-queue)
-    - [Condiciones De La Transmisión](#broadcast-conditions)
-- [Autorizando Canales](#authorizing-channels)
-    - [Definiendo Rutas De Autorización](#defining-authorization-routes)
-    - [Definiendo Callbacks de Autorización](#defining-authorization-callbacks)
-    - [Definiendo Clases De Canales](#defining-channel-classes)
-- [Transmitiendo Eventos](#broadcasting-events)
-    - [Sólo A Otros](#only-to-others)
-- [Recibiendo Transmisiones](#receiving-broadcasts)
+    - [Prerrequisitos del driver](#driver-prerequisites)
+- [Descripción general](#concept-overview)
+    - [Usando una aplicación de ejemplo](#using-example-application)
+- [Definiendo eventos de transmisión](#defining-broadcast-events)
+    - [Nombre de la transmisión](#broadcast-name)
+    - [Datos de la transmisión](#broadcast-data)
+    - [Cola de la transmisión](#broadcast-queue)
+    - [Condiciones de la transmisión](#broadcast-conditions)
+- [Autorizando canales](#authorizing-channels)
+    - [Definiendo rutas de autorización](#defining-authorization-routes)
+    - [Definiendo callbacks de autorización](#defining-authorization-callbacks)
+    - [Definiendo clases de canales](#defining-channel-classes)
+- [Transmitiendo eventos](#broadcasting-events)
+    - [Sólo a otros](#only-to-others)
+- [Recibiendo transmisiones](#receiving-broadcasts)
     - [Instalando Laravel Echo](#installing-laravel-echo)
-    - [Escuchando Eventos](#listening-for-events)
-    - [Dejando Un Canal](#leaving-a-channel)
-    - [Nombres De Espacio](#namespaces)
-- [Canales De Presencia](#presence-channels)
-    - [Autorizando Canales De Presencia](#authorizing-presence-channels)
-    - [Uniéndose A Canales De Presencia](#joining-presence-channels)
-    - [Transmitiendo A Canales De Presencia](#broadcasting-to-presence-channels)
-- [Eventos Del Cliente](#client-events)
+    - [Escuchando eventos](#listening-for-events)
+    - [Dejando un canal](#leaving-a-channel)
+    - [Nombres de espacio](#namespaces)
+- [Canales de presencia](#presence-channels)
+    - [Autorizando canales de presencia](#authorizing-presence-channels)
+    - [Uniéndose a canales de presencia](#joining-presence-channels)
+    - [Transmitiendo a canales de presencia](#broadcasting-to-presence-channels)
+- [Eventos del cliente](#client-events)
 - [Notificaciones](#notifications)
 
 <a name="introduction"></a>
@@ -46,7 +46,7 @@ Antes de sumergirnos en la emisión de eventos, asegurate de haber leído toda l
 
 Toda la configuración de transmisión de eventos de tu aplicación está almacenada en el archivo de configuración `config/broadcasting.php`. Laravel soporta múltiples drivers de transmisión: [Pusher](https://pusher.com), [Redis](/docs/{{version}}/redis) y un driver `log` para desarrollo local y depuración. Adicionalmente, un driver `null` es incluido, que te permite deshabilitar totalmente las emisiones. Un ejemplo de configuración para cada uno de los drivers está incluido en el archivo de configuración `config/broadcasting.php`.
 
-#### Proveedor De Servicios Broadcast
+#### Proveedor de servicios Broadcast
 
 Antes de transmitir cualquier evento, necesitarás primero registrar `App\Providers\BroadcastServiceProvider`. En aplicaciones de Laravel nuevas, sólo necesitas descomentar este proveedor en el arreglo `providers` de tu archivo de configuración `config/app.php`. Este proveedor te permitirá registrar las rutas de autorización del broadcast y los callbacks.
 
@@ -59,7 +59,7 @@ Antes de transmitir cualquier evento, necesitarás primero registrar `App\Provid
 ```
 
 <a name="driver-prerequisites"></a>
-### Prerrequisitos Del Driver
+### Prerrequisitos del driver
 
 #### Pusher
 
@@ -126,19 +126,19 @@ window.Echo = new Echo({
 
 Finalmente, necesitarás ejecutar un servidor de Socket.IO compatible. Laravel no incluye la implementación de un servidor Socket.IO; sin embargo, un servidor de Socket.IO de la comunidad es actualmente mantenido en el repositorio de GitHub [tlaverdure/laravel-echo-server](https://github.com/tlaverdure/laravel-echo-server).
 
-#### Prerrequisitos De La Cola
+#### Prerrequisitos de la cola
 
 Antes de transmitir eventos, también necesitarás configurar y ejecutar un [listener de colas](/docs/{{version}}/queues). Toda la transmisión de eventos es realizada mediante trabajos en cola para que el tiempo de respuesta de tu aplicación no se vea necesariamente afectado.
 
 <a name="concept-overview"></a>
-## Descripción General
+## Descripción general
 
 La transmisión de eventos de Laravel te permite transmitir tus eventos del lado del servidor de Laravel a tu aplicación JavaScript del lado del cliente usando un enfoque basado en drivers a los WebSockets. Actualmente, Laravel viene con drivers de [Pusher](https://pusher.com) y Redis. Los eventos pueden ser fácilmente consumidos en el lado del cliente usando el paquete de JavaScript [Laravel Echo](#installing-laravel-echo).
 
 Los eventos son transmitidos mediante "canales", que pueden ser definidos como públicos o privados. Cualquier visitante en tu aplicación puede suscribirse a una canal público sin necesidad de autenticación o autorización; sin embargo, para poder suscribirse a canales privados, un usuario debe estar autenticado y autorizado para escuchar en dicho canal.
 
 <a name="using-example-application"></a>
-### Usando Una Aplicación De Ejemplo
+### Usando una aplicación de ejemplo
 
 Antes de sumergirnos en cada componente de la transmisión de eventos, vamos a ver un resumen usando una tienda virtual como ejemplo. No discutiremos los detalles sobre configurar [Pusher](https://pusher.com) o [Laravel Echo](#installing-laravel-echo) dado que éstos será discutido a detalle en otras secciones de esta documentación.
 
@@ -189,7 +189,7 @@ public function broadcastOn()
 }
 ```
 
-#### Autorizando Canales
+#### Autorizando canales
 
 Recuerda, los usuarios deben ser autorizados para escuchar en canales privados. Podemos definir las reglas de autorización de nuestro canal en el archivo `routes/channels.php`. En este ejemplo, necesitamos verificar que cualquier usuario intentando escuchar en el canal privado `order.1` es realmente el creador de la orden:
 
@@ -203,7 +203,7 @@ El método `channel` acepta dos argumentos: el nombre del canal y un callback qu
 
 Todos los callbacks de autorización recibien al usuario actualmente autenticado como primer argumento y cualquier paremetro adicional como siguientes argumentos. En este ejemplo, estamos usando el placeholder `{orderId}` para indicar que la porción "ID" del nombre del canal es un wildcard.
 
-#### Escuchar Transmisiones De Eventos
+#### Escuchar transmisiones de eventos
 
 Luego, todo lo que queda es escuchar el evento en nuestra aplicación de JavaScript. Podemos hacer esto usando Laravel Echo. Primero, usaremos el método `private` para suscribirnos a un canal privado. Luego, podemos usar el método `listen` para escuchar el evento `ShippingStatusUpdated`. Por defecto, todas las propiedades públicas del evento serán incluidas en el evento de transmisión:
 
@@ -215,7 +215,7 @@ Echo.private(`order.${orderId}`)
 ```
 
 <a name="defining-broadcast-events"></a>
-## Definiendo La Transmisión De Eventos
+## Definiendo la transmisión de eventos
 
 Para informar a Laravel que un evento dado debería ser transmitido, implementa la interfaz `Illuminate\Contracts\Broadcasting\ShouldBroadcast` en la clase del evento. Esta interfaz ya está importada en todas las clases de eventos generadas por el framework para que así puedas agregarla fácilmente a tus eventos.
 
@@ -265,7 +265,7 @@ class ServerCreated implements ShouldBroadcast
 Luego, sólo necesitas [ejecutar el evento](/docs/{{version}}/events) como normalmente lo harías. Una vez que el evento ha sido ejecutado, [un trabajo en cola](/docs/{{version}}/queues) transmitirá automáticamente el evento a través de tu driver de transmisión especificado.
 
 <a name="broadcast-name"></a>
-### Nombre De La Transmisión
+### Nombre de la transmisión
 
 Por defecto, Laravel transmitirá el evento usando el nombre de clase del evento. Sin embargo, puedes personalizar el nombre de la transmisión definiendo un método `broadcastAs` en el evento:
 
@@ -290,7 +290,7 @@ Si personalizas el nombre de la transmisión usando el método `broadcastAs`, de
 ```
 
 <a name="broadcast-data"></a>
-### Datos De La Transmisión
+### Datos de la transmisión
 
 Cuando un evento es transmitido, todas sus propiedades `public` son automáticamente serializadas y transmitidas como carga del evento, permitiéndote acceder a cualquiera de sus datos públicos desde tu aplicación de JavaScript. Así que, por ejemplo, si tu evento tiene una sola propiedad pública `$user` que contiene un modelo de Eloquent, la carga de transmisión del evento sería:
 
@@ -319,7 +319,7 @@ public function broadcastWith()
 ```
 
 <a name="broadcast-queue"></a>
-### Cola De Transmisión
+### Cola de transmisión
 
 Por defecto, cada evento transmitido es colocado en la cola por defecto para la conexión de cola por defecto especificada en tu archivo de configuración `queue.php`. Puedes personalizar la cola usada por el transmisor definiendo una propiedad `broadcastQueue` en la clase de tu evento. Esta propiedad debería especificar el nombre de la cola que deseas usar al transmitir:
 
@@ -346,7 +346,7 @@ class ShippingStatusUpdated implements ShouldBroadcastNow
 ```
 
 <a name="broadcast-conditions"></a>
-### Condiciones De La Transmisión
+### Condiciones de la transmisión
 
 Algunas veces quieres transmitir tu evento sólo si una condición dada es verdadera. Puedes definir estas condiciones agregando un método `broadcastWhen` a la clase de tu evento:
 
@@ -363,12 +363,12 @@ public function broadcastWhen()
 ```
 
 <a name="authorizing-channels"></a>
-## Autorizando Canales
+## Autorizando canales
 
 Los canales privados requieren que autorizes que el usuario actualmente autenticado puede escuchar en el canal privado. Esto es logrado haciendo una solicitud HTTP a tu aplicación de Laravel con el nombre del canal y permitiendo a tu aplicación de terminar si el usuario puede escuchar en dicho canal. Al usar [Laravel Echo](#installing-laravel-echo), la solicitud HTTP para autorizar suscripciones a canales privados será realizada automáticamente; sin embargo, si necesitas definir las rutas necesarias para responder a estas solicitudes.
 
 <a name="defining-authorization-routes"></a>
-### Definiendo Rutas De Autorización
+### Definiendo rutas de autorización
 
 Afortunadamente, Laravel hace que sea fácil definir las rutas para responder a las solicitudes de autorización de canales. En el `BroadcastServiceProvider` incluido con tu aplicación de Laravel, verás una llamada al método `Broadcast::routes`. Este método registrará la ruta `/broadcasting/auth` para manejar las solicitudes de autorización:
 
@@ -382,7 +382,7 @@ El método `Broadcast::routes` automáticamente coloca sus rutas dentro del grup
 Broadcast::routes($attributes);
 ```
 
-#### Personalizando Endpoints De Autorización
+#### Personalizando endpoints de autorización
 
 Por defecto, Echo usará el endpoint `/broadcasting/auth` para autorizar acceso a canales. Sin embargo, puedes especificar tus propios endpoints de autorización pasando la opción de configuración `authEndpoint` a tu instancia de Echo:
 
@@ -395,7 +395,7 @@ window.Echo = new Echo({
 ```
 
 <a name="defining-authorization-callbacks"></a>
-### Definiendo Callbacks De Autorización
+### Definiendo callbacks de autorización
 
 Luego, necesitamos definir la lógica que realizará la autorización del canal. Esto es hecho en el archivo `routes/channels.php` que es incluido con tu aplicación. En este archivo, puedes usar el método `Broadcast::channel` para registrar callbacks de autorización de canales:
 
@@ -409,7 +409,7 @@ El método `channel` acepta dos argumentos: el nombre del canal y un callback qu
 
 Todos los callbacks de autorización reciben al usuario actualmente autenticado como primer argumento y cualquier parametro wildcard como sus argumentos siguientes. En este ejemplo, estamos usando el placeholder `{orderId}` para indicar la porción "ID" del nombre del canal es un wildcard.
 
-#### Authorization Callback Model Binding
+#### Enlace de modelos del callback de autorización
 
 Igual que las rutas HTTP, las rutas de los canales pueden tomar ventaja de [modelo de enlace de rutas](/docs/{{version}}/routing#route-model-binding) de forma implícita y explícita. Por ejemplo, en lugar de recibir la cadena o ID númerico de la orden, puedes solicitar una instancia del modelo `Order`:
 
@@ -432,7 +432,7 @@ Broadcast::channel('channel', function() {
 ```
 
 <a name="defining-channel-classes"></a>
-### Definiendo Clases De Canales
+### Definiendo clases de canales
 
 Si tu aplicación está consumiendo muchos canales diferentes, tu archivo `routes/channels.php` podría volverse voluminoso. Así que, en lugar de usar Closures para autorizar canales, puedes usar clases de canales. Para generar una clase de canal, usa el comando de artisan `make:channel`. Este comando colocará una nueva clase de canal en el directorio `App/Broadcasting`.
 
@@ -489,7 +489,7 @@ Como muchas otras clases en Laravel, las clases de canales automáticamente ser�
 :::
 
 <a name="broadcasting-events"></a>
-## Transmitiendo Eventos
+## Transmitiendo eventos
 
 Una vez que has definido un evento y lo has marcado con la interfaz `ShouldBroadcast`, sólo necesitas ejecutar el evento usando la función `event`. El despachador de eventos notará que el evento está marcado con la interfaz `ShouldBroadcast` y agrega el evento a la cola para transmisión:
 
@@ -498,7 +498,7 @@ event(new ShippingStatusUpdated($update));
 ```
 
 <a name="only-to-others"></a>
-### Sólo A Otros
+### Sólo a otros
 
 Al construir una aplicación que usa la transmisión de eventos, puedes sustituir la función `event` por la función `broadcast`. Como la función `event`, la función `broadcast` despacha el evento a tus listeners del lado del servidor:
 
@@ -538,10 +538,10 @@ var socketId = Echo.socketId();
 ```
 
 <a name="receiving-broadcasts"></a>
-## Recibiendo Transmisiones
+## Recibiendo transmisiones
 
 <a name="installing-laravel-echo"></a>
-### Instalando Laravel Echo
+### Instalando laravel echo
 
 Laravel Echo es una librería de JavaScript que hace que sea fácil suscribirse a canales y escuchar transmisiones de eventos en Laravel. Puedes instalar Echo mediante el administrador de paquetes NPM. En este ejemplo, también instalaremos el paquete `pusher-js` dado que usaremos el transmisor de Pusher:
 
@@ -571,7 +571,7 @@ window.Echo = new Echo({
 });
 ```
 
-#### Usando Una Instancia De Cliente Existente
+#### Usando una instancia de cliente existente
 
 Si ya tienes una instancia de cliente de Pusher o Socket.io que te gustaría que Echo usara, puedes pasarla a Echo mediante la opción de configuración `client`:
 
@@ -586,7 +586,7 @@ window.Echo = new Echo({
 ```
 
 <a name="listening-for-events"></a>
-### Escuchando Eventos
+### Escuchando eventos
 
 Una vez que has instalado e instanciado Echo, estás listo para comenzar a escuchar transmisiones de eventos. Primero, usa el método `channel` para retornar una instancia de un canal, luego llama al método `listen` para escuchar a un evento especificado:
 
@@ -607,7 +607,7 @@ Echo.private('orders')
 ```
 
 <a name="leaving-a-channel"></a>
-### Abandonando Un Canal
+### Abandonando un canal
 
 Para abandonar un canal, puedes llamar al método `leaveChannel` en tu instancia de Echo:
 
@@ -622,7 +622,7 @@ Echo.leave('orders');
 ```
 
 <a name="namespaces"></a>
-### Nombres De Espacio
+### Nombres de espacio
 
 Puedes haber notado en los ejemplos superiores que no especificamos un nombre de espacio completo para las clases del evento. Esto es debido a que Echo automáticamente asumirá que los eventos están ubicados en el nombre de espacio `App\Events`. Sin embargo, puedes configurar el nombre de espacio principal cuando instancias Echo pasando una opción de configuración `namespace`:
 
@@ -644,12 +644,12 @@ Echo.channel('orders')
 ```
 
 <a name="presence-channels"></a>
-## Canales De Presencia
+## Canales de presencia
 
 Los Canales de Presencia son construidos sobre la seguridad de los canales privados mientras que exponen la característica adicional de saber quien está susbscrito al canal. Esto hace que sea fácil construir características de aplicación poderosas y colaborativas como notificar a usuarios cuando otro usuario está viendo la misma página.
 
 <a name="authorizing-presence-channels"></a>
-### Autorizando Canales De Presencia
+### Autorizando canales de presencia
 
 Todos los canales de Presencia son también canales privados; por lo tanto, los usuarios deben estar [autorizados para accederlos](#authorizing-channels). Sin embargo, al definir callbacks de autorización para canales de presencia, no retornarás `true` si el usuario está autorizado para unirse al canal. En su lugar, debes retornar un arreglo de datos sobre el usuario.
 
@@ -664,7 +664,7 @@ Broadcast::channel('chat.{roomId}', function ($user, $roomId) {
 ```
 
 <a name="joining-presence-channels"></a>
-### Uniendose A Canales De Presencia
+### Uniendose a canales de presencia
 
 Para unirse a un canal de presencia, puedes usar el método `join` de Echo. El método `join` retornará una implementación de `PresenceChannel` que, junto con la exposición del método `listen`, te permite suscribirte a los eventos `here`, `joining` y `leaving`.
 
@@ -684,7 +684,7 @@ Echo.join(`chat.${roomId}`)
 El callback `here` será ejecutado inmediatamente una vez que el canal se haya unido con éxito y recibirá un arreglo que contiene la información del usuario para todos los demás usuarios actualmente subscritos al canal. El método `joining` será ejecutado cuando un nuevo usuario se une a un canal, mientras que el método `leaving` será ejecutado cuando un usuario abandona el canal.
 
 <a name="broadcasting-to-presence-channels"></a>
-### Transmitiendo A Canales De Presencia
+### Transmitiendo a canales de presencia
 
 Los canales de Presencia pueden recibir eventos igual que los canales públicos y privados. Usando el ejemplo de una sala de chat, podemos querer transmitir eventos `NewMessage` al canal de presencia de la sala. Para hacer eso, retornaremos una instancia de `PresenceChannel` desde el método `broadcastOn` del evento:
 
@@ -721,7 +721,7 @@ Echo.join(`chat.${roomId}`)
 ```
 
 <a name="client-events"></a>
-## Eventos Del Cliente
+## Eventos del cliente
 
 ::: tip
 Al usar [Pusher](https://pusher.com), debes habilitar la opción "Client Events" en la sección "App Settings" del [dashboard de tu aplicación](https://dashboard.pusher.com/) para enviar eventos del cliente.

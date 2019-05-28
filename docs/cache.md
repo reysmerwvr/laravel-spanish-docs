@@ -3,21 +3,21 @@
 # Caché
 
 - [Configuración](#configuration)
-    - [Prerrequisitos Del Controlador](#driver-prerequisites)
-- [Uso De Caché](#cache-usage)
-    - [Obtener Una Instancia De Caché](#obtaining-a-cache-instance)
-    - [Recuperar Elementos De Caché](#retrieving-items-from-the-cache)
-    - [Almacenar Elementos En Caché](#storing-items-in-the-cache)
-    - [Eliminar Elementos De Caché](#removing-items-from-the-cache)
-    - [Cierres Atómicos](#atomic-locks)
-    - [El Helper Cache](#the-cache-helper)
-- [Etiquetas De Caché](#cache-tags)
-    - [Almacenar Elementos De Caché Etiquetados](#storing-tagged-cache-items)
-    - [Acceder A Elementos De Caché Etiquetados](#accessing-tagged-cache-items)
-    - [Eliminar Elementos De Caché Etiquetados](#removing-tagged-cache-items)
-- [Agregar Controladores De Caché Personalizados](#adding-custom-cache-drivers)
-    - [Escribir El Driver](#writing-the-driver)
-    - [Registrar El Driver](#registering-the-driver)
+    - [Prerrequisitos del controlador](#driver-prerequisites)
+- [Uso de caché](#cache-usage)
+    - [Obtener una instancia de caché](#obtaining-a-cache-instance)
+    - [Recuperar elementos de caché](#retrieving-items-from-the-cache)
+    - [Almacenar elementos de caché](#storing-items-in-the-cache)
+    - [Eliminar elementos de caché](#removing-items-from-the-cache)
+    - [Cierres atómicos](#atomic-locks)
+    - [El helper cache](#the-cache-helper)
+- [Etiquetas de caché](#cache-tags)
+    - [Almacenar elementos de caché etiquetados](#storing-tagged-cache-items)
+    - [Acceder a elementos de caché etiquetados](#accessing-tagged-cache-items)
+    - [Eliminar elementos de caché etiquetados](#removing-tagged-cache-items)
+- [Agregar controladores de caché personalizados](#adding-custom-cache-drivers)
+    - [Escribir el driver](#writing-the-driver)
+    - [Registrar el driver](#registering-the-driver)
 - [Eventos](#events)
 
 <a name="configuration"></a>
@@ -28,7 +28,7 @@ Laravel proporciona una API expresiva y unificada para varios backends de almace
 El archivo de configuración de caché contiene otras opciones adicionales, las cuales están documentadas dentro del mismo archivo, por lo que deberás asegurarte de revisar estas opciones. Por defecto, Laravel está configurado para utilizar el controlador de caché `local`, que almacena los objetos de caché serializados en el sistema de archivos. Para aplicaciones más grandes, es recomendable que utilices un controlador más robusto como Memcached o Redis. Incluso puedes configurar múltiples configuraciones de caché para el mismo controlador.
 
 <a name="driver-prerequisites"></a>
-### Prerrequisitos Del Controlador
+### Prerrequisitos del controlador
 
 #### Base de datos
 
@@ -79,10 +79,10 @@ Antes de comenzar a utilizar el caché con Redis en Laravel, deberás instalar e
 Para más información sobre cómo configurar Redis, consulta la [página de la documentación de Laravel](/docs/{{version}}/redis#configuration).
 
 <a name="cache-usage"></a>
-## Uso De Caché
+## Uso de daché
 
 <a name="obtaining-a-cache-instance"></a>
-### Obtener Una Instancia De Caché
+### Obtener una instancia de caché
 
 Las [interfaces](/docs/{{version}}/contracts) `Illuminate\Contracts\Cache\Factory` y `Illuminate\Contracts\Cache\Repository` proporcionan acceso a los servicios de caché de Laravel. La interfaz `Factory` proporciona acceso a todos los controladores de caché definidos para tu aplicación. La interfaz `Repository` típicamente es una implementación del controlador de caché predeterminado para tu aplicación según lo especificado en tu archivo de configuración de `cache`.
 
@@ -111,7 +111,7 @@ class UserController extends Controller
 }
 ```
 
-#### Acceder A Múltiples Almacenamientos De Caché
+#### Acceder a múltiples almacenamientos de caché
 
 Usando el facade `Cache`, puedes acceder a varios almacenamientos de caché a través del método `store`. La llave que se pasa al método `store` debe corresponder a uno de los almacenamientos listados en el arreglo de configuración `stores` en tu archivo de configuración `cache`:
 
@@ -122,7 +122,7 @@ Cache::store('redis')->put('bar', 'baz', 600); // 10 Minutes
 ```
 
 <a name="retrieving-items-from-the-cache"></a>
-### Recuperar Elementos De Caché
+### Recuperar elementos de caché
 
 El método `get` en el facade `Cache` es utilizado para recuperar elementos desde la caché. Si el elemento no existe en caché, se va a regresar `null`. Si lo deseas, puedes pasar un segundo argumento al método `get` indicando el valor predeterminado que deseas retornar en caso de que el elemento no exista:
 
@@ -140,7 +140,7 @@ $value = Cache::get('key', function () {
 });
 ```
 
-#### Comprobar La Existencia De Un Elemento
+#### Comprobar la existencia de un elemento
 
 El método `has` se puede utilizar para determinar la existencia de un elemento en caché. Este método devolverá `false` si el valor es `null`:
 
@@ -150,7 +150,7 @@ if (Cache::has('key')) {
 }
 ```
 
-#### Incrementando / Decrementando Valores
+#### Incrementando / Decrementando valores
 
 Los métodos `increment` y `decrement` se pueden usar para ajustar el valor de los elementos enteros en caché. Ambos métodos aceptan un segundo parámetro opcional que indica la cantidad por la cual incrementar o disminuir el valor del elemento:
 
@@ -161,7 +161,7 @@ Cache::decrement('key');
 Cache::decrement('key', $amount);
 ```
 
-#### Recuperar Y Almacenar
+#### Recuperar y almacenar
 
 En ocasiones, es posible que desees recuperar un elemento de la memoria caché, pero también almacenar un valor predeterminado si el elemento no existe. Por ejemplo, puede que desees recuperar todos los usuarios de la memoria caché o, si no existen, recuperarlos desde la base de datos y agregarlos a la caché. Puedes hacer esto utilizando el método `Cache::remember`:
 
@@ -181,7 +181,7 @@ $value = Cache::rememberForever('users', function () {
 });
 ```
 
-#### Recuperar Y Eliminar
+#### Recuperar y eliminar
 
 Si necesitas recuperar un elemento del caché y después eliminarlo, puedes utilizar el método `pull`. Al igual que el método `get`, se devolverá `null` si el elemento no existe en la memoria caché:
 
@@ -190,7 +190,7 @@ $value = Cache::pull('key');
 ```
 
 <a name="storing-items-in-the-cache"></a>
-### Almacenar Elementos En Caché
+### Almacenar elementos en caché
 
 Puedes utilizar el método `put` en el facade `Cache` para almacenar elementos en caché: 
 
@@ -210,13 +210,13 @@ En lugar de pasar el número de segundos como un entero, también puedes pasar u
 Cache::put('key', 'value', now()->addMinutes(10));
 ```
 
-#### Almacenar Si No Está Presente
+#### Almacenar si no está presente
 
 El método `add` solo agregará el elemento a caché si éste no existe todavia en la memoria caché. El metodo va a regresar `true` si el elemento realmente se agregó a la caché. De otra manera, el método va a regresar `false`:
 
     Cache::add('key', 'value', $seconds);
 
-#### Almacenar Elementos Para Siempre
+#### Almacenar elementos para siempre
 
 El método `forever` puede ser utilizado para almacenar un elemento en la memoria caché de manera permanente. Como estos elementos no caducan, se deben eliminar de la memoria caché manualmente utilizando el método `forget`:
 
@@ -229,7 +229,7 @@ Si utilizas el controlador de Memcached, los elementos almacenados "permanenteme
 :::
 
 <a name="removing-items-from-the-cache"></a>
-### Eliminar Elementos De La Caché
+### Eliminar elementos de la caché
 
 Puedes eliminar elementos de caché utilizando el método `forget`:
 
@@ -256,7 +256,7 @@ La limpieza de caché no respeta el prefijo del caché y borrará todas las entr
 :::
 
 <a name="atomic-locks"></a>
-### Bloqueos Atómicos
+### Bloqueos atómicos
 
 ::: danger Nota
 Para usar esta característica, tu aplicación debe estar haciendo uso de los drivers de caché `memcached`, `dynamodb`, o `redis` como el driver de caché por defecto de tu aplicación. Adicionalmente, todos los servidores deben estar comunicándose con el mismo servidor de caché central.
@@ -306,7 +306,7 @@ Cache::lock('foo', 10)->block(5, function () {
 });
 ```
 
-#### Administrando Bloqueos A Través de Procesos
+#### Administrando bloqueos a través de procesos
 
 Algunas veces, necesitarás adquirir un bloqueo en un proceso para liberarlo en otro proceso distinto más adelante. Por ejemplo, podemos solicitar un bloqueo durante la ejecución de un proceso que hace una solicitud web pero queremos liberarlo después que se ejecute un trabajo que es despachado donde se hizo la solicitud a una cola de trabajos. En un escenario como éste, necesitaríamos tomar la identificación del propietario del bloqueo (owner token) en el ámbito donde se produce el mismo y pasarlo al trabajo que va a la cola de trabajos de modo que pueda volver a instanciar el bloqueo usando ese identificador.
 
@@ -331,7 +331,7 @@ Cache::lock('foo')->forceRelease();
 ```
 
 <a name="the-cache-helper"></a>
-### El Helper Cache
+### El helper cache
 
 Además de usar el facade `Cache` o [la interfaz de caché](/docs/{{version}}/contracts), también puedes usar la función global `cache` para recuperar y almacenar información a través del caché. Cuando se llama a la función `cache` con un solo argumento, devolverá el valor de la clave dada:
 
@@ -360,7 +360,7 @@ Al realizar pruebas utilizando la función global `cache`, deberás usar el mét
 :::
 
 <a name="cache-tags"></a>
-## Cache Tags
+## Cache tags
 
 ::: danger Nota
 Las etiquetas de caché no son compatibles cuando usas los controladores de caché `file` o `database`. Además, cuando se utilicen múltiples etiquetas con cachés que son almacenados "permanentemente", el rendimiento será mejor si utilizas un controlador como `memcached`, el cual automaticamente purga los registros obsoletos.
@@ -378,7 +378,7 @@ Cache::tags(['people', 'authors'])->put('Anne', $anne, $seconds);
 ```
 
 <a name="accessing-tagged-cache-items"></a>
-### Acceder A Elementos De Caché Etiquetados
+### Acceder a elementos de caché etiquetados
 
 Para recuperar un elemento de caché etiquetado, pasa la misma lista ordenada de etiquetas al método `tags` y después haz un llamado al método `get` con la clave que deseas recuperar:
 
@@ -389,7 +389,7 @@ $anne = Cache::tags(['people', 'authors'])->get('Anne');
 ```
 
 <a name="removing-tagged-cache-items"></a>
-### Eliminar Elementos De Caché Etiquetados
+### Eliminar elementos de caché etiquetados
 
 Puedes borrar todos los elementos a los que se les asigna una etiqueta o lista de etiquetas. Por ejemplo, la siguiente sentencia eliminaría todos los cachés etiquetados tanto con `people`, `authors` o ambos. Por lo tanto, tanto `Anne` como `John` serán eliminados de caché:
 
@@ -404,10 +404,10 @@ Cache::tags('authors')->flush();
 ```
 
 <a name="adding-custom-cache-drivers"></a>
-## Agregar Controladores De Caché Personalizados
+## Agregar controladores de caché personalizados
 
 <a name="writing-the-driver"></a>
-### Escribir El Controlador
+### Escribir el controlador
 
 Para crear el controlador de caché, primero se debe implementar la [interfaz](/docs/{{version}}/contracts) `Illuminate\Contracts\Cache\Store`. Por lo tanto, una implementación de caché de MongoDB se vería de la siguiente manera:
 
@@ -446,7 +446,7 @@ Si te preguntas dónde puedes colocar el código de tu driver de caché personal
 :::
 
 <a name="registering-the-driver"></a>
-### Registrando El Driver
+### Registrando el driver
 
 Para registrar el controlador de caché personalizado con Laravel, debes utilizar el método `extend` en el facade `Cache`. La llamada a `Cache::extend` puede hacerse en el método `boot` del `App\Providers\AppServiceProvider` predeterminado que contiene cada aplicación nueva de Laravel, o puedes crear tu propio proveedor de servicios para alojar la extensión - solo recuerda registrar el proveedor en el arreglo de proveedores en `config/app.php`:
 
