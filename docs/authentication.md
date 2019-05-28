@@ -3,7 +3,7 @@
 # Autenticación
 
 - [Introducción](#introduction)
-    - [Consideraciones de la Base de datos](#introduction-database-considerations)
+    - [Consideraciones de la base de datos](#introduction-database-considerations)
 - [Inicio rápido de dutenticación](#authentication-quickstart)
     - [Enrutamiento](#included-routing)
     - [Vistas](#included-views)
