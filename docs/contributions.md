@@ -78,19 +78,21 @@ Laravel sigue el estándar de código [PSR-2](https://github.com/php-fig/fig-sta
 
 A continuación se muestra un ejemplo de un bloque de documentación válido de Laravel. Nota que el atributo `@param` es seguido por dos espacios, el tipo de argumento, dos espacios más y finalmente el nombre de la variable:
 
-    /**
-     * Register a binding with the container.
-     *
-     * @param  string|array  $abstract
-     * @param  \Closure|string|null  $concrete
-     * @param  bool  $shared
-     * @return void
-     * @throws \Exception
-     */
-    public function bind($abstract, $concrete = null, $shared = false)
-    {
-        //
-    }
+```php
+/**
+* Register a binding with the container.
+*
+* @param  string|array  $abstract
+* @param  \Closure|string|null  $concrete
+* @param  bool  $shared
+* @return void
+* @throws \Exception
+*/
+public function bind($abstract, $concrete = null, $shared = false)
+{
+    //
+}
+```
 
 <a name="styleci"></a>
 ### StyleCI
