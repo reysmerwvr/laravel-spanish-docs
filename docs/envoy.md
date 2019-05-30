@@ -4,13 +4,13 @@
 
 - [Introducción](#introduction)
     - [Instalación](#installation)
-- [Escribir Tareas](#writing-tasks)
+- [Escribir tareas](#writing-tasks)
     - [Setup](#setup)
     - [Variables](#variables)
     - [Historias](#stories)
-    - [Múltiples Servidores](#multiple-servers)
-- [Ejecutar Tareas](#running-tasks)
-    - [Confirmar Ejecución De Tarea](#confirming-task-execution)
+    - [Múltiples servidores](#multiple-servers)
+- [Ejecutar tareas](#running-tasks)
+    - [Confirmar ejecución de tarea](#confirming-task-execution)
 - [Notificaciones](#notifications)
     - [Slack](#slack)
     - [Discord](#discord)
@@ -35,7 +35,7 @@ Dado que las librerías globales de Composer ocasionalmente pueden causar confli
 Asegurate de colocar el directorio `~/.composer/vendor/bin` en tu PATH para que el ejecutable `envoy` pueda ser localizado cuando se ejecute el comando `envoy` en tu terminal.
 :::
 
-#### Actualizar Envoy
+#### Actualizar envoy
 
 También puedes usar Composer para mantener tu instalación de Envoy actualizada. Ejecutar el comando `composer global update` actualizará todos tus paquetes de Composer instalados globalmente:
 
@@ -44,7 +44,7 @@ composer global update
 ```
 
 <a name="writing-tasks"></a>
-## Escribir Tareas
+## Escribir tareas
 
 Todas tus tareas de Envoy deberán definirse en un archivo `Envoy.blade.php` en la raíz de tu proyecto. Aquí un ejemplo para comenzar:
 
@@ -141,7 +141,7 @@ envoy run deploy
 ```
 
 <a name="multiple-servers"></a>
-### Múltiples Servidores
+### Múltiples servidores
 
 Envoy te permite fácilmente ejecutar tareas a través de múltiples servidores. Primero, agrega servidores adicionales a tu declaración `@servers`. A cada servidor se le debe asignar un nombre único. Una vez definidos los servidores adicionales, deberás indicar en cuáles servidores se van a ejecutar las tareas, esto puede hacerse en el arreglo `on` de cada tarea:
 
@@ -155,7 +155,7 @@ Envoy te permite fácilmente ejecutar tareas a través de múltiples servidores.
 @endtask
 ```
 
-#### Ejecución Paralela
+#### Ejecución paralela
 
 Por defecto, las tareas serán ejecutadas en cada servidor en serie. En otras palabras, una tarea finaliza su ejecución en el primer servidor antes de proceder a ejecutarse en el segundo servidor. Si deseas ejecutar una tarea a través de múltiples servidores en paralelo, agrega la opción `parallel` a la declaración de tu tarea:
 
@@ -170,7 +170,7 @@ Por defecto, las tareas serán ejecutadas en cada servidor en serie. En otras pa
 ```
 
 <a name="running-tasks"></a>
-## Ejecutar Tareas
+## Ejecutar tareas
 
 Para ejecutar una tarea o historia que esté definida en tu archivo `Envoy.blade.php`, ejecuta el comando de Envoy `run`, pasando el nombre de la tarea o historia que deseas ejecutar. Envoy va a ejecutar la tarea y mostrará el resultado de los servidores mientras se ejecuta la tarea:
 
@@ -179,7 +179,7 @@ envoy run deploy
 ```
 
 <a name="confirming-task-execution"></a>
-### Confirmar Ejecución De Tarea
+### Confirmar ejecución de tarea
 
 Si deseas que se solicite confirmación antes de ejecutar una tarea en tus servidores, deberás añadir la directiva `confirm` a la declaración de tu tarea. Esta opción es particularmente útil para operaciones destructivas:
 

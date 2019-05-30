@@ -25,7 +25,7 @@ El driver Argon2i requiere PHP 7.2.0 o superior y el driver Argon2id requiere PH
 :::
 
 <a name="basic-usage"></a>
-## Uso Básico
+## Uso básico
 
 Puedes hacer hash a una contraseña llamando al método `make` en el facade `Hash`:
 
@@ -57,7 +57,7 @@ class UpdatePasswordController extends Controller
 }
 ```
 
-#### Ajustando El Factor De Trabajo De Bcrypt
+#### Ajustando el factor De trabajo de Bcrypt
 
 Si estás usando el algoritmo Bcrypt, el método `make` te permite administrar el factor de trabajo del algoritmo usando la opción `rounds`; sin embargo, el valor por defecto es aceptable para la mayoría de las aplicaciones:
 
@@ -67,7 +67,7 @@ $hashed = Hash::make('password', [
 ]);
 ```
 
-#### Ajustando El Factor De Trabajo De Argon2
+#### Ajustando el Factor de trabajo de Argon2
 
 Si estás usando el algoritmo de Argon2, el método `make` te permite administrar la carga de trabajo del algoritmo usando las opciones `memory`, `time` y `threads`; sin embargo, los valores por defecto son aceptables para la mayoría de las aplicaciones:
 
@@ -83,7 +83,7 @@ $hashed = Hash::make('password', [
 Para mayor información de estas opciones, revisa la [documentación oficial de PHP](https://secure.php.net/manual/en/function.password-hash.php).
 :::
 
-#### Verificando Una Contraseña Contra Un Hash
+#### Verificando una contraseña contra un hash
 
 El método `check` te permite verificar que una cadena de texto plano dada corresponde a un hash dado. Sin embargo, si estás usando el `LoginController` [incluido con Laravel](/docs/{{version}}/authentication), probablemente no necesitarás usar esto directamente, ya que este controlador automáticamente llama a este método:
 
@@ -93,7 +93,7 @@ if (Hash::check('plain-text', $hashedPassword)) {
 }
 ```
 
-#### Comprobando Si Una Contraseña Necesita Ser Rehashed
+#### Comprobando si una contraseña necesita un nuevo hash
 
 La función `needsRehash` te permite determinar si el factor de trabajo usado por el hasher ha cambiado desde que el hash fue agregado a la contraseña:
 

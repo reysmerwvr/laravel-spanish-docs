@@ -5,7 +5,7 @@
 - [Introducción](#introduction)
 - [Escribiendo CSS](#writing-css)
 - [Escribiendo JavaScript](#writing-javascript)
-    - [Escribiendo Componentes de Vue](#writing-vue-components)
+    - [Escribiendo componentes de Vue](#writing-vue-components)
     - [Usando React](#using-react)
 
 <a name="introduction"></a>
@@ -21,7 +21,7 @@ Mientras Laravel no dicta la pauta sobre que pre-procesadores de JavaScript o CS
 
 Laravel no requiere que uses un framework o biblioteca de JavaScript específica para construir tus aplicaciones. De hecho, no tienes que usar JavaScript en lo absoluto. Sin embargo, Laravel sí incluye algunas de las estructuras básicas para hacer más fácil los primeros pasos para escribir JavaScript moderno usando el framework [Vue](https://vuejs.org). Vue proporciona una API expresiva para construir aplicaciones de JavaScript robustas usando componentes. Como con CSS, podemos usar Laravel Mix para compilar fácilmente componentes de JavaScript en un único archivo de JavaScript para los eventos del navegador.
 
-#### Removiendo la Estructura del Frontend
+#### Removiendo la estructura del frontend
 
 Si prefieres remover la estructura del frontend de tu aplicación, puedes usar el comando Artisan `preset`. Este comando, cuando se combina con la opción `none`, eliminará la maquetación de Bootstrap y Vue de tu aplicación, dejando solamente un archivo Sass en blanco y unas cuántas bibliotecas de utilidades de JavaScript comunes.
 
@@ -74,7 +74,7 @@ El archivo `app.js` cargará el archivo `resources/js/bootstrap.js` el cual estr
 :::
 
 <a name="writing-vue-components"></a>
-### Escribiendo Componentes de Vue
+### Escribiendo componentes de Vue
 
 De forma predeterminada, las aplicaciones nuevas de Laravel contienen un componente de Vue `ExampleComponent.vue` ubicado en el directorio `resources/js/components`. El archivo `ExampleComponent.vue` es un ejemplo de un [componente Vue de archivo único](https://vuejs.org/guide/single-file-components) el cual define su plantilla HTML y JavaScript en el mismo archivo. Los componentes de archivo único proporcionan un enfoque muy conveniente para construir aplicaciones manejadas por JavaScript. El componente de ejemplo es registrado en tu archivo `app.js`:
 

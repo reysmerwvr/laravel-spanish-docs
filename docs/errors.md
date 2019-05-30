@@ -4,12 +4,12 @@
 
 - [Introducción](#introduction)
 - [Configuración](#configuration)
-- [Manejador de Excepciones](#the-exception-handler)
-    - [Método Report](#report-method)
-    - [Método Render](#render-method)
-    - [Excepciones Renderizables y Reportables](#renderable-exceptions)
+- [Manejador de excepciones](#the-exception-handler)
+    - [Método report](#report-method)
+    - [Método render](#render-method)
+    - [Excepciones renderizables y reportables](#renderable-exceptions)
 - [Excepciones HTTP](#http-exceptions)
-    - [Páginas de Error HTTP Personalizadas](#custom-http-error-pages)
+    - [Páginas de error HTTP personalizadas](#custom-http-error-pages)
 
 <a name="introduction"></a>
 ## Introducción
@@ -24,10 +24,10 @@ La opción `debug` en tu archivo de configuración `config/app.php` determina cu
 Para desarrollo local, deberías establecer la variable de entorno a `true`. En tu entorno de producción, este valor debería estar siempre `false`. Si el valor es establecido a `true` en producción, te arriesgas a exponer valores de configuración sensitivos a los usuarios finales de tu aplicación.
 
 <a name="the-exception-handler"></a>
-## Manejador de Excepciones
+## Manejador de excepciones
 
 <a name="report-method"></a>
-### Método Report
+### Método report
 
 Todas las excepciones son manejadas por la clase `App\Exceptions\Handler`. Esta clase contiene dos métodos: `report` y `render`. Examinaremos cada uno de estos métodos en detalle. El método `report` se usa para registrar excepciones o enviarlas a un servicio externo como [Bugsnag](https://bugsnag.com) o [Sentry](https://github.com/getsentry/sentry-laravel). De forma predeterminada, el método `report` pasa la excepción a la clase base donde la excepción es registrada. Sin embargo, eres libre de registrar excepciones en la forma que desees.
 
@@ -56,7 +56,7 @@ public function report(Exception $exception)
 En lugar de hacer uso de muchos `instanceof` en tu método `report`, considera usar [excepciones reportables](/docs/{{version}}/errors#renderable-exceptions)
 :::
 
-#### Contexto De Log Global
+#### Contexto de log global
 
 De estar disponible, Laravel automáticamente agrega el ID del usuario actual al mensaje de log de cada excepción como datos contextuales. Puedes definir tus propios datos contextuales sobrescribiendo el método `context` de la clase `App\Exceptions\Handler` de tu aplicación. Esta información será incluida en cada mensaje de log de excepción escrito por tu aplicación:
 
@@ -91,7 +91,7 @@ public function isValid($value)
 }
 ```
 
-#### Ignorando Excepciones por Tipo
+#### Ignorando excepciones por tipo
 
 La propiedad `$dontReport` del manejador de excepción contiene un arreglo de tipos de excepción que no serán registrados. Por ejemplo, excepciones que resulten de errores 404, al igual que otros varios tipos de errores, no son escritos a tus archivos de log. Puedes agregar otros tipos de excepción a este arreglo cuando lo necesites:
 
@@ -111,7 +111,7 @@ protected $dontReport = [
 ```
 
 <a name="render-method"></a>
-### Método Render
+### Método render
 
 El método `render` es responsable de convertir una excepción dada en una respuesta HTTP que debería ser devuelta al navegador. De forma predeterminada, la excepción es pasada a la clase base la cual genera una respuesta para ti. Sin embargo, eres libre de revisar el tipo de excepción o devolver tu propia respuesta personalizada:
 
@@ -134,7 +134,7 @@ public function render($request, Exception $exception)
 ```
 
 <a name="renderable-exceptions"></a>
-### Excepciones Renderizables y Reportables
+### Excepciones renderizables y reportables
 
 En lugar de hacer verificaciones por tipo de excepciones en los métodos `report` y `render` del manejador de excepción, puedes definir métodos `report` y `render` directamente en tu excepción personalizada. Cuando estos métodos existen, serán ejecutados automáticamente por el framework:
 
@@ -190,7 +190,7 @@ abort(403, 'Unauthorized action.');
 ```
 
 <a name="custom-http-error-pages"></a>
-### Páginas de Error HTTP Personalizadas
+### Páginas de error HTTP personalizadas
 
 Laravel hace fácil mostrar páginas de error personalizadas para varios códigos de estado HTTP. Por ejemplo, si deseas personalizar la página de error para los códigos de estado HTTP 404, crea una vista `resources/views/errors/404.blade.php`. Este archivo será servido en todos los errores 404 generados por tu aplicación. La vista dentro de este directorio debería ser nombrada para coincidir con el código de estado HTTP que les corresponde. La instancia `HttpException` provocada por la función `abort` será pasada a la vista como una variable `$exception`:
 
