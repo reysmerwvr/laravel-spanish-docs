@@ -26,5 +26,6 @@ deploy:
     repo: stydenet/stydenet.github.io
     keep-history: true
     target-branch: master
+    fqdn: documentacion-laravel.com
     on:
         branch: 5.8_press
