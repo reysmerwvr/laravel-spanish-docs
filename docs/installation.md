@@ -38,6 +38,10 @@ Sin embargo, si no estás utilizando Homestead, deberás asegurarte de que tu se
 
 Laravel utiliza [Composer](https://getcomposer.org) para administrar sus dependencias. Por lo que, antes de utilizar Laravel, deberás asegurarte de tener Composer instalado en tu sistema.
 
+::: tip
+En la lección [instalación de Composer y Laravel](https://styde.net/instalacion-de-composer-y-laravel/) del curso gratuito [Laravel desde cero](https://styde.net/laravel-5/) de Styde puedes ver el proceso de instalación paso a paso.
+:::
+
 #### Mediante El Instalador De Laravel
 
 Primero, descarga el instalador de Laravel usando Composer:
