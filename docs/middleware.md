@@ -236,7 +236,7 @@ protected $middlewarePriority = [
 ```
 
 <a name="middleware-parameters"></a>
-## Parámetros en los Middleware
+## Parámetros en los middleware
 
 Los middleware pueden además recibir parámetros adicionales. Por ejemplo, si tu aplicación necesita verificar que el usuario autenticado tiene un "rol" dado antes de ejecutar una acción dada, podrías crear un middleware `CheckRole` que reciba un nombre de rol como un argumento adicional.
 
@@ -280,7 +280,7 @@ Route::put('post/{id}', function ($id) {
 ```
 
 <a name="terminable-middleware"></a>
-## Middleware Terminable
+## Middleware terminable
 
 Algunas veces un middleware puede necesitar hacer algún trabajo después de que la respuesta HTTP ha sido preparada. Por ejemplo, el middleware "session" incluído con Laravel escribe los datos de la sesión para almacenarlos después de que la respuesta ha sido totalmente preparada. Si defines un método `terminate` en tu middleware, este automáticamente será llamado despúes de que la respuesta esté lista para ser enviada al navegador.
 

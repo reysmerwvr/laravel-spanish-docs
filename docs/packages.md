@@ -3,9 +3,9 @@
 # Desarrollo de Paquetes
 
 - [Introducción](#introduction)
-    - [Una nota sobre Facades](#a-note-on-facades)
-- [Descubrimiento de Paquetes](#package-discovery)
-- [Proveedores de Servicios](#service-providers)
+    - [Una nota sobre facades](#a-note-on-facades)
+- [Descubrimiento de paquetes](#package-discovery)
+- [Proveedores de servicios](#service-providers)
 - [Recursos](#resources)
     - [Configuración](#configuration)
     - [Migraciones](#migrations)
@@ -13,8 +13,8 @@
     - [Traducciones](#translations)
     - [Vistas](#views)
 - [Comandos](#commands)
-- [Archivos Públicos](#public-assets)
-- [Publicar Grupos de Archivos](#publishing-file-groups)
+- [Archivos públicos](#public-assets)
+- [Publicar grupos de archivos](#publishing-file-groups)
 
 <a name="introduction"></a>
 ## Introducción
@@ -26,12 +26,12 @@ Hay diferentes tipos de paquetes. Algunos paquetes son independientes, lo que si
 Por otro lado, otros paquetes están específicamente destinados para su uso con Laravel. Estos paquetes pueden tener rutas, controladores, vistas y configuraciones específicamente diseñadas para mejorar una aplicación Laravel. Esta guía cubre principalmente el desarrollo de aquellos paquetes que son específicos de Laravel.
 
 <a name="a-note-on-facades"></a>
-### Una nota sobre Facades
+### Una nota sobre facades
 
 Al escribir una aplicación Laravel, generalmente no importa si usas interfaces o facades ya que ambos brindan niveles esencialmente iguales de capacidad de pruebas. Sin embargo, al escribir paquetes, tu paquete normalmente no tendrá acceso a todos las funciones helpers de prueba de Laravel. Si deseas escribir pruebas para el paquete como si existiera dentro de una típica aplicación Laravel puedes usar el paquete [Orchestral Testbench](https://github.com/orchestral/testbench).
 
 <a name="package-discovery"></a>
-## Descubrimiento de Paquetes
+## Descubrimiento de paquetes
 
 En el archivo de configuración `config/app.php` de una aplicación Laravel, la opción `providers` define una lista de proveedores de servicios que Laravel debe cargar. Cuando alguien instala tu paquete normalmente querrás que tu proveedor de servicio sea incluido en esta lista. En lugar de requerir que los usuarios agreguen manualmente su proveedor de servicios a la lista, puede definir el proveedor en la sección `extra` del archivo `composer.json` de tu paquete. Además de los proveedores de servicios, también puedes enumerar los [facades](/docs/{{version}}/facades) que desees registrar:
 
@@ -50,7 +50,7 @@ En el archivo de configuración `config/app.php` de una aplicación Laravel, la 
 
 Una vez que tu paquete se haya configurado para su descubrimiento, Laravel registrará automáticamente sus proveedores de servicios y facades cuando esté instalado, creando una experiencia de instalación conveniente para los usuarios de tu paquete.
 
-### Exclusión Del Descubrimiento De Paquetes
+### Exclusión del descubrimiento de paquetes
 
 Si eres es el consumidor de un paquete y deseas deshabilitar el descubrimiento de paquetes para un paquete, puedes incluir el nombre del paquete en la sección `extra` del archivo `composer.json` de tu aplicación Laravel:
 
@@ -77,7 +77,7 @@ Puede deshabilitar el descubrimiento de paquetes para todos los paquetes que usa
 ```
 
 <a name="service-providers"></a>
-## Proveedores de Servicios
+## Proveedores de servicios
 
 Los [Proveedores de Servicios](/docs/{{version}}/providers) son la conexión entre tu paquete y Laravel. Un proveedor de servicios es responsable de enlazar cosas a Laravel con el [Contenedor de Servicios](/docs/{{version}}/container) e informar a Laravel dónde cargar los recursos del paquete como vistas y archivos de configuración y de configuración regional.
 
@@ -196,7 +196,7 @@ Las traducciones de paquetes se referencian usando la convención de sintaxis `p
 echo trans('courier::messages.welcome');
 ```
 
-#### Publicación de Traducciones
+#### Publicación de traducciones
 
 Si deseas publicar las traducciones de tu paquete en el directorio `resources/lang/vendor` de la aplicación, puedes usar el método `publishes` del proveedor de servicios. El método `publishes` acepta un arreglo de rutas de paquetes y sus ubicaciones de publicación deseadas. Por ejemplo, para publicar los archivos de traducción para el paquete `courier`, puedes hacer lo siguiente:
 
@@ -243,11 +243,11 @@ Route::get('admin', function () {
 });
 ```
 
-#### Desactivar Vistas del Paquete
+#### Desactivar vistas del paquete
 
 Cuando utilizas el método `loadViewsFrom`, Laravel en realidad registra dos ubicaciones para sus vistas: el directorio `resources/views/vendor` de la aplicación y el directorio que tu especificas. Entonces, usando el ejemplo `courier`, Laravel primero comprobará si el desarrollador ha proporcionado una versión personalizada de la vista en `resources/views/vendor/courier`. Entonces, si la vista no se ha personalizado, Laravel buscará en el directorio de las vistas del paquete que has colocado en el método `loadViewsFrom`. Esto facilita a los usuarios del paquete personalizar o anular las vistas de tu paquete.
 
-#### Publicación de Vistas
+#### Publicación de vistas
 
 Si desea que tus vistas estén disponibles para su publicación en el directorio `resources/views/vendor` de la aplicación, puedes usar el método` publishes` del proveedor de servicios. El método `publishes` acepta una matriz de rutas de vista de paquete y sus ubicaciones de publicación deseadas:
 
@@ -292,7 +292,7 @@ public function boot()
 ```
 
 <a name="public-assets"></a>
-## Archivos Públicos
+## Archivos públicos
 
 Tu paquete puede tener archivos como JavaScript, CSS e imágenes. Para publicar estos archivos en el directorio `public` de la aplicación debes usar el método `publishes` del proveedor de servicios. En este ejemplo, también agregaremos una etiqueta de grupo de archivos `public`, que se puede usar para publicar grupos de archivos relacionados:
 
@@ -317,7 +317,7 @@ php artisan vendor:publish --tag=public --force
 ```
 
 <a name="publishing-file-groups"></a>
-## Publicar Grupos de Archivos
+## Publicar grupos de archivos
 
 Es posible que desees publicar grupos de archivos y recursos de paquetes por separado. Por ejemplo, es posible que desees permitir que los usuarios publiquen los archivos de configuración de su paquete sin verse obligados a publicar los archivos de tu paquete. Puede hacer esto "etiquetándolos" cuando llames al método `publishes` del proveedor de servicios de un paquete. Por ejemplo, usemos etiquetas para definir dos grupos de publicación en el método `boot` de un proveedor de servicios de paquetes:
 

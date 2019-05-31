@@ -4,7 +4,7 @@
 
 - [Introducción](#introduction)
 - [Configuración](#configuration)
-- [Usando El Cifrador](#using-the-encrypter)
+- [Usando el cifrador](#using-the-encrypter)
 
 <a name="introduction"></a>
 ## Introducción
@@ -17,7 +17,7 @@ El cifrado de Laravel utiliza OpenSSL para proporcionar el cifrado AES-256 y AES
 Antes de usar el cifrado de Laravel, debes establecer la opción `key` en tu archivo de configuración `config/app.php`. Deberías usar el comando `php artisan key: generate` para generar esta clave, ya que este comando de Artisan usará el generador de bytes aleatorios seguros de PHP para construir tu clave. Si este valor no se establece correctamente, todos los valores cifrados por Laravel serán inseguros.
 
 <a name="using-the-encrypter"></a>
-## Usando El Cifrador
+## Usando el cifrador
 
 #### Cifrar un valor
 

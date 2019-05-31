@@ -3,13 +3,13 @@
 # Pruebas HTTP
 
 - [Introducción](#introduction)
-    - [Personalizando Encabezados de Solicitud](#customizing-request-headers)
-- [Sesión Y Autenticación](#session-and-authentication)
+    - [Personalizando encabezados de solicitud](#customizing-request-headers)
+- [Sesión y autenticación](#session-and-authentication)
 - [Probando APIs JSON](#testing-json-apis)
-- [Probando Subidas De Archivos](#testing-file-uploads)
-- [Aserciones Disponibles](#available-assertions)
-    - [Aserciones de Respuesta](#response-assertions)
-    - [Aserciones de Autenticación](#authentication-assertions)
+- [Probando subidas de archivos](#testing-file-uploads)
+- [Aserciones disponibles](#available-assertions)
+    - [Aserciones de respuesta](#response-assertions)
+    - [Aserciones de autenticación](#authentication-assertions)
 
 <a name="introduction"></a>
 ## Introducción
@@ -44,7 +44,7 @@ class ExampleTest extends TestCase
 El método `get` simula una solicitud `GET` dentro de la aplicación, mientras que el método `assertStatus` comprueba que la respuesta devuelta debería tener el código de estado HTTP dado. Además de esta sencilla aserción, Laravel también contiene una variedad de aserciones para inspeccionar de la respuesta los encabezados, contenidos, estructura JSON y más.
 
 <a name="customizing-request-headers"></a>
-### Personalizando Encabezados de Solicitud
+### Personalizando encabezados de solicitud
 
 Puedes usar el método `withHeaders` para personalzar los encabezados de la solicitud antes que sean enviados a la aplicación. Esto permitirá que agregues algunos encabezados personalizados de tu preferencia a la solicitud:
 
@@ -78,7 +78,7 @@ El middleware CSRF es automáticamente deshabilitado cuando se ejecutan las prue
 :::
 
 <a name="session-and-authentication"></a>
-## Sesión Y Autenticación
+## Sesión y autenticación
 
 Laravel proporciona varias funciones helper para trabajar con la sesión durante las pruebas HTTP. Primero, puedes colocar los datos de la sesión en un arreglo dado usando el método `withSession`. Esto es útil para cargar la sesión con los datos antes de realizar una solicitud a tu aplicación:
 
@@ -154,7 +154,7 @@ El método `assertJson` convierte la respuesta a un arreglo y utiliza `PHPUnit::
 :::
 
 <a name="verifying-exact-match"></a>
-### Verificando una Coincidencia JSON Exacta
+### Verificando una coincidencia JSON exacta
 
 Si prefieres verificar que el arreglo dado esté contenido **exactamente** en la respuesta JSON devuelta por la aplicación, deberías usar el método `assertExactJson`:
 
@@ -182,7 +182,7 @@ class ExampleTest extends TestCase
 ```
 
 <a name="testing-file-uploads"></a>
-## Probando Subidas De Archivos
+## Probando subidas de archivos
 
 La clase `Illuminate\Http\UploadedFile` proporciona un método `fake` el cual puede ser usado para generar archivos de prueba o imágenes para prueba. Esto, combinado con el método `fake` de la clase facade `Storage` simplifica grandemente la prueba de subidas de archivos. Por ejemplo, puedes combinar estas dos características para probar fácilmente un formulario de subida de un avatar:
 
@@ -218,7 +218,7 @@ class ExampleTest extends TestCase
 }
 ```
 
-#### Personalización De Archivo Fake
+#### Personalización de archivo fake
 
 Al momento de crear archivos usando el método `fake`, puedes especificar el ancho, la altura y el tamaño de la imagen con el propósito de probar mejor tus reglas de validación:
 
@@ -233,10 +233,10 @@ UploadedFile::fake()->create('document.pdf', $sizeInKilobytes);
 ```
 
 <a name="available-assertions"></a>
-## Aserciones Disponibles
+## Aserciones disponibles
 
 <a name="response-assertions"></a>
-### Aserciones de Respuesta
+### Aserciones de respuesta
 
 Laravel proporciona una variedad de métodos de aserción personalizados para tus pruebas [PHPUnit](https://phpunit.de/). Estas aserciones pueden ser accedidas en la respuesta que es retornada por los métodos de prueba `json`, `get`, `post`, `put` y `delete`:
 
@@ -657,7 +657,7 @@ $response->assertViewMissing($key);
 ```
 
 <a name="authentication-assertions"></a>
-### Aserciones de Autenticación
+### Aserciones de autenticación
 
 Laravel también proporciona una variedad de aserciones relacionadas con la autenticación para tus pruebas [PHPUnit](https://phpunit.de/):
 

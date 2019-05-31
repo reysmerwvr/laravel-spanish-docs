@@ -4,12 +4,12 @@
 
 - [Introducción](#introduction)
 - [Fundamentos](#the-basics)
-    - [Generando URLs Básicas](#generating-basic-urls)
-    - [Accediendo la URL Actual](#accessing-the-current-url)
-- [URLs para Rutas Nombradas](#urls-for-named-routes)
+    - [Generando URLs básicas](#generating-basic-urls)
+    - [Accediendo la URL actual](#accessing-the-current-url)
+- [URLs para rutas nombradas](#urls-for-named-routes)
     - [URLs firmadas](#signed-urls)
-- [URLs para Acciones de Controlador](#urls-for-controller-actions)
-- [Valores Predeterminados](#default-values)
+- [URLs para acciones de controlador](#urls-for-controller-actions)
+- [Valores predeterminados](#default-values)
 
 <a name="introduction"></a>
 ## Introducción
@@ -20,7 +20,7 @@ Laravel proporciona varios helpers para asistirte en la generación de URLs para
 ## Fundamentos
 
 <a name="generating-basic-urls"></a>
-### Generando URLs Básicas
+### Generando URLs básicas
 
 El helper `url` puede ser usado para generar URLs arbitrarias en tu aplicación. La URL generada utilizará automáticamente el esquema (HTTP o HTTPS) y el host de la solicitud actual:
 
@@ -33,7 +33,7 @@ echo url("/posts/{$post->id}");
 ```
 
 <a name="accessing-the-current-url"></a>
-### Accediendo la URL Actual
+### Accediendo la URL actual
 
 Si ninguna ruta es proporcionada al helper `url`, una instancia `Illuminate\Routing\UrlGenerator` es devuelta, permitiéndote que accedas información sobre la URL actual:
 
@@ -57,7 +57,7 @@ echo URL::current();
 ```
 
 <a name="urls-for-named-routes"></a>
-## URLs para Rutas Nombradas
+## URLs para rutas nombradas
 
 El helper `route` puede ser usado para generar URLs para rutas nombradas. Las rutas nombradas permiten generar URLs sin estar acopladas a la URL real definida en la ruta. Por lo tanto, si la URL de la ruta cambia, no es necesario realizar cambios en las llamadas a la función `route`. Por ejemplo, imagina que tu aplicación contiene una ruta definida de la siguiente forma:
 
@@ -94,7 +94,7 @@ echo route('comment.show', ['post' => 1, 'comment' => 3]);
 ```
 
 <a name="signed-urls"></a>
-### URLs Firmadas
+### URLs firmadas
 
 Laravel te permite crear fácilmente URLs "firmadas" para rutas nombradas. Estas URLs tienen un hash de "firma" añadido a la cadena de solicitud que le permite a Laravel verificar que la URL no haya sido modificada desde que fue creada. Las URLs firmadas son especialmente útiles para rutas que están disponibles públicamente pero necesitan una capa de protección contra la manipulación de URLs.
 
@@ -116,7 +116,7 @@ return URL::temporarySignedRoute(
 );
 ```
 
-#### Validando Solicitudes A Rutas Firmadas
+#### Validando solicitudes a rutas firmadas
 
 Para verificar que una solicitud entrate tiene una firma válida, debes llamar al método `hasValidSignature` en el `Request` entrante:
 
@@ -156,7 +156,7 @@ Route::post('/unsubscribe/{user}', function (Request $request) {
 ```
 
 <a name="urls-for-controller-actions"></a>
-## URLs Para Acciones de Controlador
+## URLs para acciones de controlador
 
 La función `action` genera una URL para la acción de controlador dada. No necesitarás pasar el espacio de nombre completo del controlador. En lugar de eso, pasa el nombre de clase del controlador relativo al espacio de nombre `App\Http\Controllers`:
 
@@ -179,7 +179,7 @@ $url = action('UserController@profile', ['id' => 1]);
 ```
 
 <a name="default-values"></a>
-## Valores Predeterminados
+## Valores predeterminados
 
 Para algunas aplicaciones, puedes querer especificar valores predeterminados para toda la solicitud en los parámetros de ciertas URL. Por ejemplo, imagina que muchas de tus rutas definen un parámetro `{locale}`:
 

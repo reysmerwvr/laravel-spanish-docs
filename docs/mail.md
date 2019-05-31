@@ -3,25 +3,25 @@
 # Correos Electrónicos
 
 - [Introducción](#introduction)
-    - [Requisitos Previos](#driver-prerequisites)
-- [Generando Mailables](#generating-mailables)
-- [Escribiendo Mailables](#writing-mailables)
-    - [Configurando El Envío](#configuring-the-sender)
-    - [Configurando La Vista](#configuring-the-view)
-    - [Datos En Vistas](#view-data)
-    - [Archivos Adjuntos](#attachments)
-    - [Archivos Adjuntos En Línea](#inline-attachments)
-    - [Personalizar El Mensaje De SwiftMailer](#customizing-the-swiftmailer-message)
-- [Mailables en Markdown](#markdown-mailables)
-    - [Generando Mailables En Markdown](#generating-markdown-mailables)
-    - [Escribiendo Mensajes En Markdown](#writing-markdown-messages)
-    - [Personalizando Los Componentes](#customizing-the-components)
-- [Enviando Correo](#sending-mail)
-    - [Colas De Correos](#queueing-mail)
-- [Renderizando Mailables](#rendering-mailables)
-	- [Previsualizando Mailables En El Navegador](#previewing-mailables-in-the-browser)
-- [Configuración Regional de Mailables](#localizing-mailables)
-- [Correos y Desarrollo Local](#mail-and-local-development)
+    - [Requisitos previos](#driver-prerequisites)
+- [Generando mailables](#generating-mailables)
+- [Escribiendo mailables](#writing-mailables)
+    - [Configurando el envío](#configuring-the-sender)
+    - [Configurando la vista](#configuring-the-view)
+    - [Datos en vistas](#view-data)
+    - [Archivos adjuntos](#attachments)
+    - [Archivos adjuntos en línea](#inline-attachments)
+    - [Personalizar el mensaje de swiftMailer](#customizing-the-swiftmailer-message)
+- [Mailables en markdown](#markdown-mailables)
+    - [Generando mailables en markdown](#generating-markdown-mailables)
+    - [Escribiendo mensajes en markdown](#writing-markdown-messages)
+    - [Personalizando los componentes](#customizing-the-components)
+- [Enviando correo](#sending-mail)
+    - [Colas de correos](#queueing-mail)
+- [Renderizando mailables](#rendering-mailables)
+	- [Previsualizando mailables en el navegador](#previewing-mailables-in-the-browser)
+- [Configuración regional de mailables](#localizing-mailables)
+- [Correos y desarrollo Local](#mail-and-local-development)
 - [Eventos](#events)
 
 <a name="introduction"></a>
@@ -30,7 +30,7 @@
 Laravel proporciona una API limpia y simple sobre la popular biblioteca [SwiftMailer](https://swiftmailer.symfony.com/) con drivers para SMTP, Mailgun, Postmark, SparkPost, Amazon SES y `sendmail`, permitiéndote comenzar rápidamente a enviar correos a través de un servicio local o en la nube de tu elección.
 
 <a name="driver-prerequisites"></a>
-### Requisitos Previos
+### Requisitos previos
 
 Los drivers basados ​​en una API como Mailgun, SparkPost y Postmark suelen ser más simples y rápidos que los servidores SMTP. Si es posible, deberías usar uno de estos drivers. Todos los drivers con API requieren la biblioteca Guzzle HTTP, que puede instalarse a través del gestor de paquetes Composer:
 
@@ -134,7 +134,7 @@ Si necesitas incluir [opciones adicionales](https://docs.aws.amazon.com/aws-sdk-
 ```
 
 <a name="generating-mailables"></a>
-## Generando Mailables
+## Generando mailables
 
 En Laravel, cada tipo de correo electrónico enviado por su aplicación se representa como una clase "Mailable". Estas clases se almacenan en el directorio `app/Mail`. No te preocupes si no ves este directorio en tu aplicación, ya que se generará para ti cuando crees tu primera clase mailable usando el comando `make:mail`:
 
@@ -143,7 +143,7 @@ php artisan make:mail OrderShipped
 ```
 
 <a name="writing-mailables"></a>
-## Escribiendo Mailables
+## Escribiendo mailables
 
 Toda la configuración de una clase mailable se realiza en el método `build`. Dentro de este método, puedes llamar a varios métodos como `from`,` subject`, `view` y` attach` para configurar la presentación y entrega del correo electrónico.
 
@@ -202,7 +202,7 @@ public function build()
 Es posible que desees crear un directorio `resources/views/emails` para albergar todas tus plantillas de correos electrónicos; sin embargo, puedes colocarlos donde quieras siempre y cuando este dentro del directorio `resources/views`.
 :::
 
-#### Correos con Texto Plano
+#### Correos con texto plano
 
 Si deseas definir una versión de texto sin formato en tu correo electrónico, puedes usar el método `text`. Al igual que el método `view`, el método` text` acepta un nombre de plantilla que se usará para representar el contenido del correo electrónico. Eres libre de definir una versión HTML y de texto sin formato del mensaje:
 
@@ -222,7 +222,7 @@ public function build()
 <a name="view-data"></a>
 ### Datos en Vistas
 
-#### A través De Propiedades Públicas
+#### A través de propiedades públicas
 
 Por lo general, querrás pasar algunos datos a tu vista que puedes utilizar al representar el HTML del correo electrónico. Hay dos maneras en que puedes hacer que los datos estén disponibles para la vista. Primero, cualquier propiedad pública definida en tu clase Mailable se pondrá automáticamente a disposición de la vista. Entonces, por ejemplo, puedes pasar datos al constructor de tu clase Mailable y establecer esos datos a propiedades públicas definidas en la clase:
 
@@ -277,7 +277,7 @@ Una vez que los datos se han establecido en una propiedad pública, estarán aut
 </div>
 ```
 
-#### A Través Del Método `with`:
+#### A través del método `with`:
 
 Si deseas personalizar el formato de los datos de tu correo electrónico antes de enviarlos a la plantilla, puedes pasar manualmente los datos a la vista mediante el método `with`. Por lo general, aún podrás pasar datos a través del constructor de la clase Mailable; sin embargo, debes establecer estos datos en propiedades `protected` o` private` para que los datos no estén automáticamente disponibles para la plantilla. Luego, al llamar al método `with`, se pase un arreglo de datos que deseas poner a disposición de la plantilla:
 
@@ -337,7 +337,7 @@ Una vez que los datos se han pasado con el método `with`, estarán automáticam
 ```
 
 <a name="attachments"></a>
-### Archivos Adjuntos
+### Archivos adjuntos
 
 Para agregar archivos adjuntos a un correo electrónico, podemos usar el método `attach` dentro del método `build` de la clase Mailable. El método `attach` acepta la ruta completa al archivo como su primer argumento:
 
@@ -372,7 +372,7 @@ public function build()
 }
 ```
 
-#### Adjuntando Archivos Desde El Disco
+#### Adjuntando archivos desde el disco
 
 Si has almacenado un archivo en uno de tus [discos](/docs/{{version}}/filesystem), puedes adjuntarlo al correo electrónico usando el método `attachFromStorage`:
 
@@ -421,7 +421,7 @@ public function build()
 }
 ```
 
-#### Archivos Adjuntos Desde La Memoria
+#### Archivos adjuntos desde la memoria
 
 El método `attachData` se puede usar para adjuntar una cadena de bytes sin formato como un archivo adjunto. Por ejemplo, puede usar este método si ha generado un PDF en la memoria y desea adjuntarlo al correo electrónico sin escribirlo en el disco. El método `attachData` acepta los bytes de datos brutos como su primer argumento, el nombre del archivo como su segundo argumento y un arreglo de opciones como su tercer argumento:
 
@@ -441,7 +441,7 @@ public function build()
 ```
 
 <a name="inline-attachments"></a>
-### Archivos Adjuntos en Línea
+### Archivos adjuntos en línea
 
 La incrustación de imágenes en línea en sus correos electrónicos suele ser engorrosa; sin embargo, Laravel proporciona una forma conveniente de adjuntar imágenes a sus correos electrónicos y recuperar el CID apropiado. Para incrustar una imagen en línea, usa el método `embed` en la variable `$message` dentro de tu plantilla de correo electrónico. Laravel automáticamente hace que la variable `$message` esté disponible para todas tus plantillas de correo electrónico, por lo que no tienes que preocuparte por pasarla manualmente:
 
@@ -457,7 +457,7 @@ La incrustación de imágenes en línea en sus correos electrónicos suele ser e
 La variable `$message` no está disponible en los mensajes ya que los mensajes de texto plano (plain-text) no utilizan archivos adjuntos en línea.
 :::
 
-#### Incrustar Datos Adjuntos de la Memoria
+#### Incrustar datos adjuntos de la memoria
 
 Si ya tienes una cadena de datos en la memoria que desees incorporar a una plantilla de correo electrónico, puedes usar el método `embedData` en la variable `$message`:
 
@@ -470,7 +470,7 @@ Si ya tienes una cadena de datos en la memoria que desees incorporar a una plant
 ```
 
 <a name="customizing-the-swiftmailer-message"></a>
-### Personalizar el Mensaje de SwiftMailer
+### Personalizar el mensaje de SwiftMailer
 
 El método `withSwiftMessage` de la clase base `Mailable` te permite registrar una función anónima que se invocará con la instancia del mensaje de SwiftMailer sin procesar antes de enviar el mensaje. Esto le da la oportunidad de personalizar el mensaje antes de que se entregue:
 
@@ -492,12 +492,12 @@ public function build()
 ```
 
 <a name="markdown-mailables"></a>
-## Mailables en Markdown
+## Mailables en markdown
 
 Los mensajes escritos con Markdown le permiten aprovechar las plantillas y los componentes precompilados de las notificaciones por correo en tus documentos. Dado que los mensajes se escriben en Markdown, Laravel puede generar plantillas HTML atractivas para los mensajes y generar automáticamente una contraparte de texto sin formato.
 
 <a name="generating-markdown-mailables"></a>
-### Generar Mailables en Markdown
+### Generar mailables en markdown
 
 Para generar una clase de Mailable con una plantilla para Markdown puedes usar la opción `--markdown` del comando `make:mail`:
 
@@ -544,7 +544,7 @@ Thanks,<br>
 No uses una sangría excesiva al escribir correos electrónicos de Markdown. Los analizadores de Markdown renderizarán contenido sangrado como bloques de código.
 :::
 
-#### Componente Button
+#### Componente button
 
 El componente de botón representa un enlace de botón centrado. El componente acepta dos argumentos, una `url` y un `color` opcional. Los colores compatibles son `primary`, `success` y `error`. Puedes agregar los botones que desees a un mensaje:
 
@@ -554,7 +554,7 @@ View Order
 @endcomponent
 ```
 
-#### Componente Panel
+#### Componente panel
 
 El componente del panel representa el bloque de texto dado en un panel que tiene un color de fondo ligeramente diferente que el resto del mensaje. Esto te permite llamar la atención sobre un bloque de texto dado:
 
@@ -564,7 +564,7 @@ This is the panel content.
 @endcomponent
 ```
 
-#### Componente Table
+#### Componente table
 
 El componente de tabla le permite transformar una tabla en Markdown a una tabla HTML. El componente acepta la tabla en Markdown como su contenido. La alineación de columna de tabla es compatible con la sintaxis de alineación de tabla de Markdown predeterminada:
 
@@ -578,7 +578,7 @@ El componente de tabla le permite transformar una tabla en Markdown a una tabla 
 ```
 
 <a name="customizing-the-components"></a>
-### Personalizar los Componentes
+### Personalizar los componentes
 
 Puedes exportar todos los componentes de correo Markdown a su propia aplicación para personalización. Para exportar los componentes, use el comando `vendor:publish` y la opción del tag `laravel-mail` de esta forma:
 
@@ -597,7 +597,7 @@ Si deseas construir un tema completamente nuevo para los componentes Markdown, e
 :::
 
 <a name="sending-mail"></a>
-## Enviar Correo
+## Enviar correo
 
 Para enviar un mensajes debes usar el método `to` en el [facade](/docs/{{version}}/facades) llamado `Mail`. El método `to` acepta una dirección de correo, una instancia de usuario o una colección de usuarios. Si pasas un objeto o una colección de objetos, el remitente utilizará automáticamente sus propiedades de "email" y "name" cuando configure los destinatarios del correo electrónico, por lo tanto, asegúrese de que estos atributos estén disponibles en sus objetos. Una vez que haya especificado sus destinatarios, puede pasar una instancia de su clase mailable al método `send`:
 
@@ -642,7 +642,7 @@ Mail::to($request->user())
 ```
 
 <a name="rendering-mailables"></a>
-## Renderizar Mailables
+## Renderizar mailables
 
 Algunas veces puedes querer capturar el contenido HTML de un mailable sin enviarlo. Para lograr esto, puedes llamar al método `render` del mailable. Este método retornará los contenidos evaluados del mailable como una cadena:
 
@@ -653,7 +653,7 @@ return (new App\Mail\InvoicePaid($invoice))->render();
 ```
 
 <a name="previewing-mailables-in-the-browser"></a>
-### Previewing Mailables In The Browser
+### Previsualizar mailables en el navegador
 
 Al diseñar una plantilla mailable, es conveniente previsualizar rápidamente el mailable renderizado en tu navegador como una plantilla de Blade corriente. Por esta razón, Laravel te permite retornar cualquier mailable directamente desde un Closure de ruta o un controlador. Cuando un mailable es retornado, será renderizado y mostrado en el navegador, permitiéndote previsualizar su diseño sin necesidad de enviarlo a una dirección de correo electrónico real:
 
@@ -666,9 +666,9 @@ Route::get('mailable', function () {
 ```
 
 <a name="queueing-mail"></a>
-### Correo en Cola
+### Correo en cola
 
-#### Poniendo en Cola un Correo Electronico
+#### Poniendo en cola un correo electronico
 
 Con el envío de correos electrónicos puede alargar drásticamente el tiempo de respuesta de su aplicación, muchos desarrolladores eligen poner correos electrónicos en cola para el envío en segundo plano. Laravel lo hace fácil usando su función incorporada [API de cola unificada](/docs/{{version}}/queues). Para poner en cola un correo, use el método `queue` en el facade `Mail` después de especificar los destinatarios del mensaje:
 
@@ -681,7 +681,7 @@ Mail::to($request->user())
 
 Este método se encargará automáticamente de insertar un trabajo en la cola para que el mensaje se envíe en segundo plano. Necesitarás [configurar tus colas](/docs/{{version}}/queues) antes de usar esta característica.
 
-#### Cola de Mensajes Retrasada
+#### Cola de mensajes retrasada
 
 Si deseas retrasar la entrega de un mensaje de correo electrónico en cola, puedes usar el método `later`. Como primer argumento, el método `later` acepta una instancia `DateTime` que indica cuándo se debe enviar el mensaje:
 
@@ -694,7 +694,7 @@ Mail::to($request->user())
     ->later($when, new OrderShipped($order));
 ```
 
-#### Enviar a Queues Específicas
+#### Enviar a queues específicas
 
 Como todas las clases mailable generadas usando el comando `make:mail` usan el trait `Illuminate\Bus\Queueable` puedes llamar a los métodos `onQueue` y` onConnection` en cualquier instancia de clase mailable, lo que te permite especificar la conexión y nombre de cola para el mensaje:
 
@@ -709,7 +709,7 @@ Mail::to($request->user())
     ->queue($message);
 ```
 
-#### En Cola Por Defecto
+#### En cola por defecto
 
 Si tienes clases mailables que deseas que siempre se pongan en cola, puedes implementar la interfaz `ShouldQueue` en la clase. Ahora, incluso si llamas al método `send` cuando envies correos el mailable se pondrá en cola ya que implementa la interfaz:
 
@@ -723,7 +723,7 @@ class OrderShipped extends Mailable implements ShouldQueue
 ```
 
 <a name="localizing-mailables"></a>
-## Configuración Regional de Mailables
+## Configuración regional de mailables
 
 Laravel te permite enviar mailables en una configuración regional diferente al del idioma actual, e incluso recordará dicha configuración si el correo es agregado a una cola.
 
@@ -735,7 +735,7 @@ Mail::to($request->user())->locale('es')->send(
 );
 ```
 
-### Configuración Regional De Usuarios
+### Configuración regional de usuarios
 
 Algunas veces, las aplicaciones almacenan la configuración regional preferida de cada usuario. Al implementar la interfaz `HasLocalePreference` en uno o más de tus modelos, puedes instruir a Laravel a usar dicha configuración almacenado al enviar correos electrónicos:
 
@@ -763,7 +763,7 @@ Mail::to($request->user())->send(new OrderShipped($order));
 ```
 
 <a name="mail-and-local-development"></a>
-## Correos y Desarrollo Local
+## Correos y desarrollo local
 
 Al desarrollar una aplicación que envía correos electrónicos, probablemente no deseas enviar correos electrónicos a direcciones reales. Laravel proporciona varias formas de "desactivar" el envío real de correos electrónicos durante el desarrollo local.
 
@@ -771,7 +771,7 @@ Al desarrollar una aplicación que envía correos electrónicos, probablemente n
 
 En lugar de enviar sus correos electrónicos, el driver de correos `log` escribirá todos los mensajes de correo electrónico en tus archivos de logs para su inspección. Para obtener más información sobre cómo configurar su aplicación por entorno, revisa la [configuración en la documentación](/docs/{{version}}/configuration#environment-configuration).
 
-#### Destinatario Universal
+#### Destinatario universal
 
 Otra solución proporcionada por Laravel es establecer un destinatario universal de todos los correos electrónicos enviados por el framework. De esta forma, todos los correos electrónicos generados por tu aplicación serán enviados a una dirección específica, en lugar de la dirección realmente especificada al enviar el mensaje. Esto se puede hacer a través de la opción `to` en tu archivo de configuración `config/mail.php`:
 

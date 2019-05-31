@@ -5,25 +5,25 @@
 - [Introducción](#introduction)
 - [Instalación](#installation)
     - [Colas](#queueing)
-    - [Requisitos Previos Del Driver](#driver-prerequisites)
+    - [Requisitos previos del driver](#driver-prerequisites)
 - [Configuración](#configuration)
-    - [Configurando Índices De Modelo](#configuring-model-indexes)
-    - [Configurando Datos De Búsqueda](#configuring-searchable-data)
-    - [Configurando La ID Del Modelo](#configuring-the-model-id)
+    - [Configurando indices de modelo](#configuring-model-indexes)
+    - [Configurando datos de búsqueda](#configuring-searchable-data)
+    - [Configurando el ID de modelo](#configuring-the-model-id)
 - [Indexando](#indexing)
-    - [Importación en Lote (Batch)](#batch-import)
-    - [Agregando Registros](#adding-records)
-    - [Actualizando Registros](#updating-records)
-    - [Eliminando Registros](#removing-records)
-    - [Pausando Indexamiento](#pausing-indexing)
-    - [Instancias De Modelos Searchable Condicionales](#conditionally-searchable-model-instances)
+    - [Importación en lote (batch)](#batch-import)
+    - [Agregando registros](#adding-records)
+    - [Actualizando registros](#updating-records)
+    - [Eliminando registros](#removing-records)
+    - [Pausando indexamiento](#pausing-indexing)
+    - [Instancias de modelos searchable condicionales](#conditionally-searchable-model-instances)
 - [Búsqueda](#searching)
-    - [Cláusulas Where](#where-clauses)
+    - [Cláusulas where](#where-clauses)
     - [Paginación](#pagination)
-    - [Eliminación Lógica](#soft-deleting)
-    - [Personalizando Motores De Búsqueda](#customizing-engine-searches)
-- [Motores Personalizados](#custom-engines)
-- [Macros De Constructor (Builder)](#builder-macros)
+    - [Eliminación lógica](#soft-deleting)
+    - [Personalizando motores de búsqueda](#customizing-engine-searches)
+- [Motores personalizados](#custom-engines)
+- [Macros de constructor (builder)](#builder-macros)
 
 <a name="introduction"></a>
 ## Introducción
@@ -75,7 +75,7 @@ Una vez que hayas configurado tu controlador de cola, establece el valor de la o
 ```
 
 <a name="driver-prerequisites"></a>
-### Requisitos Previos Del Driver
+### Requisitos previos del driver
 
 #### Algolia
 
@@ -89,7 +89,7 @@ composer require algolia/algoliasearch-client-php:^2.2
 ## Configuración
 
 <a name="configuring-model-indexes"></a>
-### Configurando Índices De Modelo
+### Configurando indices de modelo
 
 Cada modelo Eloquent es sincronizado con un "índice" de búsqueda dado, el cual contiene todos los registros que pueden ser encontrados para ese modelo. En otras palabras, puedes pensar en cada índice como una tabla MySQL. De forma predeterminada, cada modelo será persistido en un índice que coincida con el típico nombre de la "tabla" del modelo. Típicamente, esta es la forma plural del nombre del modelo; sin embargo, eres libre de personalizar el índice del modelo sobrescribiendo el método `searchableAs` en el modelo:
 
@@ -118,7 +118,7 @@ class Post extends Model
 ```
 
 <a name="configuring-searchable-data"></a>
-### Configuración De Datos De Búsqueda
+### Configuración de datos de búsqueda
 
 De forma predeterminada, la forma `toArray` completa de un modelo dado será persistida en su índice de búsqueda. Si prefieres personalizar los datos que son sincronizados en el índice de búsqueda, puedes sobrescribir el método `toSearchableArray` en el modelo:
 
@@ -151,7 +151,7 @@ class Post extends Model
 ```
 
 <a name="configuring-the-model-id"></a>
-### Configurando El ID Del Modelo
+### Configurando el ID del modelo
 
 Por defecto, Scout usará la clave primaria del modelo como su ID única, almacenada en el índice de búsqueda. Si necesitas personalizar este comportamiento, se puede sobrescribir el método `getScoutKey` en el modelo:
 
@@ -183,7 +183,7 @@ class User extends Model
 ## Indexando
 
 <a name="batch-import"></a>
-### Importación en Lote (Batch)
+### Importación en lote (batch)
 
 Si estás instalando Scout en un proyecto existente, puede que ya tengas registros de base de datos que necesites importar dentro de tu manejador de búsqueda. Scout proporciona un comando Artisan `import` que puedes usar para importar todos tus registros existentes a tus índices de búsqueda:
 
@@ -191,14 +191,14 @@ Si estás instalando Scout en un proyecto existente, puede que ya tengas registr
 php artisan scout:import "App\Post"
 ```
 
-The `flush` command may be used to remove all of a model's records from your search indexes:
+El comando `flush` puede ser usado para eliminar todos los registros de un modelo de los indicies de busqueda:
 
 ```php
 php artisan scout:flush "App\Post"
 ```
 
 <a name="adding-records"></a>
-### Agregando Registros
+### Agregando registros
 
 Una vez que has agregado el trait `Laravel\Scout\Searchable` a tu modelo, todo lo que necesitas hacer es llamar a `save` en una instancia de modelo y será agregada automáticamente a tu índice de búsqueda. Si has configurado Scout para [usar colas](#queueing) esta operación será ejecutada en segundo plano por tu worker de cola:
 
@@ -210,7 +210,7 @@ $order = new App\Order;
 $order->save();
 ```
 
-#### Agregando Por Medio de Consulta
+#### Agregando por medio de consulta
 
 Si prefieres agregar una colección de modelos a tu índice de búsqueda por medio de una consulta Eloquent, puedes encadenar el método `searchable` con una consulta Eloquent. El método `searchable` [dividirá (chunk) los resultados](/docs/{{version}}/eloquent#chunking-results) de la consulta y agregará los registros a tu índice de búsqueda. Otra vez, si has configurado Scout para usar colas, todos estas porciones serán agregadas en segundo plano por tus workers de cola:
 
@@ -228,7 +228,7 @@ $orders->searchable();
 El método `searchable` puede ser considerado una operación "upsert". En otras palabras, si el registro del modelo ya está en tu índice, será actualizado. Si no existe en el índice de búsqueda, será agregado al índice.
 
 <a name="updating-records"></a>
-### Actualizando Registros
+### Actualizando registros
 
 Para actualizar un modelo searchable, sólo necesitas actualizar las propiedades de la instancia del modelo y llamar a `save` en el modelo en tu base de datos. Scout persistirá automáticamente los cambios en tu índice de búsqueda:
 
@@ -254,7 +254,7 @@ $orders->searchable();
 ```
 
 <a name="removing-records"></a>
-### Eliminando Registros
+### Eliminando registros
 
 Para eliminar un registro de tu índice, llama a `delete` en el modelo de la base de datos. Esta forma de eliminar es también compatible con los modelos [eliminados lógicamente](/docs/{{version}}/eloquent#soft-deleting):
 
@@ -278,7 +278,7 @@ $orders->unsearchable();
 ```
 
 <a name="pausing-indexing"></a>
-### Pausando el Indexamiento
+### Pausando el indexamiento
 
 Algunas veces puedes necesitar ejecutar un lote de operaciones de Eloquent en un modelo sin sincronizar los datos del modelo con tu índice de búsqueda. Puedes hacer esto usando el método `withoutSyncingToSearch`. Este método acepta una sola función de retorno la cual será ejecutada inmediatamente. Cualquiera de las operaciones de modelo que ocurran dentro de la función de retorno no serán sincronizadas con el índice del modelo:
 
@@ -289,7 +289,7 @@ App\Order::withoutSyncingToSearch(function () {
 ```
 
 <a name="conditionally-searchable-model-instances"></a>
-### Instancias De Modelos Searchable Condicionales
+### Instancias de modelos searchable condicionales
 
 A veces es posible que solo tengas que hacer que un modelo searchable bajo ciertas condiciones. Por ejemplo, imagina que tienes el modelo `App\Post` que puede estar en uno de dos estados: " borrador (draft)" y "publicado (published)". Es posible que solo desees permitir que las publicaciones "publicadas" puedan buscarse. Para lograr esto, puede definir un método `shouldBeSearchable` en su modelo:
 
@@ -350,7 +350,7 @@ $orders = App\Order::search('Star Trek')
 ```
 
 <a name="where-clauses"></a>
-## Cláusulas Where
+## Cláusulas where
 
 Scout permite que agregues cláusulas "where" sencillas a tus consultas de búsqueda. Actualmente, estas cláusulas solamente soportan verificaciones básicas de igualdad numérica y son útiles principalmente para establecer el alcance de las consultas de búsqueda por un ID. Ya que un índice de búsqueda no es una base de datos relacional, cláusulas "where" más avanzadas no están soportadas actualmente:
 
@@ -386,7 +386,7 @@ Una vez que has obtenido los resultados, puedes mostrar los resultados y renderi
 ```
 
 <a name="soft-deleting"></a>
-### Eliminación Lógica
+### Eliminación lógica
 
 Si tus modelos indexados son de [eliminación lógica](/docs/{{version}}/eloquent#soft-deleting) y necesitas buscar tus modelos eliminados lógicamente, establece la opción `soft_delete` del archivo `config/scout.php` en `true`:
 
@@ -409,7 +409,7 @@ Cuando un modelo eliminado lógicamente es eliminado permanentemente utilizando 
 :::
 
 <a name="customizing-engine-searches"></a>
-### Personalizando Motores de Búsqueda
+### Personalizando motores de búsqueda
 
 Si necesitas personalizar el comportamiento de un motor de búsqueda, puedes pasar una función de retorno (callback) como el segundo argumento al método `search`. Por ejemplo, podrías usar este callback para añadir datos de geolocalización a tus opciones de búsqueda antes de que la consulta de búsqueda sea pasada a Algolia: 
 
@@ -427,9 +427,9 @@ App\Order::search('Star Trek', function (SearchIndex $algolia, string $query, ar
 ```
 
 <a name="custom-engines"></a>
-## Motores Personalizados
+## Motores personalizados
 
-#### Escribiendo El Motor
+#### Escribiendo el motor
 
 Si ninguno de los motores de búsqueda integrados en Scout no se ajustan a tus necesidades, puedes escribir tu propio motor personalizado y registrarlo con Scout. Tu motor debería extender la clase abstracta `Laravel\Scout\Engines\Engine`. Esta clase abstracta contiene siete métodos que tu motor de búsqueda personalizado debe implementar:
 
@@ -448,7 +448,7 @@ abstract public function flush($model);
 
 Puedes encontrar útil revisar las implementaciones de estos métodos en la clase `Laravel\Scout\Engines\AlgoliaEngine`. Esta clase te proporcionará un buen punto de inicio para aprender cómo implementar cada uno de estos métodos en tu propio motor.
 
-#### Registrando El Motor
+#### Registrando el motor
 
 Una vez que hayas escrito tu motor personalizado, puedes registrarlo con Scout usando el método `extend` del administrador de motor de Scout. Deberías ejecutar el método `extend` desde el método `boot` de tu `AppServiceProvider` o cualquier otro proveedor de servicio usado por tu aplicación. Por ejemplo, si has escrito un `MySqlSearchEngine`, puedes registrarlo como sigue:
 
@@ -475,7 +475,7 @@ Una vez que tu motor ha sido registrado, puedes especificarlo como tu `driver` p
 ```
 
 <a name="builder-macros"></a>
-## Macros De Constructor (Builder)
+## Macros de constructor (builder)
 
 Si deseas definir un método constructor personalizado, puedes usar el método `macro` en la clase `Laravel\Scout\Builder`. Típicamente, las "macros" deben ser definidas dentro de un método `boot` de un [proveedor de servicios](/docs/{{version}}/providers):
 

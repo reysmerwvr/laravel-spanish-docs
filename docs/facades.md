@@ -3,12 +3,12 @@
 # Facades
 
 - [Introducción](#introduction)
-- [Cuándo Usar Facades](#when-to-use-facades)
-    - [Facades Vs. Inyección De Dependencias](#facades-vs-dependency-injection)
-    - [Facades Vs. Funciones Helper](#facades-vs-helper-functions)
-- [Cómo Funcionan Las Facades](#how-facades-work)
-- [Facades En Tiempo Real](#real-time-facades)
-- [Referencia De Clases de Facades](#facade-class-reference)
+- [Cuándo usar facades](#when-to-use-facades)
+    - [Facades vs. inyección de dependencias](#facades-vs-dependency-injection)
+    - [Facades vs. funciones helper](#facades-vs-helper-functions)
+- [Cómo funcionan las facades](#how-facades-work)
+- [Facades en tiempo real](#real-time-facades)
+- [Referencia de clases de facades](#facade-class-reference)
 
 <a name="introduction"></a>
 ## Introducción
@@ -28,7 +28,7 @@ Route::get('/cache', function () {
 A través de la documentación de Laravel, muchos de los ejemplos usarán facades para demostrar varias características del framework.
 
 <a name="when-to-use-facades"></a>
-## Cuándo Usar Facades
+## Cuándo usar facades
 
 Las Facades tienen múltiples beneficios. Brindan una sintaxis tersa y memorizable que permite utilizar las características de Laravel sin tener que recordar nombres de clase largos que deben ser inyectados o configurados manualmente. Además, debido a su uso único de los métodos dinámicos PHP, son fáciles de probar.
 
@@ -39,7 +39,7 @@ Cuando se construye un paquete de terceros que interactúa con Laravel, es mejor
 :::
 
 <a name="facades-vs-dependency-injection"></a>
-### Facades Vs. Inyección De Dependencias
+### Facades vs. inyección de dependencias
 
 Uno de los principales beneficios de la inyección de dependencias es la habilidad de intercambiar implementaciones de la clase inyectada. Esto es útil durante las pruebas debido a que puedes inyectar un mock o un stub y comprobar que esos métodos son llamados en el stub.
 
@@ -75,7 +75,7 @@ public function testBasicExample()
 ```
 
 <a name="facades-vs-helper-functions"></a>
-### Facades Vs. Funciones Helper
+### Facades vs. funciones helper
 
 Además de las facades, Laravel incluye una variedad de funciones "helper", las cuales pueden realizar tareas comunes como generar vistas, disparar eventos, despachar trabajos, o mandar respuestas HTTP. Muchas de estas funciones helper realizan la misma función que su facade correspondiente. Por ejemplo, éstas llamadas facade y helper son equivalentes:
 
@@ -115,7 +115,7 @@ public function testBasicExample()
 ```
 
 <a name="how-facades-work"></a>
-## Cómo Funcionan Las Facades
+## Cómo funcionan las facades
 
 En una aplicación Laravel, una facade es una clase que provee acceso a un objeto desde el contenedor. La maquinaria que hace este trabajo está en la clase `Facade`. Las facades de Laravel y cualquier facade personalizada que crees, extenderá la clase base `Illuminate\Support\Facades\Facade`.
 
@@ -165,7 +165,7 @@ class Cache extends Facade
 En su lugar, la facade `Cache` extiende la clase `Facade` y define el método `getFacadeAccessor()`. El trabajo de este método es devolver el nombre de un enlace de contenedor de servicios. Cuando un usuario referencia cualquier método estático en la facade `Cache`, Laravel resuelve el enlace `cache` desde el [contenedor de servicios](/docs/5.8/container) y ejecuta el método solicitado (en este caso, `get`) contra ese objeto.
 
 <a name="real-time-facades"></a>
-## Facades En Tiempo Real
+## Facades en tiempo real
 
 Usando facades en tiempo real, puedes tratar cualquier clase en tu aplicación como si fuera una facade. Para ilustrar cómo esto puede ser utilizado, examinemos una alternativa. Por ejemplo, asumamos que nuestro modelo `Podcast` tiene un método `publish`. Sin embargo, para publicar el podcast, necesitamos inyectar una instancia `Publisher`:
 
@@ -253,7 +253,7 @@ class PodcastTest extends TestCase
 ```
 
 <a name="facade-class-reference"></a>
-## Referencia De Clases De Facades
+## Referencia de clases de facades
 
 A continuación encontrarás cada facade y su clase subyacente. Esta es una herrameinta útil para explorar rápidamente dentro de la documentación API para cualquier raíz de facade dada. La llave [service container binding](/docs/5.8/container) también ha sido incluida donde aplica.
 

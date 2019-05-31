@@ -3,7 +3,7 @@
 # Helpers
 
 - [Introducción](#introduction)
-- [Métodos Disponibles](#available-methods)
+- [Métodos disponibles](#available-methods)
 
 <a name="introduction"></a>
 ## Introducción
@@ -11,7 +11,7 @@
 Laravel incluye una variedad de funciones "helpers" globales de PHP. Muchas de esas funciones son usadas por el mismo framework; sin embargo, eres libre de usarlas en tus aplicaciones si lo encuentras conveniente.
 
 <a name="available-methods"></a>
-## Métodos Disponibles
+## Métodos disponibles
 
 <style>
     .collection-method-list > p {

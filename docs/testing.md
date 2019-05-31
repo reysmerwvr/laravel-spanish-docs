@@ -4,7 +4,7 @@
 
 - [Introducción](#introduction)
 - [Entorno](#environment)
-- [Creando y Ejecutando Pruebas](#creating-and-running-tests)
+- [Creando y ejecutando pruebas](#creating-and-running-tests)
 
 <a name="introduction"></a>
 ## Introducción
@@ -25,7 +25,7 @@ Eres libre de definir otros valores de configuración del entorno de pruebas cua
 Además, puedes crear un archivo `.env.testing` en la raíz de tu proyecto. Este archivo anulará el archivo `.env` cuando ejecute las pruebas PHPUnit o cuando ejecute los comandos de Artisan con la opción `--env = testing`.
 
 <a name="creating-and-running-tests"></a>
-## Creando y Ejecutando Pruebas
+## Creando y ejecutando pruebas
 
 Para crear un nuevo caso de prueba, usa el comando Artisan `make:test`:
 

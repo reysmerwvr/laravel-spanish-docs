@@ -3,11 +3,11 @@
 # Verificación de Correo Electrónico
 
 - [Introducción](#introduction)
-- [Consideraciones De La Base De Datos](#verification-database)
+- [Consideraciones de la base De datos](#verification-database)
 - [Rutas](#verification-routing)
-    - [Protegiendo Rutas](#protecting-routes)
+    - [Protegiendo rutas](#protecting-routes)
 - [Vistas](#verification-views)
-- [Luego De Verificar Correos Electrónicos](#after-verifying-emails)
+- [Luego de verificar correos electrónicos](#after-verifying-emails)
 - [Eventos](#events)
 
 <a name="introduction"></a>
@@ -15,7 +15,7 @@
 
 Muchas aplicaciones web requieren que los usuarios verifiquen sus correos electrónicos usando la aplicación. En lugar de forzarte a volver a implementar esto en cada aplicación, Laravel proporciona métodos convenientes para enviar y verificar solicitudes de verificación de correos electrónicos. 
 
-### Preparación Del Modelo
+### Preparación del modelo
 
 Para comenzar, verifica que tu modelo `App\User` implementa la interfaz `Illuminate\Contracts\Auth\MustVerifyEmail`:
 
@@ -37,9 +37,9 @@ class User extends Authenticatable implements MustVerifyEmail
 ```
 
 <a name="verification-database"></a>
-## Consideraciones De La Base De Datos
+## Consideraciones de la base de datos
 
-#### Columna De Verificación De Correo Electrónico
+#### Columna de verificación de correo electrónico
 
 Luego, tu tabla `user` debe contener una columna `email_verified_at` para almacenar la fecha y la hora en la que la dirección de correo electrónico fue verificada. Por defecto, la migración de la tabla `user` incluida con el framework Laravel ya incluye esta columna. Así que, lo único que necesitas es ejecutar la migración de la base de datos:
 
@@ -57,7 +57,7 @@ Auth::routes(['verify' => true]);
 ```
 
 <a name="protecting-routes"></a>
-### Protegiendo Rutas
+### Protegiendo rutas
 
 [El middleware de rutas](/docs/{{version}}/middleware) puede ser usado para permitir que sólo usuarios autorizados puedan acceder a una ruta dada. Laravel viene con un middleware `verified`, que está definido en `Illuminate\Auth\Middleware\EnsureEmailIsVerified`. Dado que este middleware ya está registrado en el kernel HTTP de tu aplicación, lo único que necesitas hacer es adjuntar el middleware a una definición de ruta:
 
@@ -73,7 +73,7 @@ Route::get('profile', function () {
 Laravel generará todas las vistas de verificación de correo electrónico necesarias cuando el comando `make:auth` sea ejecutado. Esta vista es colocada en `resources/views/auth/verify.blade.php`. Eres libre de personalizar esta vista según sea necesario para tu aplicación.
 
 <a name="after-verifying-emails"></a>
-## Luego De Verificar Correos Electrónicos
+## Luego de verificar correos electrónicos
 
 Luego de que una dirección de correo electrónico es verificada, el usuario será redirigido automáticamente a `/home`. Puedes personalizar la ubicación de redirección post-verificación definiendo un método `redirectTo` o propiedad en `VerificationController`:
 

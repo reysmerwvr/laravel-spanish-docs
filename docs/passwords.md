@@ -3,7 +3,7 @@
 # Restablecimiento de contraseñas
 
 - [Introducción](#introduction)
-- [Consideraciones de la Base de Datos](#resetting-database)
+- [Consideraciones de la base de datos](#resetting-database)
 - [Enrutamiento](#resetting-routing)
 - [Vistas](#resetting-views)
 - [Después de restablecer contraseñas](#after-resetting-passwords)
@@ -23,11 +23,11 @@ Antes de usar las características de restablecimiento de contraseñas de Larave
 :::
 
 <a name="resetting-database"></a>
-## Consideraciones de la Base de Datos
+## Consideraciones de la base de datos
 
 Para comenzar, verifica que tu modelo `App\User` implementa la interfaz `Illuminate\Contracts\Auth\CanResetPassword`. El modelo `App\User` incluído con el framework ya implementa esta interfaz y usa el trait `Illuminate\Auth\Passwords\CanResetPassword` para incluir los métodos necesarios para implementar la interfaz.
 
-#### Generando La Migración Para La Tabla de Tokens de Restablecimiento
+#### Generando la migración para la tabla de tokens de restablecimiento
 
 Luego, una tabla debe ser creada para almacenar los tokens de restablecimiento de contraseña. La migración para está tabla está incluida con Laravel por defecto y se encuentra en el directorio `database/migrations`. Así que, todo lo que necesitas hacer es ejecutar tus migraciones de la base de datos:
 
@@ -50,7 +50,7 @@ php artisan make:auth
 De nuevo, Laravel generará todas las vistas necesarias para el restablecimiento de contraseña cuando el comando `make:auth` es ejecutado. Estas vistas están ubicadas en `resources/views/auth/passwords`. Eres libre de personalizarlas según sea necesario para tu aplicación.
 
 <a name="after-resetting-passwords"></a>
-## Luego de Resetear Contraseñas
+## Luego de resetear contraseñas
 
 Una vez que has definido las rutas y vistas para restablecer las contraseñas de tus usuarios, puedes acceder a la ruta en tu navegador en `/password/reset`. El `ForgotPasswordController` incluido con el framework ya incluye la lógica para enviar los correos con el enlace de restablecimiento, mientras que `ResetPasswordController` incluye la lógica para restablecer las contraseñas de los usuarios.
 
@@ -67,7 +67,7 @@ Por defecto, los tokens para restablecer contraseñas expiran luego de una hora.
 <a name="password-customization"></a>
 ## Personalización
 
-#### Personalización de los Guards de Autenticación
+#### Personalización de los guards de autenticación
 
 En tu archivo de configuración `auth.php`, puedes configurar múltiples "guards", que podrán ser usados para definir el comportamiento de autenticación para múltiples tablas de usuarios. Puedes personalizar el controlador `ResetPasswordController` incluido para usar el guard de tu preferencia sobrescribiendo el método `guard` en el controlador. Este método debe retornar una instancia guard:
 
@@ -86,7 +86,7 @@ protected function guard()
 }
 ```
 
-#### Personalización Del Broker de Contraseña
+#### Personalización del broker de contraseña
 
 En tu archivo de configuración `auth.php`, puedes configurar múltiples "brokers" de contraseñas, que pueden ser usados para restablecer contraseñas en múltiples tablas de usuarios. Puedes personalizar los controladores `ForgotPasswordController` y `ResetPasswordController` incluidos para usar el broker de tu elección sobrescribiendo el método `broker`:
 
@@ -104,7 +104,7 @@ protected function broker()
 }
 ```
 
-#### Personalización Del Correo de Reseteo
+#### Personalización del correo de reseteo
 
 Puedes fácilmente modificar la clase de la notificacion usada para enviar el enlace de restablecimiento de contraseña al usuario. Para comenzar, sobrescribe el método `sendPasswordResetNotification` en tu modelo `User`. Dentro de este método, puedes enviar la notificación usando cualquier clase que selecciones. El `$token` de restablecimiento de contaseña es el primer argumento recibido por el método:
 

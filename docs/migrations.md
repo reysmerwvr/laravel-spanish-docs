@@ -3,23 +3,23 @@
 # Base de datos: Migraciones
 
 - [Introducción](#introduction)
-- [Generando Migraciones](#generating-migrations)
-- [Estructura de Migración](#migration-structure)
-- [Ejecutando Migraciones](#running-migrations)
-  - [Reversando Migraciones](#rolling-back-migrations)
+- [Generando migraciones](#generating-migrations)
+- [Estructura de migración](#migration-structure)
+- [Ejecutando migraciones](#running-migrations)
+  - [Reversando migraciones](#rolling-back-migrations)
 - [Tablas](#tables)
-  - [Creando Tablas](#creating-tables)
-  - [Renombrando / Eliminando Tablas](#renaming-and-dropping-tables)
+  - [Creando tablas](#creating-tables)
+  - [Renombrando / Eliminando tablas](#renaming-and-dropping-tables)
 - [Columnas](#columns)
-  - [Creando Columnas](#creating-columns)
-  - [Modificadores de Columna](#column-modifiers)
-  - [Modificando Columnas](#modifying-columns)
-  - [Eliminando Columnas](#dropping-columns)
+  - [Creando columnas](#creating-columns)
+  - [Modificadores de columna](#column-modifiers)
+  - [Modificando columnas](#modifying-columns)
+  - [Eliminando columnas](#dropping-columns)
 - [Índices](#indexes)
-  - [Creación de Índices](#creating-indexes)
-  - [Renombrando Índices](#renaming-indexes)
-  - [Eliminando Índices](#dropping-indexes)
-  - [Restricciones de Clave Foránea](#foreign-key-constraints)
+  - [Creación de indices](#creating-indexes)
+  - [Renombrando indices](#renaming-indexes)
+  - [Eliminando indices](#dropping-indexes)
+  - [Restricciones de clave foránea](#foreign-key-constraints)
 
 <a name="introduction"></a>
 ## Introducción
@@ -29,7 +29,7 @@ Las migraciones son como el control de versión para tu base de datos, permiten 
 La clase [facade](/docs/{{version}}/facades) `Schema` de Laravel proporciona soporte de base de datos orientado a la programación orientada a objetos para la creación y manipulación de tablas a través de todos los sistemas de bases de datos soportados por Laravel.
 
 <a name="generating-migrations"></a>
-## Generando Migraciones
+## Generando migraciones
 
 Para crear una migración, usa el [comando Artisan](/docs/{{version}}/artisan) `make:migration`:
 
@@ -50,7 +50,7 @@ php artisan make:migration add_votes_to_users_table --table=users
 Si prefieres especificar una ruta de directorio de salida personalizada para la migración generada, puedes usar la opción `--path` al momento de ejecutar el comando `make:migration`. La ruta de directorio dada debe ser relativa a la ruta de directorio base de tu aplicación.
 
 <a name="migration-structure"></a>
-## Estructura de Migración
+## Estructura de migración
 
 Una clase de migración contiene dos métodos: `up` y `down`. El método `up` es usado para agregar nuevas tablas, columnas, o índices para tu base de datos, mientras el método `down` debería reversar las operaciones ejecutadas por el método `up`.
 
@@ -93,7 +93,7 @@ class CreateFlightsTable extends Migration
 ```
 
 <a name="running-migrations"></a>
-## Ejecutando Migraciones
+## Ejecutando migraciones
 
 Para ejecutar todas tus maravillosas migraciones, ejecuta el comando Artisan `migrate`:
 
@@ -105,7 +105,7 @@ php artisan migrate
 Si estás usando [La máquina virtual de Homestead](/docs/{{version}}/homestead), deberías ejecutar este comando desde dentro de tu máquina virtual.
 :::
 
-#### Forzando las Migraciones para Ejecutar en Producción
+#### Forzando las migraciones para ejecutar en producción
 
 Algunas operaciones de migración son destructivas, lo que significa que pueden causar que pierdas tus datos. Con el propósito de protegerte de ejecutar estos comandos contra tu base de datos de producción, recibirás un mensaje de confirmación antes que los comandos sean ejecutados. Para forzar que los comandos se ejecuten sin retardo, usa el indicador `--force`.
 
@@ -114,7 +114,7 @@ php artisan migrate --force
 ```
 
 <a name="rolling-back-migrations"></a>
-### Reversando Migraciones
+### Reversando migraciones
 
 Para reversar la operación de migración más reciente, puedes usar el comando `rollback`. Este comando reversa el último "lote" de migraciones, los cuales pueden incluir archivos de migración múltiples.
 
@@ -134,7 +134,7 @@ El comando `migrate:reset` revertirá todas las migraciones de tu aplicación:
 php artisan migrate:reset
 ```
 
-#### Rollback & Migrate En un Único Comando
+#### rollback & migrate en un único comando
 
 El comando `migrate:refresh` reversará todas tus migraciones y después ejecutará el comando `migrate`. Este comando vuelve a crear efectivamente tu base de datos entera:
 
@@ -151,7 +151,7 @@ Puedes reversar y volver a migrar un número limitado de migraciones proporciona
 php artisan migrate:refresh --step=5
 ```
 
-#### Eliminando Todas las Tablas y Migrar
+#### Eliminando todas las tablas y migrar
 
 El comando `migrate:fresh` eliminará todas las tablas de la base de datos y después ejecutará el comando `migrate`:
 
@@ -165,7 +165,7 @@ php artisan migrate:fresh --seed
 ## Tablas
 
 <a name="creating-tables"></a>
-### Creando Tablas
+### Creando tablas
 
 Para crear una nueva tabla en la base de datos, usa el método `create` en la clase facade `Schema`. El método `create` acepta dos argumentos. El primero es el nombre de la tabla, mientras que el segundo es una `Closure` la cual recibe un objeto de la clase `Blueprint` que puede ser usado para definir la nueva tabla:
 
@@ -177,7 +177,7 @@ Schema::create('users', function (Blueprint $table) {
 
 Al momento de crear la tabla, puedes usar cualquiera de [los métodos de columna](#creating-columns) del constructor de esquemas para definir las columnas de la tabla.
 
-#### Inspeccionando la Tabla / Existencia de Columna
+#### Inspeccionando la tabla / Existencia de columna
 
 Puedes inspeccionar fácilmente la existencia de una tabla o columna usando los métodos `hasTable` y `hasColumn`:
 
@@ -191,7 +191,7 @@ if (Schema::hasColumn('users', 'email')) {
 }
 ```
 
-#### Conexión de Base de Datos & Opciones de Tabla
+#### Conexión de base de datos & Opciones de tabla
 
 Si quieres ejecutar una operación de esquema en una conexión de base de datos que no es tu conexión predeterminada, usa el método `connection`:
 
@@ -211,7 +211,7 @@ Comando  |  Descripción
 `$table->temporary();`  |  Crea una tabla temporal (excepto en SQL Server).
 
 <a name="renaming-and-dropping-tables"></a>
-### Renombrando / Eliminando Tablas
+### Renombrando / Eliminando tablas
 
 Para renombrar una tabla de base de datos existente, usa el método `rename`:
 
@@ -227,7 +227,7 @@ Schema::drop('users');
 Schema::dropIfExists('users');
 ```
 
-#### Renombrando Tablas con Claves Foráneas
+#### Renombrando tablas con claves foráneas
 
 Antes de renombrar una tabla, deberías verificar que cualquiera de las restricciones de clave foránea en la tabla tenga un nombre explícito en tus archivos de migración en caso de permitir que Laravel asigne un nombre basado en la convención. De otra manera, el nombre de restricción de clave foránea se referirá al nombre que tenía la tabla.
 
@@ -235,7 +235,7 @@ Antes de renombrar una tabla, deberías verificar que cualquiera de las restricc
 ## Columnas
 
 <a name="creating-columns"></a>
-### Creando Columnas
+### Creando columnas
 
 El método `table` en la clase facade `Schema` puede ser usado para actualizar tablas existentes. Igual que el método `create` acepta dos argumentos: el nombre de la tabla y una `Closure` que recibe una instancia de la clase `Blueprint` que puedes usar para agregar columnas a la tabla:
 
@@ -245,7 +245,7 @@ Schema::table('users', function (Blueprint $table) {
 });
 ```
 
-#### Tipos de Columna Permitidos
+#### Tipos de columna permitidos
 
 El constructor de esquema contiene una variedad de tipos de columna que puedes especificar al momento de construir tus tablas:
 
@@ -310,7 +310,7 @@ Comando  |  Descripción
 `$table->year('birth_year');`  |  Tipo de columna equivalente a YEAR.
 
 <a name="column-modifiers"></a>
-### Modificadores de Columna
+### Modificadores de columna
 
 Además de los tipos de columna listados anteriormente, hay varios "modificadores" de columna que puedes usar al momento de agregar una columna a la tabla de base de datos. Por ejemplo, para hacer que la columna "acepte valores nulos", puedes usar el método `nullable`.
 
@@ -340,7 +340,7 @@ Modificador  |  Descripción
 `->always()`  |  Define la prioridad de los valores de secuencia sobre la entrada para una columna de identidad (PostgreSQL)
 
 <a name="modifying-columns"></a>
-### Modificando Columnas
+### Modificando columnas
 
 #### Prerequisitos
 
@@ -350,7 +350,7 @@ Antes de modificar una columna, asegúrate de agregar la dependencia `doctrine/d
 composer require doctrine/dbal
 ```
 
-#### Actualizando los atributos de Columna
+#### Actualizando los atributos de columna
 
 El método `change` permite que modifiques algunos tipos de columna existentes a un nuevo tipo o modifiques los atributos de la columna. Por ejemplo, puedes querer aumentar el tamaño de una columna tipo cadena. Para ver el método `change` en acción, vamos a aumentar el tamaño de la columna `name` de 25 a 50 caracteres:
 
@@ -372,7 +372,7 @@ Schema::table('users', function (Blueprint $table) {
 Solamente los siguientes tipos de columna pueden ser "cambiados": bigInteger, binary, boolean, date, dateTime, dateTimeTz, decimal, integer, json, longText, mediumText, smallInteger, string, text, time, unsignedBigInteger, unsignedInteger y unsignedSmallInteger.
 :::
 
-#### Renombrando Columnas
+#### Renombrando columnas
 
 Para renombrar una columna, puedes usar el método `renameColumn` en el constructor de esquemas. Antes de renombrar una columna, asegúrate de agregar la dependencia `doctrine/dbal` a tu archivo `composer.json`:
 
@@ -387,7 +387,7 @@ Renombrar alguna columna en una tabla que también tiene una columna de tipo `en
 :::
 
 <a name="dropping-columns"></a>
-### Eliminando Columnas
+### Eliminando columnas
 
 Para eliminar una columna, usa el método `dropColumn` en el constructor de esquemas. Antes de eliminar columnas de una base de datos SQLite, necesitarás agregar la dependencia `doctrine/dbal` a tu archivo `composer.json` y ejecutar el comando `composer update` en tu terminal para instalar la biblioteca:
 
@@ -409,7 +409,7 @@ Schema::table('users', function (Blueprint $table) {
 Eliminar o modificar múltiples columnas dentro de una sola migración al momento de usar una base de datos SQLite no está soportado.
 :::
 
-#### Alias de Comandos Disponibles
+#### Alias de comandos disponibles
 
 | Comando                            | Descripción                                             |
 | ---------------------------------- | ------------------------------------------------------- |
@@ -421,10 +421,10 @@ Eliminar o modificar múltiples columnas dentro de una sola migración al moment
 | `$table->dropTimestampsTz();`      | Alias del método `dropTimestamps()`.                    |
 
 <a name="indexes"></a>
-## Índices
+## Indices
 
 <a name="creating-indexes"></a>
-### Creando Índices
+### Creando indices
 
 El constructor de esquemas soporta varios tipos de índices. Primero, veamos un ejemplo que especifica que los valores de una columna deben ser únicos. Para crear el índice, podemos encadenar el método `unique` en la definición de columna:
 
@@ -450,7 +450,7 @@ Laravel generará automáticamente un nombre de índice razonable, pero puedes p
 $table->unique('email', 'unique_email');
 ```
 
-#### Tipos de Índice Disponibles
+#### Tipos de indice disponibles
 
 Cada método de índice acepta un segundo argumento opcional para especificar el nombre del índice. Si se omite, el nombre se derivará de los nombres de la tabla y la(s) columna(s).
 
@@ -462,7 +462,7 @@ Cada método de índice acepta un segundo argumento opcional para especificar el
 | `$table->index('state');`               | Agrega un índice con valores repetidos.     |
 | `$table->spatialIndex('location');`     | Agrega un índice espacial. (excepto SQLite) |
 
-#### Longitudes de Índices & MySQL / MariaDB
+#### Longitudes de indices & MySQL / MariaDB
 
 Laravel usa el conjunto de caracteres `utf8mb4` por defecto, el cual incluye soporte para almacenar "emojis" en la base de datos. Si estás ejecutando una versión de MySQL más antigua que la versión 5.7.7 o más vieja que la versión 10.2.2 de MariaDB, puedes que necesites configurar manualmente la longitud de cadena predeterminada generada por las migraciones con el propósito de que MySQL cree los índices para estos. Puedes configurar esto ejecutando el método `Schema::defaultStringLength` dentro de tu `AppServiceProvider`:
 
@@ -483,7 +483,7 @@ public function boot()
 Alternativamente, puedes habilitar la opción `innodb_large_prefix` para tu base de datos. Debes referirte a la documentación de tu base de datos para conocer las instrucciones de cómo habilitar ésta apropiadamente.
 
 <a name="renaming-indexes"></a>
-### Renombrando Índices
+### Renombrando indices
 
 Para renombrar un índice, puedes usar el método `renameIndex`. Este método acepta el nombre del índice actual como primer argumento y el nombre deseado como segundo argumento:
 
@@ -492,7 +492,7 @@ $table->renameIndex('from', 'to')
 ```
 
 <a name="dropping-indexes"></a>
-### Eliminando Índices
+### Eliminando indices
 
 Para eliminar un índice, debes especificar el nombre del índice. De forma predeterminada, Laravel asigna automáticamente un nombre razonable para los índices. Concatena el nombre de la tabla, el nombre de la columna indexada y el tipo de índice. Aquí están algunos ejemplos:
 
@@ -512,7 +512,7 @@ Schema::table('geo', function (Blueprint $table) {
 ```
 
 <a name="foreign-key-constraints"></a>
-### Restricciones de Clave Foránea
+### Restricciones de clave foránea
 
 Laravel también proporciona soporte para la creación de restricciones de clave foránea, las cuales son usadas para forzar la integridad referencial a nivel de base de datos.  Por ejemplo, vamos a definir una columna `user_id` en la tabla `posts` que referencia la columna `id` en una tabla `users`:
 

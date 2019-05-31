@@ -4,7 +4,7 @@
 
 - [Introducción](#introduction)
 - [Configuración](#configuration)
-- [Uso Básico](#basic-usage)
+- [Uso básico](#basic-usage)
 
 <a name="introduction"></a>
 ## Introducción
@@ -57,7 +57,7 @@ class UpdatePasswordController extends Controller
 }
 ```
 
-#### Ajustando el factor De trabajo de Bcrypt
+#### Ajustando el factor de trabajo de Bcrypt
 
 Si estás usando el algoritmo Bcrypt, el método `make` te permite administrar el factor de trabajo del algoritmo usando la opción `rounds`; sin embargo, el valor por defecto es aceptable para la mayoría de las aplicaciones:
 
@@ -67,7 +67,7 @@ $hashed = Hash::make('password', [
 ]);
 ```
 
-#### Ajustando el Factor de trabajo de Argon2
+#### Ajustando el factor de trabajo de Argon2
 
 Si estás usando el algoritmo de Argon2, el método `make` te permite administrar la carga de trabajo del algoritmo usando las opciones `memory`, `time` y `threads`; sin embargo, los valores por defecto son aceptables para la mayoría de las aplicaciones:
 

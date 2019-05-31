@@ -4,39 +4,39 @@
 
 - [Introducción](#introduction)
 - [Instalación](#installation)
-    - [Administrando Las Instalaciones De ChromeDriver](#managing-chromedriver-installations)
-    - [Usando Otros Navegadores](#using-other-browsers)
-- [Primeros Pasos](#getting-started)
-    - [Generando Pruebas](#generating-tests)
-    - [Ejecutar Pruebas](#running-tests)
-    - [Manejo de Entorno](#environment-handling)
-    - [Creando Navegadores](#creating-browsers)
+    - [Administrando las instalaciones de ChromeDriver](#managing-chromedriver-installations)
+    - [Usando otros navegadores](#using-other-browsers)
+- [Primeros pasos](#getting-started)
+    - [Generando pruebas](#generating-tests)
+    - [Ejecutar pruebas](#running-tests)
+    - [Manejo de entorno](#environment-handling)
+    - [Creando navegadores](#creating-browsers)
     - [Macros de navegador](#browser-macros)
     - [Autenticación](#authentication)
-    - [Migraciones de Base de Datos](#migrations)
-- [Interactuando con Elementos](#interacting-with-elements)
+    - [Migraciones de base de datos](#migrations)
+- [Interactuando con elementos](#interacting-with-elements)
     - [Selectores de Dusk](#dusk-selectors)
-    - [Haciendo Clic En Enlaces](#clicking-links)
-    - [Texto, Valores y Atributos](#text-values-and-attributes)
-    - [Usando Formularios](#using-forms)
-    - [Adjuntando Archivos](#attaching-files)
-    - [Usando El Teclado](#using-the-keyboard)
-    - [Usando El Ratón](#using-the-mouse)
-    - [Diálogos De JavaScript](#javascript-dialogs)
-    - [Alcance De Selectores](#scoping-selectors)
-    - [Esperando Por Elementos](#waiting-for-elements)
-    - [Haciendo Aserciones de Vue](#making-vue-assertions)
-- [Aserciones Disponibles](#available-assertions)
+    - [Haciendo clic en enlaces](#clicking-links)
+    - [Texto, valores y atributos](#text-values-and-attributes)
+    - [Usando formularios](#using-forms)
+    - [Adjuntando archivos](#attaching-files)
+    - [Usando el teclado](#using-the-keyboard)
+    - [Usando el ratón](#using-the-mouse)
+    - [Diálogos de JavaScript](#javascript-dialogs)
+    - [Alcance de selectores](#scoping-selectors)
+    - [Esperando por elementos](#waiting-for-elements)
+    - [Haciendo aserciones de Vue](#making-vue-assertions)
+- [Aserciones disponibles](#available-assertions)
 - [Páginas](#pages)
-    - [Generando Páginas](#generating-pages)
-    - [Configurando Páginas](#configuring-pages)
-    - [Visitando Páginas](#navigating-to-pages)
-    - [Selectores Abreviados](#shorthand-selectors)
-    - [Métodos de Página](#page-methods)
+    - [Generando páginas](#generating-pages)
+    - [Configurando páginas](#configuring-pages)
+    - [Visitando páginas](#navigating-to-pages)
+    - [Selectores abreviados](#shorthand-selectors)
+    - [Métodos de página](#page-methods)
 - [Componentes](#components)
-    - [Generando Componentes](#generating-components)
-    - [Usando Componentes](#using-components)
-- [Integración Continua](#continuous-integration)
+    - [Generando componentes](#generating-components)
+    - [Usando componentes](#using-components)
+- [Integración continua](#continuous-integration)
     - [CircleCI](#running-tests-on-circle-ci)
     - [Codeship](#running-tests-on-codeship)
     - [Heroku CI](#running-tests-on-heroku-ci)
@@ -81,7 +81,7 @@ php artisan dusk:fails
 ```
 
 <a name="managing-chromedriver-installations"></a>
-### Administrando Las Instalaciones De ChromeDriver
+### Administrando las instalaciones de ChromeDriver
 
 Si te gustaria instalar una versión diferente de ChromeDriver a la incluida con Laravel Dusk, puedes usar el comando `dusk:chrome-driver`:
 
@@ -101,7 +101,7 @@ Dusk requiere que los binarios de `chromedriver` sean ejecutables. Si tienes pro
 :::
 
 <a name="using-other-browsers"></a>
-### Usando Otros Navegadores
+### Usando otros navegadores
 
 De forma predeterminada, Dusk usa Google Chrome y una instalación de [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/home) independiente para ejecutar tus pruebas de navegador. Sin embargo, puedes iniciar tu propio servidor Selenium y ejecutar tus pruebas en cualquier navegador que desees.
 
@@ -137,10 +137,10 @@ protected function driver()
 ```
 
 <a name="getting-started"></a>
-## Primeros Pasos
+## Primeros pasos
 
 <a name="generating-tests"></a>
-### Generando Pruebas
+### Generando pruebas
 
 Para generar una prueba de Dusk, usa el comando de Artisan `dusk:make`. La prueba generada será colocada en el directorio `tests/Browser`:
 
@@ -149,7 +149,7 @@ php artisan dusk:make LoginTest
 ```
 
 <a name="running-tests"></a>
-### Ejecutando Pruebas
+### Ejecutando pruebas
 
 Para ejecutar tus pruebas de navegador, usa el comando Artisan `dusk`:
 
@@ -169,7 +169,7 @@ El comando `dusk` acepta cualquier argumento que sea aceptado normalmente por el
 php artisan dusk --group=foo
 ```
 
-#### Iniciando Manualmente ChromeDriver
+#### Iniciando manualmente ChromeDriver
 
 De forma predeterminada, Dusk intentará automáticamente iniciar ChromeDriver. Si esto no funciona para tu sistema en particular, puedes iniciar manualmente ChromeDriver antes de ejecutar el comando `dusk`. Si eliges iniciar manualmente ChromeDriver, debes comentar la siguiente línea de tu archivo `tests/DuskTestCase.php`:
 
@@ -203,14 +203,14 @@ protected function driver()
 ```
 
 <a name="environment-handling"></a>
-### Manejo de Entorno
+### Manejo de entorno
 
 Para forzar que Dusk use su propio archivo de entorno al momento de ejecutar las pruebas, crea un archivo `.env.dusk.{environment}` en el directorio raíz de tu proyecto. Por ejemplo, si estás iniciando el comando `dusk` desde tu entorno `local`, deberías crear un archivo `.env.dusk.local`.
 
 Al momento de ejecutar pruebas, Dusk respaldará tu archivo `.env` y renombrará tu entorno Dusk a `.env`. Una vez que las pruebas han sido completadas, tu archivo `.env` será restaurado.
 
 <a name="creating-browsers"></a>
-### Creando Navegadores
+### Creando navegadores
 
 Para empezar, vamos a escribir una prueba que verifica que podemos entrar a nuestra aplicación. Después de generar una prueba, podemos modificarla para visitar la página de login, introducir algunas credenciales y presionar el botón "Login". Para crear una instancia del navegador, ejecuta el método `browse`:
 
@@ -256,7 +256,7 @@ Como puedes ver en el ejemplo anterior, el método `browse` acepta una función 
 Esta prueba puede ser usada para probar la pantalla login generada por el comando Artisan `make:auth`.
 :::
 
-#### Creando Múltiples Navegadores
+#### Creando múltiples navegadores
 
 Algunas veces puedes necesitar múltiples navegadores con el propósito de ejecutar apropiadamente una prueba. Por ejemplo, múltiples navegadores pueden ser necesitados para probar una pantalla de conversaciones que interactúa con websockets. Para crear múltiples navegadores, "solicita" más de un navegador en la firma del callback dado al método `browse`:
 
@@ -277,7 +277,7 @@ $this->browse(function ($first, $second) {
 });
 ```
 
-#### Redimensionando las Ventanas del Navegador
+#### Redimensionando las ventanas del navegador
 
 Puedes usar el método `resize` para ajustar el tamaño de la ventana del navegador:
 
@@ -349,7 +349,7 @@ Después de usar el método `loginAs`, la sesión de usuario será mantenida par
 :::
 
 <a name="migrations"></a>
-### Migraciones de Bases de Datos
+### Migraciones de bases de datos
 
 Cuando tu prueba requiere migraciones, como el ejemplo de autenticación visto antes, nunca deberías usar el trait `RefreshDatabase`. El trait `RefreshDatabase` se apoya en transacciones de base de datos, las cuales no serán aplicables a traves de las solicitudes HTTP. En su lugar, usa el trait `DatabaseMigrations`:
 
@@ -370,7 +370,7 @@ class ExampleTest extends DuskTestCase
 ```
 
 <a name="interacting-with-elements"></a>
-## Interactuando con Elementos
+## Interactuando con elementos
 
 <a name="dusk-selectors"></a>
 ### Selectores de Dusk
@@ -400,7 +400,7 @@ $browser->click('@login-button');
 ```
 
 <a name="clicking-links"></a>
-### Haciendo Clic En Enlaces
+### Haciendo clic en enlaces
 
 Para hacer clic sobre un enlace, puedes usar el método `clickLink` en la instancia del navegador. El método `clickLink` hará clic en el enlace que tiene el texto dado en la pantalla:
 
@@ -415,7 +415,7 @@ Este método interactúa con jQuery. Si jQuery no está disponible en la página
 <a name="text-values-and-attributes"></a>
 ### Texto, Valores y Atributos
 
-#### Obteniendo y Estableciendo Valores
+#### Obteniendo y estableciendo valores
 
 Dusk proporciona varios métodos para interactuar con el texto de pantalla, valor y atributos de elementos en la página actual. Por ejemplo, para obtener el "valor" de un elemento que coincida con un selector dado, usa el método `value`:
 
@@ -427,7 +427,7 @@ $value = $browser->value('selector');
 $browser->value('selector', 'value');
 ```
 
-#### Obteniendo Texto
+#### Obteniendo texto
 
 El método `text` puede ser usado para obtener el texto de pantalla de un elemento que coincida con el selector dado:
 
@@ -435,7 +435,7 @@ El método `text` puede ser usado para obtener el texto de pantalla de un elemen
 $text = $browser->text('selector');
 ```
 
-#### Obteniendo Atributos
+#### Obteniendo atributos
 
 Finalmente, el método `attribute` puede ser usado para obtener un atributo de un elemento que coincida con el selector dado:
 
@@ -446,7 +446,7 @@ $attribute = $browser->attribute('selector', 'value');
 <a name="using-forms"></a>
 ### Usando Formularios
 
-#### Escribiendo Valores
+#### Escribiendo valores
 
 Dusk proporciona una variedad de métodos para interactuar con formularios y elementos de entrada. Primero, vamos a echar un vistazo a un ejemplo de escribir texto dentro de un campo de entrada:
 
@@ -469,7 +469,7 @@ Puedes limpiar el valor de un campo usando el método `clear`:
 $browser->clear('email');
 ```
 
-#### Listas Desplegables
+#### Listas desplegables
 
 Para seleccionar un valor en un cuadro de selección de lista desplegable, puedes usar el método `select`. Al momento de pasar un valor al método `select`, deberías pasar el valor de opción a resaltar en lugar del texto mostrado en pantalla:
 
@@ -483,7 +483,7 @@ Puedes seleccionar una opción aleatoria al omitir el segundo parámetro:
 $browser->select('size');
 ```
 
-#### Casillas de Verificación
+#### Casillas de verificación
 
 Para "marcar" un campo de casilla de verificación, puedes usar el método `check`. Al igual que muchos otros métodos relacionados con entradas, un selector CSS completo no es obligatorio. Si un selector que coincida exactamente no puede ser encontrado, Dusk buscará una casilla de verificación con un atributo `name` coincidente.
 
@@ -493,7 +493,7 @@ $browser->check('terms');
 $browser->uncheck('terms');
 ```
 
-#### Botones de Radio
+#### Botones de radio
 
 Para "seleccionar" una opción de botón de radio, puedes usar el método `radio`. Al igual que muchos otros métodos relacionados con campos, un selector CSS completo no es obligatorio. Si un selector que coincida exactamente no puede ser encontrado, Dusk buscará un radio con atributos `name` y `value` coincidentes:
 
@@ -502,7 +502,7 @@ $browser->radio('version', 'php7');
 ```
 
 <a name="attaching-files"></a>
-### Adjuntando Archivos
+### Adjuntando archivos
 
 El método `attach` puede ser usado para adjuntar un archivo a un elemento `file`. Al igual que muchos otros métodos relacionados con campos, un selector CSS completo no es obligatorio. Si un selector que coincida exactamente no puede ser encontrado, Dusk buscará un campo de archivo con atributo `name` coincidente:
 
@@ -515,7 +515,7 @@ La función `attach` requiere que la extensión de PHP `Zip` esté instalada y h
 :::
 
 <a name="using-the-keyboard"></a>
-### Usando el Teclado
+### Usando el teclado
 
 El método `keys` permite que proporciones secuencias de entrada más complejas para un elemento dado que lo permitido normalmente por el método `type`. Por ejemplo, puedes mantener presionada las teclas modificadoras al introducir valores. En este ejemplo, la tecla `shift` será mantenida presionada mientras la palabra `taylor` es introducida dentro del elemento que coincida con el selector dado. Después de que la palabra `taylor` sea tipeada, la palabra `otwell` será tipeada sin alguna tecla modificadora:
 
@@ -536,7 +536,7 @@ Todas las teclas modificadoras se envuelven entre corchetes `{}` y coinciden con
 <a name="using-the-mouse"></a>
 ### Usando el Ratón
 
-#### Haciendo Clic Sobre Elementos
+#### Haciendo clic sobre elementos
 
 El método `click` puede ser usado para "clickear" sobre un elemento que coincida con el selector dado:
 
@@ -552,7 +552,7 @@ El método `mouseover` puede ser usado cuando necesitas mover el ratón sobre un
 $browser->mouseover('.selector');
 ```
 
-#### Arrastrar y Soltar
+#### Arrastrar y soltar
 
 El método `drag` puede ser usado para arrastrar un elemento que coincida con el selector dado hasta otro elemento:
 
@@ -598,7 +598,7 @@ $browser->dismissDialog();
 ```
 
 <a name="scoping-selectors"></a>
-### Alcance De Selectores
+### Alcance de selectores
 
 Algunas veces puedes querer ejecutar varias operaciones dentro del alcance de un selector dado. Por ejemplo, puedes querer comprobar que algunos textos existen unicamente dentro de una tabla y después presionar un botón dentro de la tabla. Puedes usar el método `with` para completar esta tarea. Todas las operaciones ejecutadas dentro de la función de retorno dada al método `with` serán exploradas en el selector original:
 
@@ -610,7 +610,7 @@ $browser->with('.table', function ($table) {
 ```
 
 <a name="waiting-for-elements"></a>
-### Esperando por Elementos
+### Esperando por elementos
 
 Al momento de probar aplicaciones que usan JavaScript de forma extensiva, frecuentemente se vuelve necesario "esperar" por ciertos elementos o datos estén disponibles antes de proceder con una prueba. Dusk hace esto fácilmente. Usando una variedad de métodos, puedes esperar que los elementos estén visibles en la página e incluso esperar hasta que una expresión de JavaScript dada se evalúe como `true`.
 
@@ -622,7 +622,7 @@ Si necesitas pausar la prueba por un número de milisegundos dado, usa el métod
 $browser->pause(1000);
 ```
 
-#### Esperando por Selectores
+#### Esperando por selectores
 
 El método `waitFor` puede ser usado para pausar la ejecución de la prueba hasta que el elemento que coincida con el selector CSS dado sea mostrado en la página. De forma predeterminada, esto pausará la prueba por un máximo de cinco segundos antes de arrojar una excepción. Si es necesario, puedes pasar un umbral de tiempo de expiración personalizado como segundo argumento del método:
 
@@ -642,7 +642,7 @@ $browser->waitUntilMissing('.selector');
 $browser->waitUntilMissing('.selector', 1);
 ```
 
-#### Estableciendo el Alcance de Selectores Cuando Estén Disponibles
+#### Estableciendo el alcance de selectores cuando estén disponibles
 
 Ocasionalmente, puedes querer esperar por un selector dado y después interactuar con el elemento que coincida con el selector. Por ejemplo, puedes querer esperar hasta que una ventana modal esté disponible y después presionar el botón "OK" dentro de esa ventana. El método `whenAvailable` puede ser usado en este caso. Todas las operaciones de elementos ejecutadas dentro de la función de retorno dada serán ejecutadas dentro del selector original:
 
@@ -653,7 +653,7 @@ $browser->whenAvailable('.modal', function ($modal) {
 });
 ```
 
-#### Esperando por Texto
+#### Esperando por texto
 
 El método `waitForText` puede ser usado para esperar hasta que el texto dado sea mostrado en la página:
 
@@ -665,7 +665,7 @@ $browser->waitForText('Hello World');
 $browser->waitForText('Hello World', 1);
 ```
 
-#### Esperando por Enlaces
+#### Esperando por enlaces
 
 El método `waitForLink` puede ser usado para esperar hasta que un enlace dado sea mostrada en la página:
 
@@ -677,7 +677,7 @@ $browser->waitForLink('Create');
 $browser->waitForLink('Create', 1);
 ```
 
-#### Esperando por la Localización de la Página
+#### Esperando por la localización de la página
 
 Al momento de hacer una comprobación de ruta tal como `$browser->assertPathIs('/home')`, la comprobación puede fallar si `window.location.pathname` está siendo actualizada asincrónicamente. Puedes usar el método `waitForLocation` para esperar por la localización que tenga un valor dado:
 
@@ -691,7 +691,7 @@ También puede esperar la localización de una ruta con nombre:
 $browser->waitForRoute($routeName, $parameters);
 ```
 
-#### Esperando por Recargas de Página
+#### Esperando por recargas de página
 
 Si necesita hacer aserciones después de que se ha recargado una página, usa el método `waitForReload`:
 
@@ -701,7 +701,7 @@ $browser->click('.some-action')
         ->assertSee('something');
 ```
 
-#### Esperando por Expresiones de JavaScript
+#### Esperando por expresiones de JavaScript
 
 Algunas veces puedes querer pausar la ejecución de una prueba hasta que una expresión de JavaScript dada se evalúe a `true`. Puedes completar fácilmente esto usando el método `waitUntil`. Al momento de pasar una expresión a este método, no necesitas incluir al final la palabra clave `return` o un punto y coma `;`:
 
@@ -715,7 +715,7 @@ $browser->waitUntil('App.data.servers.length > 0');
 $browser->waitUntil('App.data.servers.length > 0', 1);
 ```
 
-#### Esperando por Expresiones de Vue
+#### Esperando por expresiones de Vue
 
 Los siguientes métodos puedes ser usados para esperar hasta que un atributo de componente de Vue dado tenga un determinado valor:
 
@@ -727,7 +727,7 @@ $browser->waitUntilVue('user.name', 'Taylor', '@user');
 $browser->waitUntilVueIsNot('user.name', null, '@user');
 ```
 
-#### Esperando por una Función de Retorno
+#### Esperando por una función de retorno
 
 Muchos de los métodos de "espera" en Dusk confían en el método `waitUsing` subyacente. Puedes usar este método directamente para esperar por una función de retorno dada que devuelva `true`. El método `waitUsing` acepta el máximo número de segundos para esperar la Closure, el intervalo en el cual la Closure debería ser evaluada y un mensaje opcional de falla:
 
@@ -738,7 +738,7 @@ $browser->waitUsing(10, 1, function () use ($something) {
 ```
 
 <a name="making-vue-assertions"></a>
-### Haciendo Aserciones de Vue
+### Haciendo aserciones de Vue
 
 Inclusive Dusk permite que hagas comprobaciones en el estado de componente de datos de [Vue](https://vuejs.org). Por ejemplo, imagina que tu aplicación contiene el siguiente componente de Vue:
 
@@ -780,7 +780,7 @@ public function testVue()
 ```
 
 <a name="available-assertions"></a>
-## Aserciones Disponibles
+## Aserciones disponibles
 
 Dusk proporciona una variedad de aserciones que puedes hacer en tu apliación. Todas las aserciones disponibles están documentadas en la tabla de abajo:
 
@@ -1352,7 +1352,7 @@ $browser->assertVueDoesNotContain($property, $value, $componentSelector = null);
 Alguna veces, las pruebas requieren que varias acciones complicadas sean ejecutadas en secuencia. Esto puede hacer tus pruebas más difíciles de leer y entender. Las páginas permiten que definas acciones expresivas que entonces pueden ser ejecutadas en una página dada usando un solo método. Las páginas también permiten que definas abreviaturas para selectores comunes para tu aplicación o una página única.
 
 <a name="generating-pages"></a>
-### Generando Páginas
+### Generando páginas
 
 Para generar un objeto de página, usa el comando Artisan `dusk:page`. Todos los objetos de página serán colocados en el directorio `tests/Browser/Pages`:
 
@@ -1361,7 +1361,7 @@ php artisan dusk:page Login
 ```
 
 <a name="configuring-pages"></a>
-### Configurando Páginas
+### Configurando páginas
 
 De forma predeterminada, las páginas tienen tres métodos: `url`, `assert`, y `elements`. Discutiremos los métodos `url` y `assert` ahora. El método `elements` será [discutido con más detalle debajo](#shorthand-selectors).
 
@@ -1398,7 +1398,7 @@ public function assert(Browser $browser)
 ```
 
 <a name="navigating-to-pages"></a>
-### Navegando Hacia las Páginas
+### Navegando hacia las páginas
 
 Una vez que se ha configurado una página, puedes navegar a ella utilizando el método `visit`:
 
@@ -1420,7 +1420,7 @@ $browser->visit('/dashboard')
 ```
 
 <a name="shorthand-selectors"></a>
-### Selectores Abreviados
+### Selectores abreviados
 
 El método `elements` de páginas permite que definas abreviaturas rápidas, fáciles de recordar para cualquier selector CSS en tu página. Por ejemplo, vamos a definir una abreviación para el campo "email" de la página login de la aplicación:
 
@@ -1444,7 +1444,7 @@ Ahora, puedes usar este selector de abreviación en cualquier lugar que usarías
 $browser->type('@email', 'taylor@laravel.com');
 ```
 
-#### Selectores de Abreviaturas Globales
+#### Selectores de abreviaturas globales
 
 Después de instalar Dusk, una clase `Page` básica será colocada en tu directorio `tests/Browser/Pages`. Esta clase contiene un método `siteElements` el cual puede ser usado para definir selectores de abreviaturas globales que deberían estar disponibles en cada página en cada parte de tu aplicación:
 
@@ -1463,7 +1463,7 @@ public static function siteElements()
 ```
 
 <a name="page-methods"></a>
-### Métodos de Página
+### Métodos de página
 
 Además de los métodos predeterminados definidos en páginas, puedes definir métodos adicionales, los cuales pueden ser usados en cualquier parte de tus pruebas. Por ejemplo, vamos a imaginar que estamos construyendo una aplicación para administración de música. Una acción común para una página de la aplicación podría ser crear una lista de reproducción. En lugar de volver a escribir la lógica para crear una lista de reproducción en cada prueba, puedes definir un método `createPlaylist` en una clase de página:
 
@@ -1510,7 +1510,7 @@ $browser->visit(new Dashboard)
 Los componentes son similares a “los objetos de página” de Dusk, pero son planeados para partes de UI y funcionalidades que sean reusadas en otras partes de tu aplicación, tal como una barra de navegación o ventana de notificación. Como tal, los componentes no son enlazados a URLs específicas.
 
 <a name="generating-components"></a>
-### Generando Componentes
+### Generando componentes
 
 Para generar un componente, usa el comando Artisan `dusk:component`. Los nuevos componentes son colocados en el directorio `test/Browser/Components`:
 
@@ -1587,7 +1587,7 @@ class DatePicker extends BaseComponent
 ```
 
 <a name="using-components"></a>
-### Usando Componentes
+### Usando componentes
 
 Una vez que el componente ha sido definido, fácilmente podemos seleccionar una fecha dentro del calendario desde cualquier prueba. Y, si la lógica necesaria para seleccionar una fecha cambia, solamente necesitaremos actualizar el componente:
 
@@ -1622,7 +1622,7 @@ class ExampleTest extends DuskTestCase
 ```
 
 <a name="continuous-integration"></a>
-## Integración Continua
+## Integración continua
 
 <a name="running-tests-on-circle-ci"></a>
 ### CircleCI

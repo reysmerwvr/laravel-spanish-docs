@@ -2,20 +2,20 @@
 
 # Solicitudes HTTP
 
-- [Accediendo a la Solicitud](#accessing-the-request)
-    - [Ruta Y Método De La Solicitud](#request-path-and-method)
+- [Accediendo a la solicitud](#accessing-the-request)
+    - [Ruta y método de la solicitud](#request-path-and-method)
     - [Solicitudes PSR-7](#psr7-requests)
-- [Recorte Y Normalización de Entrada](#input-trimming-and-normalization)
-- [Obteniendo Datos Ingresados](#retrieving-input)
-    - [Datos Antiguos](#old-input)
+- [Recorte y normalización de entrada](#input-trimming-and-normalization)
+- [Obteniendo datos ingresados](#retrieving-input)
+    - [Datos antiguos](#old-input)
     - [Cookies](#cookies)
 - [Archivos](#files)
-    - [Obteniendo Archivos Cargados](#retrieving-uploaded-files)
-    - [Almacenando Archivos Cargados](#storing-uploaded-files)
-- [Configurando Proxies de Confianza](#configuring-trusted-proxies)
+    - [Obteniendo archivos cargados](#retrieving-uploaded-files)
+    - [Almacenando archivos cargados](#storing-uploaded-files)
+- [Configurando proxies de confianza](#configuring-trusted-proxies)
 
 <a name="accessing-the-request"></a>
-## Accediendo a la Solicitud
+## Accediendo a la solicitud
 
 Para obtener una instancia de la solicitud HTTP actual por medio de una inyección de dependencia, deberías poner la referencia de la clase `Illuminate\Http\Request` en tu método de controlador. La instancia de la solicitud entrante automáticamente será inyectada por el [contenedor de servicio](/docs/{{version}}/container):
 
@@ -43,7 +43,7 @@ class UserController extends Controller
 }
 ```
 
-#### Inyección de Dependencias Y Parametros de Rutas
+#### Inyección de dependencias Y parametros de rutas
 
 Si tu método de controlador también está esperando la entrada de un parámetro de ruta deberías listar tus parámetros de ruta después de tus otras dependencias. Por ejemplo, si tu ruta es definida como sigue:
 
@@ -76,7 +76,7 @@ class UserController extends Controller
 }
 ```
 
-#### Accediendo la Solicitud A Través de Closures de Rutas
+#### Accediendo la solicitud a través de closures de rutas
 
 También puedes poner la referencia de la clase `Illuminate\Http\Request` en una Closure de ruta. El contenedor de servicio automáticamente inyectará la solicitud entrante dentro de la Closure que es ejecutada:
 
@@ -89,11 +89,11 @@ Route::get('/', function (Request $request) {
 ```
 
 <a name="request-path-and-method"></a>
-### Ruta Y Método De La Solicitud
+### Ruta y método de la solicitud
 
 La instancia `Illuminate\Http\Request` proporciona una variedad de métodos para examinar la solicitud HTTP para tu aplicación y extiende la clase `Symfony\Component\HttpFoundation\Request`. Discutiremos algunos de los métodos más importantes a continuación.
 
-#### Obteniendo La Ruta De La Solicitud
+#### Obteniendo la ruta de la solicitud
 
 El método `path` devuelve la información de ruta de la solicitud. Así, si la solicitud entrante tiene como destino `http://domain.com/foo/bar`, el método `path` devolverá `foo/bar`:
 
@@ -109,7 +109,7 @@ if ($request->is('admin/*')) {
 }
 ```
 
-#### Obteniendo La Url De La Solicitud
+#### Obteniendo la URL de la solicitud
 
 Para obtener la URL completa de la solicitud entrante puedes usar los métodos `url` o `fullUrl`. El método `url` devolverá la URL sin la cadena de la consulta, mientras que el método `fullUrl` si la incluye:
 
@@ -121,7 +121,7 @@ $url = $request->url();
 $url = $request->fullUrl();
 ```
 
-#### Obteniendo El Método De La Solicitud
+#### Obteniendo el método de la solicitud
 
 El método `method` devolverá el verbo HTTP de la solicitud. Puedes usar el método `isMethod` para verificar que el verbo HTTP coincida con una cadena dada:
 
@@ -158,16 +158,16 @@ Si devuelves una instancia de respuesta PSR-7 desde una ruta o controlador, auto
 :::
 
 <a name="input-trimming-and-normalization"></a>
-## Recorte Y Normalización de Entrada
+## Recorte y normalización de entrada
 
 De forma predeterminada, Laravel incluye los middleware `TrimStrings` y `ConvertEmptyStringsToNull` en la pila de middleware global de tu aplicación. Estos middleware son listados en la pila por la clase `App\Http\Kernel`. Estos middleware automáticamente recortarán todos los campos de cadena entrantes en la solicitud, así como convertirán cualquier campo de cadena vacío a `null`. Esto permite que no tengas que preocuparte sobre estos asuntos de normalización en tus rutas y controladores.
 
 Si prefieres deshabilitar este comportamiento, puedes remover los dos middleware de tu pila de middleware de tu aplicación al eliminarlos de la propiedad `$middleware` de tu clase `App\Http\Kernel`.
 
 <a name="retrieving-input"></a>
-## Obteniendo Datos Ingresados
+## Obteniendo datos ingresados
 
-#### Obteniendo Todos los Datos Ingresados
+#### Obteniendo todos los datos ingresados
 
 También puedes obtener todos los datos ingresados en forma de arreglo usando el método `all`:
 
@@ -175,7 +175,7 @@ También puedes obtener todos los datos ingresados en forma de arreglo usando el
 $input = $request->all();
 ```
 
-#### Obteniendo el Valor de un Campo
+#### Obteniendo el valor de un campo
 
 Usando unos pocos métodos básicos, puedes acceder a todos los datos ingresados por el usuario desde la instancia `Illuminate\Http\Request` sin preocuparte por cuál verbo HTTP fue usado por la solicitud. Sin importar el verbo HTTP, el método `input` puede ser usado para obtener la entrada de usuario:
 
@@ -203,7 +203,7 @@ Puedes llamar al método `input` sin ningún argumento para retornar todos los v
 $input = $request->input();    
 ```
 
-#### Obteniendo Datos desde la Cadena de Consulta
+#### Obteniendo datos desde la cadena de consulta
 
 Mientras el método `input` obtiene valores de la porción de datos de la solicitud completa (incluyendo la cadena de consulta), el método `query` solamente obtendrá valores de la cadena de consulta:
 
@@ -223,7 +223,7 @@ Puedes ejecutar el método `query` sin ningún argumento con el propósito de ob
 $query = $request->query();
 ```
 
-#### Recuperando Datos por Medio de Propiedades Dinámicas
+#### Recuperando datos por medio de propiedades dinámicas
 
 También puedes acceder a los datos ingresados por el usuario usando propiedades dinámicas en la instancia `Illuminate\Http\Request`. Por ejemplo, si uno de los formularios de tu aplicación contiene un campo `name`, puedes acceder al valor del campo de la siguiente forma:
 
@@ -233,7 +233,7 @@ $name = $request->name;
 
 Al momento de usar propiedades dinámicas, Laravel primero buscará por el valor del parámetro en la porción de datos de la solicitud. Si no está presente, buscará el campo en los parámetros de ruta.
 
-#### Obteniendo Valores JSON
+#### Obteniendo valores JSON
 
 Al momento de enviar solicitudes JSON a tu aplicación, puedes acceder a los datos JSON por medio del método `input` al tiempo que el encabezado `Content-Type` de la solicitud sea establecido apropiadamente a `application/json`. Incluso puedes usar sintaxis "." para buscar adentro de los arreglos JSON:
 
@@ -241,7 +241,7 @@ Al momento de enviar solicitudes JSON a tu aplicación, puedes acceder a los dat
 $name = $request->input('user.name');
 ```
 
-#### Obteniendo Una Porción De Los Datos Ingresados
+#### Obteniendo una porción de los datos ingresados
 
 Si necesitas obtener un subconjunto de los datos ingresados, puedes usar los métodos `only` y `except`. Ambos métodos aceptan un solo arreglo o una lista dinámica de argumentos:
 
@@ -259,7 +259,7 @@ $input = $request->except('credit_card');
 El método `only` devuelve todos los pares clave / valor que solicites; sin embargo, no devolverá pares clave / valor que no estén presentes en la solicitud.
 :::
 
-#### Determinando Si Un Valor Ingresado Está Presente
+#### Determinando si un Valor ingresado está presente
 
 Deberías usar el método `has` para determinar si un valor está presente en la solicitud. El método `has` devuelve `true` si el valor está presente en la solicitud:
 
@@ -286,11 +286,11 @@ if ($request->filled('name')) {
 ```
 
 <a name="old-input"></a>
-### Entrada Antigua
+### Entrada antigua
 
 Laravel permite que mantengas los datos de una solicitud durante la próxima solicitud. Esta característica es útil particularmente para volver a llenar los formularios después de detectar errores de validación. Sin embargo, si estás usando las [características de validación](/docs/{{version}}/validation) incluidas con Laravel, es poco probable que necesites usar manualmente estos métodos, ya que algunas de las facilidades de validación integradas con Laravel las ejecutarán automáticamente.
 
-#### Enviando Datos A La Sesión
+#### Enviando datos a la sesión
 
 El método `flash` en la clase `Illuminate\Http\Request` enviará los datos ingresados a la [sesión](/docs/{{version}}/session) para que así estén disponibles durante la próxima solicitud realizada por el usuario:
 
@@ -306,7 +306,7 @@ $request->flashOnly(['username', 'email']);
 $request->flashExcept('password');
 ```
 
-#### Enviando Datos Y Redirigir
+#### Enviando datos y redirigir
 
 Ya que con frecuencia querrás enviar datos a la sesión y luego redirigir a la página anterior puedes encadenar datos a una redirección usando el método `withInput`:
 
@@ -318,7 +318,7 @@ return redirect('form')->withInput(
 );
 ```
 
-#### Obteniendo Datos Antiguos
+#### Obteniendo datos antiguos
 
 Para obtener los datos de la sesión anterior, usa el método `old` en la instancia `Request`. El método old extrarerá los datos de la solicitiud y [sesión](/docs/{{version}}/session) anterior:
 
@@ -335,7 +335,7 @@ Laravel también proporciona un helper global `old`. Si estás mostrando datos a
 <a name="cookies"></a>
 ### Cookies
 
-#### Obteniendo Cookies De Las Solicitudes
+#### Obteniendo cookies de las solicitudes
 
 Todos las cookies creados por el framework Laravel son encriptadas y firmadas con un código de autenticación, significa que serán consideradas no válidas si han sido cambiados por el cliente. Para obtener el valor de una cookie de la solicitud, usa el método `cookie` en una instancia de `Illuminate\Http\Request`:
 
@@ -349,7 +349,7 @@ Alternativamente, puedes usar la clase facade `Cookie` para acceder a los valore
 $value = Cookie::get('name');
 ```
 
-#### Adjuntando Cookies a las Respuestas
+#### Adjuntando cokies a las respuestas
 
 Puedes adjuntar una cookie a una instancia saliente de `Illuminate\Http\Response` usando el método `cookie`. Debes pasar el nombre, valor y el número de minutos en los cuales dicha cookie debería ser válida:
 
@@ -375,7 +375,7 @@ Cookie::queue(Cookie::make('name', 'value', $minutes));
 Cookie::queue('name', 'value', $minutes);
 ```
 
-#### Generando Instancias Cookie
+#### Generando instancias cookie
 
 Si prefieres generar una instancia `Symfony\Component\HttpFoundation\Cookie` que pueda ser dada a una instancia de respuesta en un momento posterior, puedes usar el helper global `cookie`. Este cookie no será enviado de regreso al cliente a menos que sea adjuntado a una instancia de respuesta:
 
@@ -389,7 +389,7 @@ return response('Hello World')->cookie($cookie);
 ## Archivos
 
 <a name="retrieving-uploaded-files"></a>
-### Obteniendo Archivos Cargados
+### Obteniendo archivos cargados
 
 Puedes acceder los archivos cargados de una instancia `Illuminate\Http\Request` usando el método `file` o usando propiedades dinámicas. El método `file` devuelve una instancia de la clase `Illuminate\Http\UploadedFile`, la cual extiende la clase `SplFileInfo` de PHP y proporciona una variedad de métodos para interactuar con el archivo:
 
@@ -407,7 +407,7 @@ if ($request->hasFile('photo')) {
 }
 ```
 
-#### Validando Cargas Exitosas
+#### Validando cargas exitosas
 
 Además de verficar si el archivo está presente, puedes verificar que no ocurrieron problemas cargando el archivo por medio del método `isValid`:
 
@@ -417,7 +417,7 @@ if ($request->file('photo')->isValid()) {
 }
 ```
 
-#### Rutas Y Extensiones De Archivo
+#### Rutas y extensiones de archivo
 
 La clase `UploadedFile` también contiene métodos para acceder a la ruta completa del archivo y su extensión. El método `extension` intentará adivinar la extensión del archivo en base a su contenido. Esta extensión puede ser diferente de la extensión que fue suministrada por el cliente:
 
@@ -427,12 +427,12 @@ $path = $request->photo->path();
 $extension = $request->photo->extension();
 ```
 
-#### Otros Métodos De Archivo
+#### Otros métodos de archivo
 
 Hay una variedad de otros métodos disponibles en instancias `UploadedFile`. Revisa la [documentación de la API para la clase](https://api.symfony.com/3.0/Symfony/Component/HttpFoundation/File/UploadedFile.html) para más información concerniente a estos métodos.
 
 <a name="storing-uploaded-files"></a>
-### Almacenando Archivos Cargados
+### Almacenando archivos cargados
 
 Para almacenar un archivo cargado, típicamente usarás uno de tus [sistemas de archivos](/docs/{{version}}/filesystem) configurados. La clase `UploadedFile` tiene un método `store` el cual moverá un archivo cargado a uno de tus discos, el cual puede ser una ubicación de tu sistema de archivo local o incluso una ubicación de almacenamiento en la nube como Amazon S3.
 
@@ -455,7 +455,7 @@ $path = $request->photo->storeAs('images', 'filename.jpg', 's3');
 ```
 
 <a name="configuring-trusted-proxies"></a>
-## Configurando Proxies de Confianza
+## Configurando proxies de confianza
 
 Al momento de administrar tus aplicaciones detrás de un balanceador de carga que finaliza los certificados TLS / SSL, puedes notar que algunas veces tu aplicación no genera enlaces HTTPS. Típicamente esto es debido a que el tráfico de tu aplicación está siendo dirigido desde tu balanceador de carga por el puerto 80 y no sabe que debería generar enlaces seguros.
 
@@ -494,7 +494,7 @@ class TrustProxies extends Middleware
 Si estás usando Balanceo de Carga Elástico AWS, tu valor `$headers` debe ser `Request::HEADER_X_FORWARDED_AWS_ELB`. Para más información de las constantes que pueden ser usadas en la propiedad `$headers`, revisa la documentación de Symfony sobre [proxies de confianza](https://symfony.com/doc/current/deployment/proxies.html).
 :::
 
-#### Confiar En Todos Los Proxies
+#### Confiar en todos los proxies
 
 Si estás usando Amazon AWS u otro proveedor de balanceador de carga de la "nube", no puedes saber las direcciones IP de tus balanceadores reales. En este caso, puedes usar `**` para confiar en todos los proxies:
 

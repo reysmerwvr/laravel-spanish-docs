@@ -2,24 +2,24 @@
 
 # Respuestas HTTP
 
-- [Creando Respuestas](#creating-responses)
-    - [Adjuntando Encabezados a las Respuestas](#attaching-headers-to-responses)
-    - [Adjuntando Cookies a las Respuestas](#attaching-cookies-to-responses)
+- [Creando respuestas](#creating-responses)
+    - [Adjuntando encabezados a las respuestas](#attaching-headers-to-responses)
+    - [Adjuntando cookies a las respuestas](#attaching-cookies-to-responses)
     - [Cookies & Encriptación](#cookies-and-encryption)
 - [Redirecciones](#redirects)
-    - [Redireccionando a Rutas Nombradas](#redirecting-named-routes)
-    - [Redireccionando a Acciones de Controlador](#redirecting-controller-actions)
-    - [Redireccionando a Dominios Externos](#redirecting-external-domains)
-    - [Redireccionando con los Datos de una Sesión Movida Rápidamente](#redirecting-with-flashed-session-data)
-- [Otros Tipos de Respuestas](#other-response-types)
-    - [Respuestas de Vista](#view-responses)
+    - [Redireccionando a rutas nombradas](#redirecting-named-routes)
+    - [Redireccionando a acciones de controlador](#redirecting-controller-actions)
+    - [Redireccionando a dominios externos](#redirecting-external-domains)
+    - [Redireccionando con los datos de una sesión movida rápidamente](#redirecting-with-flashed-session-data)
+- [Otros tipos de respuestas](#other-response-types)
+    - [Respuestas de vista](#view-responses)
     - [Respuestas JSON](#json-responses)
-    - [Descargas de Archivo](#file-downloads)
-    - [Respuestas de Archivo](#file-responses)
-- [Macros de Respuesta](#response-macros)
+    - [Descargas de archivo](#file-downloads)
+    - [Respuestas de archivo](#file-responses)
+- [Macros de respuesta](#response-macros)
 
 <a name="creating-responses"></a>
-## Creando Respuestas
+## Creando respuestas
 
 #### Cadenas & Arreglos
 
@@ -43,7 +43,7 @@ Route::get('/', function () {
 ¿Sabias que también puedes devolver [colecciones de Eloquent](/docs/{{version}}/eloquent-collections) desde tus rutas o controladores? Estas serán convertidas automáticamente a JSON. ¡Inténtalo!
 :::
 
-#### Objetos de Respuesta
+#### Objetos de respuesta
 
 Típicamente, no sólo estarás devolviendo cadenas básicas o arreglos desde tus acciones de ruta. Además, estarás devolviendo instancias `Illuminate\Http\Response` completas o [vistas](/docs/{{version}}/views).
 
@@ -57,7 +57,7 @@ Route::get('home', function () {
 ```
 
 <a name="attaching-headers-to-responses"></a>
-#### Adjuntando Encabezados a las Respuestas
+#### Adjuntando encabezados a las respuestas
 
 Ten en cuenta que la mayoría de los métodos de respuestas son encadenables, permitiendo la construcción fluida de instancias de respuesta. Por ejemplo, puedes usar el método `header` para agregar una serie de encabezados para la respuesta antes de enviarla de regreso al usuario:
 
@@ -80,7 +80,7 @@ return response($content)
 ```
 
 <a name="attaching-cookies-to-responses"></a>
-#### Adjuntando Cookies a las Respuestas
+#### Adjuntando cookies a las respuestas
 
 El método `cookie` en las instancias de respuesta permite que adjuntes fácilmente cookies a la respuesta. Por ejemplo, puedes usar el método `cookie` para generar una cookie y adjuntarla fluidamente a la instancia de respuesta, de la siguiente manera:
 
@@ -142,7 +142,7 @@ Route::post('user/profile', function () {
 ```
 
 <a name="redirecting-named-routes"></a>
-### Redireccionando a Rutas Nombradas
+### Redireccionando a rutas nombradas
 
 Cuando ejecutas el helper `redirect` sin parámetros, una instancia de `Illuminate\Routing\Redirector` es devuelta, permitiendo que ejecutes cualquier método en la instancia `Redirector`. Por ejemplo, para generar una `RedirectResponse` para una ruta nombrada, puedes usar el método `route`:
 
@@ -158,7 +158,7 @@ Si tu ruta tiene parámetros, puedes pasarlos como segundo argumento del método
 return redirect()->route('profile', ['id' => 1]);
 ```
 
-#### Rellenando Parámetros a través de Modelos de Eloquent
+#### Rellenando parámetros a través de modelos de Eloquent
 
 Si estás redireccionando a una ruta con un parámetro "ID" que está siendo rellenado desde un modelo Eloquent, puedas pasar el modelo como tal. puedes pasar el modelo mismo. El ID será extraído automáticamente:
 
@@ -183,7 +183,7 @@ public function getRouteKey()
 ```
 
 <a name="redirecting-controller-actions"></a>
-### Redireccionando a Acciones de Controlador
+### Redireccionando a acciones de controlador
 
 También puedes generar redirecciones a [acciones de controlador](/docs/{{version}}/controllers). Para hacer eso, pasa el controlador y nombre de acción al método `action`. Recuerda, no necesitas especificar el espacio de nombres completo del controlador ya que el `RouteServiceProvider` de Laravel establecerá el espacio de nombres del controlador base:
 
@@ -200,7 +200,7 @@ return redirect()->action(
 ```
 
 <a name="redirecting-external-domains"></a>
-### Redireccionando a Dominios Externos
+### Redireccionando a dominios externos
 
 Algunas veces puedes necesitar redireccionar a un dominio fuera de tu aplicación. Puedes hacer eso ejecutando el método `away`, el cual crea una instancia de `RedirectResponse` sin alguna codificación, validación o verificación de URL adicional:
 
@@ -209,7 +209,7 @@ return redirect()->away('https://www.google.com');
 ```
 
 <a name="redirecting-with-flashed-session-data"></a>
-### Redireccionando con Datos de Sesión
+### Redireccionando con datos de sesión
 
 El redireccionamiento a una nueva URL y [el envío de los datos de la sesión](/docs/{{version}}/session#flash-data) son hechos usualmente al mismo tiempo. Típicamente, esto es hecho después de ejecutar una acción exitosamente cuando mueves rápidamente un mensaje de éxito de la sesión. Por conveniencia, puedes crear una instancia `RedirectResponse` y mover rápidamente los datos de la sesión en un solo encadenamiento de método fluido:
 
@@ -232,12 +232,12 @@ Después de que el usuario es redireccionado, puedes mostrar el mensaje enviado 
 ```
 
 <a name="other-response-types"></a>
-## Otros Tipos de Respuesta
+## Otros tipos de respuesta
 
 El helper `response` puede ser usado para generar otros tipos de instancias de respuesta. Cuando el helper `response` es ejecutado sin argumentos, una implementación del [contrato](/docs/{{version}}/contracts) `Illuminate\Contracts\Routing\ResponseFactory` es devuelta. Este contrato proporciona varios métodos útiles para generar respuestas.
 
 <a name="view-responses"></a>
-### Respuestas de Vista
+### Respuestas de vista
 
 Si necesitas control sobre el estado y encabezados de la respuesta pero también necesitas devolver una [vista](/docs/{{version}}/views) como el contenido de la respuesta, deberías usar el método `view`:
 
@@ -270,7 +270,7 @@ return response()
 ```
 
 <a name="file-downloads"></a>
-### Descargas de Archivo
+### Descargas de archivo
 
 El método `download` puede ser usado para generar una respuesta que fuerza al navegador del usuario a descargar el archivo a una ruta dada. El método `download` acepta un nombre de archivo como segundo argumento del método, el cual determinará el nombre del archivo que es visto por el usuario que esté descargando el archivo. Finalmente, puedes pasar un arreglo de encabezados HTTP como tercer argumento del método:
 
@@ -282,11 +282,11 @@ return response()->download($pathToFile, $name, $headers);
 return response()->download($pathToFile)->deleteFileAfterSend();
 ```
 
-::: note
+::: danger Nota
 Symfony HttpFoundation, la cual administra las descargas de archivo, requiere que el archivo que esté siendo descargado tenga un nombre de archivo ASCII.
 :::
 
-#### Descargas En Streaming
+#### Descargas en streaming
 
 Algunas veces puedes querer convertir la cadena de respuesta de una operación dada a una respuesta descargable sin tener que escribir los contenidos de la operación al disco. Puedes usar el método `streamDownload` en este escenario. Este método acepta un callback, un nombre de archivo y un arreglo opcional de encabezados como argumentos:
 
@@ -299,7 +299,7 @@ return response()->streamDownload(function () {
 ```
 
 <a name="file-responses"></a>
-### Respuestas de Archivo
+### Respuestas de archivo
 
 El método `file` puede ser usado para mostrar un archivo, tal como una imagen o PDF, directamente en el navegador del usuario en lugar de iniciar una descarga. Este método acepta la ruta del archivo como su primer argumento y un arreglo de encabezados como segundo argumento:
 
@@ -310,7 +310,7 @@ return response()->file($pathToFile, $headers);
 ```
 
 <a name="response-macros"></a>
-## Macros de Respuesta
+## Macros de respuesta
 
 Si prefieres definir una respuesta personalizada que puedas volver a usar en múltiples rutas y controladores, puedes usar el método `macro` de la clase facade `Response`. Por ejemplo, desde un método `boot` del [proveedor de servicio](/docs/{{version}}/providers)
 

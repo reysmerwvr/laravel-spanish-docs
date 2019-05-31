@@ -4,16 +4,16 @@
 
 - [Introducción](#introduction)
     - [Configuración](#configuration)
-    - [Prerequisitos de Manejador](#driver-prerequisites)
-- [Usando la Sesión](#using-the-session)
-    - [Obteniendo Datos](#retrieving-data)
-    - [Almacenando Datos](#storing-data)
-    - [Datos Instantáneos](#flash-data)
-    - [Eliminando Datos](#deleting-data)
-    - [Regenerando el ID de la Sesión](#regenerating-the-session-id)
-- [Agregando Manejadores de Sesión Personalizada](#adding-custom-session-drivers)
-    - [Implementando el Manejador](#implementing-the-driver)
-    - [Registrando el Manejador](#registering-the-driver)
+    - [Prerequisitos de manejador](#driver-prerequisites)
+- [Usando la sesión](#using-the-session)
+    - [Obteniendo datos](#retrieving-data)
+    - [Almacenando datos](#storing-data)
+    - [Datos instantáneos](#flash-data)
+    - [Eliminando datos](#deleting-data)
+    - [Regenerando el ID de la sesión](#regenerating-the-session-id)
+- [Agregando manejadores de sesión personalizada](#adding-custom-session-drivers)
+    - [Implementando el manejador](#implementing-the-driver)
+    - [Registrando el manejador](#registering-the-driver)
 
 <a name="introduction"></a>
 ## Introducción
@@ -38,9 +38,9 @@ El driver array es usado durante [las pruebas](/docs/{{version}}/testing) y prev
 :::
 
 <a name="driver-prerequisites"></a>
-### Prerequisitos del Driver
+### Prerequisitos del driver
 
-#### Base de Datos
+#### Base de datos
 
 Al momento de usar el driver de sesión `database`, necesitarás crear una tabla para contener los elementos de la sesión. A continuación se muestra una declaración de `Schema` de ejemplo para la tabla:
 
@@ -68,10 +68,10 @@ php artisan migrate
 Antes de usar sesiones Redis con Laravel, necesitarás instalar el paquete `predis/predis` (~1.0) por medio de Composer. Puedes configurar tus conexiones Redis en el archivo de configuración `database`. En el archivo de configuración de `session`, la opción `connection` puede ser usada para especificar cuál conexión Redis es usada por la sesión.
 
 <a name="using-the-session"></a>
-## Usando la Sesión
+## Usando la sesión
 
 <a name="retrieving-data"></a>
-### Obteniendo Datos
+### Obteniendo datos
 
 Hay dos formás principales de trabajar con datos de sesión en Laravel: el helper global `session` y por medio de una instancia `Request`. Primero, vamos a echar un vistazo al acceder a la sesión por medio de una instancia `Request`, la cual puede ser referenciada en un método de controlador. Recuerda, las dependencias de métodos de controlador son inyectadas automáticamente por medio del [contenedor de servicio](/docs/{{version}}/container) de Laravel:
 
@@ -111,7 +111,7 @@ $value = $request->session()->get('key', function () {
 });
 ```
 
-#### Helper Global de Sesión
+#### Helper global de sesión
 
 También puedes usar la función global de PHP `session` para obtener y almacenar datos en la sesión. Cuando el helper `session` es ejecutado con un solo argumento de cadena, devolverá el valor de esa clave de sesión. Cuando el helper es ejecutado con una arreglo de pares clave / valor, esos valores serán almacenados en la sesión:
 
@@ -132,7 +132,7 @@ Route::get('home', function () {
 Hay una pequeña diferencia práctica entre usar la sesión por medio de una instancia de solicitud HTTP contra usar el helper global `session`. Ambos métodos pueden ser [probados](/docs/{{version}}/testing) por medio del método `assertSessionHas`, el cual está disponible en todos tus casos de prueba.
 :::
 
-#### Obteniendo Todos los Datos de Sesión
+#### Obteniendo todos los datos de sesión
 
 Si prefieres obtener todos los datos en la sesión, puedes usar el método `all`:
 
@@ -140,7 +140,7 @@ Si prefieres obtener todos los datos en la sesión, puedes usar el método `all`
 $data = $request->session()->all();
 ```
 
-#### Determinando si un Elemento Existe en la Sesión
+#### Determinando si un elemento existe en la sesión
 
 Para determinar si un elemento está presente en la sesión, puedes usar el método `has`. El método `has` devuelve `true` si el valor está presente y no es `null`:
 
@@ -159,7 +159,7 @@ if ($request->session()->exists('users')) {
 ```
 
 <a name="storing-data"></a>
-### Almacenando Datos
+### Almacenando datos
 
 Para almacenar datos en la sesión, típicamente usarás el método `put` o el helper `session`:
 
@@ -171,7 +171,7 @@ $request->session()->put('key', 'value');
 session(['key' => 'value']);
 ```
 
-#### Agregar a Valores del Arreglo de Sesión
+#### Agregar a valores del arreglo de sesión
 
 El método `push` puede ser usado para agregar un nuevo valor a un valor de sesión que está en un arreglo. Por ejemplo, si la clave `user.teams` contiene un arreglo de nombres de equipo, puedes agregar un nuevo valor al arreglo de la siguiente forma:
 
@@ -179,7 +179,7 @@ El método `push` puede ser usado para agregar un nuevo valor a un valor de sesi
 $request->session()->push('user.teams', 'developers');
 ```
 
-#### Obteniendo & Eliminando un Elemento
+#### Obteniendo y eliminando un elemento
 
 El método `pull` obtendrá y eliminará un elemento de la sesión en una sola instrucción:
 
@@ -188,7 +188,7 @@ $value = $request->session()->pull('key', 'default');
 ```
 
 <a name="flash-data"></a>
-### Datos Instantáneos
+### Datos instantáneos
 
 Algunas veces puedes querer almacenar varios elementos en la sesión para la próxima solicitud. Puedes hacer eso usando el método `flash`. Los datos almacenados en la sesión usando este método solamente estarán disponibles durante la subsecuente solicitud HTTP, y luego serán eliminados. Los datos instantáneos son principalmente útiles para mensajes de estado con vida corta:
 
@@ -205,7 +205,7 @@ $request->session()->keep(['username', 'email']);
 ```
 
 <a name="deleting-data"></a>
-### Eliminando Datos
+### Eliminando datos
 
 El método `forget` removerá una porción de datos de la sesión. Si prefieres remover todos los datos de la sesión, puedes usar el método `flush`:
 
@@ -220,7 +220,7 @@ $request->session()->flush();
 ```
 
 <a name="regenerating-the-session-id"></a>
-### Regenerando el ID de la Sesión
+### Regenerando el ID de la sesión
 
 Regenerar el ID de la sesión es hecho frecuentemente con el propósito de prevenir que usuarios maliciosos exploten un ataque de [fijación de sesión](https://en.wikipedia.org/wiki/Session_fixation) en tu aplicación.
 
@@ -231,10 +231,10 @@ $request->session()->regenerate();
 ```
 
 <a name="adding-custom-session-drivers"></a>
-## Agregando Manejadores de Sesión Personalizados
+## Agregando manejadores de sesión personalizados
 
 <a name="implementing-the-driver"></a>
-#### Implementando el Manejador
+#### Implementando el manejador
 
 Tu manejador de sesión personalizado debería implementar la interface `SessionHandlerInterface`. Esta interface contiene justo unos cuantos métodos que necesitamos implementar. Una implementación MongoDB truncada luce de forma similar a lo siguiente:
 
@@ -268,7 +268,7 @@ Ya que el propósito de estos métodos no es entendible rápidamente y sin dific
 - El método `gc` debería destruir todos los datos de la sesión que son más viejos que el `$lifetime` dado, el cual es una marca de tiempo UNIX. Para los sistemas que se auto-expiran como Memcached y Redis, este método puede ser dejado vacío.
 
 <a name="registering-the-driver"></a>
-#### Registrando el Manejador
+#### Registrando el manejador
 
 Una vez que tu manejador ha sido implementado, estás listo para registrarlo en el framework. Para agregar manejadores adicionales para el backend de sesión de Laravel, puedes usar el método `extend` del método en la `Session` [facade](/docs/{{version}}/facades). Deberías ejecutar el método `extend` desde el método `boot` de un [proveedor de servicio](/docs/{{version}}/providers). Puedes hacer esto desde el existente `AppServiceProvider` o crear un nuevo proveedor de servicios completo:
 

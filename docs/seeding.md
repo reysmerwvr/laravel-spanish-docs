@@ -3,10 +3,10 @@
 # Base de datos: Seeding
 
 - [Introducción](#introduction)
-- [Escribiendo Seeders](#writing-seeders)
-  - [Usando Model Factories](#using-model-factories)
-  - [Registrando Seeders Adicionales](#calling-additional-seeders)
-- [Ejecutando Seeders](#running-seeders)
+- [Escribiendo seeders](#writing-seeders)
+  - [Usando model factories](#using-model-factories)
+  - [Registrando seeders adicionales](#calling-additional-seeders)
+- [Ejecutando seeders](#running-seeders)
 
 <a name="introduction"></a>
 ## Introducción
@@ -14,7 +14,7 @@
 Laravel incluye un método sencillo para alimentar tu base de datos con datos de prueba usando clases `Seeder`. Todas las clases `Seeder` son almacenadas en el directorio `database/seeds`. Las clases `Seeder` pueden tener cualquier nombre que desees, pero deberías seguir probablemente alguna convención razonable, tales como `UsersTableSeeder` etc. De forma predeterminada, una clase `DatabaseSeeder` se define para tí. A partir de esta clase, puedes usar el método `call` para registrar otras clases seeder, permitiendo que controles el orden en que se ejecutan.
 
 <a name="writing-seeders"></a>
-## Escribiendo Seeders
+## Escribiendo seeders
 
 Para generar un seeder, ejecuta el [Comando Artisan](/docs/{{version}}/artisan) `make:seeder`. Todos los seeders generados por el framework seran colocados en el directorio `database/seeds`:
 
@@ -60,7 +60,7 @@ Puede escribir cualquier dependencia que necesite dentro de la firma del método
 :::
 
 <a name="using-model-factories"></a>
-### Usando Model Factories
+### Usando model factories
 
 Ciertamente, especificar manualmente los atributos para cada seeder de modelos es lento y complicado. En lugar de eso, puedes usar [Model Factories](/docs/{{version}}/database-testing#writing-factories) para generar convenientemente cantidades grandes de registros de bases de datos. Primero, revisa la [documentación sobre model factories](/docs/{{version}}/database-testing#writing-factories) para aprender cómo definir tus factories. Una vez que hayas definido tus factories, puedes usar la función helper `factory` para insertar registros dentro de tu base de datos.
 
@@ -81,7 +81,7 @@ public function run()
 ```
 
 <a name="calling-additional-seeders"></a>
-### Registrando Seeders Adicionales
+### Registrando seeders adicionales
 
 Dentro de la clase `DatabaseSeeder`, puedes usar el método `call` para ejecutar clases seeder adicionales. Usar el método `call` te permite separar el seeding de tu base de datos en varios archivos con el propósito de que no exista una clase seeder única que se vuelva extremadamente grande. Pasa el nombre de la clase seeder que deseas ejecutar:
 
@@ -102,7 +102,7 @@ public function run()
 ```
 
 <a name="running-seeders"></a>
-## Ejecutando Seeders
+## Ejecutando seeders
 
 Una vez que hayas escrito tu seeder, puedes necesitar regenerar el cargador automático de Composer usando el comando `dump-autoload`:
 

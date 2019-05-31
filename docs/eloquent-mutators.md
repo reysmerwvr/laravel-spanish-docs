@@ -3,12 +3,12 @@
 # Eloquent: Mutators
 
 - [Introducción](#introduction)
-- [Accesadores y Mutadores](#accessors-and-mutators)
-    - [Definiendo un Accesador](#defining-an-accessor)
-    - [Definiendo un Mutador](#defining-a-mutator)
-- [Mutadores de Fecha](#date-mutators)
-- [Conversión de Atributos](#attribute-casting)
-    - [Conversión de Arreglos y JSON](#array-and-json-casting)
+- [Accesadores y mutadores](#accessors-and-mutators)
+    - [Definiendo un accesador](#defining-an-accessor)
+    - [Definiendo un mutador](#defining-a-mutator)
+- [Mutadores de fecha](#date-mutators)
+- [Conversión de atributos](#attribute-casting)
+    - [Conversión de arreglos y JSON](#array-and-json-casting)
     - [Conversión de fechas](#date-casting)
 
 <a name="introduction"></a>
@@ -19,10 +19,10 @@ Los accesadores y mutadores permiten que des formato a los valores de atributos 
 Además de los accesadores y los mutadores personalizados, Eloquent también puede convertir automáticamente campos de fecha a instancias [Carbon](https://github.com/briannesbitt/Carbon) o incluso [convertir campos de texto a JSON](#attribute-casting).
 
 <a name="accessors-and-mutators"></a>
-## Accesadores y Mutadores
+## Accesadores y mutadores
 
 <a name="defining-an-accessor"></a>
-### Definiendo un Accesador
+### Definiendo un accesador
 
 Para definir un accesador crea un método `getFooAttribute` en tu modelo, donde `Foo` es el nombre de la columna que deseas acceder en el formato Studly Case (Primera letra de cada palabra en mayúscula). En este ejemplo, definiremos un accesador para el atributo `first_name`. El accesador automáticamente será ejecutado por Eloquent al momento de intentar obtener el valor del atributo `first_name`:
 
@@ -75,7 +75,7 @@ Si deseas que estos valores computados sean agregados a las representaciones de 
 :::
 
 <a name="defining-a-mutator"></a>
-### Definiendo un Mutador
+### Definiendo un mutador
 
 Para definir un mutador, define un método `setFooAttribute` en tu modelo, donde `Foo` es el nombre de la columna que deseas acceder en el formato Studly Case (Primera letra de cada palabra en mayúscula). Así, otra vez, vamos a definir un mutador para el atributo `first_name`. Este mutador será ejecutado automáticamente cuando intentamos establecer el valor del atributo `first_name` en el modelo:
 
@@ -112,7 +112,7 @@ $user->first_name = 'Sally';
 En este ejemplo, la función `setFirstNameAttribute` será ejecutada con el valor `Sally`. El mutador entonces aplicará la función `strtolower` al nombre y establecerá su valor resultante en el arreglo `$attributes` interno.
 
 <a name="date-mutators"></a>
-## Mutadores de Fecha
+## Mutadores de fecha
 
 De forma predeterminada, Eloquent convertirá las columnas `created_at` y `updated_at` a instancias de [Carbon](https://github.com/briannesbitt/Carbon), la cual extiende la clase `DateTime` de PHP para proporcionar una variedad de métodos útiles.  Puedes agregar atributos de fecha adicionales estableciendo la propiedad `$dates` de tu modelo.
 
@@ -158,7 +158,7 @@ $user = App\User::find(1);
 return $user->deleted_at->getTimestamp();
 ```
 
-#### Formatos de Fecha
+#### Formatos de fecha
 
 De forma predeterminada, las marcas de tiempo son formateadas como `'Y-m-d H:i:s'`. Si necesitas personalizar el formato de marca de tiempo, establece la propiedad `$dateFormat` en tu modelo. Esta propiedad determina como los atributos de fecha son almacenados en la base de datos así como también su formato cuando el modelo es serializado a un arreglo o JSON:
 
@@ -181,7 +181,7 @@ class Flight extends Model
 ```
 
 <a name="attribute-casting"></a>
-## Conversión (casting) de Atributos
+## Conversión (casting) de atributos
 
 La propiedad `$casts` en tu modelo proporciona un método conveniente de convertir atributos a tipos de datos comunes. La propiedad `$casts` debería ser un arreglo donde la clave es el nombre del atributo que está siendo convertido y el valor es el tipo al que deseas convertir la columna. Los tipos de conversión soportados son: `integer`, `real`, `float`, `double`, `decimal:<digits>`, `string`, `boolean`, `object`, `array`, `collection`, `date`, `datetime`, and `timestamp`. Al convertir en `decimal`, debes definir el número de digitos (`decimal:2`).
 
@@ -218,7 +218,7 @@ if ($user->is_admin) {
 ```
 
 <a name="array-and-json-casting"></a>
-### Conversión de Arreglos y JSON
+### Conversión de arreglos y JSON
 
 El tipo de conversión `array` es particularmente útil al momento de trabajar con columnas que son almacenadas como JSON serializado. Por ejemplo, si tu base de datos tiene un tipo de campo `JSON` o `TEXT` que contiene JSON serializado, agregar la conversión `array` a ese atributo deserializará automáticamente el atributo a un arreglo PHP cuando lo accedas en tu modelo Eloquent:
 

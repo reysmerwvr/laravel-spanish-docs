@@ -15,7 +15,7 @@
 
 Por defecto, Laravel viene con una sencilla solución para autenticación de API mediante tokens aleatorios asignados a cada usuario de tu aplicación. En tu archivo de configuración `config/auth.php`, un guard `api` ya está definido y utiliza un driver `token`. Este driver es responsable de inspeccionar el token de la API en la petición entrante y verificar que coincida con el token asignado al usuario en la base de datos.
 
-> **Nota:** Aunque Laravel viene con un sencillo guard de autenticación basado en token, te recomendamos considerar usar [Laravel Passport](/docs/{{version}}/passport) para aplicaciones robustas en producción que ofrecen autenticación de API.
+> **Nota:** Aunque Laravel viene con un sencillo guard de autenticación basado en token, te recomendamos considerar usar [Laravel Passport](/passport.html) para aplicaciones robustas en producción que ofrecen autenticación de API.
 
 <a name="configuration"></a>
 ## Configuración
@@ -23,7 +23,7 @@ Por defecto, Laravel viene con una sencilla solución para autenticación de API
 <a name="database-preparation"></a>
 ### Preparando la base de datos
 
-Antes de usar el driver `token`, necesitarás [crear una migración](/docs/{{version}}/migrations) que agrega una columna `api_token` a tu tabla `users`:
+Antes de usar el driver `token`, necesitarás [crear una migración](/migrations.html) que agrega una columna `api_token` a tu tabla `users`:
 
 ```php
 Schema::table('users', function ($table) {
@@ -39,7 +39,7 @@ Una vez que la migración ha sido creada, ejecuta el comando de Artisan `migrate
 <a name="generating-tokens"></a>
 ## Generando tokens
 
-Una vez que la columna `api_token` ha sido agregada a tu tabla `users`, estás listo para asignar tokens de API aleatorios a cada usuario que se registra en tu aplicación. Debes asignar dichos tokens cuando un modelo `User` es creado para el usuario durante el registro. Al usar el [scaffolding de autenticación](/docs/{{version}}/authentication#authentication-quickstart) proporcionado por el comando de Artisan `make:auth`, esto puede ser hecho en el método `create` de `RegisterController`:
+Una vez que la columna `api_token` ha sido agregada a tu tabla `users`, estás listo para asignar tokens de API aleatorios a cada usuario que se registra en tu aplicación. Debes asignar dichos tokens cuando un modelo `User` es creado para el usuario durante el registro. Al usar el [scaffolding de autenticación](/authentication.html#authentication-quickstart) proporcionado por el comando de Artisan `make:auth`, esto puede ser hecho en el método `create` de `RegisterController`:
 
 ```php
 use Illuminate\Support\Str;
@@ -117,7 +117,7 @@ Dado que los tokens de la API en el ejemplo supierior tienen suficiente entropí
 <a name="protecting-routes"></a>
 ## Protegiendo rutas
 
-Laravel incluye un [guard de autenticación](/docs/{{version}}/authentication#adding-custom-guards) que validará automáticamente tokens de API en peticiones entrantes. Sólo necesitas especificar el middleware `auth:api` en cualquier ruta que requiera un token de acceso válido:
+Laravel incluye un [guard de autenticación](/authentication.html#adding-custom-guards) que validará automáticamente tokens de API en peticiones entrantes. Sólo necesitas especificar el middleware `auth:api` en cualquier ruta que requiera un token de acceso válido:
 
 ```php
 use Illuminate\Http\Request;

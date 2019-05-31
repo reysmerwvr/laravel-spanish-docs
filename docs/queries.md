@@ -1,27 +1,27 @@
 ::: v-pre
 
-# Base de datos: Constructor de Consultas (Query Builder)
+# Base de datos: constructor de consultas (query builder)
 
 - [Introducción](#introduction)
-- [Obteniendo los Resultados](#retrieving-results)
-    - [Particionando Los Resultados](#chunking-results)
+- [Obteniendo los resultados](#retrieving-results)
+    - [Particionando los resultados](#chunking-results)
     - [Agrupamientos](#aggregates)
 - [Selects](#selects)
-- [Expresiones Sin Procesar (Raw)](#raw-expressions)
+- [Expresiones sin procesar (raw)](#raw-expressions)
 - [Joins](#joins)
 - [Uniones](#unions)
-- [Cláusulas Where](#where-clauses)
+- [Cláusulas where](#where-clauses)
     - [Agrupamiento de parámetros](#parameter-grouping)
-    - [Cláusulas Exists Where](#where-exists-clauses)
-    - [Cláusulas Where JSON](#json-where-clauses)
-- [Ordenamiento, Agrupamiento, Límite, y Desplazamiento](#ordering-grouping-limit-and-offset)
-- [Cláusulas Condicionales](#conditional-clauses)
+    - [Cláusulas exists where](#where-exists-clauses)
+    - [Cláusulas where JSON](#json-where-clauses)
+- [Ordenamiento, agrupamiento, límite y desplazamiento](#ordering-grouping-limit-and-offset)
+- [Cláusulas condicionales](#conditional-clauses)
 - [Inserciones](#inserts)
 - [Actualizaciones](#updates)
-    - [Actualizando Columnas JSON](#updating-json-columns)
-    - [Incremento Y Decremento](#increment-and-decrement)
+    - [Actualizando columnas JSON](#updating-json-columns)
+    - [Incremento y decremento](#increment-and-decrement)
 - [Eliminaciones](#deletes)
-- [Bloqueo Pesimista](#pessimistic-locking)
+- [Bloqueo pesimista](#pessimistic-locking)
 - [Depuración](#debugging)
 
 <a name="introduction"></a>
@@ -36,9 +36,9 @@ PDO no admite nombres de columna de enlace (binding). Por lo tanto, nunca debes 
 :::
 
 <a name="retrieving-results"></a>
-## Obteniendo Los Resultados
+## Obteniendo los resultados
 
-#### Obteniendo Todas Las Filas De Una Tabla
+#### Obteniendo todas las filas de una tabla
 
 Puedes usar el método `table` de la clase facade `DB` para empezar una consulta. El método `table` devuelve una instancia para construir consultas fáciles de entender para la tabla dada, permitiendo que encadenes más restricciones dentro de la consulta y recibas finalmente los resultados usando el método `get`:
 
@@ -74,7 +74,7 @@ foreach ($users as $user) {
 }
 ```
 
-#### Obteniendo Una Sola Fila / Columna De Una Tabla
+#### Obteniendo una sola fila / columna de una tabla
 
 Si solamente necesitas recuperar una sola fila de la tabla de la base de datos, puedes usar el método `first`. Este método devolverá un solo objeto `StdClass`:
 
@@ -96,7 +96,7 @@ Para obtener una sola fila por su valor de columna `id`, use el método` find`:
 $user = DB::table('users')->find(3);
 ```
 
-#### Obteniendo una Lista de Valores de Columna
+#### Obteniendo una lista de valores de columna
 
 Si prefieres obtener una Colección que contenga los valores de una sola columna, puedes usar el método `pluck`. En el siguiente ejemplo, obtendrémos una colección de títulos de rol:
 
@@ -119,7 +119,7 @@ foreach ($roles as $name => $title) {
 ```
 
 <a name="chunking-results"></a>
-### Particionando los Resultados
+### Particionando los resultados
 
 Si nececesitas trabajar con miles de registros de bases de datos, considera usar el método `chunk`. Este método obtiene una partición pequeña de los resultados cada vez y pone cada partición dentro de un `Closure` para su procesamiento. Este método es muy útil para escribir [comandos de Artisan](/docs/{{version}}/artisan) que procesan miles de registros. Por ejemplo, vamos a trabajar con la tabla completa `users` en particiones de 100 registros cada vez:
 
@@ -177,7 +177,7 @@ $price = DB::table('orders')
                 ->avg('price');
 ```
 
-#### Determinando Si Existen Registros
+#### Determinando si existen registros
 
 EN vez de usar el método `count` para determinar si existen registros que coincidan con los límites de tu consulta, puedes usar los métodos `exists` y `doesntExist`:
 
@@ -190,7 +190,7 @@ return DB::table('orders')->where('finalized', 1)->doesntExist();
 <a name="selects"></a>
 ## Selects
 
-#### Especificando una Cláusula Select
+#### Especificando una cláusula select
 
 No siempre desearás seleccionar todas las columnas de una tabla de la base de datos. Usando el método `select`, puedes especificar una cláusula `select` personalizada para la consulta:
 
@@ -213,7 +213,7 @@ $users = $query->addSelect('age')->get();
 ```
 
 <a name="raw-expressions"></a>
-## Expresiones Sin Procesar (Raw)
+## Expresiones sin procesar (raw)
 
 Algunas veces puedes necesitar usar una expresión sin procesar en una consulta. Para crear una expresión sin procesar, puedes usar el método `DB::raw`:
 
@@ -279,7 +279,7 @@ $orders = DB::table('orders')
 <a name="joins"></a>
 ## Joins
 
-#### Cláusula Inner Join
+#### Cláusula inner join
 
 El constructor de consultas también puede ser usado para escribir instrucciones joins. Para ejecutar un "inner join" básico, puedes usar el método `join` en una instancia del constructor de consultas. El primer argumento pasado al método `join` es el nombre de la tabla que necesitas juntar, mientras que los argumentos restantes especifican las restricciones de columna para el join. Ciertamente, como puedes ver, puedes hacer un join de múltiples tablas en una sola consulta:
 
@@ -291,7 +291,7 @@ $users = DB::table('users')
             ->get();
 ```
 
-#### Cláusula Left Join / Right Join
+#### Cláusula left join / right join
 
 Si prefieres ejecutar un "left join" o un "right join" en vez de un "inner join", usa los métodos `leftJoin` o `rightJoin`. Estos métodos tienen la misma forma de uso de los argumentos que el método `join`:
 
@@ -305,7 +305,7 @@ $users = DB::table('users')
             ->get();
 ```
 
-#### Cláusula Cross Join
+#### Cláusula cross join
 
 Para ejecutar un cláusula "cross join" usa el método `crossJoin` con el nombre de la tabla a la que deseas hacerle un cross join. Los cross join generan un producto cartesiano entre la primera tabla y la tabla juntada:
 
@@ -315,7 +315,7 @@ $users = DB::table('sizes')
             ->get();
 ```
 
-#### Cláusulas de Join Avanzadas
+#### Cláusulas de join avanzadas
 
 También puedes especificar cláusulas join más avanzadas. Para empezar, pasa una función `Closure` como el segundo argumento dentro del método `join`. La `Closure` recibirá un objeto `JoinClause` el cual permitirá que especifiques restricciones en la cláusula `join`:
 
@@ -338,7 +338,7 @@ DB::table('users')
         ->get();
 ```
 
-#### Subconsultas Joins
+#### Subconsultas joins
 
 Puedes utilizar los métodos `joinSub`, `leftJoinSub` y `rightJoinSub` para unir una consulta a una subconsulta. Cada uno de estos métodos recibe tres argumentos: la subconsulta, su alias de tabla y una Closure que define las columnas relacionadas:
 
@@ -374,9 +374,9 @@ El método `unionAll` también está disponible y tiene la misma forma de uso qu
 :::
 
 <a name="where-clauses"></a>
-## Cláusulas Where
+## Cláusulas where
 
-#### Cláusula Where Simple
+#### Cláusula where simple
 
 Puedes usar el método `where` en una instancia del constructor de consultas para añadir cláusulas `where` a la consulta. La ejecución más básica de `where` requiere tres argumentos. El primer argumento es el nombre de la columna. El segundo argumento es un operador, el cual puede ser cualquiera de los operadores soportados por la base de datos. Finalmente, el tercer argumento es el valor a evaluar contra la columna.
 
@@ -417,7 +417,7 @@ $users = DB::table('users')->where([
 ])->get();
 ```
 
-#### Instrucciones Or
+#### Instrucciones or
 
 Puedes encadenar en conjunto las restricciones where así como añadir cláusulas `or` a la consulta. El método `orWhere` acepta los mismos argumentos que el método `where`:
 
@@ -428,7 +428,7 @@ $users = DB::table('users')
                     ->get();
 ```
 
-#### Cláusulas Where Adicionales
+#### Cláusulas where adicionales
 
 **whereBetween / orWhereBetween**
 
@@ -556,7 +556,7 @@ $users = DB::table('users')
 ```
 
 <a name="parameter-grouping"></a>
-### Agrupando Parámetros
+### Agrupando parámetros
 
 Algunas veces puedes necesitar crear cláusulas where más avanzadas como cláusulas "where exists" o grupos de parámetros anidados. El constructor de consultas de Laravel puede manejar éstos también. Para empezar, vamos a mirar un ejemplo de grupos de restricciones encerrado por llaves:
 
@@ -581,7 +581,7 @@ Siempre debes agrupar llamadas `orWhere` para evitar comportamiento inesperado c
 :::
 
 <a name="where-exists-clauses"></a>
-### Cláusulas Where Exists
+### Cláusulas where exists
 
 El método `whereExists` permite que escribas cláusulas de SQL `whereExists`. El método `whereExists` acepta un argumento de tipo `Closure`, el cual recibirá una instancia del constructor de consultas permitiendo que definas la consulta que debería ser puesta dentro de la cláusula "exists":
 
@@ -605,7 +605,7 @@ where exists (
 ```
 
 <a name="json-where-clauses"></a>
-### Cláusulas Where JSON
+### Cláusulas where JSON
 
 Laravel también soporta consultar tipos de columna JSON en bases de datos que proporcionan soporte para tipos de columna JSON. Actualmente, esto incluye MySQL 5.7, PostgresSQL, SQL Server 2016, y SQLite 3.9.0 (con la [extensión JSON1](https://www.sqlite.org/json1.html)). Para consultar una columna JSON, usa el operador `->`:
 
@@ -648,7 +648,7 @@ $users = DB::table('users')
 ```
 
 <a name="ordering-grouping-limit-and-offset"></a>
-## Ordenamiento, Agrupamiento, Límite, y Desplazamiento
+## Ordenamiento, agrupamiento, límite y desplazamiento
 
 #### orderBy
 
@@ -720,7 +720,7 @@ $users = DB::table('users')
 ```
 
 <a name="conditional-clauses"></a>
-## Cláusulas Condicionales
+## Cláusulas condicionales
 
 Algunas podrías querer que las cláusulas apliquen solamente a una consulta cuando alguna cosa más se cumple. Por ejemplo, puedes querer que solamente se aplique una instrucción `where` si un valor de entrada dado está presente en la solicitud entrante. Puedes acompañar esto usando el método `when`:
 
@@ -770,7 +770,7 @@ DB::table('users')->insert([
 ]);
 ```
 
-#### IDs de Auto-Incremento
+#### IDs de auto-incremento
 
 Si la tabla tiene un id de auto-incremento, usa el método `insertGetId` para insertar un registro y recibir el ID:
 
@@ -795,7 +795,7 @@ DB::table('users')
             ->update(['votes' => 1]);
 ```
 
-#### Actualizar o Insertar
+#### Actualizar o insertar
 
 A veces es posible que desees actualizar un registro existente en la base de datos o crearlo si no existe un registro coincidente. En este escenario, se puede usar el método `updateOrInsert`. El método `updateOrInsert` acepta dos argumentos: un arreglo de condiciones para encontrar el registro y un arreglo de columnas y pares de valores que contienen las columnas que se actualizarán.
 
@@ -810,7 +810,7 @@ DB::table('users')
 ```
 
 <a name="updating-json-columns"></a>
-## Actualizando Columnas JSON
+## Actualizando columnas JSON
 
 Cuando estamos actualizando una columna JSON, deberías usar la sintaxis `->` para acceder a la clave apropiada en el objeto JSON. Esta operación es soportada solamente en bases de datos que soportan columnas JSON:
 
@@ -821,7 +821,7 @@ DB::table('users')
 ```
 
 <a name="increment-and-decrement"></a>
-### Incremento Y Decremento
+### Incremento y decremento
 
 El constructor de consultas también proporciona métodos convenientes para incrementar o decrementar el valor de una columna dada. Esto es un atajo, que proporciona una interfaz más expresiva y concisa en comparación con la escritura manual de la declaración `update`.
 
@@ -861,7 +861,7 @@ DB::table('users')->truncate();
 ```
 
 <a name="pessimistic-locking"></a>
-## Bloqueo Pesimista
+## Bloqueo pesimista
 
 El constructor de consultas también incluye algunas funciones que ayudan a que hagas el "bloqueo pesimista" en tus instrucciones `select`. Para ejecutar la instrucción con un "bloqueo compartido", puedes usar el método `sharedLock` en una consulta. Un bloqueo compartido previene las filas seleccionadas para que no sean modificadas hasta que tu transacción se confirme:
 

@@ -6,8 +6,8 @@
     - [Configuración](#configuration)
     - [Predis](#predis)
     - [PhpRedis](#phpredis)
-- [Interactuar Con Redis](#interacting-with-redis)
-    - [Canalizar Comandos](#pipelining-commands)
+- [Interactuar con redis](#interacting-with-redis)
+    - [Canalizar comandos](#pipelining-commands)
 - [Pub / Sub](#pubsub)
 
 <a name="introduction"></a>
@@ -52,7 +52,7 @@ La configuración de redis para tu aplicación está ubicada en el archivo de co
 
 La configuración del servidor por defecto deberá ser suficiente para el entorno de desarrollo. Sin embargo, puedes modificar este arreglo según tu entorno. Cada servidor de Redis definido en tu configuración debe contener un nombre, host y puerto.
 
-#### Configuración De Clusters
+#### Configuración de clusters
 
 Si tu aplicación está utilizando un cluster de servidores Redis, debes definir este cluster en la clave `clusters` de tu configuración de Redis:
 
@@ -135,7 +135,7 @@ Además de las opciones predeterminadas de configuración del servidor `host`, `
 ```
 
 <a name="interacting-with-redis"></a>
-## Interactuar Con Redis
+## Interactuar con redis
 
 Puedes interactuar con Redis llamando varios métodos en el [facade](/docs/{{version}}/facades) `Redis`. El facade `Redis` admite métodos dinámicos, lo que significa que puedes llamar a cualquier [comando de Redis](https://redis.io/commands) en el facade y el comando será pasado directamente a Redis. En este ejemplo, vamos a llamar al comando `GET` de Redis llamando al método `get` en el facade `Redis`:
 
@@ -178,7 +178,7 @@ Alternativamente, también puedes pasar comandos al servidor usando el método `
 $values = Redis::command('lrange', ['name', 5, 10]);
 ```
 
-#### Utilizar Múltiples Conexiones De Redis
+#### Utilizar múltiples conexiones de Redis
 
 Puedes obtener una instancia de Redis llamando al método `Redis::connection`:
 
@@ -193,7 +193,7 @@ $redis = Redis::connection('my-connection');
 ```
 
 <a name="pipelining-commands"></a>
-### Canalizar Comandos
+### Canalizar comandos
 
 La canalización debe ser utilizada cuando envíes muchos comandos al servidor en una sola operación. El método `pipeline` acepta un argumento: un `Closure` que reciba una instancia de Redis. Puedes emitir todos tus comandos a esta instancia de Redis y después éstos serán ejecutados dentro de una sola operación:
 
@@ -260,7 +260,7 @@ Route::get('publish', function () {
 });
 ```
 
-#### Suscripciones De Comodines
+#### Suscripciones de comodines
 
 Usando el método `psubscribe`, puedes suscribirte a un canal comodín, el cual puede ser útil para capturar todos los mensajes en todos los canales. El nombre del canal `$channel` será pasado como segundo argumento al callback `Closure` proporcionado:
 

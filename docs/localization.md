@@ -3,14 +3,14 @@
 # Configuración Regional
 
 - [Introducción](#introduction)
-	- [Configurando La Configuración Regional](#configuring-the-locale)
-- [Definiendo Cadenas De Traducciones](#defining-translation-strings)
-    - [Usando Claves Cortas](#using-short-keys)
-    - [Usando Cadenas De Traducciones Como Claves](#using-translation-strings-as-keys)
-- [Retornando Cadenas De Traducciones](#retrieving-translation-strings)
-    - [Reemplazando Parametros En Cadenas De Traducciones](#replacing-parameters-in-translation-strings)
+	- [Configurando la configuración regional](#configuring-the-locale)
+- [Definiendo cadenas de traducciones](#defining-translation-strings)
+    - [Usando claves cortas](#using-short-keys)
+    - [Usando cadenas de traducciones como claves](#using-translation-strings-as-keys)
+- [Retornando cadenas de traducciones](#retrieving-translation-strings)
+    - [Reemplazando parametros en cadenas de traducciones](#replacing-parameters-in-translation-strings)
     - [Pluralización](#pluralization)
-- [Sobrescribiendo Archivos del Paquete de Idioma](#overriding-package-language-files)
+- [Sobrescribiendo archivos del paquete de idioma](#overriding-package-language-files)
 
 <a name="introduction"></a>
 ## Introducción
@@ -37,7 +37,7 @@ return [
 ```
 
 <a name="configuring-the-locale"></a>
-### Configurando La Configuración Regional
+### Configurando la configuración regional
 
 El idioma por defecto para tu aplicación se almacena en el archivo de configuración `config/app.php`. Puedes modificar este valor en base a las necesidades de tu aplicación. También puedes cambiar el idioma activo en tiempo de ejecución usando el método `setLocale` en el facade `App`:
 
@@ -55,7 +55,7 @@ Puedes configurar un "idioma alternativo", que será usado cuando el idioma acti
 'fallback_locale' => 'en',
 ```
 
-#### Determinando La Configuración Regional Actual
+#### Determinando la configuración regional actual
 
 Puedes usar los métodos `getLocale` y `isLocale` en el facade `App` para determinar la configuración regional actual o comprobar si la configuración tiene un valor dado:
 
@@ -68,10 +68,10 @@ if (App::isLocale('en')) {
 ```
 
 <a name="defining-translation-strings"></a>
-## Definiendo Cadenades de Traducciones
+## Definiendo cadenades de traducciones
 
 <a name="using-short-keys"></a>
-### Usando Claves Cortas 
+### Usando claves cortas 
 
 Típicamente, las cadenas de traducciones son almacenadas en archivos dentro del directorio `resources/lang`. Dentro de este directorio debería haber un directorio para cada idioma soportado por la aplicación:
 
@@ -97,7 +97,7 @@ return [
 ```
 
 <a name="using-translation-strings-as-keys"></a>
-### Usando Cadenas de Traducciones como Claves
+### Usando cadenas de traducciones como claves
 
 Para aplicaciones con grandes necesidades de traducción, definir cada cadena con una "clave corta" puede volverse confuso rápidamente al hacer referencia a estas en tus vistas. Por este motivo, Laravel también proporciona soporte para definir cadenas de traducciones usando la traducción "por defecto" de la cadena como clave.
 
@@ -110,7 +110,7 @@ Archivos de traducción que usan cadenas de traducción como claves son almacena
 ```
 
 <a name="retrieving-translation-strings"></a>
-## Retornando Cadenas de Traducciones
+## Retornando cadenas de traducciones
 
 Puedes retornar líneas desde archivos de idioma usando la función helper `__`. La función `__` acepta el archivo y la clave de la cadena de traducción como primer argumento. Por ejemplo, vamos a retornar la cadena de traducción de `welcome` desde el archivo de idioma `resources/lang/messages.php`:
 
@@ -135,7 +135,7 @@ La directiva `@lang` no escapa ningún resultado. Eres **totalmente responsable*
 :::
 
 <a name="replacing-parameters-in-translation-strings"></a>
-### Reemplazando Parametros en Cadenas de Traducciones
+### Reemplazando parametros en cadenas de traducciones
 
 Si lo deseas, puedes definir placeholders en tus cadenas de traducción. Todos los placeholders son precedidos por `:`. Por ejemplo, puedes definir un mensaje de bienvenida con un nombre como placeholder: 
 
@@ -192,7 +192,7 @@ Si te gustaría mostrar el valor entero que fue pasado a la función `trans_choi
 ```
 
 <a name="overriding-package-language-files"></a>
-## Sobrescribiendo Archivos del Paquete de Idioma
+## Sobrescribiendo archivos del paquete de idioma
 
 Algunos paquetes pueden venir con sus propios archivos de idioma. En lugar de cambiar los archivos principales del paquete para modificar esas líneas, puedes sobrescribirlas colocando archivos en el directorio `resources/lang/vendor/{package}/{locale}`.
 

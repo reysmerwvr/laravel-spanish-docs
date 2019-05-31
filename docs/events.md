@@ -3,19 +3,19 @@
 # Eventos
 
 - [Introducción](#introduction)
-- [Registro de Eventos y Oyentes](#registering-events-and-listeners)
-    - [Generación de Eventos y Oyentes](#generating-events-and-listeners)
-    - [Registro Manual de Eventos](#manually-registering-events)
-    - [Descubrimiento de Eventos](#event-discovery)
-- [Definiendo Eventos](#defining-events)
-- [Definiendo Oyentes](#defining-listeners)
-- [Oyentes de Eventos en Cola](#queued-event-listeners)
-    - [Accediendo Manualmente a la Cola](#manually-accessing-the-queue)
-    - [Manejo de Trabajos Fallidos](#handling-failed-jobs)
-- [Despachando Eventos](#dispatching-events)
-- [Suscriptores de Eventos](#event-subscribers)
-    - [Escribiendo Suscriptores de Eventos](#writing-event-subscribers)
-    - [Registrando Suscriptores de Eventos](#registering-event-subscribers)
+- [Registro de eventos y oyentes](#registering-events-and-listeners)
+    - [Generación de eventos y oyentes](#generating-events-and-listeners)
+    - [Registro manual de eventos](#manually-registering-events)
+    - [Descubrimiento de eventos](#event-discovery)
+- [Definiendo eventos](#defining-events)
+- [Definiendo oyentes](#defining-listeners)
+- [Oyentes de eventos en cola](#queued-event-listeners)
+    - [Accediendo manualmente a la cola](#manually-accessing-the-queue)
+    - [Manejo de trabajos fallidos](#handling-failed-jobs)
+- [Despachando eventos](#dispatching-events)
+- [Suscriptores de eventos](#event-subscribers)
+    - [Escribiendo suscriptores de eventos](#writing-event-subscribers)
+    - [Registrando suscriptores de eventos](#registering-event-subscribers)
 
 <a name="introduction"></a>
 ## Introducción
@@ -25,7 +25,7 @@ Los eventos de Laravel proporcionan una implementación de observador simple, lo
 Los eventos sirven como una excelente manera de desacoplar varios aspectos de tu aplicación, ya que un solo evento puede tener múltiples oyentes que no dependen entre sí. Por ejemplo, es posible que desees enviar una notificación de Slack a tu usuario cada vez que se envíe un pedido. En lugar de acoplar tu código de procesamiento de pedidos a tu código de notificación Slack, puedes generar un evento `OrderShipped`, que un oyente puede recibir y transformar en una notificación Slack.
 
 <a name="registering-events-and-listeners"></a>
-## Registro de Eventos y Oyentes
+## Registro de eventos y oyentes
 
 El `EventServiceProvider` incluido en tu aplicación Laravel proporciona un lugar conveniente para registrar todos los oyentes de eventos de tu aplicación. La propiedad `listen` contiene un arreglo de todos los eventos (claves) y sus oyentes (valores). Puedes agregar tantos eventos a este arreglo como lo requieras tu aplicación. Por ejemplo, agreguemos un evento `OrderShipped`:
 
@@ -43,7 +43,7 @@ protected $listen = [
 ```
 
 <a name="generating-events-and-listeners"></a>
-### Generación de Eventos y Oyentes
+### Generación de eventos y oyentes
 
 Por supuesto, crear manualmente los archivos para cada evento y oyente es engorroso. En vez de eso, agrega oyentes y eventos a tu `EventServiceProvider` y usa el comando `event:generate`. Este comando generará cualquier evento u oyente que esté listado en tu `EventServiceProvider`. Los eventos y oyentes que ya existen quedarán intactos:
 
@@ -52,7 +52,7 @@ php artisan event:generate
 ```
 
 <a name="manually-registering-events"></a>
-### Registro Manual de Eventos
+### Registro manual de eventos
 
 Normalmente, los eventos deberían registrarse a través del arreglo `$listen` de `EventServiceProvider`; sin embargo, también puedes registrar manualmente eventos basados en Closure en el método `boot` de tu `EventServiceProvider`:
 
@@ -72,7 +72,7 @@ public function boot()
 }
 ```
 
-#### Comodín de Oyentes de un Evento
+#### Comodín de oyentes de un evento
 
 Puedes incluso registrar oyentes usando el `*` como un parámetro comodín, lo que te permite capturar múltiples eventos en el mismo oyente. Los comodines de oyentes reciben el nombre del evento como su primer argumento y el arreglo de datos de eventos completo como su segundo argumento:
 
@@ -83,7 +83,7 @@ Event::listen('event.*', function ($eventName, array $data) {
 ```
 
 <a name="event-discovery"></a>
-### Descubrimiento de Eventos
+### Descubrimiento de eventos
 
 ::: danger Nota
 El Descubrimiento de Eventos está disponible para Laravel 5.8.9 o posterior.
@@ -148,7 +148,7 @@ El comando `event:list` puede ser usado para mostrar una lista de todos los even
 :::
 
 <a name="defining-events"></a>
-## Definiendo Eventos
+## Definiendo eventos
 
 Una clase de evento es un contenedor de datos que guarda la información relacionada con el evento. Por ejemplo, supongamos que nuestro evento `OrderShipped` (orden enviada) generado recibe un objeto [ORM Eloquent](/docs/{{version}}/eloquent):
 
@@ -182,7 +182,7 @@ class OrderShipped
 Como puedes ver, esta clase de evento no contiene lógica. Es un contenedor para la instancia `Order` que se compró. El trait `SerializesModels` utilizado por el evento serializará con elegancia cualquier modelo Eloquent si el objeto del evento se serializa utilizando la función de PHP `serialize`.
 
 <a name="defining-listeners"></a>
-## Definiendo Oyentes
+## Definiendo oyentes
 
 A continuación, echemos un vistazo al oyente de nuestro evento de ejemplo. Los oyentes de eventos reciben la instancia de evento en su método `handle`. El comando `event:generate` importará automáticamente la clase de evento adecuada y declarará el tipo de evento en el método `handle`. Dentro del método `handle`, puedes realizar las acciones necesarias para responder al evento:
 
@@ -287,7 +287,7 @@ class SendShipmentNotification implements ShouldQueue
 ```
 
 <a name="manually-accessing-the-queue"></a>
-### Accediendo Manualmente a la Cola
+### Accediendo manualmente a la cola
 
 Si necesitas acceder manualmente a los métodos `delete` y` release` de la cola de trabajo subyacente del oyente, puedes hacerlo utilizando el trait `Illuminate\Queue\InteractsWithQueue`. Este trait se importa de forma predeterminada en los oyentes generados y proporciona acceso a estos métodos:
 
@@ -320,7 +320,7 @@ class SendShipmentNotification implements ShouldQueue
 ```
 
 <a name="handling-failed-jobs"></a>
-### Manejo de Trabajos Fallidos
+### Manejo de trabajos fallidos
 
 A veces, tus oyentes de eventos en cola pueden fallar. Si el oyente en cola supera el número máximo de intentos según lo define tu trabajador de cola, se llamará al método `failed` en tu oyente. El método `failed` recibe la instancia del evento y la excepción que causó el error:
 
@@ -363,7 +363,7 @@ class SendShipmentNotification implements ShouldQueue
 ```
 
 <a name="dispatching-events"></a>
-## Despachando Eventos
+## Despachando eventos
 
 Para enviar un evento, puedes pasar una instancia del evento a la función de ayuda (helper) `event`. El helper enviará el evento a todos tus oyentes registrados. Dado que el helper `event` está disponible globalmente, puedes llamarlo desde cualquier lugar de tu aplicación:
 
@@ -400,10 +400,10 @@ Al realizar pruebas, puede ser útil afirmar que ciertos eventos se enviaron sin
 :::
 
 <a name="event-subscribers"></a>
-## Suscriptores de Eventos
+## Suscriptores de eventos
 
 <a name="writing-event-subscribers"></a>
-### Escribiendo Suscriptores de Eventos
+### Escribiendo suscriptores de eventos
 
 Los suscriptores de eventos son clases que pueden suscribirse a múltiples eventos dentro de la misma clase, lo que te permite definir varios manejadores de eventos dentro de una sola clase. Los suscriptores deben definir un método `subscribe`, al que se le pasará una instancia de despachador de eventos. Puedes llamar al método `listen` en el despachador dado para registrar los oyentes de eventos:
 
@@ -445,7 +445,7 @@ class UserEventSubscriber
 ```
 
 <a name="registering-event-subscribers"></a>
-### Registrando Suscriptores de Eventos
+### Registrando suscriptores de eventos
 
 Después de escribir el suscriptor, estás listo para registrarlo con el despachador de eventos. Puede registrar suscriptores usando la propiedad `$subscribe` en el `EventServiceProvider`. Por ejemplo, vamos a agregar el `UserEventSubscriber` a la lista:
 

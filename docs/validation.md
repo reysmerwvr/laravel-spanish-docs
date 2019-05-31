@@ -3,30 +3,30 @@
 # Validación
 
 - [Introducción](#introduction)
-- [Inicio Rápido de Validación](#validation-quickstart)
-    - [Definiendo las Rutas](#quick-defining-the-routes)
-    - [Creando el Controlador](#quick-creating-the-controller)
-    - [Escribiendo la Lógica de Validación](#quick-writing-the-validation-logic)
-    - [Mostrando los Errores de Validación](#quick-displaying-the-validation-errors)
-    - [Una Observación Sobre los Campos Opcionales](#a-note-on-optional-fields)
-- [Validación de Solicitudes de Formulario](#form-request-validation)
-    - [Creando Solicitudes de Formulario](#creating-form-requests)
-    - [Autorizando Solicitudes de Formulario](#authorizing-form-requests)
-    - [Personalizando los Mensajes de Error](#customizing-the-error-messages)
-    - [Personalizando los Atributos de Validación](#customizing-the-validation-attributes)
-- [Creando Validadores Manualmente](#manually-creating-validators)
-    - [Redirección Automática](#automatic-redirection)
-    - [Paquetes de Errores con Nombres](#named-error-bags)
-    - [Hook de Validación Posterior](#after-validation-hook)
-- [Trabajando con los Mensajes de Error](#working-with-error-messages)
-    - [Personalizar los Mensajes de Error](#custom-error-messages)
-- [Reglas de Validación Disponibles](#available-validation-rules)
-- [Agregando Reglas Condicionalmente](#conditionally-adding-rules)
-- [Validando Arreglos](#validating-arrays)
-- [Personalizar las Reglas de Validación](#custom-validation-rules)
-    - [Usando Objetos de Regla](#using-rule-objects)
-    - [Usando Closures](#using-closures)
-    - [Usando Extensiones](#using-extensions)
+- [Inicio rápido de validación](#validation-quickstart)
+    - [Definiendo las rutas](#quick-defining-the-routes)
+    - [Creando el controlador](#quick-creating-the-controller)
+    - [Escribiendo la lógica de validación](#quick-writing-the-validation-logic)
+    - [Mostrando los errores de validación](#quick-displaying-the-validation-errors)
+    - [Una observación sobre los campos opcionales](#a-note-on-optional-fields)
+- [Validación de solicitudes de formulario](#form-request-validation)
+    - [Creando solicitudes de formulario](#creating-form-requests)
+    - [Autorizando solicitudes de formulario](#authorizing-form-requests)
+    - [Personalizando los mensajes de error](#customizing-the-error-messages)
+    - [Personalizando los atributos de validación](#customizing-the-validation-attributes)
+- [Creando validadores manualmente](#manually-creating-validators)
+    - [Redirección automática](#automatic-redirection)
+    - [Paquetes de errores con nombres](#named-error-bags)
+    - [Hook de validación posterior](#after-validation-hook)
+- [Trabajando con los mensajes de error](#working-with-error-messages)
+    - [Personalizar los mensajes de error](#custom-error-messages)
+- [Reglas de validación disponibles](#available-validation-rules)
+- [Agregando reglas condicionalmente](#conditionally-adding-rules)
+- [Validando arreglos](#validating-arrays)
+- [Personalizar las reglas de validación](#custom-validation-rules)
+    - [Usando objetos de regla](#using-rule-objects)
+    - [Usando closures](#using-closures)
+    - [Usando extensiones](#using-extensions)
 
 <a name="introduction"></a>
 ## Introducción
@@ -34,12 +34,12 @@
 Laravel proporciona varios enfoques diferentes para validar los datos entrantes de tu aplicación. De forma predeterminada, la clase base del controlador de Laravel usa una característica `ValidatesRequests` la cual proporciona un método conveniente para validar la solicitud HTTP entrante con una variedad de poderosas reglas de validación.
 
 <a name="validation-quickstart"></a>
-## Inicio Rápido de Validación
+## Inicio rápido de validación
 
 Para aprender sobre las poderosas características de validación de Laravel, vamos a observar un ejemplo completo validando un formulario y mostrando los mensajes de error devueltos al usuario.
 
 <a name="quick-defining-the-routes"></a>
-### Definiendo las Rutas
+### Definiendo las rutas
 
 Primero, vamos a asumir que tenemos las rutas siguientes definidas en nuestro archivo `routes/web.php`:
 
@@ -52,7 +52,7 @@ Route::post('post', 'PostController@store');
 La ruta `GET` mostrará un formulario al usuario para crear un nuevo post de blog, mientras que la ruta `POST` guardará el nuevo post de blog en la base de datos.
 
 <a name="quick-creating-the-controller"></a>
-### Creando el Controlador
+### Creando el controlador
 
 Luego, vamos a observar un simple controlador que maneja estas rutas. Dejaremos el método `store` vacío por ahora:
 
@@ -90,7 +90,7 @@ class PostController extends Controller
 ```
 
 <a name="quick-writing-the-validation-logic"></a>
-### Escribiendo la Lógica de Validación
+### Escribiendo la lógica de validación
 
 Ahora estamos listos para completar nuestro método `store` con la lógica para validar el nuevo post de blog. Para hacer esto, usaremos el método `validate` proporcionado por el objeto `Illuminate\Http\Request`. Si las reglas de validación pasan, tu código continuará su ejecución normalmente; sin embargo, si la validación falla, se arrojará una excepción y la respuesta de error apropiada será devuelta automáticamente al usuario. En el caso de una solicitud HTTP tradicional, se generará una respuesta de redirección, mientras una respuesta JSON será enviada para las solicitudes AJAX.
 
@@ -116,7 +116,7 @@ public function store(Request $request)
 
 Como puedes ver, pasamos las reglas de validación deseadas dentro del método `validate`. Otra vez, si la validación falla, se generará la respuesta apropiada. Si la validación pasa, nuestro controlador continuará la ejecución normalmente.
 
-#### Deteniendo en la Primera Falla de Validación
+#### Deteniendo en la primera falla de validación
 
 Algunas veces puede que desees detener la ejecución de las reglas de validación sobre un atributo después de la primera falla de validación. Para hacer eso, asigna la regla `bail` al atributo:
 
@@ -129,7 +129,7 @@ $request->validate([
 
 En este ejemplo, si la regla `unique` del atributo `title` falla, la regla `max` no será verificada. Las reglas serán validadas en el orden que sean asignadas.
 
-#### Una Obsevación Sobre los Atributos Anidados
+#### Una obsevación sobre los atributos anidados
 
 Si tu solicitud HTTP contiene parámetros "anidados", puedes especificarlos en tus reglas de validación usando la sintaxis de "punto":
 
@@ -142,7 +142,7 @@ $request->validate([
 ```
 
 <a name="quick-displaying-the-validation-errors"></a>
-### Mostrando los Errores de Validación
+### Mostrando los errores de validación
 
 ¿Qué sucede si los parámetros de solicitud entrantes no pasan las reglas de validación dados? Cómo mencionamos anteriormente, Laravel redirigirá al usuario de regreso a su ubicación previa. En adición, todos los errores de validación serán automáticamente [movidos instantáneamente a la sesión](/docs/{{version}}/session#flash-data).
 
@@ -188,7 +188,7 @@ También puedes usar la directiva `@error` de [Blade](/docs/{{version}}/blade) p
 ```
 
 <a name="a-note-on-optional-fields"></a>
-### Una Observación Sobre los Campos Opcionales
+### Una observación sobre los campos opcionales
 
 De forma predeterminada, Laravel incluye los middleware `TrimStrings` y `ConvertEmptyStringsToNull` en la pila global de middleware de tu aplicación. Estos middleware son listados en la pila por la clase `App\Http\Kernel`. Debido a esto, con frecuencia necesitarás marcar tus campos "opcionales" de solicitud como `nullable` si no quieres que el validador considere los valores `null` como no válidos. Por ejemplo:
 
@@ -203,15 +203,15 @@ $request->validate([
 En este ejemplo, estamos especificando que el campo `publish_at` puede que sea o `null` o una representación de fecha válida. Si el modificador `nullable` no es agregado a la definición de la regla, el validador consideraría el `null` como una fecha no válida.
 
 <a name="quick-ajax-requests-and-validation"></a>
-#### Solicitudes AJAX y Validación
+#### Solicitudes AJAX y validación
 
 En este ejemplo, usamos un formulario tradicional para enviar datos a la aplicación. Sin embargo, muchas aplicaciones usan solicitudes AJAX. Al momento de usar el método `validate` durante una solicitud AJAX, Laravel no generará una respuesta de redirección. En su lugar, Laravel genera una respuesta JSON conteniendo todos los errores de validación. Esta respuesta JSON será enviada con un código de estado HTTP 422.
 
 <a name="form-request-validation"></a>
-## Validación de Solicitud de Formulario
+## Validación de solicitud de formulario
 
 <a name="creating-form-requests"></a>
-### Creando Solicitudes de Formulario (Form Request)
+### Creando solicitudes de formulario (form request)
 
 Para escenarios de validación más complejos, puede que desees crear una "solicitud de formulario (form request)". Las Form Request son clases de solicitud personalizadas que contienen la lógica de validación. Para crear una clase de Form Request, usa el comando de CLI de Artisan `make:request`:
 
@@ -260,7 +260,7 @@ public function store(StoreBlogPost $request)
 
 Si la validación falla, una respuesta de redirección será generada para enviar al usuario de vuelta a su ubicación previa. Los errores también serán movidos instantáneamente a la sesión de modo que estén disponibles para mostrarlos. Si la solicitud fuese una solicitud AJAX, una respuesta HTTP con un código de estado 422 será devuelta al usuario incluyendo una representación JSON de los errores de validación.
 
-#### Agregando Hooks Posteriores a Solicitudes de Formularios
+#### Agregando hooks posteriores a solicitudes de formularios
 
 Si prefieres agregar un hook "posterior" a una Form Request, puedes usar el método `withValidator`. Este método recibe el validador completamente construido, permitiendo que ejecutes cualquiera de sus métodos antes de que las reglas de validación sean evaluadas realmente:
 
@@ -282,7 +282,7 @@ public function withValidator($validator)
 ```
 
 <a name="authorizing-form-requests"></a>
-### Autorizando Solicitudes de Formularios
+### Autorizando solicitudes de formularios
 
 La clase Form Request también contiene un método `authorize`. Dentro de este método, puedes verificar si el usuario autenticado realmente tiene la autoridad para actualizar un recurso dado. Por ejemplo, puedes determinar si un usuario posee un comentario de blog que está intentando actualizar:
 
@@ -327,7 +327,7 @@ Puedes declarar el tipo de cualquier dependencia que necesites dentro de la firm
 :::
 
 <a name="customizing-the-error-messages"></a>
-### Personalizando los Mensajes de Error
+### Personalizando los mensajes de error
 
 Puedes personalizar los mensajes de error usados por la solicitud de formulario al sobrescribir el método `messages`. Este método debería devolver un arreglo de atributos / pares de regla y sus correspondientes mensajes de error:
 
@@ -347,7 +347,7 @@ public function messages()
 ```
 
 <a name="customizing-the-validation-attributes"></a>
-### Personalizando los Atributos de Validación
+### Personalizando los atributos de validación
 
 Si desea que la parte `:attribute` de su mensaje de validación se reemplace con un nombre de atributo personalizado, puede especificar los nombres personalizados sobrescribiendo el método `attributes`. Este método debería devolver un arreglo de pares de atributo / nombre:
 
@@ -366,7 +366,7 @@ public function attributes()
 ```
 
 <a name="manually-creating-validators"></a>
-## Creando Validadores Manualmente
+## Creando validadores manualmente
 
 Si no quieres usar el método `messages` en la solicitud, puedes crear una instancia de validador manualmente usando la clase [facade](/docs/{{version}}/facades) `Validator`. El método `make` en la clase facade genera una nueva instancia del validador:
 
@@ -410,7 +410,7 @@ El primer argumento pasado al método `make` son los datos bajo validación. El 
 Después de verificar si la validación de solicitud falló, puedes usar el método `withErrors` para mover instantáneamente los mensajes de error a la sesión. Al momento de usar este método, la variable `$errors` será compartida automáticamente con tus vistas después de la redirección, permitiendo que los muestres de vuelta al usuario. El método `withErrors` acepta un validador, un `MessageBag`, o un `array` de PHP.
 
 <a name="automatic-redirection"></a>
-### Redirección Automática
+### Redirección automática
 
 Si prefieres crear manualmente una instancia del validador pero aún tomar ventaja de la redirección automática ofrecida por el método `validate` de la solicitud, puedes ejecutar el método `validate` en una instancia de validador existente. Si la validación falla, el usuario automáticamente será redirigido o, en el caso de una solicitud AJAX, le será devuelta una respuesta JSON:
 
@@ -422,7 +422,7 @@ Validator::make($request->all(), [
 ```
 
 <a name="named-error-bags"></a>
-### Paquetes de Errores con Nombres
+### Paquetes de errores con nombres
 
 Si tienes múltiples formularios en una sola página, puede que desees nombrar el `MessageBag` de errores, permitiendo que obtengas los mensajes de error para un formulario específico. Pasa un nombre como segundo argumento a `withErrors`:
 
@@ -438,7 +438,7 @@ Entonces puedes acceder la instancia de `MessageBag` nombrada de la variable `$e
 ```
 
 <a name="after-validation-hook"></a>
-### Hook de Validación Posterior
+### Hook de validación posterior
 
 El validador también permite que adjuntes funciones de retorno para que sean ejecutadas después que se complete la validación. Esto permite que ejecutes fácilmente validación adicional e incluso agregar más mensajes de error a la colección de mensajes. Para empezar, usa el método `after` en una instancia de validador:
 
@@ -457,11 +457,11 @@ El validador también permite que adjuntes funciones de retorno para que sean ej
 ```
 
 <a name="working-with-error-messages"></a>
-## Trabajando con los Mensajes de Error
+## Trabajando con los mensajes de error
 
 Después de ejecutar el método `errors` en una instancia `Validator`, recibirás una instancia `Illuminate\Support\MessageBag`, la cual tiene una variedad de métodos convenientes para trabajar con los mensajes de error. La variable `$errors` que se hace disponible automáticamente para todas las vistas también es una instancia de la clase `MessageBag`.
 
-#### Obteniendo el Primer Mensaje de Error para un Campo
+#### Obteniendo el primer mensaje de error para un campo
 
 Para obtener el primer mensaje de error para un campo dado, usa el método `first`:
 
@@ -471,7 +471,7 @@ $errors = $validator->errors();
 echo $errors->first('email');
 ```
 
-#### Obteniendo Todos los Mensajes de Error para un Campo
+#### Obteniendo todos los mensajes de error para un campo
 
 Si necesitas obtener un arreglo de todos los mensajes para un campo dado, usa el método `get`:
 
@@ -489,7 +489,7 @@ foreach ($errors->get('attachments.*') as $message) {
 }
 ```
 
-#### Obteniendo Todos los Mensajes de Error para Todos los Campos
+#### Obteniendo todos los mensajes de error para todos los campos
 
 Para obtener un arreglo de todos los mensajes para todos los campos, usa el método `all`:
 
@@ -499,7 +499,7 @@ foreach ($errors->all() as $message) {
 }
 ```
 
-#### Determinando Si Existen Mensajes para un Campo
+#### Determinando si existen mensajes para un campo
 
 El método `has` puede ser usado para determinar si existe algún mensaje de error para un campo dado:
 
@@ -510,7 +510,7 @@ if ($errors->has('email')) {
 ```
 
 <a name="custom-error-messages"></a>
-### Mensajes de Error Personalizados
+### Mensajes de error personalizados
 
 Si es necesario, puedes usar mensajes de error personalizados en vez de los predeterminados. Hay varias formas para especificar mensajes personalizados. Primero, puedes pasar los mensajes personalizados como tercer argumento al método `Validator::make`:
 
@@ -533,7 +533,7 @@ $messages = [
 ];
 ```
 
-#### Especificando un Mensaje Personalizado para un Atributo Dado
+#### Especificando un mensaje personalizado para un atributo dado
 
 Algunas veces puedes querer especificar un mensaje de error personalizado sólo para un campo específico. Puedes hacer eso usando notación de "punto". Especifica el nombre del atributo al principio, seguido por la regla:
 
@@ -544,7 +544,7 @@ $messages = [
 ```
 
 <a name="localization"></a>
-#### Especificando Mensajes Personalizados en Archivos por Idiomas
+#### Especificando mensajes personalizados en archivos por idiomas
 
 En muchos casos, probablemente especificarás tus mensajes personalizados en un archivo de idioma en lugar de pasarlos directamente al `Validator`. Para hacer eso, agrega tus mensajes al arreglo `custom` en el archivo de idioma `resources/lang/xx/validation.php`:
 
@@ -556,7 +556,7 @@ En muchos casos, probablemente especificarás tus mensajes personalizados en un 
 ],
 ```
 
-#### Especificando los Atributos Personalizados en Archivos de Idiomas
+#### Especificando los atributos personalizados en archivos de idiomas
 
 Si prefieres que la porción `:attribute` de tu mensaje de validación sea reemplazada con un nombre de atributo personalizado, puedes especificar el nombre personalizado en el arreglo `attributes` de tu archivo de idioma `resources/lang/xx/validation.php`:
 
@@ -566,7 +566,7 @@ Si prefieres que la porción `:attribute` de tu mensaje de validación sea reemp
 ],
 ```
 
-#### Especificando los Valores Personalizados en Archivos de Idiomas
+#### Especificando los valores personalizados en archivos de idiomas
 
 A veces es posible que necesites que la parte `:value` de tu mensaje de validación sea reemplazada por una representación personalizada del valor. Por ejemplo, considera la siguiente regla que especifica que se requiere un número de tarjeta de crédito si el `payment_type` tiene un valor de` cc`:
 
@@ -599,7 +599,7 @@ The credit card number field is required when payment type is credit card.
 ```
 
 <a name="available-validation-rules"></a>
-## Reglas de Validación Disponibles
+## Reglas de validación disponibles
 
 Debajo hay una lista con todas las reglas de validación disponibles y su función:
 
@@ -1130,13 +1130,13 @@ El campo bajo validación debe ser un identificador de zona horaria válida de a
 
 El campo bajo validación debe ser único en una tabla de base de datos dada. Si la opción `column` no es especificada, el nombre del campo será usado.
 
-**Especificando Un Nombre de Columna Personalizado:**
+**Especificando un nombre de columna personalizado:**
 
 ```php
 'email' => 'unique:users,email_address'
 ```
 
-**Conexión de Base de Datos Personalizada**
+**Conexión de base de datos personalizada**
 
 Ocasionalmente, puedes necesitar establecer una conexión personalizada para las consultas de bases de datos hechas por el validador. Como has visto anteriormente, al establecer `unique:users` como una regla de validación usará la conexión de base de datos predeterminada en la consulta de base de datos. Para sobrescribir esto, especifica la conexión y el nombre de la tabla usando la sintaxis de "punto":
 
@@ -1144,7 +1144,7 @@ Ocasionalmente, puedes necesitar establecer una conexión personalizada para las
 'email' => 'unique:connection.users,email_address'
 ```
 
-**Forzando una Regla Unique para Ignorar un ID Dado:**
+**Forzando una regla unique para ignorar un ID dado:**
 
 Algunas veces, puedes desear ignorar un ID dado durante la verificación de unicidad. Por ejemplo, considera una pantalla "update profile" que incluya el nombre del usuario, dirección de correo electrónico, y ubicación. Posiblemente, querrás verificar que la dirección de correo electrónico es única. Sin embargo, si el usuario solamente cambia el campo nombre y no el campo con el correo electrónico, no quieres que un error de validación sea lanzado porque el usuario ya es el propietario de la dirección de correo electrónico.
 
@@ -1183,7 +1183,7 @@ Por defecto, la regla `única` verificará la unicidad de la columna que coincid
 Rule::unique('users', 'email_address')->ignore($user->id),
 ```
 
-**Agregando Cláusulas Where Adicionales:**
+**Agregando cláusulas where adicionales:**
 
 También puedes especificar restricciones de consultas al personalizar la consulta usando el método `where`. Por ejemplo, agreguemos una restricción que verifique que el `account_id` es `1`:
 
@@ -1204,9 +1204,9 @@ El campo bajo validación debe ser una URL válida.
 El campo bajo validación debe ser un identificador único universal (UUID) RFC 4122 (versión 1, 3, 4 o 5) válido.
 
 <a name="conditionally-adding-rules"></a>
-## Agregando Reglas Condicionalmente
+## Agregando reglas condicionalmente
 
-#### Validando sólo cuando un Campo esté Presente
+#### Validando sólo cuando un campo esté presente
 
 En algunas situaciones, puedes desear ejecutar la verificación contra un campo **solamente** si ese campo está presente en el arreglo de campos. Para conseguir esto rápidamente, agrega la regla `sometimes` en tu lista:
 
@@ -1222,7 +1222,7 @@ En el ejemplo anterior, el campo `email` solamente será validado si está prese
 Si estás intentando validar un campo que siempre deba estar presente pero puede estar vacío, revisa [esta nota sobre campos opcionales](#a-note-on-optional-fields)
 :::
 
-#### Validación Condicional Compleja
+#### Validación condicional compleja
 
 Algunas veces puedes desear agregar reglas de validación basadas en lógica condicional más compleja. Por ejemplo, puedes desear solicitar un campo dado solamente si otro campo tiene un valor mayor que 100. O, puedes necesitar que dos campos tengan un valor dado solamente cuando otro campo esté presente. Agregar estas reglas de validación no tiene que ser un dolor. Primero, crea una instancia `Validator` con tus _reglas estáticas_ que nunca cambian:
 
@@ -1254,7 +1254,7 @@ El parámetro `$input` pasado a tu `Closure` será una instancia de `Illuminate\
 :::
 
 <a name="validating-arrays"></a>
-## Validando Arreglos
+## Validando arreglos
 
 Validar arreglos basados en campos de entrada de formulario no tiene que ser un dolor. Puedes usar "notación punto" para validar atributos dentro de un arreglo. Por ejemplo, si la solicitud entrante contiene un campo `photos[profile]`, puedes validarlo como sigue:
 
@@ -1284,10 +1284,10 @@ De igual forma, puedes usar el carácter `*` al momento de especificar tus mensa
 ```
 
 <a name="custom-validation-rules"></a>
-## Reglas de Validación Personalizadas
+## Reglas de validación personalizadas
 
 <a name="using-rule-objects"></a>
-### Usando Objetos de Reglas
+### Usando objetos de reglas
 
 Laravel proporciona una variedad de reglas de validación útiles; sin embargo, puedes desear especificar algunas propias. Un método para registrar reglas de validación personalizadas es usar objetos de regla. Para generar un nuevo objeto de regla, puedes usar el comando Artisan `make:rule`. Usemos este comando para generar una regla que verifique que una cadena esté en mayúscula. Laravel colocará la nueva regla en el directorio `app/Rules`:
 
@@ -1355,7 +1355,7 @@ $request->validate([
 ```
 
 <a name="using-closures"></a>
-### Usando Closures
+### Usando closures
 
 Si solo necesitas la funcionalidad de una regla personalizada una vez a lo largo de tu aplicación, puedes usar un Closure en lugar de un objeto de regla. El Closure recibe el nombre del atributo, el valor del atributo y una retorno de llamada (callback) `$fail` que se debe llamar si falla la validación:
 
@@ -1374,7 +1374,7 @@ $validator = Validator::make($request->all(), [
 ```
 
 <a name="using-extensions"></a>
-### Usando Extensiones
+### Usando extensiones
 
 Otro método para registrar reglas de validación personalizadas es usar el método `extend` en la clase [facade](/docs/{{version}}/facades) `Validator`. Usemos este método dentro de un [proveedor de servicio](/docs/{{version}}/providers) para registrar una regla de validación personalizada:
 
@@ -1420,7 +1420,7 @@ También puedes pasar una clase y método al método `extend` en vez de una Clos
 Validator::extend('foo', 'FooValidator@validate');
 ```
 
-#### Definiendo el Mensaje de Error
+#### Definiendo el mensaje de error
 
 También necesitarás definir un mensaje de error para tu regla personalizada. Puedes hacer eso o usando un arreglo de mensajes personalizados en línea o agregando una entrada en el archivo de idioma de validación. Este mensaje debería ser colocado en el primer nivel del arreglo, no dentro del arreglo `custom`, el cual es solamente para mensajes de error específico de atributos:
 
@@ -1450,7 +1450,7 @@ public function boot()
 }
 ```
 
-#### Extensiones Implícitas
+#### Extensiones implícitas
 
 De forma predeterminada, cuando un atributo que está siendo validado no está presente o contiene un valor vacío como es definido por la regla [`required`](#rule-required), las reglas de validación normal, incluyendo las extensiones personalizadas, no son ejecutadas. Por ejemplo, la regla [`unique`](#rule-unique) no será ejecutada contra un valor `null`:
 

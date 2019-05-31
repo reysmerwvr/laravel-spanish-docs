@@ -3,25 +3,25 @@
 # Compilación De Assets (Laravel Mix)
 
 - [Introducción](#introduction)
-- [Instalación y Configuración](#installation)
+- [Instalación y configuración](#installation)
 - [Ejecutando Mix](#running-mix)
-- [Trabajando Con Hojas De Estilos](#working-with-stylesheets)
+- [Trabajando con hojas de estilos](#working-with-stylesheets)
     - [Less](#less)
     - [Sass](#sass)
     - [Stylus](#stylus)
     - [PostCSS](#postcss)
-    - [CSS Plano](#plain-css)
-    - [Procesamiento De URLs](#url-processing)
-    - [Mapeo De Fuente](#css-source-maps)
-- [Trabajando Con JavaScript](#working-with-scripts)
-    - [Extracción De Paquetes De Terceros](#vendor-extraction)
+    - [CSS plano](#plain-css)
+    - [Procesamiento de URLs](#url-processing)
+    - [Mapeo de fuente](#css-source-maps)
+- [Trabajando con JavaScript](#working-with-scripts)
+    - [Extracción de paquetes de terceros](#vendor-extraction)
     - [React](#react)
     - [Vanilla JS](#vanilla-js)
-    - [Configuración De Webpack Personalizada](#custom-webpack-configuration)
-- [Copiando Archivos y Directorios](#copying-files-and-directories)
-- [Versionando / Destrucción De Caché](#versioning-and-cache-busting)
-- [Recarga De Browsersync](#browsersync-reloading)
-- [Variables De Entorno](#environment-variables)
+    - [Configuración de webpack personalizada](#custom-webpack-configuration)
+- [Copiando archivos y yirectorios](#copying-files-and-directories)
+- [Versionando / Destrucción de caché](#versioning-and-cache-busting)
+- [Recarga de Browsersync](#browsersync-reloading)
+- [Variables de entorno](#environment-variables)
 - [Notificaciones](#notifications)
 
 <a name="introduction"></a>
@@ -37,7 +37,7 @@ mix.js('resources/js/app.js', 'public/js')
 Si alguna vez has estado confundido o agobiado al comenzar con Webpack y la compilación de assets, amarás Laravel Mix. Sin embargo, no estás obligado a usarlo durante el desarollo de tu aplicación. Eres libre de usar cualquier pipeline de assets que desees o incluso ninguno.
 
 <a name="installation"></a>
-## Instalación y Configuración
+## Instalación y configuración
 
 #### Instalando Node
 
@@ -71,7 +71,7 @@ npm run dev
 npm run production
 ```
 
-#### Observando Assets Por Cambios
+#### Observando cambios en los assets
 
 El comando `npm run watch` continuará ejecutándose en tu terminal y observando todos los archivos relevantes por cambios. Webpack entonces automáticamente recompilará tus assets cuando detecte un cambio:
 
@@ -86,7 +86,7 @@ npm run watch-poll
 ```
 
 <a name="working-with-stylesheets"></a>
-## Trabajando Con Hojas De Estilos
+## Trabajando con hojas de estilos
 
 El archivo `webpack.mix.js` es el punto de entrada para toda la compilación de assets. Piensa en éste como un wrapper de configuración liviano alrededor de Webpack. Las tareas de Mix pueden ser encadenadas para definir exactamente cómo tus assets deben ser compilados.
 
@@ -178,7 +178,7 @@ mix.sass('resources/sass/app.scss', 'public/css')
 ```
 
 <a name="plain-css"></a>
-### CSS Plano
+### CSS plano
 
 Si simplemente te gustaría concatenar algunas hojas de CSs plano a un sólo archivo, puedes usar el método `styles`.
 
@@ -230,7 +230,7 @@ Con esta adición a tu archivo `webpack.mix.js`, Mix ya no igualará cualquier `
 ```
 
 <a name="css-source-maps"></a>
-### Mapeo De Fuente
+### Mapeo de fuente
 
 Aunque deshabilitado por defecto, el mapeo de fuentes puede ser activado llamando al método `mix.sourceMaps()` en tu archivo `webpack.mix.js`. Aunque viene con un costo de compilación/rendimiento, esto proporcionará información adicional de depuración a las herramientas de desarrollo de tu navegador al usar assets compilados.
 
@@ -240,7 +240,7 @@ mix.js('resources/js/app.js', 'public/js')
 ```
 
 <a name="working-with-scripts"></a>
-## Trabajando Con JavaScript
+## Trabajando con JavaScript
 
 Mix proporciona múltiples características para ayudarte a trabajar con archivos de JavaScript, como compilar ECMAScript 2015, agrupación de módulos, minificación y concatenar archivos de JavaScript planos. Aún mejor, todos esto funciona fácilmente, sin requirir ningún tipo de configuración personalizada:
 
@@ -256,7 +256,7 @@ Con esta única línea de código, puedes ahora tomar ventaja de:
 - Minifación para entornos de producción.
 
 <a name="vendor-extraction"></a>
-### Extracción De Paquetes De Terceros
+### Extracción de paquetes de terceros
 
 Un potencial aspecto negativo de agrupar todo el JavaScript específico de la aplicación con tus paquetes de terceros es que hace que el almacenamiento en caché a largo plazo sea más difícil. Por ejemplo, una sóla actualización al código de tu aplicación forazará el navegador a recargar todas tus paquetes de terceros incluso si no han cambiado.
 
@@ -311,11 +311,11 @@ Una ligera variación de `mix.scripts()` es `mix.babel()`. Su firma de método e
 :::
 
 <a name="custom-webpack-configuration"></a>
-### Configuración Personalizada De Webpack
+### Configuración personalizada de webpack
 
 Detrás de cámaras, Laravel Mix hace referencia a un archivo preconfigurado `webpack.config.js` para ayudarte a comenzar tan rápido como sea posible. Ocasionalmente, puedes necesitar modificar este archivo de forma manual. Podrías tener un loader o plugin especial al que necesitas hacer referencia o quizás prefieres usar Stylus en lugar de Sass. En esos casos, tienes dos opciones:
 
-#### Fusionar Configuración Personalizada
+#### Fusionar configuración personalizada
 
 Mix proporciona un método `webpackConfig` útil que te permite fusionar cualquier configuración pequeña de Webpack. Esta es una opción particularmente atractiva, ya que no requiere que copies y mantengas tu propia copia del archivo `webpack.config.js`. El método `webpackConfig` acepta un objeto, que debe contener cualquier [configuración especifíca de Webpack](https://webpack.js.org/configuration/) que deseas aplicar.
 
@@ -329,7 +329,7 @@ mix.webpackConfig({
 });
 ```
 
-#### Archivos De Configuración Personalizados
+#### Archivos de configuración personalizados
 
 Si te gustaría personalizar completamente tu configuración de Webpack, copia el archivo `node_modules/laravel-mix/setup/webpack.config.js` al directorio principal de tu proyecto. Luego, apunta todas las referencias a `--config` en tu archivo `package.json` al nuevo archivo de configuración copiado. Si deseas elegir esta forma de personalización, cualquier actualización futura al archivo `webpack.config.js` debe ser manualmente agregada a tu archivo personalizado.
 
@@ -349,7 +349,7 @@ mix.copyDirectory('resources/img', 'public/img');
 ```
 
 <a name="versioning-and-cache-busting"></a>
-## Versionando / Destrucción De Caché
+## Versionando / Destrucción de caché
 
 Muchos desarrolladores prefijan sus assets compilados con una marca de tiempo o token único para forzar a los navegadores a cargar los assets nuevos en lugar de servir copias antiguas del código. Mix puede hacer esto por ti usando el método `version`.
 
@@ -377,7 +377,7 @@ if (mix.inProduction()) {
 ```
 
 <a name="browsersync-reloading"></a>
-## Recarga Con Browsersync
+## Recarga con Browsersync
 
 [BrowserSync](https://browsersync.io/) puede monitorear automáticamente los cambios en tus archivos e inyectar tus cambios al navegador sin requerir un refrescamiento manual. Puedes activar el soporte llamando al método `mix.browserSync()`:
 
@@ -395,7 +395,7 @@ mix.browserSync({
 Puedes pasar una cadena (proxy) u objeto (configuraciones de BrowserSync) a este método. Luego, inicia el servidor de desarrollo de Webpack usando el comando `npm run watch`. Ahora, cuando modifiques un script o archivo de PHP, observa mientras el navegador instantaneamente recarga la página para reflejar tus cambios.
 
 <a name="environment-variables"></a>
-## Variables De Entorno
+## Variables de entorno
 
 Puedes inyectar variables de entorno a Mix prefijando una clave en tu archivo `.env` con `MIX_`:
 

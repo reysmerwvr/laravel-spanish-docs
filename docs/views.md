@@ -2,13 +2,13 @@
 
 # Vistas
 
-- [Creando Vistas](#creating-views)
-- [Pasando Datos a las Vistas](#passing-data-to-views)
-    - [Compartiendo Datos con Todas las Vistas](#sharing-data-with-all-views)
+- [Creando vistas](#creating-views)
+- [Pasando datos a las vistas](#passing-data-to-views)
+    - [Compartiendo datos con todas las vistas](#sharing-data-with-all-views)
 - [View Composers](#view-composers)
 
 <a name="creating-views"></a>
-## Creando Vistas
+## Creando vistas
 
 ::: tip 
 Para buscar más información sobre ¿Cómo escribir plantillas de Blade? Revisa la [documentación de Blade](/docs/{{version}}/blade) completa para comenzar.
@@ -42,7 +42,7 @@ Las vistas también pueden estar anidadas dentro de sub-directorios del director
 return view('admin.profile', $data);
 ```
 
-#### Determinando Si una Vista Existe
+#### Determinando si una vista existe
 
 Si necesitas determinar si una vista existe, puedes usar la clase facade `View`. El método `exists` devolverá `true` si la vista existe:
 
@@ -54,7 +54,7 @@ if (View::exists('emails.customer')) {
 }
 ```
 
-#### Creando la Primera Vista Disponible
+#### Creando la primera vista disponible
 
 Usando el método `first`, puedes crear la primera vista que existe en un arreglo de vistas dado. Esto es útil si tu aplicación o paquete permite que las vistas sean personalizadas o sobrescritas:
 
@@ -71,7 +71,7 @@ return View::first(['custom.admin', 'admin'], $data);
 ```
 
 <a name="passing-data-to-views"></a>
-## Pasando Datos a las Vistas
+## Pasando datos a las vistas
 
 Como viste en los ejemplos previos, puedes pasar un arreglo de datos a las vistas:
 
@@ -86,7 +86,7 @@ return view('greeting')->with('name', 'Victoria');
 ```
 
 <a name="sharing-data-with-all-views"></a>
-#### Compartiendo Datos con Todas las Vistas
+#### Compartiendo datos con todas las vistas
 
 Ocasionalmente, puedes necesitar compartir una pieza de datos con todas las vistas que son renderizadas por tu aplicación. Puedes hacer eso usando el método `share` de la clase facade `View`. Típicamente, deberías colocar las ejecuciones a `share` dentro del método `boot` de un proveedor de servicio. Eres libre de agregarlos al `AppServiceProvider` o generar un proveedor de servicio diferente para alojarlos:
 
@@ -222,7 +222,7 @@ Justo antes de que la vista sea renderizada, el método `compose` del Composer e
 Todos los View Composers son resueltos por medio del [contenedor de servicio](/docs/{{version}}/container), de modo que puedas colocar la referencia a cualquiera de las dependencias que necesites dentro de un constructor del Composer.
 :::
 
-#### Adjuntando un Composer a Múltiples Vistas
+#### Adjuntando un composer a múltiples vistas
 
 Puedes adjuntar un View Composer a múltiples vistas de una vez al pasar un arreglo de vistas como primer argumento del método `composer`:
 

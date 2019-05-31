@@ -5,28 +5,28 @@
 - [Introducción](#introduction)
 - [Instalación](#installation)
     - [Configuración](#configuration)
-    - [Remover Datos De Entradas De Telescope](#data-pruning)
-    - [Personalizar La Migración](#migration-customization)
-- [Autorización Para El Panel De Control](#dashboard-authorization)
+    - [Remover datos de entradas de Telescope](#data-pruning)
+    - [Personalizar la migración](#migration-customization)
+- [Autorización para el panel de control](#dashboard-authorization)
 - [Filtros](#filtering)
     - [Entradas](#filtering-entries)
     - [Lotes](#filtering-batches)
-- [Observadores Disponibles](#available-watchers)
-    - [Observador De Caché](#cache-watcher)
-    - [Observador De Comandos](#command-watcher)
-    - [Observador De Variables](#dump-watcher)
-    - [Observador De Eventos](#event-watcher)
-    - [Observador De Excepciones](#exception-watcher)
-    - [Observador De Gates](#gate-watcher)
-    - [Observador De Trabajos](#job-watcher)
-    - [Observador De Registros (Log)](#log-watcher)
-    - [Observador De Correos](#mail-watcher)
-    - [Observador De Modelos](#model-watcher)
-    - [Observador De Notificaciones](#notification-watcher)
-    - [Observador De Consultas De Bases De Datos](#query-watcher)
+- [Observadores disponibles](#available-watchers)
+    - [Observador De caché](#cache-watcher)
+    - [Observador De comandos](#command-watcher)
+    - [Observador De variables](#dump-watcher)
+    - [Observador De eventos](#event-watcher)
+    - [Observador De excepciones](#exception-watcher)
+    - [Observador De gates](#gate-watcher)
+    - [Observador De trabajos](#job-watcher)
+    - [Observador De registros (log)](#log-watcher)
+    - [Observador De correos](#mail-watcher)
+    - [Observador De modelos](#model-watcher)
+    - [Observador De notificaciones](#notification-watcher)
+    - [Observador De consultas De Bases De Datos](#query-watcher)
     - [Observador De Redis](#redis-watcher)
-    - [Observador De Solicitudes (Request)](#request-watcher)
-    - [Observador De Tareas Programadas](#schedule-watcher)
+    - [Observador De solicitudes (request)](#request-watcher)
+    - [Observador De tareas programadas](#schedule-watcher)
 
 <a name="introduction"></a>
 ## Introducción
@@ -62,7 +62,7 @@ Si haces una actualización de Telescope, deberías volver a publicar los recurs
 php artisan telescope:publish
 ```
 
-### Instalando Únicamente En Entornos Específicos
+### Instalando únicamente en entornos específicos
 
 Si planeas usar Telescope solamente para apoyar tu desarrollo local, puedes instalar Telescope usando la bandera `--dev`:
 
@@ -89,7 +89,7 @@ public function register()
 ```
 
 <a name="migration-customization"></a>
-### Personalización De La Migración
+### Personalización de la migración
 
 Si no vas a usar las migraciones predeterminadas de Telescope, deberías ejecutar el método `Telescope::ignoreMigrations` en el método `register` de tu `AppServiceProvider`. Puedes exportar las migraciones predeterminadas usando el comando `php artisan vendor:publish --tag=telescope-migrations`.
 
@@ -105,7 +105,7 @@ Si lo deseas, puedes deshabilitar completamente la colección de datos de Telesc
 ```
 
 <a name="data-pruning"></a>
-### Remover Datos De Entradas De Telescope
+### Remover datos de entradas de Telescope
 
 Sin la remoción, la tabla `telescope_entries` puede acumular registros muy rápidamente. Para mitigar esto, deberías programar el comando `telescope:prune` para que se ejecute diariamente:
 
@@ -120,7 +120,7 @@ $schedule->command('telescope:prune --hours=48')->daily();
 ```
 
 <a name="dashboard-authorization"></a>
-## Autorización Para El Panel De Control
+## Autorización para el panel de control
 
 Telescope viene con un panel de control en `/telescope`. De forma predeterminada, solamente serás capaz de acceder este panel de control en el entorno `local`. Dentro de tu archivo `app/Providers/TelescopeServiceProvider.php`, hay un método `gate`. Esta gate de autorización controla el acceso a Telescope en los entornos **que no son locales**. Eres libre de modificar este gate de acuerdo a tus necesidades para restringir el acceso a tu instalación de Telescope:
 
@@ -231,12 +231,12 @@ Algunos observadores también permiten que agregues opciones de personalización
 ```
 
 <a name="cache-watcher"></a>
-### Observador De Caché
+### Observador de caché
 
 El observador de caché (Cache Watcher) guarda datos cuando una clave está presente, falta, es actualizada u olvidada en caché.
 
 <a name="command-watcher"></a>
-### Observador De Comandos
+### Observador de comandos
 
 El observador de comandos (command watcher) guarda los argumentos, opciones, códigos de salida, información enviada a la pantalla cada vez que se ejecuta un comando Artisan. Si deseas excluir ciertos comandos para que no sean grabados por el observador, puedes especificar el comando junto con la opción `ignore` en tu archivo `config/telescope.php`:
 
@@ -251,22 +251,22 @@ El observador de comandos (command watcher) guarda los argumentos, opciones, có
 ```
 
 <a name="dump-watcher"></a>
-### Observador De Variables
+### Observador de variables
 
 El observador de variables (dump watcher) guarda y muestra los valores de tus variables en Telescope. Al momento de usar Laravel, los valores de las variables pueden ser mostrados usando la función global `dump`. La pestaña del observador de variables debe estar abierta en un navegador para que los valores sean guardados, de lo contrario serán ignorados por el observador.
 
 <a name="event-watcher"></a>
-### Observador De Eventos
+### Observador de eventos
 
 El observador de eventos (event watcher) guarda la carga, oyentes (listeners) y los datos de difusión (broadcast) para cualquier evento que sea despachado por tu aplicación. Los eventos internos del framework de Laravel son ignorados por el observador de eventos.
 
 <a name="exception-watcher"></a>
-### Observador De Excepciones
+### Observador de excepciones
 
 El observador de excepciones (exception watcher) guarda los datos y el seguimiento de la pila para cualquier excepción reportable que sea lanzada por tu aplicación.
 
 <a name="gate-watcher"></a>
-### Observador De Gates
+### Observador de gates
 
 El observador de gate (gate watcher) guarda los datos y el resultado de verificaciones de gates y políticas hechas por tu aplicación. Si deseas excluir ciertas habilidades para que no sean guardadas por el observador, puedes especificar aquellas en la opción `ignore_abilities` en tu archivo `config/telescope.php`:
 
@@ -281,22 +281,22 @@ El observador de gate (gate watcher) guarda los datos y el resultado de verifica
 ```
 
 <a name="job-watcher"></a>
-### Observador De Trabajos
+### Observador de trabajos
 
 El observador de trabajos (job watcher) guarda los datos y estado de los trabajos despachado por tu aplicación.
 
 <a name="log-watcher"></a>
-### Observador De Registros
+### Observador de registros
 
 El observador de registros (log watcher) guarda datos de los registros escritos por tu aplicación.
 
 <a name="mail-watcher"></a>
-### Observador De Correos
+### Observador de correos
 
 El observador de correos (mail watcher) permite que veas una pre-visualización en el navegador de los correos junto con sus datos adjuntados. También puedes descargar los correos como un archivo `.eml`.
 
 <a name="model-watcher"></a>
-### Observador De Modelos
+### Observador de modelos
 
 El observador de modelos (model watcher) guarda los cambios del modelo cada vez que se despacha un evento `created`, `updated`, `restored`, o `deleted` de Eloquent. Puedes especificar cuáles eventos de modelos deberían ser guardados por medio de la opción `events` del observador:
 
@@ -311,12 +311,12 @@ El observador de modelos (model watcher) guarda los cambios del modelo cada vez 
 ```
 
 <a name="notification-watcher"></a>
-### Observador De Notificaciones
+### Observador de notificaciones
 
 El observador de notificaciones (notification watcher) guarda todas las notificaciones enviadas por tu aplicación. Si la notificación dispara un correo y tienes el observador de correos habilitado, el correo también estará disponible para pre-visualizar en la pantalla del observador de correos.
 
 <a name="query-watcher"></a>
-### Observador De Consultas De Bases De Datos
+### Observador de consultas de bases de datos
 
 El observador de consultas de bases de datos (query watcher) guarda los comandos SQL, enlaces, y tiempo de ejecución para todas las consultas de bases de datos que sean ejecutadas por tu aplicación. El observador también coloca una etiqueta `slow` a las consultas más lentas, aquellas que tardan más de 100 micro segundos. Puedes personalizar el umbral para las consultas lentas usando la opción `slow` del observador:
 
@@ -331,7 +331,7 @@ El observador de consultas de bases de datos (query watcher) guarda los comandos
 ```
 
 <a name="redis-watcher"></a>
-### Observador De Redis
+### Observador de Redis
 
 ::: danger Nota
 Los eventos de Redis deben ser habilitados por el observador de Redis (Redis watcher) para que funcione de forma correcta. Puedes habilitar los eventos de Redis ejecutando `Redis::enableEvents()` en el método `boot` de tu archivo `app/Providers/AppServiceProvider.php`.
@@ -340,7 +340,7 @@ Los eventos de Redis deben ser habilitados por el observador de Redis (Redis wat
 El observador de Redis (redis watcher) guarda todos los comandos de Redis ejecutados por tu aplicación. Si estás usando Redis para el almacenamiento de caché, también los comandos de caché serán guardados por el observador de Redis.
 
 <a name="request-watcher"></a>
-### Observador de Solicitudes
+### Observador de solicitudes
 
 El observador de solicitudes (request watcher) guarda la solicitud, encabezados, la sesión y los datos de respuesta asociados con las solicitudes manejadas por la aplicación. Puedes limitar tus datos de respuesta por medio de la opción `size_limit` (en KB):
 
@@ -355,6 +355,6 @@ El observador de solicitudes (request watcher) guarda la solicitud, encabezados,
 ```
 
 <a name="schedule-watcher"></a>
-### Observador De Tareas Programadas
+### Observador de tareas programadas
 
 El observador de tareas programadas (schedule watcher) guarda el comando y la información enviada a la pantalla de las tareas programadas que ejecuta tu aplicación.

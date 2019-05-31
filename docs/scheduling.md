@@ -4,17 +4,17 @@
 
 - [Introducción](#introduction)
 - [Definición de programaciones](#defining-schedules)
-    - [Programando Comandos De Artisan](#scheduling-artisan-commands)
-    - [Programando Trabajos En Cola](#scheduling-queued-jobs)
-    - [Programando Comandos De Shell](#scheduling-shell-commands)
-    - [Programando Opciones De Frecuencias](#schedule-frequency-options)
+    - [Programando comandos de Artisan](#scheduling-artisan-commands)
+    - [Programando trabajos en cola](#scheduling-queued-jobs)
+    - [Programando comandos de shell](#scheduling-shell-commands)
+    - [Programando opciones de frecuencias](#schedule-frequency-options)
     - [Zonas Horarias](#timezones)
-    - [Previniendo Superposición De Tareas](#preventing-task-overlaps)
-    - [Ejecutando Tareas En Un Servidor](#running-tasks-on-one-server)
-    - [Tareas En Segundo Plano](#background-tasks)
-    - [Modo De Mantenimiento](#maintenance-mode)
-- [Resultado De La Tarea](#task-output)
-- [Hooks De Tareas](#task-hooks)
+    - [Previniendo superposición de tareas](#preventing-task-overlaps)
+    - [Ejecutando tareas en un servidor](#running-tasks-on-one-server)
+    - [Tareas en segundo plano](#background-tasks)
+    - [Modo de mantenimiento](#maintenance-mode)
+- [Resultado de la Tarea](#task-output)
+- [Hooks de tareas](#task-hooks)
 
 <a name="introduction"></a>
 ## Introducción
@@ -23,7 +23,7 @@ En el pasado, es posible que hayas generado una entrada Cron para cada tarea que
 
 El programador de comandos de Laravel te permite definir tu programación de comandos de forma fluída y expresiva dentro de Laravel. Al usar el programador, una sola entrada Cron es necesaria en tu servidor. Tu programación de tareas es definida en el método `schedule` del archivo `app/Console/Kernel.php`. Para ayudarte a comenzar, un ejemplo sencillo está definido dentro del método.
 
-### Iniciando El Programador
+### Iniciando el programador
 
 Al usar el programador, sólo necesitas agregar la siguiente entrada Cron a tu servidor. Si no sabes cómo agregar entradas Cron a tu servidor, considera usar un servicio como [Laravel Forge](https://forge.laravel.com) que puede administrar las entradas Cron por ti:
 
@@ -80,7 +80,7 @@ $schedule->call(new DeleteRecentUsers)->daily();
 ```
 
 <a name="scheduling-artisan-commands"></a>
-### Programando Comandos De Artisan
+### Programando comandos de artisan
 
 Además de programador llamadas a Closures, también puedes programar [comandos de Artisan](/docs/{{version}}/artisan) y comandos del sistema operativo. Por ejemplo, puedes usar el método `command` para programar un comando de Artisan usando ya sea el nombre del comando o de la clase:
 
@@ -91,7 +91,7 @@ $schedule->command(EmailsCommand::class, ['Taylor', '--force'])->daily();
 ```
 
 <a name="scheduling-queued-jobs"></a>
-### Programando Trabajos En Colas
+### Programando trabajos en colas
 
 El método `job` puede ser usado para programar [un trabajo en cola](/docs/{{version}}/queues). Este método proporciona una forma conveniente de programar trabajos sin usar el método `call` para crear Closures de forma manual para agregar el trabajo a la cola:
 
@@ -103,7 +103,7 @@ $schedule->job(new Heartbeat, 'heartbeats')->everyFiveMinutes();
 ```
 
 <a name="scheduling-shell-commands"></a>
-### Programando Comandos De Shell
+### Programando comandos de shell
 
 El método `exec` puede ser usado para emitir un comando al sistema operativo:
 
@@ -112,7 +112,7 @@ $schedule->exec('node /home/forge/script.js')->daily();
 ```
 
 <a name="schedule-frequency-options"></a>
-### Programando Opciones De Frecuencias
+### Programando opciones de frecuencias
 
 Hay una variedad de programaciones que puedes asignar a tu tarea:
 
@@ -170,7 +170,7 @@ Method  | Description
 `->when(Closure);`  |  Limita la tarea dependiendo de una prueba de veracidad
 `->environments($env);`  |  Limita la tarea a ambientes específicos
 
-#### Restricciones De Tiempo Between
+#### Restricciones de tiempo between
 
 El método `between` puede ser usado para limitar la ejecución de una tarea dependiendo de la hora del día:
 
@@ -188,7 +188,7 @@ $schedule->command('reminders:send')
                     ->unlessBetween('23:00', '4:00');
 ```
 
-#### Restricciones De Veracidad
+#### Restricciones de veracidad
 
 El método `when` puede ser usado para limitar la ejecución de una tarea en base al resultado de un test de veracidad dado. En otras palabras, si la `Closure` dada retorna `true`, la tarea será ejecutada siempre y cuando ninguna otra restricción prevenga que la tarea de ser ejecutada:
 
@@ -219,7 +219,7 @@ $schedule->command('emails:send')
 ```
 
 <a name="timezones"></a>
-### Zonas Horarias
+### Zonas horarias
 
 Usando el método `timezone`, puedes especificar que el tiempo de una tarea programada debe ser interpretada en una zona horaria dada:
 
@@ -248,7 +248,7 @@ Recuerda que algunas zonas horarias usan horario de verano. Cuando ocurren cambi
 :::
 
 <a name="preventing-task-overlaps"></a>
-### Previniendo Superposición De Tareas
+### Previniendo superposición de tareas
 
 Por defecto, las tareas programadas serán ejecutadas incluso si la instancia anterior de la tarea todavía está en ejecución. Para evitar esto, puedes usar el método `withoutOverlapping`:
 
@@ -265,7 +265,7 @@ $schedule->command('emails:send')->withoutOverlapping(10);
 ```
 
 <a name="running-tasks-on-one-server"></a>
-### Ejecutando Tareas En Un Servidor
+### Ejecutando tareas en un servidor
 
 ::: danger Nota
 Para utilizar esta característica, tu aplicación debe estar usando el controlador de caché `memcached` o `redis` como predeterminado. Además, todos los servidores deben comunicarse al mismo servidor central de caché.
@@ -283,7 +283,7 @@ $schedule->command('report:generate')
 ```
 
 <a name="background-tasks"></a>
-### Tareas En Segundo Plano
+### Tareas en segundo plano
 
 Por defcto, múltiples comandos programados al mismo tiempo se ejecutarán secuencialmente. Si tienes comandos de ejecución larga, esto puede causar que los siguientes comandos sean ejecutados mucho más tarde que lo esperado. Si deseas ejecutar comandos en segundo plano para que todos funcionen de forma simultánea, puedes usar el método `runInBackground`:
 
@@ -294,7 +294,7 @@ $schedule->command('analytics:report')
 ```
 
 <a name="maintenance-mode"></a>
-### Modo De Mantenimiento
+### Modo de mantenimiento
 
 Las tareas programadas de Laravel no serán ejecutadas cuando Laravel está en [modo de mantenimiento](/docs/{{version}}/configuration#maintenance-mode), dado que no queremos que tus tareas interfieran con cualquier mantenimiento inacabado que puedes estar realizando en tu servidor. Sin embargo, si quieres forzar la ejecución de una tarea incluso en modo de mantenimiento, puedes usar el método `evenInMaintenanceMode`:
 
@@ -303,7 +303,7 @@ $schedule->command('emails:send')->evenInMaintenanceMode();
 ```
 
 <a name="task-output"></a>
-## Resultado De La Tarea
+## Resultado de la tarea
 
 El programador de Laravel proporciona múltiples métodos convenientes para trabajar con el resultado generado por una tarea programada. Primero, usando el método `sendOutputTo`, puedes enviar el resultado a un archivo para una inspección posterior:
 
@@ -335,7 +335,7 @@ Los métodos `emailOutputTo`, `sendOutputTo` y `appendOutputTo` son exclusivos p
 :::
 
 <a name="task-hooks"></a>
-## Hooks De Tareas
+## Hooks de tareas
 
 Usando los métodos `before` y `after`, puedes especificar código que será ejecutado antes y después de que la tarea programada sea completada:
 
@@ -350,7 +350,7 @@ $schedule->command('emails:send')
          });
 ```
 
-#### Haciendo Ping a URLs
+#### Haciendo ping a URLs
 
 Usando los métodos `pingBefore` y `thenPing`, el programador de tareas puede automáticamente hacer ping a una URL dada antes o después de que una tarea sea completada. Este método es útil para notificar a un servicio externo, como [Laravel Envoyer](https://envoyer.io), que tu tarea programada está comenzando o ha finalizado su ejecución:
 

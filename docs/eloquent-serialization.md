@@ -3,12 +3,12 @@
 # Eloquent: Serialización
 
 - [Introducción](#introduction)
-- [Serializando Modelos y Colecciones](#serializing-models-and-collections)
-    - [Serializando a Arreglos](#serializing-to-arrays)
+- [Serializando modelos y colecciones](#serializing-models-and-collections)
+    - [Serializando a arreglos](#serializing-to-arrays)
     - [Serializando a JSON](#serializing-to-json)
-- [Ocultando Atributos de JSON](#hiding-attributes-from-json)
-- [Añadiendo Valores a JSON](#appending-values-to-json)
-- [Serialización de Fechas](#date-serialization)
+- [Ocultando atributos de JSON](#hiding-attributes-from-json)
+- [Añadiendo valores a JSON](#appending-values-to-json)
+- [Serialización de fechas](#date-serialization)
 
 <a name="introduction"></a>
 ## Introducción
@@ -16,10 +16,10 @@
 Al momento de construir APIs JSON, con frecuencia necesitas convertir tus modelos y relaciones a arreglos o JSON. Eloquent incluye métodos convenientes para hacer estas conversiones, también como controlar cuáles atributos están incluidos en tus serializaciones.
 
 <a name="serializing-models-and-collections"></a>
-## Serializando Modelos y Colecciones
+## Serializando modelos y colecciones
 
 <a name="serializing-to-arrays"></a>
-### Serializando a Arreglos
+### Serializando a arreglos
 
 Para convertir un modelo y sus [relaciones](/docs/{{version}}/eloquent-relationships) cargadas a un arreglo, debes usar el método `toArray`. Este método es recursivo, ya que todos los atributos y todas las relaciones (incluyendo las relaciones de relaciones) serán convertidas a arreglos:
 
@@ -117,7 +117,7 @@ class User extends Model
 }
 ```
 
-#### Modificando la Visibilidad de Atributos Temporalmente
+#### Modificando la visibilidad de atributos temporalmente
 
 Si prefieres hacer visible algunos atributos típicamente ocultos en una instancia de modelo dado, puedes usar el método `makeVisible`. El método `makeVisible` devuelve la instancia de modelo para encadenar métodos de forma conveniente:
 
@@ -192,7 +192,7 @@ return $user->setAppends(['is_admin'])->toArray();
 <a name="date-serialization"></a>
 ## Serialización de Fecha
 
-#### Personalizar el Formato de la Fecha por Atributo
+#### Personalizar el formato de la fecha por atributo
 
 Puedes personalizar el formato de serialización de atributos de fecha de Eloquent individuales especificando el formato de la fecha en la [declaración de la conversión](/docs/{{version}}/eloquent-mutators#attribute-casting):
 
@@ -203,7 +203,7 @@ protected $casts = [
 ];
 ```
 
-#### Personalización Global Mediante Carbon
+#### Personalización global mediante carbon
 
 Laravel extiende la biblioteca de fechas [Carbon](https://github.com/briannesbitt/Carbon) con el propósito de proporcionar la personalización conveniente del formato de serialización de Carbon. Para personalizar la forma en que todas las fechas Carbon a través de tu aplicación sean serializadas, usa el método `Carbon::serializeUsing`. El método `serializeUsing` acepta una Closure la cual devuelve una representación en forma de cadena de la fecha para la serialización JSON:
 

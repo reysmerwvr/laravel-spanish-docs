@@ -3,11 +3,11 @@
 # Instalación
 
 - [Instalación](#installation)
-    - [Requisitos Del Servidor](#server-requirements)
+    - [Requisitos del servidor](#server-requirements)
     - [Instalar Laravel](#installing-laravel)
     - [Configuración](#configuration)
-- [Configuración Del Servidor Web](#web-server-configuration)
-    - [URLs Amigables](#pretty-urls)
+- [Configuración del servidor web](#web-server-configuration)
+    - [URLs amigables](#pretty-urls)
 
 <a name="installation"></a>
 ## Instalación
@@ -17,7 +17,7 @@
 :::
 
 <a name="server-requirements"></a>
-### Requisitos Del Servidor
+### Requisitos del servidor
 
 El framework Laravel tiene algunos requisitos del sistema. Todos estos requisitos son cubiertos por la máquina virtual [Laravel Homestead](/docs/5.8/homestead), así que es altamente recomendable que uses Homestead como tu entorno local de desarrollo de Laravel.
 
@@ -42,7 +42,7 @@ Laravel utiliza [Composer](https://getcomposer.org) para administrar sus depende
 En la lección [instalación de Composer y Laravel](https://styde.net/instalacion-de-composer-y-laravel/) del curso gratuito [Laravel desde cero](https://styde.net/laravel-5/) de Styde puedes ver el proceso de instalación paso a paso.
 :::
 
-#### Mediante El Instalador De Laravel
+#### Mediante el instalador de Laravel
 
 Primero, descarga el instalador de Laravel usando Composer:
 
@@ -62,7 +62,7 @@ Una vez instalado, el comando `laravel new` creará una nueva instalación de La
 laravel new blog
 ```
 
-#### Mediante Composer Create-Project
+#### Mediante composer create-project
 
 Alternativamente, también puedes instalar Laravel ejecutando el comando de Composer `create-project` en tu terminal:
 
@@ -70,7 +70,7 @@ Alternativamente, también puedes instalar Laravel ejecutando el comando de Comp
 composer create-project --prefer-dist laravel/laravel blog
 ```
 
-#### Servidor De Desarrollo Local
+#### Servidor de desarrollo local
 
 Si tienes instalado PHP de manera local y te gustaría utilizar el servidor de desarrollo incorporado en PHP para servir tu aplicación, puedes usar el comando de Artisan `serve`. Este comando iniciará un servidor de desarrollo en `http://localhost:8000`:
 
@@ -83,25 +83,25 @@ Otras opciones de desarrollo local más robustas están disponibles mediante [Ho
 <a name="configuration"></a>
 ### Configuración
 
-#### Directorio Público
+#### Directorio público
 
 Después de haber instalado Laravel, deberás configurar el documento raíz de tu servidor web para que sea el directorio `public`. El archivo `index.php` en este directorio funciona como controlador frontal (front controller) para todas las peticiones HTTP que entran a tu aplicación.
 
-#### Archivos De Configuración
+#### Archivos de configuración
 
 Todos los archivos de configuración para el framework Laravel están almacenados en el directorio `config`. Cada opción está documentada, así que siéntete libre de revisar estos archivos y familiarizarte con las opciones disponibles para ti.
 
-#### Permisos Para Directorios
+#### Permisos para directorios
 
 Después de haber instalado Laravel, necesitarás congigurar algunos permisos. Los directorios dentro de `storage` y `bootstrap/cache` deberán tener permiso de escritura para tu servidor web o Laravel no va a funcionar. Si estás utilizando la máquina virtual [Homestead](/docs/5.8/homestead), estos permisos ya están establecidos.
 
-#### Clave De La Aplicación
+#### Clave de la aplicación
 
 Lo siguiente que debes hacer después de instalar Laravel es establecer la clave de tu aplicación a una cadena aleatoria. Si instalastes Laravel mediante Composer o el instalador de Laravel, esta clave ya ha sido establecida por el comando `php artisan key:generate`.
 
 Típicamente, esta cadena debe tener una longitud de 32 caracteres. La clave puede ser establecida en el archivo de entorno `.env`. Si no has renombrado el archivo `.env.example` a `.env`, deberás hacerlo ahora. **Si la clave de la aplicación no está establecida, ¡las sesiones de usuario y otros datos encriptados no serán seguros!**
 
-#### Configuración Adicional
+#### Configuración adicional
 
 Laravel casi no necesita de configuración adicional. ¡Eres libre de empezar a desarrollar! Sin embargo, puede que quieras revisar el archivo `config/app.php` y su documentación. Contiene varias opciones como `timezone` y `locale` que es posible que desees ajustar en tu aplicación.
 
@@ -114,10 +114,10 @@ También puede que quieras configurar algunos componentes adicionales de Laravel
 </div>
 
 <a name="web-server-configuration"></a>
-## Configuración Del Servidor Web
+## Configuración del servidor web
 
 <a name="pretty-urls"></a>
-### URLs Amigables
+### URLs amigables
 
 #### Apache
 

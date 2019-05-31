@@ -6,7 +6,7 @@
 - [Actualización de Horizon](#upgrading)
 - [Instalación](#installation)
     - [Configuración](#configuration)
-    - [Autorización Del Dashboard](#dashboard-authorization)
+    - [Autorización del dashboard](#dashboard-authorization)
 - [Ejecutando Horizon](#running-horizon)
     - [Usando Horizon](#deploying-horizon)
 - [Etiquetas](#tags)
@@ -52,7 +52,7 @@ php artisan migrate
 ```
 
 <a name="upgrading"></a>
-#### Actualización De Horizon
+#### Actualización de horizon
     
 Al actualizar a una nueva versión mayor de Horizon, es importante que revises cuidadosamente [la guía de actualización](https://github.com/laravel/horizon/blob/master/UPGRADE.md).
 
@@ -71,7 +71,7 @@ Después de publicar los assets de Horizon, su principal archivo de configuraci�
 Debes asegurarte de que la porción `environments` de tu archivo de configuración `horizon` contiene una entrada para cada entorno en el que planeas ejecutrar Horizon.
 :::
 
-#### Opciones de Balance
+#### Opciones de balance
 
 Horizon permite que elijas entre tres estrategias de balance: `simple`, `auto` y `false`. La estrategia `simple`, que es la opción por defecto del archivo de configuración, divide los trabajos entrantes de manera uniforme entre procesos:
 
@@ -81,7 +81,7 @@ Horizon permite que elijas entre tres estrategias de balance: `simple`, `auto` y
 
 La estrategia `auto` ajusta el número de procesos trabajadores por cola basado en la carga de trabajo de la cola. Por ejemplo, si tu cola `notifications` tiene 1.000 trabajos esperando mientras tu cola `render` está vacía, Horizon asignará mas trabajadores a tu cola `notifications` hasta que esté vacía. Cuando la opción `balance` esté establecida a `false`, el comportamiento predeterminado de Laravel será usado, el cual procesa las colas en el orden que son listadas en tu configuración.
 
-#### Recorte De Trabajos
+#### Recorte de trabajos
 
 El archivo de configuración `horizon` te permite configurar cuánto tiempo los trabajos de recientes y fallidos deben ser persistidos (en minutos). Por defecto, los trabajos recientes son mantenidos por una hora mientras que los trabajos fallidos son mantenidos por una semana:
 
@@ -93,7 +93,7 @@ El archivo de configuración `horizon` te permite configurar cuánto tiempo los 
 ```
 
 <a name="dashboard-authorization"></a>
-### Autorización Del Dashboard
+### Autorización del dashboard
 
 Horizon muestra un dashboard o panel de control en `/horizon`. Por defecto, sólo serás capaz de acceder a este dashboard en el entorno `local`. Dentro de tu archivo `app/Providers/HorizonServiceProvider.php`, hay un método `gate`. Este gate de autorización controla el acceso a Horizon en entornos **no locales**. Eres libre de modificar este gate como sea necesario para restringir el acceso a tu instalación de Horizon:
 
@@ -221,7 +221,7 @@ $video = App\Video::find(1);
 App\Jobs\RenderVideo::dispatch($video);
 ```
 
-#### Manually Tagging
+#### Etiquetado manual
 
 Si prefieres definir manualmente las etiquetas para uno de tus objetos encolables, puedes definir un método `tags` en la clase:
 
@@ -253,7 +253,7 @@ Horizon::routeSlackNotificationsTo('slack-webhook-url', '#channel');
 Horizon::routeSmsNotificationsTo('15556667777');
 ```
 
-#### Configurando las Notificaciones de Umbrales de Tiempo de Inactividad
+#### Configurando las notificaciones de umbrales de tiempo de inactividad
 
 Puedes configurar cuántos segundos son considerados un "tiempo de inactividad" dentro de tu archivo de configuración `config/horizon.php`. La opción de configuración `waits` dentro de este archivo permite que controles el umbral de tiempo de inactividad para cada combinación conexión / cola:
 

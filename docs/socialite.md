@@ -7,10 +7,10 @@
 - [Instalación](#installation)
 - [Configuración](#configuration)
 - [Enrutamiento](#routing)
-- [Parámetros Opcionales](#optional-parameters)
-- [Alcances de Acceso](#access-scopes)
-- [Autenticación Sin Estado](#stateless-authentication)
-- [Obteniendo Detalles De Usuario](#retrieving-user-details)
+- [Parámetros opcionales](#optional-parameters)
+- [Alcances de acceso](#access-scopes)
+- [Autenticación sin estado](#stateless-authentication)
+- [Obteniendo detalles de usuario](#retrieving-user-details)
 
 <a name="introduction"></a>
 ## Introducción
@@ -100,7 +100,7 @@ Route::get('login/github/callback', 'Auth\LoginController@handleProviderCallback
 ```
 
 <a name="optional-parameters"></a>
-## Parámetros Opcionales
+## Parámetros opcionales
 
 Un número de proveedores OAuth soportan parámetros opcionales en la solicitud de redirección. Para incluir algunos de los parámetros opcionales en la solicitud, llama el método `with` con un arreglo asociativo:
 
@@ -115,7 +115,7 @@ Al momento de usar el método `with`, procura no pasar algunas palabras reservad
 :::
 
 <a name="access-scopes"></a>
-## Alcances De Acceso
+## Alcances de acceso
 
 Antes de redirecionar al usuario, también puedes agregar "alcances (scopes)" adicionales en la solicitud usando el método `scopes`. Este método mezclará todos los alcances existentes con los que suministras:
 
@@ -134,7 +134,7 @@ return Socialite::driver('github')
 ```
 
 <a name="stateless-authentication"></a>
-## Autenticación Sin Estado
+## Autenticación sin estado
 
 El método `stateless` puede ser usado para deshabilitar la verificación de estado de sesión. Esto es útil al momento de agregar la autenticación de una red social a una API.
 
@@ -143,7 +143,7 @@ return Socialite::driver('google')->stateless()->user();
 ```
 
 <a name="retrieving-user-details"></a>
-## Obteniendo Detalles De Usuario
+## Obteniendo detalles de usuario
 
 Una vez que tengas una instancia de usuario, puedes aprovechar de obtener algunos detalles del usuario:
 
@@ -167,7 +167,7 @@ $user->getEmail();
 $user->getAvatar();
 ```
 
-#### Obteniendo Los Detalles De Usuario Desde Un Token (OAuth2)
+#### Obteniendo Los detalles de usuario desde un token (OAuth2)
 
 Si ya tienes un token de acceso válido de un usuario, puedes obtener sus detalles usando el método `userFromToken`:
 
@@ -175,7 +175,7 @@ Si ya tienes un token de acceso válido de un usuario, puedes obtener sus detall
 $user = Socialite::driver('github')->userFromToken($token);
 ```
 
-#### Obteniendo Los Detalles De Usuario Desde Un Token Y Secreto (OAuth1)
+#### Obteniendo los detalles de usuario desde un token y secreto (OAuth1)
 
 Si ya tienes un par válido de token / secreto de un usuario, puedes obtener sus detalles usando el método `userFromTokenAndSecret`:
 

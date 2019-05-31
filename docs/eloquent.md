@@ -3,26 +3,26 @@
 # Eloquent: Primeros Pasos
 
 - [Introducción](#introduction)
-- [Definiendo Modelos](#defining-models)
-    - [Convenciones Del Modelo Eloquent](#eloquent-model-conventions)
-    - [Valores De Atributo Predeterminados](#default-attribute-values)
-- [Obteniendo Modelos](#retrieving-models)
+- [Definiendo modelos](#defining-models)
+    - [Convenciones del modelo Eloquent](#eloquent-model-conventions)
+    - [Valores de atributo predeterminados](#default-attribute-values)
+- [Obteniendo modelos](#retrieving-models)
     - [Colecciones](#collections)
-    - [Resultados Divididos En Partes (chunk)](#chunking-results)
-- [Obteniendo Modelos Individuales / Agrupamientos](#retrieving-single-models)
-    - [Obteniendo Agrupamientos](#retrieving-aggregates)
-- [Insertando Y Actualizando Modelos](#inserting-and-updating-models)
+    - [Resultados divididos en partes (chunk)](#chunking-results)
+- [Obteniendo modelos individuales / Agrupamientos](#retrieving-single-models)
+    - [Obteniendo agrupamientos](#retrieving-aggregates)
+- [Insertando y actualizando modelos](#inserting-and-updating-models)
     - [Inserciones](#inserts)
     - [Actualizaciones](#updates)
-    - [Asignación Masiva](#mass-assignment)
-    - [Otros Métodos De Creación](#other-creation-methods)
-- [Eliminando Modelos](#deleting-models)
-    - [Eliminación Lógica](#soft-deleting)
-    - [Consultando Modelos Eliminados Lógicamente](#querying-soft-deleted-models)
-- [Alcances de Consulta](#query-scopes)
-    - [Alcances Globales](#global-scopes)
-    - [Alcances Locales](#local-scopes)
-- [Comparando Modelos](#comparing-models)
+    - [Asignación masiva](#mass-assignment)
+    - [Otros métodos de creación](#other-creation-methods)
+- [Eliminando modelos](#deleting-models)
+    - [Eliminación lógica](#soft-deleting)
+    - [Consultando modelos eliminados lógicamente](#querying-soft-deleted-models)
+- [Alcances de consulta](#query-scopes)
+    - [Alcances globales](#global-scopes)
+    - [Alcances locales](#local-scopes)
+- [Comparando modelos](#comparing-models)
 - [Eventos](#events)
     - [Observadores](#observers)
 
@@ -34,7 +34,7 @@ El ORM Eloquent incluido con Laravel proporciona una genial y simple implentaci�
 Antes de empezar, asegúrate de configurar una conexión de base de datos en `config/database.php`. Para mayor información sobre la configuración de tu base de datos, revisa [la documentación](/docs/{{version}}/database#configuration).
 
 <a name="defining-models"></a>
-## Definiendo Modelos
+## Definiendo modelos
 
 Para empezar, vamos a crear un modelo de Eloquent. Los modelos residen típicamente en el directorio `app`, pero eres libre de colocarlos en cualquier parte que pueda ser auto-cargada de acuerdo a tu archivo `composer.json`. Todos los modelos de Eloquent extienden la clase `Illuminate\Database\Eloquent\Model`.
 
@@ -53,7 +53,7 @@ php artisan make:model Flight -m
 ```
 
 <a name="eloquent-model-conventions"></a>
-### Convenciones Del Modelo Eloquent
+### Convenciones del modelo Eloquent
 
 Ahora, vamos a mirar un modelo `Flight` de ejemplo, el cual usaremos para obtener y guardar información desde nuestra tabla de base de datos `flights`:
 
@@ -70,7 +70,7 @@ class Flight extends Model
 }
 ```
 
-#### Nombres De Tabla
+#### Nombres de tabla
 
 Observa que no le dijimos a Eloquent cuál tabla usar para nuestro modelo `Flight`. Por convención, el nombre de la clase en plural y en formato "snake_case" será usado como el nombre de tabla a menos que otro nombre sea especificado expresamente. Así, en este caso, Eloquent asumirá que el modelo `Flight` guarde los registros en la tabla `flights`. Puedes especificar una tabla personalizada al definir una propiedad `table` en tu modelo:
 
@@ -92,7 +92,7 @@ class Flight extends Model
 }
 ```
 
-#### Claves Primarias
+#### Claves primarias
 
 Eloquent asumirá que cada tabla tiene una columna de clave primaria denominada `id`. Puedes definir una propiedad `$primaryKey` protegida para sobrescribir esta convención:
 
@@ -145,7 +145,7 @@ class Flight extends Model
 }
 ```
 
-#### Marcas De Tiempo O Timestamps
+#### Marcas de tiempo o timestamps
 
 De forma predeterminada, Eloquent espera que las columnas `created_at` y `updated_at` existan en tus tablas. Si no deseas tener estas columnas manejadas automáticamente por Eloquent, establece la propiedad `$timestamps` de tu modelo a `false`:
 
@@ -199,7 +199,7 @@ class Flight extends Model
 }
 ```
 
-#### Conexión de Base de Datos
+#### Conexión de base de datos
 
 De forma predeterminada, todos los modelos Eloquent usarán la conexión de base de datos configurada por tu aplicación. Si quieres especificar una conexión diferente para el modelo, usa la propiedad `$connection`:
 
@@ -222,7 +222,7 @@ class Flight extends Model
 ```
 
 <a name="default-attribute-values"></a>
-### Valores De Atributo Predeterminados
+### Valores de atributo predeterminados
 
 Si deseas definir los valores predeterminados para algunos de los atributos de su modelo, puedes definir una propiedad `$attributes` en tu modelo:
 
@@ -247,7 +247,7 @@ class Flight extends Model
 ```
 
 <a name="retrieving-models"></a>
-## Obteniendo Modelos
+## Obteniendo modelos
 
 Una vez que has creado un modelo y [su tabla de base de datos asociada](/docs/{{version}}/migrations#writing-migrations), estás listo para empezar a obtener datos de tu base de datos. Piensa en cada modelo de Eloquent como un [constructor de consultas](/docs/{{version}}/queries) muy poderoso que te permite consultar fluidamente la tabla de base de datos asociada con el modelo. Por ejemplo:
 
@@ -261,7 +261,7 @@ foreach ($flights as $flight) {
 }
 ```
 
-#### Añadiendo Restricciones Adicionales
+#### Añadiendo restricciones adicionales
 
 El método `all` de Eloquent devolverá todos los resultados en la tabla del modelo. Ya que cada modelo de Eloquent sirve como un [constructor de consultas](/docs/{{version}}/queries), también puedes añadir restricciones a las consultas y entonces usar el método `get` para obtener los resultados:
 
@@ -276,7 +276,7 @@ $flights = App\Flight::where('active', 1)
 Ya que los modelos de Eloquent son constructores de consultas, deberías revisar todos los métodos disponibles en el [constructor de consultas](/docs/{{version}}/queries). Puedes usar cualquiera de estos métodos en tus consultas de Eloquent.
 :::
 
-#### Actualizando Modelos
+#### Actualizando modelos
 
 Podemos actualizar modelos usando los métodos `fresh` y `refresh`. El método `fresh` volverá a recuperar el modelo de la base de datos. La instancia de modelo existente no será afectada:
 
@@ -318,7 +318,7 @@ foreach ($flights as $flight) {
 ```
 
 <a name="chunking-results"></a>
-### Resultados Divididos En Partes (chunk)
+### Resultados divididos en partes (chunk)
 
 Si necesitas procesar miles de registros de Eloquent, usa el comando `chunk`. El método `chunk` obtendrá una "porción" de los modelos de Eloquent, incorporándolos a una `Closure` dada para procesamiento. Usando el método `chunk` ahorrarás memoria al momento de trabajar con grandes conjuntos de resultados:
 
@@ -332,7 +332,7 @@ Flight::chunk(200, function ($flights) {
 
 El primer argumento pasado al método es el número de registros que deseas obtener por cada "porción". La Closure pasada como segundo argumento será ejecutada para cada porción que sea obtenida de la base de datos. Una consulta de base de datos será ejecutada para obtener cada porción de registros pasados a la Closure.
 
-#### Usando Cursores
+#### Usando cursores
 
 El método `cursor` permite que iteres a través de registros de tu base de datos usando un cursor, el cual ejecutará solamente una consulta única. Al momento de procesar grandes cantidades de datos, puedes usar el método `cursor` para reducir en gran medida el uso de la memoria:
 
@@ -343,7 +343,7 @@ foreach (Flight::where('foo', 'bar')->cursor() as $flight) {
 ```
 
 <a name="retrieving-single-models"></a>
-## Obteniendo Modelos Individuales / Agrupamientos
+## Obteniendo modelos individuales / Agrupamientos
 
 Además de obtener todos los registros de una tabla dada, también puedes obtener registros individuales usando `find` o `first`. En lugar de devolver una colección de modelos, estos métodos devuelven una única instancia de modelo:
 
@@ -361,7 +361,7 @@ También puedes ejecutar el método `find` con un arreglo de claves primarias, e
 $flights = App\Flight::find([1, 2, 3]);
 ```
 
-#### Excepciones Not Found (No Encontrado)
+#### Excepciones not found (no encontrado)
 
 Algunas veces, puedes desear arrojar una excepción si un modelo no es encontrado. Es particularmente útil en rutas o controladores. Los métodos `findOrFail` y `firstOrFail` obtendrán el primer resultado de la consulta; sin embargo, si nada es encontrado, una excepción de `Illuminate\Database\Eloquent\ModelNotFoundException` será arrojada:
 
@@ -380,7 +380,7 @@ Route::get('/api/flights/{id}', function ($id) {
 ```
 
 <a name="retrieving-aggregates"></a>
-### Obteniendo Agrupamientos
+### Obteniendo agrupamientos
 
 También puedes usar los métodos `count`, `sum`, `max` y otros [métodos de agrupamiento](/docs/{{version}}/queries#aggregates) proporcionados por el [constructor de consulta](/docs/{{version}}/queries). Estos métodos devuelven el valor escalar apropiado en lugar de una completa instancia de modelo:
 
@@ -391,7 +391,7 @@ $max = App\Flight::where('active', 1)->max('price');
 ```
 
 <a name="inserting-and-updating-models"></a>
-## Insertando Y Actualizando Modelos
+## Insertando Y actualizando modelos
 
 <a name="inserts"></a>
 ### Inserciones
@@ -443,7 +443,7 @@ $flight->name = 'New Flight Name';
 $flight->save();
 ```
 
-#### Actualizaciones Masivas
+#### Actualizaciones masivas
 
 Las actualizaciones también pueden ser ejecutadas contra cualquier número de modelos que coincidan con un criterio de consulta dada. En este ejemplo, todos los vuelos que están activos o con `active` igual a 1 y tienen un atributo `destination` igual a `San Diego` serán marcados como retrasados:
 
@@ -460,7 +460,7 @@ Al momento de utilizar una actualización masiva por medio de Eloquent, los even
 :::
 
 <a name="mass-assignment"></a>
-### Asignación Masiva
+### Asignación masiva
 
 También puedes usar el método `create` para guardar un nuevo modelo en una sola línea. La instancia de modelo insertada te será devuelta por el método. Sin embargo, antes de hacer eso, necesitarás especificar o un atributo `fillable` o `guarded` del modelo, de modo que todos los modelos de Eloquent se protejan contra la asignación masiva de forma predeterminada.
 
@@ -498,7 +498,7 @@ Si ya tienes una instancia del modelo, puedes usar el método `fill` para llenar
 $flight->fill(['name' => 'Flight 22']);
 ```
 
-#### Protección De Atributos
+#### Protección de atributos
 
 Mientras `$fillable` sirve como una "lista blanca" de atributos que deben ser asignados en forma masiva, también puedes elegir usar `$guarded`.  La propiedad `$guarded` debe contener un arreglo de atributos que no deseas que sean asignados en forma masiva. El resto de atributos que no estén en el arreglo serán asignados masivamente. `$guarded` funciona como una "lista negra". Importante, debes usar `$fillable` o `$guarded` - pero no ambos. En el ejemplo siguiente, todos los atributos **excepto `price`** serán asignados en forma masiva:
 
@@ -574,7 +574,7 @@ $flight = App\Flight::updateOrCreate(
 ```
 
 <a name="deleting-models"></a>
-## Eliminando Modelos
+## Eliminando modelos
 
 Para eliminar un modelo, ejecuta el método `delete` en una instancia del modelo:
 
@@ -584,7 +584,7 @@ $flight = App\Flight::find(1);
 $flight->delete();
 ```
 
-#### Eliminando Un Modelo Existente Por Clave
+#### Eliminando un modelo existente por clave
 
 En el ejemplo anterior, estamos obteniendo el modelo de la base de datos antes de ejecutar el método `delete`. Sin embargo, si conoces la clave primaria del modelo, puedes eliminar el modelo sin obtenerlo primero. Para hacer eso, ejecuta el método `destroy`.  Además de recibir una sola clave primaria como argumento, el método `destroy` aceptará múltiples claves primarias, o una [collection](/docs/{{version}}/collections) de claves primarias:
 
@@ -598,7 +598,7 @@ App\Flight::destroy([1, 2, 3]);
 App\Flight::destroy(collect([1, 2, 3]));
 ```
 
-#### Eliminando Modelos Por Consultas
+#### Eliminando modelos por consultas
 
 También puedes ejecutar una instrucción de eliminar en un conjunto de modelos. En este ejemplo, eliminaremos todos los vuelos que están marcados como inactivos. Al igual que las actualizaciones masivas, las eliminaciones masivas no dispararán cualquiera de los eventos de modelo para los modelos que son eliminados:
 
@@ -611,7 +611,7 @@ Al momento de ejecutar una instrucción de eliminación masiva por medio de Eloq
 :::
 
 <a name="soft-deleting"></a>
-### Eliminación Lógica (Soft Deleting)
+### Eliminación lógica (Soft Deleting)
 
 Además de eliminar realmente los registros de tu base de datos, Eloquent también puede "eliminar lógicamente" los modelos. Cuando los modelos son borrados lógicamente, no son removidos realmente de tu base de datos. En lugar de eso, un atributo `deleted_at` es establecido en el modelo e insertado en la base de datos. Si un modelo tiene un valor `deleted_at` no nulo, el modelo ha sido eliminado lógicamente. Para habilitar eliminaciones lógicas en un modelo, usa el trait `Illuminate\Database\Eloquent\SoftDeletes` en el modelo:
 
@@ -654,7 +654,7 @@ if ($flight->trashed()) {
 <a name="querying-soft-deleted-models"></a>
 ### Consultando Modelos Eliminados Lógicamente
 
-#### Incluyendo Modelos Eliminados Lógicamente
+#### Incluyendo modelos eliminados lógicamente
 
 Como se apreció anteriormente, los modelos eliminados lógicamente serán excluidos automáticamente de los resultados de las consultas. Sin embargo, puedes forzar que los modelos eliminados lógicamente aparezcan en un conjunto resultante usando el método `withTrashed` en la consulta:
 
@@ -670,7 +670,7 @@ El método `withTrashed` también puede ser usado en una consulta de [relación 
 $flight->history()->withTrashed()->get();
 ```
 
-#### Obteniedo Modelos Individuales Eliminados Lógicamente
+#### Obteniedo modelos individuales eliminados lógicamente
 
 El método `onlyTrashed` obtendrá **solamente** modelos eliminados lógicamente:
 
@@ -680,7 +680,7 @@ $flights = App\Flight::onlyTrashed()
                 ->get();
 ```
 
-#### Restaurando Modelos Eliminados Lógicamente
+#### Restaurando modelos eliminados lógicamente
 
 Algunas veces puedes desear "deshacer la eliminación" de un modelo eliminado lógicamente. Para restaurar un modelo eliminado lógicamente a un estado activo, usa el método `restore` en una instancia de modelo:
 
@@ -702,7 +702,7 @@ Al igual que con el método `withTrashed`, el método `restore` también puede s
 $flight->history()->restore();
 ```
 
-#### Eliminando Modelos Permanentemente
+#### Eliminando modelos permanentemente
 
 Algunas veces puedes necesitar eliminar verdaderamente un modelo de tu base de datos. Para remover permanentemente un modelo eliminado lógicamente de la base de datos, usa el método `forceDelete`:
 
@@ -715,14 +715,14 @@ $flight->history()->forceDelete();
 ```
 
 <a name="query-scopes"></a>
-## Alcances (Scopes) de Consultas
+## Alcances (Scopes) de consultas
 
 <a name="global-scopes"></a>
-### Alcances (scopes) Globales
+### Alcances (scopes) globales
 
 Los alcances globales permiten que añadas restricciones a todas las consultas para un modelo dado. La propia funcionalidad de la [eliminación lógica](#soft-deleting) de Laravel utiliza alcances globales para extraer solamente los modelos "no-eliminados" de la base de datos. Escribiendo tus propios alcances globales puede proporcionarte una forma conveniente y fácil de asegurar que cada consulta para un modelo dado reciba ciertas restricciones.
 
-#### Escribiendo Scopes Globales
+#### Escribiendo scopes globales
 
 Escribir un alcance global es simple. Define una clase que implemente la interfaz `Illuminate\Database\Eloquent\Scope`. Esta interfaz requiere que implementes un método: `apply`. El método `apply` puede añadir restricciones `where` a la consulta como sea necesario:
 
@@ -755,7 +755,7 @@ class AgeScope implements Scope
 Si tu scope global está agregando columnas a la cláusula select de la consulta, deberías usar el método `addSelect` en lugar de `select`. Esto evitará el reemplazo no intencional de la cláusula select existente de la consulta.
 :::
 
-#### Aplicando Scopes Globales
+#### Aplicando scopes globales
 
 Para asignar un scope global a un modelo, debes sobrescribir el método `boot` del modelo dado y usar el método `addGlobalScope`:
 
@@ -789,7 +789,7 @@ Después de agregar el scope, una consulta a `User::all()` producirá el siguien
 select * from `users` where `age` > 200
 ```
 
-#### Alcances Globales Anónimos
+#### Alcances globales anónimos
 
 Eloquent también permite que definas scopes globales usando Closures, lo cual es particularmente útil para scopes simples que no se crean en una clase separada:
 
@@ -819,7 +819,7 @@ class User extends Model
 }
 ```
 
-#### Eliminar Scopes Globales
+#### Eliminar scopes globales
 
 Si prefieres remover un scope global para una consulta dada, puedes usar el método `withoutGlobalScope`. El método acepta el nombre de clase del scope global como su único argumento:
 
@@ -846,7 +846,7 @@ User::withoutGlobalScopes([
 ```
 
 <a name="local-scopes"></a>
-### Alcances (Scopes) Locales
+### Alcances (scopes) locales
 
 Los scopes locales permiten que definas conjuntos de restricciones comunes que puedes reusar fácilmente a traves de tu aplicación. Por ejemplo, puedes necesitar obtener frecuentemente todos los usuarios que son considerados "populares". Para definir un scope, agrega el prefijo `scope` a un método de modelo de Eloquent.
 
@@ -885,7 +885,7 @@ class User extends Model
 }
 ```
 
-#### Utilizando Un Scope Local
+#### Utilizando un scope local
 
 Una vez que el scope ha sido definido, puedes ejecutar los métodos de scope al momento de consultar el modelo. Sin embargo, no debes incluir el prefijo `scope` cuando ejecutas el método. Incluso puedes encadenar las ejecuciones a varios scopes, por ejemplo:
 
@@ -907,7 +907,7 @@ Sin embargo, dado que esto puede ser engorroso, Laravel proporciona un método d
 $users = App\User::popular()->orWhere->active()->get();
 ```
 
-#### Scopes Dinámicos
+#### Scopes dinámicos
 
 Algunas veces, puedes desear definir un scope que acepte parámetros. Para empezar, sólo agrega tus parámetros adicionales a tu scope. Los parámetros de scope deben ser definidos después del parámetro `$query`:
 
@@ -941,7 +941,7 @@ $users = App\User::ofType('admin')->get();
 ```
 
 <a name="comparing-models"></a>
-## Comparando Modelos
+## Comparando modelos
 
 En ocasiones necesitarás determinar si dos modelos son "el mismo". El método `is` puede ser usado para verificar rápidamente dos modelos que comparten llave principal, tabla y conexión a base de datos:
 
@@ -995,7 +995,7 @@ Después de definir y mapear tus eventos Eloquent, puedes usar [listeners de eve
 <a name="observers"></a>
 ### Observadores
 
-#### Definiendo Observadores
+#### Definiendo observadores
 
 Si estás escuchando muchos eventos en un modelo dado, puedes usar observadores para agrupar todos tus listeners dentro de una sola clase. Las clases observadoras tienen nombres de métodos que reflejan los eventos de Eloquent que deseas escuchar. Cada uno de estos métodos reciben el modelo como su único argumento. El comando `make:observer` Artisan es la forma más sencilla de crear una nueva clase de observador:
 

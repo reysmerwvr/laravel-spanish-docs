@@ -4,34 +4,34 @@
 
 - [Introducción](#introduction)
 - [Instalación](#installation)
-    - [Inicio Rápido De Frontend](#frontend-quickstart)
-    - [Despliegue De Passport](#deploying-passport)
+    - [Inicio rápido de frontend](#frontend-quickstart)
+    - [Despliegue de passport](#deploying-passport)
 - [Configuración](#configuration)
-    - [Duración De Tokens](#token-lifetimes)
-    - [Sobrescribiendo Modelos Predeterminados](#overriding-default-models)
-- [Emitiendo Tokens De Acceso](#issuing-access-tokens)
-    - [Administrando Clientes](#managing-clients)
-    - [Solicitando Tokens](#requesting-tokens)
-    - [Actualización De Tokens](#refreshing-tokens)
-- [Tokens De Permiso De Contraseña](#password-grant-tokens)
-    - [Creando Un Cliente Con Permiso De Contraseña](#creating-a-password-grant-client)
-    - [Solicitando Tokens](#requesting-password-grant-tokens)
-    - [Solicitando Todos los Alcances](#requesting-all-scopes)
-    - [Personalizando El Campo Username](#customizing-the-username-field)
-- [Tokens De Permiso Implícitos](#implicit-grant-tokens)
-- [Tokens De Permiso De Credenciales De Cliente](#client-credentials-grant-tokens)
-- [Tokens De Acceso Personal](#personal-access-tokens)
-    - [Creando un Cliente De Acceso Personal](#creating-a-personal-access-client)
-    - [Administrando Tokens De Acceso Personal](#managing-personal-access-tokens)
-- [Protegiendo Rutas](#protecting-routes)
-    - [Por Medio De Middleware](#via-middleware)
-    - [Pasando El Token De Acceso](#passing-the-access-token)
-- [Alcances De Token](#token-scopes)
-    - [Definiendo Alcances](#defining-scopes)
-    - [Alcance Predeterminado](#default-scope)
-    - [Asignando Alcances A Los Tokens](#assigning-scopes-to-tokens)
-    - [Verificando Alcances](#checking-scopes)
-- [Consumiendo Tu API Con JavaScript](#consuming-your-api-with-javascript)
+    - [Duración de tokens](#token-lifetimes)
+    - [Sobrescribiendo modelos predeterminados](#overriding-default-models)
+- [Emitiendo tokens de acceso](#issuing-access-tokens)
+    - [Administrando clientes](#managing-clients)
+    - [Solicitando tokens](#requesting-tokens)
+    - [Actualización de tokens](#refreshing-tokens)
+- [Tokens de permiso de contraseña](#password-grant-tokens)
+    - [Creando un cliente con permiso de contraseña](#creating-a-password-grant-client)
+    - [Solicitando tokens](#requesting-password-grant-tokens)
+    - [Solicitando todos los alcances](#requesting-all-scopes)
+    - [Personalizando el campo username](#customizing-the-username-field)
+- [Tokens de permiso implícitos](#implicit-grant-tokens)
+- [Tokens de permiso de credenciales de cliente](#client-credentials-grant-tokens)
+- [Tokens de acceso personal](#personal-access-tokens)
+    - [Creando un cliente de acceso personal](#creating-a-personal-access-client)
+    - [Administrando tokens de acceso personal](#managing-personal-access-tokens)
+- [Protegiendo rutas](#protecting-routes)
+    - [Por medio de middleware](#via-middleware)
+    - [Pasando el token de acceso](#passing-the-access-token)
+- [Alcances de token](#token-scopes)
+    - [Definiendo alcances](#defining-scopes)
+    - [Alcance predeterminado](#default-scope)
+    - [Asignando alcances a los Tokens](#assigning-scopes-to-tokens)
+    - [Verificando alcances](#checking-scopes)
+- [Consumiendo tu API con JavaScript](#consuming-your-api-with-javascript)
 - [Eventos](#events)
 - [Pruebas](#testing)
 
@@ -134,14 +134,14 @@ Finalmente, en tu archivo de configuración `config/auth.php`, debes establecer 
 ],
 ```
 
-### Personalización De La migración
+### Personalización de la migración
 
 Si no vas a utilizar las migraciones predeterminadas de Passport, debes llamar al método `Passport::ignoreMigrations` en el método `register` de tu `AppServiceProvider`. Puedes exportar las migraciones por defecto usando `php artisan vendor:publish --tag=passport-migrations`.
 
 Por defecto, Passport usa una columna de enteros para almacenar el `user_id`. Si tu aplicación utiliza un tipo de columna diferente para identificar a los usuarios (por ejemplo: UUID), debes modificar las migraciones de Passport predeterminadas después de publicarlas.
 
 <a name="frontend-quickstart"></a>
-### Inicio Rápido De Frontend
+### Inicio rápido de frontend
 
 ::: danger Nota
 Para usar los componentes de Vue, debes estar usando el framework de JavaScript [Vue](https://vuejs.org). Estos componentes también usarán el framework de CSS Bootstrap. Sin embargo, incluso si no estás usando estas herramientas, los componentes sirven como una referencia valiosa para tu propia implementación de frontend.
@@ -187,7 +187,7 @@ Después de registrar los componentes, asegurate de ejecutar `npm run dev` para 
 ```
 
 <a name="deploying-passport"></a>
-### Despliegue De Passport
+### Despliegue de passport
 
 Al momento de usar Passport en tus servidores de producción por primera vez, es probable que debas ejecutar el comando `passport:keys`. Este comando genera las claves de encriptación que Passport necesita con el propósito de generar el token de acceso. Las claves generadas normalmente no son guardadas en control de código fuente:
 
@@ -217,7 +217,7 @@ public function boot()
 ## Configuración
 
 <a name="token-lifetimes"></a>
-### Duración De Tokens
+### Duración de tokens
 
 De forma predeterminada, Passport emite tokens de acceso de larga duración que caducan después de un año. Si prefieres configurar una duración de token más larga o más corta, puedes usar los métodos `tokensExpireIn`, `refreshTokensExpireIn` y `personalAccessTokensExpireIn`. Estos métodos deberían ser ejecutados desde el método `boot` de tu `AuthServiceProvider`:
 
@@ -242,7 +242,7 @@ public function boot()
 ```
 
 <a name="overriding-default-models"></a>
-### Sobrescribiendo Modelos Predeterminados
+### Sobrescribiendo modelos predeterminados
 
 Eres en libre de extender los modelos usados internamente por Passport. A continuación, puedes indicarle a Passport que utilice tus modelos personalizados a través de la clase `Passport`:
 
@@ -271,12 +271,12 @@ public function boot()
 ```
 
 <a name="issuing-access-tokens"></a>
-## Emitiendo Tokens de Acceso
+## Emitiendo tokens de acceso
 
 Usar OAuth2 con códigos de autorización es la forma en que la mayoría de los desarrolladores están familiarizados con OAuth2. Al usar códigos de autorización, una aplicación cliente redireccionará un usuario a tu servidor donde aprobará o denegará la solicitud para emitir un token de acceso al cliente.
 
 <a name="managing-clients"></a>
-### Administrando Clientes
+### Administrando clientes
 
 En primer lugar, los desarrolladores que crean aplicaciones que necesitan interactuar con la API de tu aplicación necesitarán registrar su aplicación con la tuya creando un "cliente". Normalmente, esto consiste en proporcionar el nombre de su aplicación y una dirección URL a la que tu aplicación puede redirigir después de que los usuarios aprueben su solicitud de autorización.
 

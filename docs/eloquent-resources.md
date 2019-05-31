@@ -3,15 +3,15 @@
 # Eloquent: Recursos API
 
 - [Introducción](#introduction)
-- [Generación de Recursos](#generating-resources)
-- [Descripción General del Concepto](#concept-overview)
-    - [Colecciones de Recursos](#resource-collections)
-- [Escritura de Recursos](#writing-resources)
+- [Generación de recursos](#generating-resources)
+- [Descripción general del concepto](#concept-overview)
+    - [Colecciones de recursos](#resource-collections)
+- [Escritura de recursos](#writing-resources)
     - [Envoltura de datos](#data-wrapping)
     - [Paginación](#pagination)
-    - [Atributos Condicionales](#conditional-attributes)
-    - [Relaciones Condicionales](#conditional-relationships)
-    - [Añadiendo Metadatos](#adding-meta-data)
+    - [Atributos condicionales](#conditional-attributes)
+    - [Relaciones condicionales](#conditional-relationships)
+    - [Añadiendo metadatos](#adding-meta-data)
 - [Respuestas de recursos](#resource-responses)
 
 <a name="introduction"></a>
@@ -20,7 +20,7 @@
 Al crear una API, es posible que necesites una capa de transformación que se ubique entre tus modelos Eloquent y las respuestas JSON que realmente se devuelven a los usuarios de tu aplicación. Las clases de recursos de Laravel te permiten transformar tus modelos y colecciones de modelos de forma expresiva y sencilla en JSON.
 
 <a name="generating-resources"></a>
-## Generación de Recursos
+## Generación de recursos
 
 Para generar un clase recurso, puedes usar el comando de Artisan `make:resource`. Por defecto, los recursos estará localizado en el directorio `app/Http/Resources` de tu aplicación. Los Recursos extiende de la clase `Illuminate\Http\Resources\Json\JsonResource`:
 
@@ -28,7 +28,7 @@ Para generar un clase recurso, puedes usar el comando de Artisan `make:resource`
 php artisan make:resource User
 ```
 
-#### Colecciones de Recurso
+#### Colecciones de recurso
 
 Además de generar recursos que transforman modelos individuales, puedes generar recursos que sean responsables de transformar colecciones de modelos. Esto permite que tu respuesta incluya enlaces y otra metainformación relevante para una colección completa de un recurso determinado.
 
@@ -41,7 +41,7 @@ php artisan make:resource UserCollection
 ```
 
 <a name="concept-overview"></a>
-## Descripción General del Concepto
+## Descripción general del concepto
 
 ::: tip
 Esta es una explicación general de recursos y colecciones de recursos. Te recomendamos que leas las otras secciones de esta documentación para obtener una comprensión más profunda de la personalización y el poder que te ofrecen los recursos.
@@ -89,7 +89,7 @@ Route::get('/user', function () {
 ```
 
 <a name="resource-collections"></a>
-### Colecciones de Recurso
+### Colecciones de recurso
 
 Si estás devolviendo una colección de recursos o una respuesta paginada, puedes usar el método `collection` al crear la instancia de recursos en tu ruta o controlador:
 
@@ -148,7 +148,7 @@ Route::get('/users', function () {
 });
 ```
 
-#### Preservando La Colección De LLaves
+#### Preservando la colección de llaves
 
 Cuando se retorna un recurso de colección desde una ruta, Laravel reinicia las llaves de la colección para que éstas estén en un simple orden numérico. Sin embargo, puedes añadir una propiedad `preserveKeys` a tu clase de recurso indicando si esta colección de llaves debería preservarse:
 
@@ -181,7 +181,7 @@ Route::get('/user', function () {
 });
 ```
 
-#### Personalización de la Clase de Recurso Subyacente
+#### Personalización de la clase de recurso subyacente
 
 Normalmente, la propiedad `$this->collection` de una colección de recursos se rellena automáticamente con el resultado de la asignación de cada elemento de la colección a su clase de recurso singular. Se asume que la clase de recurso singular es el nombre de clase de la colección sin la cadena `Collection` al final.
 
@@ -206,7 +206,7 @@ class UserCollection extends ResourceCollection
 ```
 
 <a name="writing-resources"></a>
-## Escritura de Recursos
+## Escritura de recursos
 
 ::: tip
 Si no has leído la [descripción general del concepto](#concept-overview), te recomendamos que lo hagas antes de continuar con esta documentación.
@@ -281,7 +281,7 @@ public function toArray($request)
 Si deseas incluir relaciones solo cuando ya se han cargado, consulte la documentación sobre [relaciones condicionales](#conditional-relationships).
 :::
 
-#### Colecciones de Recurso
+#### Colecciones de recurso
 
 Si bien los recursos traducen un modelo único en un arreglo, las colecciones de recursos traducen una colección de modelos en un arreglo. No es absolutamente necesario definir una clase de colección de recursos para cada uno de los tipos de modelo ya que todos los recursos proporcionan un método `collection` para generar una colección de recursos "ad-hoc" sobre la marcha:
 
@@ -422,7 +422,7 @@ class CommentsCollection extends ResourceCollection
 }
 ```
 
-### Envoltura de Datos y Paginación
+### Envoltura de datos y paginación
 
 Al devolver colecciones paginadas en una respuesta de recursos, Laravel ajustará tus datos de recursos en una clave `data` incluso si se ha llamado al método` withoutWrapping`. Esto se debe a que las respuestas paginadas siempre contienen claves `meta` y` links` con información sobre el estado del paginador:
 
@@ -507,7 +507,7 @@ Las respuestas paginadas siempre contienen claves `meta` y `links` con informaci
 ```
 
 <a name="conditional-attributes"></a>
-### Atributos Condicionales
+### Atributos condicionales
 
 En ocasiones, es posible que desees incluir solo un atributo en una respuesta de recurso si se cumple una condición determinada. Por ejemplo, es posible que desee incluir solo un valor si el usuario actual es un "administrador". Laravel proporciona una variedad de métodos de ayuda para ayudarlo en esta situación. El método `when` se puede usar para agregar condicionalmente un atributo a una respuesta de recurso:
 
@@ -575,7 +575,7 @@ El método `mergeWhen` no debe usarse dentro de arreglos que mezclen claves de c
 :::
 
 <a name="conditional-relationships"></a>
-### Relaciones Condicionales
+### Relaciones condicionales
 
 Además de cargar condicionalmente los atributos, puedes incluir condicionalmente relaciones en tus respuestas de recursos en función de si la relación ya se ha cargado en el modelo. Esto permite que tu controlador decida qué relaciones deben cargarse en el modelo y tu recurso puede incluirlas fácilmente solo cuando realmente se hayan cargado.
 
@@ -603,7 +603,7 @@ public function toArray($request)
 
 En este ejemplo, si la relación no se ha cargado, la clave `posts` se eliminará de la respuesta del recurso por completo antes de que se envíe al cliente.
 
-#### Información de Pivote Condicional
+#### Información de pivote condicional
 
 Además de incluir condicionalmente la información de la relación en tus respuestas de recursos, puedes incluir condicionalmente datos de las tablas intermedias de relaciones de muchos a muchos utilizando el método `whenPivotLoaded`. El método `whenPivotLoaded` acepta el nombre de la tabla pivote como su primer argumento. El segundo argumento debe ser un Closure que defina el valor que se devolverá si la información pivote está disponible en el modelo:
 
@@ -648,7 +648,7 @@ public function toArray($request)
 ```
 
 <a name="adding-meta-data"></a>
-### Añadiendo Metadatos
+### Añadiendo metadatos
 
 Algunos estándares de API de JSON requieren la adición de metadatos a tus respuestas de recursos y colecciones de recursos. Esto a menudo incluye cosas como `links` al recurso o recursos relacionados, o metadatos sobre el recurso en sí. Si necesitas devolver metadatos adicionales sobre un recurso, inclúyelos en tu método `toArray`. Por ejemplo, puedes incluir información de `link` al transformar una colección de recursos:
 
