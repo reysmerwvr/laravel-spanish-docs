@@ -11,6 +11,8 @@
 - [Filtros](#filtering)
     - [Entradas](#filtering-entries)
     - [Lotes](#filtering-batches)
+- [Etiquetado](#tagging)
+    - [Agregar etiquetas personalizadas](#tagging-adding)
 - [Observadores disponibles](#available-watchers)
     - [Observador De caché](#cache-watcher)
     - [Observador De comandos](#command-watcher)
@@ -201,6 +203,30 @@ public function register()
                 $entry->isScheduledTask() ||
                 $entry->hasMonitoredTag();
             });
+    });
+}
+```
+
+<a name="tagging"></a>
+## Etiquetado
+
+Telescope te permite buscar entradas por "etiqueta". A menudo, las etiquetas son nombres de clases de modelos de Eloquent o IDs de usuarios autenticados que Telescope automáticamente agrega a entradas. Ocasionalmente, puede que quieras adjuntar tus propias etiquetas personalizadas a entradas. Para lograr esto, puedes usar el método `Telescope::tags`. El método `tags` acepta un callback que debe retornar un arreglo de etiquetas. Las etiquetas retornadas por el callback se fusionarán con cualquier etiqueta que Telescope automáticamente agregaría a la entrada. Debes llamar al método `tags` dentro de tu `TelescopeServiceProvider`:
+
+```php
+use Laravel\Telescope\Telescope;
+/**
+* Register any application services.
+*
+* @return void
+*/
+public function register()
+{
+    $this->hideSensitiveRequestDetails();
+    Telescope::tags(function (IncomingEntry $entry) {
+        if ($entry->type === 'request') {
+            return ['status:'.$entry->content['response_status']];
+        }
+        return [];
     });
 }
 ```

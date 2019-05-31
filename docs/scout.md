@@ -431,7 +431,7 @@ App\Order::search('Star Trek', function (SearchIndex $algolia, string $query, ar
 
 #### Escribiendo el motor
 
-Si ninguno de los motores de búsqueda integrados en Scout no se ajustan a tus necesidades, puedes escribir tu propio motor personalizado y registrarlo con Scout. Tu motor debería extender la clase abstracta `Laravel\Scout\Engines\Engine`. Esta clase abstracta contiene siete métodos que tu motor de búsqueda personalizado debe implementar:
+Si ninguno de los motores de búsqueda integrados en Scout no se ajustan a tus necesidades, puedes escribir tu propio motor personalizado y registrarlo con Scout. Tu motor debería extender la clase abstracta `Laravel\Scout\Engines\Engine`. Esta clase abstracta contiene ocho métodos que tu motor de búsqueda personalizado debe implementar:
 
 ```php
 use Laravel\Scout\Builder;
