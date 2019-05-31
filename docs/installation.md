@@ -24,14 +24,14 @@ El framework Laravel tiene algunos requisitos del sistema. Todos estos requisito
 Sin embargo, si no estás utilizando Homestead, deberás asegurarte de que tu servidor cumpla con los siguientes requisitos:
 
 - PHP >= 7.1.3
+- BCMath PHP Extension
+- Ctype PHP Extension
+- JSON PHP Extension
+- Mbstring PHP Extension
 - Extensión OpenSSL de PHP 
 - Extensión PDO de PHP 
-- Extensión Mbstring de PHP 
 - Extensión Tokenizer de PHP 
 - Extensión XML de PHP
-- Extensión Ctype de PHP
-- Extensión JSON de PHP
-- Extensión BCMath de PHP
 
 <a name="installing-laravel"></a>
 ### Instalar Laravel

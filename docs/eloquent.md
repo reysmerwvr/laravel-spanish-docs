@@ -456,7 +456,7 @@ App\Flight::where('active', 1)
 El método `update` espera un arreglo de pares de columna y valor representando las columnas que deberían ser actualizadas.
 
 ::: danger Nota 
-Al momento de utilizar una actualización masiva por medio de Eloquent, los eventos de modelo `saved` y `updated` no serán disparados para los modelos actualizados. Esto es debido a que los modelos nunca son obtenidos en realidad al momento de hacer una actualización masiva.
+Al momento de utilizar una actualización masiva por medio de Eloquent, los eventos de modelo `saving`, `saved`, `updating` y `updated` no serán disparados para los modelos actualizados. Esto es debido a que los modelos nunca son obtenidos en realidad al momento de hacer una actualización masiva.
 :::
 
 <a name="mass-assignment"></a>

@@ -236,13 +236,18 @@ En ocasiones puedes pasar un arreglo a tu vista con la intención de renderizarl
 </script>
 ```
 
-Sin embargo, en lugar de llamar manualmente a `json_encode`, puedes usar la directiva de Blade `@json`:
+Sin embargo, en lugar de llamar manualmente a `json_encode`, puedes usar la directiva de Blade `@json`. La directiva `@json` acepta los mismos argumentos que la función `json_encode` de PHP:
 
 ```php
 <script>
     var app = @json($array);
+    var app = @json($array, JSON_PRETTY_PRINT);
 </script>
 ```
+
+::: danger Nota
+Sólo debes usar la directiva `@json` para renderizar variables existentes como JSON. Las plantillas Blade están basadas en expresiones regulares e intentar pasar una expresión compleja a la directiva podría causar fallos inesperados.
+:::
 
 La directiva `@json` es también útil para trabajar con componentes de Vue o atributos `data-*`:
 

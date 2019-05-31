@@ -4,6 +4,7 @@
 
 - [Introducción](#introduction)
     - [Personalizando encabezados de solicitud](#customizing-request-headers)
+    - [Depurando respuestas](#debugging-responses)
 - [Sesión y autenticación](#session-and-authentication)
 - [Probando APIs JSON](#testing-json-apis)
 - [Probando subidas de archivos](#testing-file-uploads)
@@ -76,6 +77,36 @@ class ExampleTest extends TestCase
 ::: tip
 El middleware CSRF es automáticamente deshabilitado cuando se ejecutan las pruebas.
 :::
+
+<a name="debugging-responses"></a>
+### Depurando respuestas
+
+Luego de hacer una solicitud de prueba a tu aplicación, los métodos `dump` y `dumpHeaders` pueden ser usados para examinar y depurar el contenido de la respuesta:
+
+```php
+<?php
+
+namespace Tests\Feature;
+
+use Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
+
+class ExampleTest extends TestCase
+{
+    /**
+    * A basic test example.
+    *
+    * @return void
+    */
+    public function testBasicTest()
+    {
+        $response = $this->get('/');
+        $response->dumpHeaders();
+        $response->dump();
+    }
+}
+```
 
 <a name="session-and-authentication"></a>
 ## Sesión y autenticación
