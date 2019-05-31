@@ -1,6 +1,6 @@
 ::: v-pre
 
-# Contenedor de servicios (service container)
+# Contenedor de servicios
 
 - [Introducción](#introduction)
 - [Enlaces](#binding)
@@ -66,7 +66,7 @@ class UserController extends Controller
 }
 ```
 
-En este ejemplo, `UserController` necesita retornar usuarios desde una fuente de datos. Así que, **inyectaremos** un servicio que es capaz de retornar los usuarios. En este conexto, nuestro `UserRepository` probablemente usa [Eloquent](/docs/5.8/eloquent) para retornar la información de los usuarios desde la base de datos. Sin embargo, dado que el repositorio es inyectado, somos capaces de cambiarlo fácilmente con otra implementación. También somos capaces de "simular" o crear una implementación de ejemplo de `UserRepository` al probar nuestra aplicación.
+En este ejemplo, `UserController` necesita retornar usuarios desde una fuente de datos. Así que, **inyectaremos** un servicio que es capaz de retornar los usuarios. En este conexto, nuestro `UserRepository` probablemente usa [Eloquent](/eloquent.html) para retornar la información de los usuarios desde la base de datos. Sin embargo, dado que el repositorio es inyectado, somos capaces de cambiarlo fácilmente con otra implementación. También somos capaces de "simular" o crear una implementación de ejemplo de `UserRepository` al probar nuestra aplicación.
 
 Un conocimiento profundo del contenedor de servicios de Laravel es esencial para construir aplicaciones grandes y poderosas así como también contribuir al núcleo de Laravel.
 
@@ -76,7 +76,7 @@ Un conocimiento profundo del contenedor de servicios de Laravel es esencial para
 <a name="binding-basics"></a>
 ### Fundamentos de los enlaces
 
-La mayoría de los enlaces de tu contenedor de servicios serán registrados dentro de [proveedores de servicios](/docs/5.8/providers), así que la mayoría de estos ejemplos muestra el uso del contenedor en ese contexto.
+La mayoría de los enlaces de tu contenedor de servicios serán registrados dentro de [proveedores de servicios](/providers.html), así que la mayoría de estos ejemplos muestra el uso del contenedor en ese contexto.
 
 ::: tip
 No hay necesidad de enlazar clases al contenedor si no dependen de ninguna interfaz. El contenedor no necesita ser instruido en cómo construir esos objetos, dado que puede resolver dichos objetos automáticamente usando reflejos.
@@ -156,7 +156,7 @@ public function __construct(EventPusher $pusher)
 <a name="contextual-binding"></a>
 ### Enlaces contextuales
 
-Algunas veces tendrás dos clases que usan la misma interfaz, pero quieres inyectar diferentes implementaciones en cada clase. Por ejemplo, dos controladores pueden depender de diferentes implementaciones del [contrato](/docs/5.8/contracts) `Illuminate\Contracts\Filesystem\Filesystem`. Laravel proporciona una simple y fluida interfaz para definir este comportamiento:
+Algunas veces tendrás dos clases que usan la misma interfaz, pero quieres inyectar diferentes implementaciones en cada clase. Por ejemplo, dos controladores pueden depender de diferentes implementaciones del [contrato](/contracts.html) `Illuminate\Contracts\Filesystem\Filesystem`. Laravel proporciona una simple y fluida interfaz para definir este comportamiento:
 
 ```php
 use Illuminate\Support\Facades\Storage;
@@ -231,7 +231,7 @@ Si estás en una ubicación de tu código que no tiene acceso a la variable `$ap
 $api = resolve('HelpSpot\API');
 ```
 
-Si algunas de las dependencias de tu clase no son resueltas mediante el contenedor, puedes inyectarlas pasandolas como un arreglo asociativo al método `makeWith`:
+Si algunas de las dependencias de tu clase no son resueltas mediante el contenedor, puedes inyectarlas pasándolas como un arreglo asociativo al método `makeWith`:
 
 ```php
 $api = $this->app->makeWith('HelpSpot\API', ['id' => 1]);
@@ -240,7 +240,7 @@ $api = $this->app->makeWith('HelpSpot\API', ['id' => 1]);
 <a name="automatic-injection"></a>
 #### Inyección automática
 
-Alternativamente, y de forma importante, puedes "determinar el tipo" de la dependencia en el constructor de una clase que es resuelta por el contenedor, incluyendo [controladores](/docs/5.8/controllers), [listeners de eventos](/docs/5.8/events), [colas](/docs/5.8/queues), [middleware](/docs/5.8/middleware) y más. En la práctica, así es como la mayoría de tus objetos deben ser resueltos por el contenedor.
+Alternativamente, y de forma importante, puedes "determinar el tipo" de la dependencia en el constructor de una clase que es resuelta por el contenedor, incluyendo [controladores](/controllers.html), [listeners de eventos](/events.html), [colas](/queues.html), [middleware](/middleware.html) y más. En la práctica, así es como la mayoría de tus objetos deben ser resueltos por el contenedor.
 
 Por ejemplo, puedes determinar el tipo de un repositorio definido por tu aplicación en el constructor de un controlador. El repositorio será automáticamente resuelto e inyectado en la clase:
 

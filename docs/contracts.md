@@ -22,7 +22,7 @@ Todos los contratos de Laravel viven en [su repositorio de GitHub propio](https:
 <a name="contracts-vs-facades"></a>
 ### Contratos vs. facades
 
-Los [facades](/docs/5.8/facades) de Laravel y las funciones de ayuda (helpers) proporcionan una forma sencilla de utilizar los servicios de Laravel sin necesidad de determinar el tipo y resolver contratos fuera del contenedor de servicios. En la mayoría de los casos, cada facade tiene un contrato equivalente.
+Los [facades](/facades.html) de Laravel y las funciones de ayuda (helpers) proporcionan una forma sencilla de utilizar los servicios de Laravel sin necesidad de determinar el tipo y resolver contratos fuera del contenedor de servicios. En la mayoría de los casos, cada facade tiene un contrato equivalente.
 
 A diferencia de las facades, que no necesitan que las requieras en el constructor de su clase, los contratos te permiten definir dependencias explícitas para tus clases. Algunos desarrolladores prefieren definir explícitamente sus dependencias de esta manera y, por lo tanto, prefieren usar contratos, mientras que otros desarrolladores disfrutan de la conveniencia de las facades.
 
@@ -127,7 +127,7 @@ Además, cuando dependes de interfaces simples, tu código es más fácil de ent
 
 Entonces, ¿Cómo se obtiene una implementación de un contrato? En realidad es bastante simple.
 
-Muchos tipos de clases en Laravel se resuelven a través del [contenedor de servicio](/docs/5.8/container), incluyendo controladores, los escuchadores de eventos, middleware, trabajos de cola e incluso una Closure de ruta. Por lo tanto, para obtener una implementación de un contrato, puede simplemente "declarar el tipo" de la interfaz en el constructor de la clase que se está resolviendo.
+Muchos tipos de clases en Laravel se resuelven a través del [contenedor de servicio](/container.html), incluyendo controladores, los escuchadores de eventos, middleware, trabajos de cola e incluso una Closure de ruta. Por lo tanto, para obtener una implementación de un contrato, puede simplemente "declarar el tipo" de la interfaz en el constructor de la clase que se está resolviendo.
 
 Por ejemplo, veamos este listener de eventos:
 
@@ -171,7 +171,7 @@ class CacheOrderInformation
 }
 ```
 
-Cuando se resuelve el escuchador de evento, el contenedor de servicios leerá las declaraciones de tipo en el constructor de la clase e inyectará el valor apropiado. Para obtener más información sobre cómo registrar cosas en el contenedor de servicios, consulte [su documentación](/docs/5.8/container).
+Cuando se resuelve el escuchador de evento, el contenedor de servicios leerá las declaraciones de tipo en el constructor de la clase e inyectará el valor apropiado. Para obtener más información sobre cómo registrar cosas en el contenedor de servicios, consulte [su documentación](/container.html).
 
 <a name="contract-reference"></a>
 ## Referencia de contratos

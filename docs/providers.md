@@ -23,7 +23,7 @@ En este resumen aprendarás a escribir tus propios proveedores de servicio y reg
 <a name="writing-service-providers"></a>
 ## Escribiendo proveedores de servicios
 
-Todos los proveedores de servicios extienden de la clase `Illuminate\Support\ServiceProvider`. La mayoría de los proveedores de servicio contienen un método `register` y `boot`. Dentro del método `register`, debes **enlazar cosas sólo al [contenedor de servicios](/docs/5.8/container)**. Nunca debes tratar de registrar ningún listener de eventos, rutas o cualquier otra pieza de funcionalidad dentro del método `register`.
+Todos los proveedores de servicios extienden de la clase `Illuminate\Support\ServiceProvider`. La mayoría de los proveedores de servicio contienen un método `register` y `boot`. Dentro del método `register`, debes **enlazar cosas sólo al [contenedor de servicios](/container.html)**. Nunca debes tratar de registrar ningún listener de eventos, rutas o cualquier otra pieza de funcionalidad dentro del método `register`.
 
 La línea de comandos Artisan puede generar un nuevo proveedor mediante el comando `make:provider`:
 
@@ -34,7 +34,7 @@ php artisan make:provider RiakServiceProvider
 <a name="the-register-method"></a>
 ### Método register
 
-Como mencionamos anteriormente, dentro del método `register`, debes sólo enlazar cosas al [contenedor de servicio](/docs/5.8/container). Nunca debes intentar registrar ningún listener de eventos, rutas o cualquier otra pieza de funcionalidad dentro del método `register`. De lo contrario, puedes accidentalmente usar un servicio que es proporcionado por un proveedor de servicio que no aún no  se ha cargado.
+Como mencionamos anteriormente, dentro del método `register`, debes sólo enlazar cosas al [contenedor de servicio](/container.html). Nunca debes intentar registrar ningún listener de eventos, rutas o cualquier otra pieza de funcionalidad dentro del método `register`. De lo contrario, puedes accidentalmente usar un servicio que es proporcionado por un proveedor de servicio que no aún no  se ha cargado.
 
 Vamos a echar un vistazo a un proveedor de servicio básico. Dentro de cualquiera de los métodos de tu proveedor de servicios, siempre tienes acceso a la propiedad `$app` que proporciona acceso al contenedor de servicios:
 
@@ -62,7 +62,7 @@ class RiakServiceProvider extends ServiceProvider
 }
 ```
 
-Este proveedor de servicios sólo define un método `register` y usa dicho método para definir una implementación de `Riak\Connection` en el contenedor de servicios. Si no entiendes cómo el contenedor de servicios funciona, revisa [su documentación](/docs/5.8/container).
+Este proveedor de servicios sólo define un método `register` y usa dicho método para definir una implementación de `Riak\Connection` en el contenedor de servicios. Si no entiendes cómo el contenedor de servicios funciona, revisa [su documentación](/container.html).
 
 #### Propiedades `bindings` y `singletons`
 
@@ -104,7 +104,7 @@ class AppServiceProvider extends ServiceProvider
 <a name="the-boot-method"></a>
 ### Método boot
 
-Entonces, ¿qué sucede si necesitamos registrar un [view composer](/docs/5.8/views#view-composers) dentro de nuestro proveedor de servicios? Esto debería ser hecho dentro del método `boot`. **Este método es llamado luego de que todos los demás proveedores de servicio sean registrados**, lo que quiere decir que tienes acceso a todos los demás proveedores de servicio que han sido registrados por el framework:
+Entonces, ¿qué sucede si necesitamos registrar un [view composer](/views.html#view-composers) dentro de nuestro proveedor de servicios? Esto debería ser hecho dentro del método `boot`. **Este método es llamado luego de que todos los demás proveedores de servicio sean registrados**, lo que quiere decir que tienes acceso a todos los demás proveedores de servicio que han sido registrados por el framework:
 
 ```php
 <?php
@@ -131,7 +131,7 @@ class ComposerServiceProvider extends ServiceProvider
 
 #### Inyección de dependencias en el método boot
 
-Puedes escribir manualmente las dependencias para el método `boot` de tu proveedor de servicios. El [contenedor de servicios](/docs/5.8/container) inyectará automáticamente cualquier dependencia que necesites:
+Puedes escribir manualmente las dependencias para el método `boot` de tu proveedor de servicios. El [contenedor de servicios](/container.html) inyectará automáticamente cualquier dependencia que necesites:
 
 ```php
 use Illuminate\Contracts\Routing\ResponseFactory;
@@ -162,7 +162,7 @@ Para registrar tu proveedor, agregalo al arreglo:
 <a name="deferred-providers"></a>
 ## Proveedores diferidos
 
-Si tu proveedor **sólo** está registrando enlaces en el [contenedor de servicios](/docs/5.8/container), puedes elegir diferir su registro hasta que uno de los enlaces registrados sea necesario. Diferir la carga de dicho proveedor mejorará el rendimiento de tu aplicación, ya que no es cargado desde el sistema de archivos en cada solicitud.
+Si tu proveedor **sólo** está registrando enlaces en el [contenedor de servicios](/container.html), puedes elegir diferir su registro hasta que uno de los enlaces registrados sea necesario. Diferir la carga de dicho proveedor mejorará el rendimiento de tu aplicación, ya que no es cargado desde el sistema de archivos en cada solicitud.
 
 Laravel compila y almacena una lista de todos los servicios suministrados por proveedores de servicios diferidos, junto con el nombre de clase de su proveedor de servicio. Luego, sólo cuando intentas resolver uno de estos servicios Laravel carga el proveedor de servicio.
 

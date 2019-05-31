@@ -23,7 +23,7 @@ En cualquier momento que definas un formulario HTML en tu aplicación, debes inc
 </form>
 ```
 
-El [middleware](/docs/{{version}}/middleware) `VerifyCsrfToken`, el cual es incluido en el grupo de middleware `web`, verificará automáticamente que el token en el campo de la solicitud coincida con el almacenado en la sesión.
+El [middleware](/middleware.html) `VerifyCsrfToken`, el cual es incluido en el grupo de middleware `web`, verificará automáticamente que el token en el campo de la solicitud coincida con el almacenado en la sesión.
 
 #### Tokens CSRF & JavaScript
 
@@ -59,7 +59,7 @@ class VerifyCsrfToken extends Middleware
 ```
 
 ::: tip
-El middleware CSRF está deshabilitado automáticamente al [ejecutar pruebas](/docs/{{version}}/testing).
+El middleware CSRF está deshabilitado automáticamente al [ejecutar pruebas](/testing.html).
 :::
 
 <a name="csrf-x-csrf-token"></a>

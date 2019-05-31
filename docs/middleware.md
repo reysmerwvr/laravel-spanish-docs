@@ -64,7 +64,7 @@ Como puedes ver, si la `edad` dada es menor o igual a `200`, el middleware retor
 Es mejor visualizar el middleware como una serie de "capas" que deben pasar las solicitudes HTTP antes de que lleguen a tu aplicación. Cada capa puede examinar la solicitud e incluso rechazarla por completo.
 
 ::: tip
-Todos los middleware son resueltos a través del [contenedor de servicio](/5.8/container), de esta forma, puedes declarar el tipo de cualquier dependencia que necesites dentro del constructor del middleware.
+Todos los middleware son resueltos a través del [contenedor de servicio](/container.html), de esta forma, puedes declarar el tipo de cualquier dependencia que necesites dentro del constructor del middleware.
 :::
 
 ### Middleware Before y After
@@ -307,4 +307,4 @@ class StartSession
 
 El método `terminate` debería recibir tanto la consulta como la respuesta. Una vez has definido el middleware terminable, deberías agregarlo a la lista de rutas o como un middleware global en el archivo `app/Http/Kernel.php`.
 
-Cuando llamas al método `terminate` en tu middleware, Laravel resolverá una instancia fresca del middleware del [contenedor de servicio](/docs/{{version}}/container). Si te gustaría usar la misma instancia del middleware cuando los métodos `handle` y `terminate` sean llamados, registra el middleware con el contenedor usando el método `singleton` del contenedor.
+Cuando llamas al método `terminate` en tu middleware, Laravel resolverá una instancia fresca del middleware del [contenedor de servicio](/container.html). Si deseas utilizar la misma instancia del middleware cuando los métodos `handle` y `terminate` sean llamados, registra el middleware con el contenedor usando el método `singleton` del contenedor.

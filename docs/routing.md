@@ -74,7 +74,7 @@ Route::any('/', function () {
 
 #### Protección CSRF
 
-Cualquiera de los formularios HTML que apunten a rutas `POST`, `PUT`, or `DELETE` que sean definidas en el archivo de rutas `web` deberían incluir un campo de token CSRF. De otra manera, la solicitud será rechazada. Puedes leer más sobre protección CSRF en la [documentación de CSRF](/docs/{{version}}/csrf):
+Cualquiera de los formularios HTML que apunten a rutas `POST`, `PUT`, or `DELETE` que sean definidas en el archivo de rutas `web` deberían incluir un campo de token CSRF. De otra manera, la solicitud será rechazada. Puedes leer más sobre protección CSRF en la [documentación de CSRF](/csrf.html):
 
 ```php
 <form method="POST" action="/profile">
@@ -525,4 +525,4 @@ $name = Route::currentRouteName();
 $action = Route::currentRouteAction();
 ```
 
-Consulta la documentación de la API sobre la [clase subyacente de la clase facade `Route`](https://laravel.com/api/{{version}}/Illuminate/Routing/Router.html) y la [instancia de ruta](https://laravel.com/api/{{version}}/Illuminate/Routing/Route.html) para revisar todos los métodos disponibles.
+Consulta la documentación de la API sobre la [clase subyacente de la clase facade `Route`](https://laravel.com/api/5.8/Illuminate/Routing/Router.html) y la [instancia de ruta](https://laravel.com/api/5.8/Illuminate/Routing/Route.html) para revisar todos los métodos disponibles.
