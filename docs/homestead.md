@@ -18,6 +18,7 @@
     - [Conexión vía SSH](#connecting-via-ssh)
     - [Conectar a base de datos](#connecting-to-databases)
     - [Respaldos de base de datos](#database-backups)
+    - [Instantáneas de la base de datos](#database-snapshots)
     - [Agregar sitios adicionales](#adding-additional-sites)
     - [Variables de entorno](#environment-variables)
     - [Configurar tareas programadas](#configuring-cron-schedules)
@@ -28,7 +29,10 @@
     - [Múltiples versiones PHP](#multiple-php-versions)
     - [Servidores web](#web-servers)
     - [Correo electrónico](#mail)
-    - [Interfaces de red](#network-interfaces)
+- [Depuración y perfilado](#debugging-and-profiling)
+    - [Depuración de solicitudes web con Xdebug](#debugging-web-requests)
+    - [Depuración de aplicaciones CLI](#debugging-cli-applications)        
+- [Interfaces de red](#network-interfaces)
 - [Extender Homestead](#extending-homestead)
 - [Actualizar Homestead](#updating-homestead)
 - [Configuraciones específicas de proveedor](#provider-specific-settings)
@@ -107,7 +111,7 @@ Una vez que estén instalados VirtualBox / VMWare y Vagrant, deberás añadir el
 vagrant box add laravel/homestead
 ```
 
-Si el comando falla, asegurate de que tu instalación de Vagrant esté actualizada.
+Si el comando falla, asegúrate de que tu instalación de Vagrant esté actualizada.
 
 #### Instalar Homestead
 
@@ -149,7 +153,7 @@ provider: virtualbox
 
 #### Configurar directorios compartidos
 
-La propiedad `folders` del archivo `Homestead.yaml` enlista todos los directorios que deseas compartir con tu entorno de Homestead. A medida que los archivos dentro de estos directorios cambien, estos se mantendrán sincronizados con tu máquina local y el entorno de Homestead. Puedes configurar tantos directorios compartidos como sean necesarios:
+La propiedad `folders` del archivo `Homestead.yaml` lista todos los directorios que deseas compartir con tu entorno de Homestead. A medida que los archivos dentro de estos directorios cambien, estos se mantendrán sincronizados con tu máquina local y el entorno de Homestead. Puedes configurar tantos directorios compartidos como sean necesarios:
 
 ```php
 folders:
@@ -335,7 +339,7 @@ function homestead() {
 }
 ```
 
-Asegurate de modificar la ruta `~/Homestead` en la función hacia la ubicación actual de tu instalación de Homestead. Una vez que hayas instalado la función, podrás ejecutar comandos como `homestead up` o `homestead ssh` desde cualquier parte en tu sistema de archivos.
+Asegúrate de modificar la ruta `~/Homestead` en la función hacia la ubicación actual de tu instalación de Homestead. Una vez que hayas instalado la función, podrás ejecutar comandos como `homestead up` o `homestead ssh` desde cualquier parte en tu sistema de archivos.
 
 #### Windows
 
@@ -354,7 +358,7 @@ set cwd=
 set homesteadVagrant=
 ```
 
-Asegurate de modificar la ruta de ejemplo `C:\Homestead` en el script por la ruta actual de tu instalación de Homestead. Después de crear el archivo, agrega la ubicación a tu `PATH`. Hecho esto podrás ejecutar comandos como `homestead up` o `homestead ssh` desde cualquier lado en tu sistema.
+Asegúrate de modificar la ruta de ejemplo `C:\Homestead` en el script por la ruta actual de tu instalación de Homestead. Después de crear el archivo, agrega la ubicación a tu `PATH`. Hecho esto podrás ejecutar comandos como `homestead up` o `homestead ssh` desde cualquier lado en tu sistema.
 
 <a name="connecting-via-ssh"></a>
 ### Conexión vía SSH
@@ -371,7 +375,7 @@ Una base de datos `homestead` es configurada por defecto tanto para MySQL como p
 Para conectarte a tu base de datos de MySQL o de PostgreSQL desde el cliente de base de datos de tu equipo host, deberás conectarte hacia `127.0.0.1` en el puerto `33060` (MySQL) o `54320` (PostgreSQL). El nombre de usuario y contraseña para ambas bases de datos son `homestead` / `secret`.
 
 ::: danger Nota
-Solo deberías utilizar estos puertos no estandares para conectarte a tus bases de datos desde tu equipo host. Deberás utilizar los puertos por defecto 3306 y 5432 en tu archivo de configuración para la base de datos de Laravel que se encuentra ejecutandose _dentro_ de la máquina virtual.
+Solo deberías utilizar estos puertos no estándares para conectarte a tus bases de datos desde tu equipo host. Deberás utilizar los puertos por defecto 3306 y 5432 en tu archivo de configuración para la base de datos de Laravel que se encuentra ejecutándose _dentro_ de la máquina virtual.
 :::
 
 <a name="database-backups"></a>
@@ -384,6 +388,21 @@ backup: true
 ```
 
 Una vez esté configurado, Homestead exportará tus bases de datos a los directorios `mysql_backup` y `postgres_backup` cuando se ejecute el comando `vagrant destroy`. Estos directorios pueden ser encontrados en la carpeta donde clonaste Homestead o en el root de tu proyecto si estás usando el método [instalación por proyecto](#per-project-installation).
+
+<a name="database-snapshots"></a>
+### Instantáneas de la base de datos
+
+Homestead admite la congelación del estado de las bases de datos MySQL y MariaDB y se ramifica entre ellas con [Logical MySQL Manager](https://github.com/Lullabot/lmm). Por ejemplo, imagine trabajar en un sitio con una base de datos de varios gigabytes. Puede importar la base de datos y tomar una instantánea. Después de realizar un trabajo y crear un contenido de prueba localmente, puede restaurar rápidamente al estado original.
+
+Por debajo, LMM usa la funcionalidad de instantáneas delgadas de LVM con soporte de copia en escritura. En la práctica, esto significa que el cambio de una sola fila en una tabla solo hará que los cambios que realice se escriban en el disco, ahorrando tiempo y espacio de disco significativos durante las restauraciones.
+
+Como `lmm` interactúa con LVM, debe ejecutarse como root. Para ver todos los comandos disponibles, ejecute `sudo lmm` dentro de la caja de vagrant. Un flujo de trabajo común sería:
+
+1. Importe una base de datos a la rama predeterminada de `master` lmm.
+2. Guarde una instantánea de la base de datos sin cambios usando `sudo lmm branch prod-YYYY-MM-DD`.
+3. Modifica la Base de Datos.
+4. Ejecute `sudo lmm merge prod-YYYY-MM-DD` para deshacer todos los cambios.
+5. Ejecute `sudo lmm delete <branch>` para eliminar todas las ramas que no se necesiten.
 
 <a name="adding-additional-sites"></a>
 ### Agregar sitios adicionales
@@ -507,7 +526,7 @@ Para usar Minio necesitarás ajustar la configuración de disco S3 en tu archivo
 ]
 ```
 
-Por último, asegurate de que tu archivo `.env` tenga las siguientes opciones:
+Por último, asegúrate de que tu archivo `.env` tenga las siguientes opciones:
 
 ```php
 AWS_ACCESS_KEY_ID=homestead
@@ -611,6 +630,77 @@ flip
 
 Homestead incluye el agente de transferencia de correo Postfix, que está escuchando por defecto en el puerto `1025`. Así que puedes indicarle a tu aplicación que use el controlador de correo `smtp` en el puerto `1025` de `localhost`. Entonces, todos los correos enviados serán manejados por Postfix y atrapados por Mailhog. Para ver tus correos enviados, abre en tu navegador [http://localhost:8025](http://localhost:8025).
 
+<a name="debugging-and-profiling"></a>
+## Depuración y perfilado
+
+<a name="debugging-web-requests"></a>
+### Depuración de solicitudes web con Xdebug
+
+Homestead incluye soporte para la depuración por pasos usando [Xdebug](https://xdebug.org). Por ejemplo,puede cargar una página web desde un navegador y PHP se conectará nuevamente a su IDE para permitir la inspección y modificación del código en ejecución.
+
+Para habilitar la depuración, ejecute los siguientes comandos dentro de la caja vagrant:
+
+```php
+$ sudo phpenmod xdebug
+
+# Update this command to match your PHP version...
+$ sudo systemctl restart php7.3-fpm
+```
+
+Luego, siga las instrucciones de su IDE para habilitar la depuración. Finalmente, configure su navegador para activar Xdebug con una extensión o [bookmarklet](https://www.jetbrains.com/phpstorm/marklets/).
+
+::: danger Nota
+Xdebug puede ralentizar significativamente a PHP. Para deshabilitar Xdebug, ejecute `sudo phpdismod xdebug` dentro de su caja de Vagrant y reinicie el servicio FPM nuevamente.
+:::
+
+<a name="debugging-cli-applications"></a>
+### Depuración de aplicaciones CLI
+
+Para depurar a aplicación PHP, use el alias de shell `xphp` dentrp de la caja Vagrant:
+
+```php
+$ xphp path/to/script
+```
+
+#### Auto iniciando Xdebug
+
+Al depurar pruebas funcionales que realizan solicitudes al servidor web, es más fácil iniciar automáticamente la depuración en lugar de modificar las pruebas para pasar a través de un encabezado personalizado o una cookie para activar la depuración. Para forzar el inicio de Xdebug, modifique `/etc/php/7.#/Fpm/conf.d/20-xdebug.ini` dentro de su caja Vagrant y agregue la siguiente configuración:
+
+```php
+; If Homestead.yml contains a different subnet for the ip address, this address may be different...
+xdebug.remote_host = 192.168.10.1
+xdebug.remote_autostart = 1
+```
+
+### Perfilando el Rendimiento de PHP usando XHGui
+
+[XHGui](https://www.github.com/perftools/xhgui) es una interfaz de usuario para explorar el rendimiento de sus aplicaciones PHP. Para habilitar XHGui, agregue `xhgui: 'true'` a la configuración de su sitio:
+
+```php
+sites:
+    -
+        map: your-site.test
+        to: /home/vagrant/code/web
+        type: "apache"
+        xhgui: 'true'
+```
+
+Si el sitio ya existe, asegurese de ejecutar `vagrant provision` después de actualizar su configuración.
+
+Para perfilar una solicitud web, agregue `xhgui = on` como parámetro de consulta a una solicitud. XHGui automáticamente adjuntará una cookie a la respuesta para que las solicitudes posteriores no necesiten el valor de la cadena de consulta. Puede ver los resultados de su perfil de aplicación navegando a `http://your-site.test/xhgui`.
+
+Para perfilar una solicitud de CLI usando XHGui, prefije el comando con `XHGUI=on`:
+
+```php
+XHGUI=on path/to/script
+```
+
+Los resultados del perfil CLI pueden ser vistos en la misma forma como los resultados del perfil web.
+
+Tenga en cuenta que el acto de perfilar ralentiza la ejecución del script y los tiempos absolutos pueden ser el doble de las solicitudes del mundo real. Por lo tanto, siempre compare el porcentaje de las mejoras y no los números absolutos. Además, tenga en cuenta que el tiempo de ejecución (o "Tiempo de pared") incluye cualquier tiempo que se pase en pausa en un depurador.
+
+Desde que los perfiles de rendimiento ocupan un espacio de disco significativo, se eliminan automáticamente después de unos días.
+
 <a name="network-interfaces"></a>
 ## Interfaces de red
 
@@ -655,7 +745,7 @@ sudo apt-get -y \
 
 ### Personalizaciones de usuario
 
-Al usar Homestead en un ambiente de equipo, puedes querer configurar Homestead para que se ajuste mejor a tu estilo de desarrollo personal. Puedes crear un archivo `user-customizations.sh` en la raiz de tu directorio Homestead (el mismo directorio que contiene tu `Homestead.yaml`). Dentro de este archivo, puedes hacer cualquier personalización que quieras; sin embargo, `user-customizations.sh` no debe ser versionado.
+Al usar Homestead en un ambiente de equipo, puedes querer configurar Homestead para que se ajuste mejor a tu estilo de desarrollo personal. Puedes crear un archivo `user-customizations.sh` en la raíz de tu directorio Homestead (el mismo directorio que contiene tu `Homestead.yaml`). Dentro de este archivo, puedes hacer cualquier personalización que quieras; sin embargo, `user-customizations.sh` no debe ser versionado.
 
 <a name="updating-homestead"></a>
 ## Actualizar Homestead

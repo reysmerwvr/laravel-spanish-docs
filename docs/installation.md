@@ -107,11 +107,9 @@ Laravel casi no necesita de configuración adicional. ¡Eres libre de empezar a 
 
 También puede que quieras configurar algunos componentes adicionales de Laravel, como:
 
-<div class="content-list" markdown="1">
-- [Cache](/docs/5.8/cache#configuration)
-- [Base de Datos](/docs/5.8/database#configuration)
-- [Sesiones](/docs/5.8/session#configuration)
-</div>
+- [Cache](/cache.html#configuration)
+- [Base de Datos](/database.html#configuration)
+- [Sesiones](/session.html#configuration)
 
 <a name="web-server-configuration"></a>
 ## Configuración del servidor web
@@ -147,4 +145,4 @@ location / {
 }
 ```
 
-Cuando uses [Homestead](/docs/5.8/homestead) o [Valet](/docs/5.8/valet), las URLs amigables serán configuradas automáticamente.
+Cuando uses [Homestead](/homestead.html) o [Valet](/valet.html), las URLs amigables serán configuradas automáticamente.

@@ -5,7 +5,7 @@ Bienvenido a la documentación de Laravel 5.8 en español.
 Puedes encontrar la versión en línea de la documentación de Laravel en inglés en [https://laravel.com/docs](https://laravel.com/docs)
 
 ::: tip Nota importante sobre la traducción
-Actualmente esta traducción de la documentación de Laravel se encuentra en periodo de prueba. Puedes realizar reportes sobre errores o detalles encontrados así como contribuir al progreso y mantenimiento de la misma en el repositorio oficial de la traducción.
+Actualmente esta traducción de la documentación de Laravel se encuentra en período de prueba. Puedes realizar reportes sobre errores o detalles encontrados así como contribuir al progreso y mantenimiento de la misma en el repositorio oficial de la traducción.
 :::
 
 ## Guía para contribuir

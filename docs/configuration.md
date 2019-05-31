@@ -68,7 +68,7 @@ El segundo valor pasado a la función `env` es el "valor predeterminado". Este v
 <a name="determining-the-current-environment"></a>
 ### Determinando el entorno actual
 
-El entorno actual de la aplicación es determinado por medio de la variable `APP_ENV` desde tu archivo `.env`. Puedes acceder a este valor por medio del método `environment` del [facade](/docs/5.8/facades) `App`:
+El entorno actual de la aplicación es determinado por medio de la variable `APP_ENV` desde tu archivo `.env`. Puedes acceder a este valor por medio del método `environment` del [facade](/facades.html) `App`:
 
 ```php
 $environment = App::environment();
@@ -138,7 +138,7 @@ config(['app.timezone' => 'America/Chicago']);
 <a name="configuration-caching"></a>
 ## Almacenamiento en caché de la configuración
 
-Para dar a tu aplicación un aumento de velocidad, debes almacenar en caché todos tus archivos de configuración en un solo archivo usando el comando de Artisan `config:cache`. Esto combinará todas las opciónes de configuracieon para tu aplicación en un solo archivo que será cargado rápidamente por el framework.
+Para dar a tu aplicación un aumento de velocidad, debes almacenar en caché todos tus archivos de configuración en un solo archivo usando el comando de Artisan `config:cache`. Esto combinará todas las opciónes de configuración para tu aplicación en un solo archivo que será cargado rápidamente por el framework.
 
 Usualmente deberías ejecutar el comando `php artisan config:cache` como parte de tu rutina de despliegue a producción. El comando no se debe ejecutar durante el desarrollo local ya que las opciones de configuración con frecuencia deberán cambiarse durante el desarrollo de tu aplicación.
 
@@ -181,7 +181,7 @@ Puedes personalizar la plantilla predeterminada del modo de mantenimiento al def
 
 #### Modo de mantenimiento y colas
 
-Mientras tu aplicación esté en modo de mantenimiento, no se manejarán [trabajos en cola](/docs/5.8/queues). Los trabajos continuarán siendo manejados de forma normal una vez que la aplicación esté fuera del modo de mantenimiento.
+Mientras tu aplicación esté en modo de mantenimiento, no se manejarán [trabajos en cola](/queues.html). Los trabajos continuarán siendo manejados de forma normal una vez que la aplicación esté fuera del modo de mantenimiento.
 
 #### Alternativas al modo de mantenimiento
 

@@ -54,7 +54,7 @@ Además, es posible extender Valet con tu propio [driver personalizado](#custom-
 <a name="valet-or-homestead"></a>
 ### Valet o Homestead
 
-Como sabrás, Laravel ofrece [Homestead](/docs/5.8/homestead), otro entorno de desarrollo local de Laravel. Homestead y Valet difieren en cuanto a la audiencia a la que están pensados y su aproximación al desarrollo local. Homestead ofrece toda una máquina virtual de Ubuntu con Nginx instalado y configurado. Homestead es una muy buena elección si deseas tener un entorno de desarrollo virtualizado de Linux o si te encuentras trabajando con Windows / Linux.
+Como sabrás, Laravel ofrece [Homestead](/homestead.html), otro entorno de desarrollo local de Laravel. Homestead y Valet difieren en cuanto a la audiencia a la que están pensados y su aproximación al desarrollo local. Homestead ofrece toda una máquina virtual de Ubuntu con Nginx instalado y configurado. Homestead es una muy buena elección si deseas tener un entorno de desarrollo virtualizado de Linux o si te encuentras trabajando con Windows / Linux.
 
 Por otro lado, Valet solamente es soportado por Mac y requiere que instales PHP y un servidor de base de datos directamente en tu equipo local. Esto puede lograrse fácilmente haciendo uso de [Homebrew](https://brew.sh) con comandos como `brew install php` y `brew install mysql`. Valet proporciona un entorno de desarrollo local bastante rápido haciendo un uso mínimo de consumo de recursos, lo cual es genial para desarrolladores que solamente requieran de PHP / MySQL y no necesiten de todo un entorno virtualizado de desarrollo.
 
@@ -115,7 +115,7 @@ Después, deberás actualizar tu versión de Valet a la más reciente. Dependien
 composer global require laravel/valet
 ```
 
-Una vez que se haya descargado el codigo fuente de Valet, deberás ejecutar el comando `install`:
+Una vez que se haya descargado el código fuente de Valet, deberás ejecutar el comando `install`:
 
 ```php
 valet install
@@ -306,12 +306,12 @@ class LocalValetDriver extends LaravelValetDriver
 <a name="other-valet-commands"></a>
 ## Otros comandos de Valet
 
-Comando  | Descripción
-------------- | -------------
-`valet forget` | Ejecuta este comando desde el directorio donde ejecutaste el comando `park` para eliminarlo de la lista de directorios configurados.
-`valet log` | Ver una lista de logs escritos por servicios de Valet.
-`valet paths` | Ver una lista de directorios configurados.
-`valet restart` | Reiniciar el daemon de Valet.
-`valet start` | Iniciar el daemon de Valet.
-`valet stop` | Detener el daemon de Valet.
-`valet uninstall` | Desinstalar el daemon de Valet.
+Comando               | Descripción
+--------------------- | -------------
+`valet forget`        | Ejecuta este comando desde el directorio donde ejecutaste el comando `park` para eliminarlo de la lista de directorios configurados.
+`valet log`           | Ver una lista de logs escritos por servicios de Valet.
+`valet paths`         | Ver una lista de directorios configurados.
+`valet restart`       | Reiniciar el daemon de Valet.
+`valet start`         | Iniciar el daemon de Valet.
+`valet stop`          | Detener el daemon de Valet.
+`valet uninstall`     | Desinstalar el daemon de Valet.
