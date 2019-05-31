@@ -33,7 +33,7 @@
 ## Introducción
 
 ::: tip
-Laravel ahora ofrece Horizon, un hermoso tablero y sistema de configuración para las colas motorizadas por Redis. Entra en [Horizon documentation](/docs/{{version}}/horizon) para más inormación.
+Laravel ahora ofrece Horizon, un hermoso tablero y sistema de configuración para las colas motorizadas por Redis. Entra en [Horizon documentation](/horizon.html) para más inormación.
 :::
 
 Las colas de Laravel brindan una API unificada a través de una variedad de backends de cola diferentes como Beanstalk, Amazon SQS, Redis, o incluso una base de datos relacional. Las colas permiten diferir el procesamiento de una tarea que consume tiempo, como enviar un correo electrónico, para un momento posterior. Diferir estas tareas acelera drásticamente las solicitudes web en tu aplicación.
@@ -177,11 +177,11 @@ class ProcessPodcast implements ShouldQueue
 }
 ```
 
-En este ejemplo, ten en cuenta que hemos podido pasar un [modelo Eloquent](/docs/{{version}}/eloquent) directamente hacia el constructor del trabajo en cola. Debido al trait `SerializesModels` que el trabajo está usando, los modelos Eloquent serán serializados y deserializados correctamente cuando el trabajo se esté procesando. Si tu trabajo en cola acepta un modelo Eloquent en su constructor, sólo el identificador para el modelo será serializado en la cola. Cuando el trabajo se maneja realmente, el sistema de cola volverá a recuperar automáticamente la instancia del modelo completo de la base de datos. Todo es totalmente transparente a tu aplicación y previene inconvenientes que pueden surgir de serializar instancias Eloquent completas.
+En este ejemplo, ten en cuenta que hemos podido pasar un [modelo Eloquent](/eloquent.html) directamente hacia el constructor del trabajo en cola. Debido al trait `SerializesModels` que el trabajo está usando, los modelos Eloquent serán serializados y deserializados correctamente cuando el trabajo se esté procesando. Si tu trabajo en cola acepta un modelo Eloquent en su constructor, sólo el identificador para el modelo será serializado en la cola. Cuando el trabajo se maneja realmente, el sistema de cola volverá a recuperar automáticamente la instancia del modelo completo de la base de datos. Todo es totalmente transparente a tu aplicación y previene inconvenientes que pueden surgir de serializar instancias Eloquent completas.
 
-El método `handle` es llamado cuando el trabajo es procesado por la cola. Ten en cuenta que podemos declarar el tipo de dependencias en el método `handle` del trabajo. El [contenedor de servicios](/docs/{{version}}/container) de Laravel automáticamente inyecta estas dependencias.
+El método `handle` es llamado cuando el trabajo es procesado por la cola. Ten en cuenta que podemos declarar el tipo de dependencias en el método `handle` del trabajo. El [contenedor de servicios](/container.html) de Laravel automáticamente inyecta estas dependencias.
 
-Si te gustaría tomar control sobre cómo el contenedor inyecta dependencias en el método `handle`, puedes usar el método `bindMethod` del contenedor. El método `bindMethod` acepta una función de retorno (callback) que recibe el trabajo y el contenedor. Dentro del callback, eres libre de invocar al método `handle` de la forma que desees. Típicamente, deberías llamar a este método desde un [proveedor de servicios](/docs/{{version}}/providers):
+Si te gustaría tomar control sobre cómo el contenedor inyecta dependencias en el método `handle`, puedes usar el método `bindMethod` del contenedor. El método `bindMethod` acepta una función de retorno (callback) que recibe el trabajo y el contenedor. Dentro del callback, eres libre de invocar al método `handle` de la forma que desees. Típicamente, deberías llamar a este método desde un [proveedor de servicios](/providers.html):
 	
 ```php 
 use App\Jobs\ProcessPodcast;
@@ -493,7 +493,7 @@ class ProcessPodcast implements ShouldQueue
 ### Límite de rango
 
 ::: danger Nota
-Esta característica requiere que la aplicación pueda interactuar con un [Redis server](/docs/{{version}}/redis).
+Esta característica requiere que la aplicación pueda interactuar con un [Redis server](/redis.html).
 :::
 
 Si tu aplicación interactúa con Redis, puedes regular los trabajos en cola por tiempo o concurrencia. Esta característica puede ser de ayuda cuando los trabajos en cola interactúan con APIs que también poseen límite de frecuencia. 
@@ -630,7 +630,7 @@ php artisan queue:restart
 Este comando indicará a todos los workers de cola que "mueran" luego de terminar el procesamiento de su trabajo actual para que ningún trabajo existente se pierda. Como los workers de cola morirán cuando se ejecute el comando `queue:restart`, un administrador de procesos debe estar en ejecución, como [Supervisor](#supervisor-configuration) para reiniciar automáticamente los workers de la cola.
 
 ::: tip
-La cola utiliza [caché](/docs/{{version}}/cache) para almacenar señales de reinicio, por lo que debes verificar si un driver de caché está configurado debidamente en tu aplicación antes de utilizar esta característica.
+La cola utiliza [caché](/cache.html) para almacenar señales de reinicio, por lo que debes verificar si un driver de caché está configurado debidamente en tu aplicación antes de utilizar esta característica.
 :::
 
 <a name="job-expirations-and-timeouts"></a>
@@ -900,7 +900,7 @@ public $deleteWhenMissingModels = true;
 <a name="job-events"></a>
 ## Eventos de trabajo
 
-Usando los métodos `before` y `after` en la [facade](/docs/{{version}}/facades) `Queue`, puedes especificar funciones de retorno (callbacks) para que sean ejecutadas antes o después de que un trabajo en cola sea procesado. Estas callbacks son una gran oportunidad para realizar registro adicional o incrementar estadísticas para un panel de control. Generalmente, debes llamar a estos métodos desde un [proveedor de servicios](/docs/{{version}}/providers). Por ejemplo puedes usar  `AppServiceProvider`, incluido en Laravel:
+Usando los métodos `before` y `after` en la [facade](/facades.html) `Queue`, puedes especificar funciones de retorno (callbacks) para que sean ejecutadas antes o después de que un trabajo en cola sea procesado. Estas callbacks son una gran oportunidad para realizar registro adicional o incrementar estadísticas para un panel de control. Generalmente, debes llamar a estos métodos desde un [proveedor de servicios](/providers.html). Por ejemplo puedes usar  `AppServiceProvider`, incluido en Laravel:
 
 ```php
 <?php
@@ -946,7 +946,7 @@ class AppServiceProvider extends ServiceProvider
 }
 ```
 
-Usando el método `looping` en la [facade](/docs/{{version}}/facades) `Queue`, puedes especificar funciones de retorno (callbacks) que se ejecuten antes que el worker intente recuperar un trabajo de una cola. Por ejemplo, quizás necesites registrar una Closure para deshacer cualquier transacción abierta por un trabajo fallido anteriormente:
+Usando el método `looping` en la [facade](/facades.html) `Queue`, puedes especificar funciones de retorno (callbacks) que se ejecuten antes que el worker intente recuperar un trabajo de una cola. Por ejemplo, quizás necesites registrar una Closure para deshacer cualquier transacción abierta por un trabajo fallido anteriormente:
 
 ```php
 Queue::looping(function () {

@@ -37,7 +37,7 @@ El método `assertDatabaseHas` y otros métodos como éste son por conveniencia.
 <a name="generating-factories"></a>
 ## Generando factories
 
-Para crear un factory, usa el [comando Artisan](/docs/{{version}}/artisan) `make:factory`:
+Para crear un factory, usa el [comando Artisan](/artisan.html) `make:factory`:
 
 ```php
 php artisan make:factory PostFactory
@@ -86,7 +86,7 @@ class ExampleTest extends TestCase
 <a name="writing-factories"></a>
 ## Escribiendo factories
 
-Al momento de probar, puedes necesitar insertar unos pocos registros dentro de tu base de datos antes de ejecutar tu prueba. En lugar de especificar manualmente el valor de cada columna cuando crees estos datos de prueba, Laravel permite que definas un conjunto de atributos predeterminados para cada uno de tus [modelos de Eloquent](/docs/{{version}}/eloquent) usando factories de modelos. Para empezar, echemos un vistazo al archivo `database/factories/UserFactory.php` en tu aplicación. De forma predeterminada, este archivo contiene una definición de factory:
+Al momento de probar, puedes necesitar insertar unos pocos registros dentro de tu base de datos antes de ejecutar tu prueba. En lugar de especificar manualmente el valor de cada columna cuando crees estos datos de prueba, Laravel permite que definas un conjunto de atributos predeterminados para cada uno de tus [modelos de Eloquent](/eloquent.html) usando factories de modelos. Para empezar, echemos un vistazo al archivo `database/factories/UserFactory.php` en tu aplicación. De forma predeterminada, este archivo contiene una definición de factory:
 
 ```php
 use Illuminate\Support\Str;
@@ -232,7 +232,7 @@ $user = factory(App\User::class)->create([
 <a name="relationships"></a>
 ### Relaciones
 
-En este ejemplo, adjuntaremos una relación para algunos modelos creados. Al momento de usar el método `create` para crear múltiples modelos, una [instancia de colección](/docs/{{version}}/eloquent-collections) de Eloquent es devuelta, permitiendo que uses cualquiera de las funciones convenientes proporcionadas por la colección, tales como `each`:
+En este ejemplo, adjuntaremos una relación para algunos modelos creados. Al momento de usar el método `create` para crear múltiples modelos, una [instancia de colección](/eloquent-collections.html) de Eloquent es devuelta, permitiendo que uses cualquiera de las funciones convenientes proporcionadas por la colección, tales como `each`:
 
 ```php
 $users = factory(App\User::class, 3)

@@ -13,7 +13,7 @@
 <a name="introduction"></a>
 ## Introducción
 
-Las Facades proveen una interfaz "estática" a las clases disponibles en el [contenedor de servicios](/docs/5.8/container) de la aplicación. Laravel viene con numerosas facades, las cuales brindan acceso a casi todas las características de Laravel. Las facades de Laravel sirven como "proxies estáticas" a las clases subyacentes en el contenedor de servicios, brindando el beneficio de una sintaxis tersa y expresiva, mantieniendo mayor verificabilidad y flexibilidad que los métodos estáticos tradicionales.
+Las Facades proveen una interfaz "estática" a las clases disponibles en el [contenedor de servicios](/container.html) de la aplicación. Laravel viene con numerosas facades, las cuales brindan acceso a casi todas las características de Laravel. Las facades de Laravel sirven como "proxies estáticas" a las clases subyacentes en el contenedor de servicios, brindando el beneficio de una sintaxis tersa y expresiva, mantieniendo mayor verificabilidad y flexibilidad que los métodos estáticos tradicionales.
 
 Todas las facades de Laravel se definen en el namespace `Illuminate\Support\Facades` . Entonces, podemos fácilmente acceder a una facade de esta forma:
 
@@ -35,7 +35,7 @@ Las Facades tienen múltiples beneficios. Brindan una sintaxis tersa y memorizab
 Sin embargo, deben guardarse ciertas precauciones al hacer uso de facades. El peligro principal de las facades es la corrupción de alcance de clases. Como las facades son tan fáciles de usar y no requieren inyección, puede resultar fácil dejar que tus clases sigan creciendo y usar muchas facades en una sola clase. Usando inyección de dependencias, este potencial es mitigado por la retroalimentación visual que un constructor grande te da cuando tu clase está creciendo demasiado. Entonces, al usar facades, pon especial atención al tamaño de tu clase para que su alcance de responsabilidades permanezca limitado.
 
 ::: tip
-Cuando se construye un paquete de terceros que interactúa con Laravel, es mejor inyectar [contratos de Laravel](/docs/5.8/contracts) en vez de usar facades. Como los paquetes son construidos fuera de Laravel, no tendrás acceso a las funciones (helpers) de testing para facades de Laravel.
+Cuando se construye un paquete de terceros que interactúa con Laravel, es mejor inyectar [contratos de Laravel](/contracts.html) en vez de usar facades. Como los paquetes son construidos fuera de Laravel, no tendrás acceso a las funciones (helpers) de testing para facades de Laravel.
 :::
 
 <a name="facades-vs-dependency-injection"></a>
@@ -162,7 +162,7 @@ class Cache extends Facade
 }
 ```
 
-En su lugar, la facade `Cache` extiende la clase `Facade` y define el método `getFacadeAccessor()`. El trabajo de este método es devolver el nombre de un enlace de contenedor de servicios. Cuando un usuario referencia cualquier método estático en la facade `Cache`, Laravel resuelve el enlace `cache` desde el [contenedor de servicios](/docs/5.8/container) y ejecuta el método solicitado (en este caso, `get`) contra ese objeto.
+En su lugar, la facade `Cache` extiende la clase `Facade` y define el método `getFacadeAccessor()`. El trabajo de este método es devolver el nombre de un enlace de contenedor de servicios. Cuando un usuario referencia cualquier método estático en la facade `Cache`, Laravel resuelve el enlace `cache` desde el [contenedor de servicios](/container.html) y ejecuta el método solicitado (en este caso, `get`) contra ese objeto.
 
 <a name="real-time-facades"></a>
 ## Facades en tiempo real
@@ -255,7 +255,7 @@ class PodcastTest extends TestCase
 <a name="facade-class-reference"></a>
 ## Referencia de clases de facades
 
-A continuación encontrarás cada facade y su clase subyacente. Esta es una herrameinta útil para explorar rápidamente dentro de la documentación API para cualquier raíz de facade dada. La llave [service container binding](/docs/5.8/container) también ha sido incluida donde aplica.
+A continuación encontrarás cada facade y su clase subyacente. Esta es una herrameinta útil para explorar rápidamente dentro de la documentación API para cualquier raíz de facade dada. La llave [service container binding](/container.html) también ha sido incluida donde aplica.
 
 Facade  |  Class  |  Service Container Binding
 ------------- | ------------- | -------------

@@ -16,16 +16,16 @@ Laravel incluye un método sencillo para alimentar tu base de datos con datos de
 <a name="writing-seeders"></a>
 ## Escribiendo seeders
 
-Para generar un seeder, ejecuta el [Comando Artisan](/docs/{{version}}/artisan) `make:seeder`. Todos los seeders generados por el framework seran colocados en el directorio `database/seeds`:
+Para generar un seeder, ejecuta el [Comando Artisan](/artisan.html) `make:seeder`. Todos los seeders generados por el framework seran colocados en el directorio `database/seeds`:
 
 ```php
 php artisan make:seeder UsersTableSeeder
 ```
 
-Una clase seeder contiene solamente un método de forma predeterminada: `run`. Este método es ejecutado cuando el [Comando Artisan](/docs/{{version}}/artisan) `db:seed` se ejecuta. Dentro del método `run`, puedes insertar datos en tu base de datos en la forma que desees. Puedes usar el [constructor de consultas](/docs/{{version}}/queries) para insertar datos manualmente o puedes usar los [Model Factories de Eloquent](/docs/{{version}}/database-testing#writing-factories).
+Una clase seeder contiene solamente un método de forma predeterminada: `run`. Este método es ejecutado cuando el [Comando Artisan](/artisan.html) `db:seed` se ejecuta. Dentro del método `run`, puedes insertar datos en tu base de datos en la forma que desees. Puedes usar el [constructor de consultas](/queries.html) para insertar datos manualmente o puedes usar los [Model Factories de Eloquent](/database-testing.html#writing-factories).
 
 ::: tip
-[La protección de asignación en masa](/docs/{{version}}/eloquent#mass-assignment) es deshabilitada automáticamente durante el seeding de la base de datos.
+[La protección de asignación en masa](/eloquent.html#mass-assignment) es deshabilitada automáticamente durante el seeding de la base de datos.
 :::
 
 Como un ejemplo, vamos a modificar la clase `DatabaseSeeder` predeterminada y agregar una instrucción insert al método `run`:
@@ -56,13 +56,13 @@ class DatabaseSeeder extends Seeder
 ```
 
 ::: tip
-Puede escribir cualquier dependencia que necesite dentro de la firma del método `run`. Se resolverán automáticamente a través del [contenedor de servicio](/docs/{{version}}/container) de Laravel.
+Puede escribir cualquier dependencia que necesite dentro de la firma del método `run`. Se resolverán automáticamente a través del [contenedor de servicio](/container.html) de Laravel.
 :::
 
 <a name="using-model-factories"></a>
 ### Usando model factories
 
-Ciertamente, especificar manualmente los atributos para cada seeder de modelos es lento y complicado. En lugar de eso, puedes usar [Model Factories](/docs/{{version}}/database-testing#writing-factories) para generar convenientemente cantidades grandes de registros de bases de datos. Primero, revisa la [documentación sobre model factories](/docs/{{version}}/database-testing#writing-factories) para aprender cómo definir tus factories. Una vez que hayas definido tus factories, puedes usar la función helper `factory` para insertar registros dentro de tu base de datos.
+Ciertamente, especificar manualmente los atributos para cada seeder de modelos es lento y complicado. En lugar de eso, puedes usar [Model Factories](/database-testing.html#writing-factories) para generar convenientemente cantidades grandes de registros de bases de datos. Primero, revisa la [documentación sobre model factories](/database-testing.html#writing-factories) para aprender cómo definir tus factories. Una vez que hayas definido tus factories, puedes usar la función helper `factory` para insertar registros dentro de tu base de datos.
 
 Por ejemplo, vamos a crear 50 usuarios y establecer una asociación con los posts para cada usuario:
 

@@ -50,7 +50,7 @@ Discusiones informales sobre errores, nuevas funcionalidades e implementación d
 <a name="which-branch"></a>
 ## ¿Cuál rama?
 
-**Todas** las correcciones de errores deben ser enviadas a la última rama estable o a la [actual rama LTS](/docs/{{version}}/releases#support-policy). Las correcciones de errores **nunca** deben ser enviadas a la rama `master` a menos que ellos reparen funcionalidades que existan solo en los próximos lanzamientos.
+**Todas** las correcciones de errores deben ser enviadas a la última rama estable o a la [actual rama LTS](/releases.html#support-policy). Las correcciones de errores **nunca** deben ser enviadas a la rama `master` a menos que ellos reparen funcionalidades que existan solo en los próximos lanzamientos.
 
 Funcionalidades **menores** que son **totalmente compatible** con la versión actual de Laravel pueden enviarse a la última rama estable.
 

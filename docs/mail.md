@@ -184,7 +184,7 @@ Adicionalmente, puedes definir una dirección global "reply_to" dentro de tu arc
 <a name="configuring-the-view"></a>
 ### Configurando la vista
 
-Dentro de un método 'build' de la clase Mailable, puede usar el método `view` para especificar qué plantilla se debe usar al representar los contenidos del correo electrónico. Dado que cada correo electrónico generalmente usa una [Plantilla Blade](/docs/{{version}}/blade) para representar sus contenidos, tienes toda la potencia y la comodidad del motor de plantillas Blade al construir el HTML de su correo electrónico:
+Dentro de un método 'build' de la clase Mailable, puede usar el método `view` para especificar qué plantilla se debe usar al representar los contenidos del correo electrónico. Dado que cada correo electrónico generalmente usa una [Plantilla Blade](/blade.html) para representar sus contenidos, tienes toda la potencia y la comodidad del motor de plantillas Blade al construir el HTML de su correo electrónico:
 
 ```php
 /**
@@ -374,7 +374,7 @@ public function build()
 
 #### Adjuntando archivos desde el disco
 
-Si has almacenado un archivo en uno de tus [discos](/docs/{{version}}/filesystem), puedes adjuntarlo al correo electrónico usando el método `attachFromStorage`:
+Si has almacenado un archivo en uno de tus [discos](/filesystem.html), puedes adjuntarlo al correo electrónico usando el método `attachFromStorage`:
 
 ```php
 /**
@@ -599,7 +599,7 @@ Si deseas construir un tema completamente nuevo para los componentes Markdown, e
 <a name="sending-mail"></a>
 ## Enviar correo
 
-Para enviar un mensajes debes usar el método `to` en el [facade](/docs/{{version}}/facades) llamado `Mail`. El método `to` acepta una dirección de correo, una instancia de usuario o una colección de usuarios. Si pasas un objeto o una colección de objetos, el remitente utilizará automáticamente sus propiedades de "email" y "name" cuando configure los destinatarios del correo electrónico, por lo tanto, asegúrese de que estos atributos estén disponibles en sus objetos. Una vez que haya especificado sus destinatarios, puede pasar una instancia de su clase mailable al método `send`:
+Para enviar un mensajes debes usar el método `to` en el [facade](/facades.html) llamado `Mail`. El método `to` acepta una dirección de correo, una instancia de usuario o una colección de usuarios. Si pasas un objeto o una colección de objetos, el remitente utilizará automáticamente sus propiedades de "email" y "name" cuando configure los destinatarios del correo electrónico, por lo tanto, asegúrese de que estos atributos estén disponibles en sus objetos. Una vez que haya especificado sus destinatarios, puede pasar una instancia de su clase mailable al método `send`:
 
 ```php
 <?php
@@ -670,7 +670,7 @@ Route::get('mailable', function () {
 
 #### Poniendo en cola un correo electronico
 
-Con el envío de correos electrónicos puede alargar drásticamente el tiempo de respuesta de su aplicación, muchos desarrolladores eligen poner correos electrónicos en cola para el envío en segundo plano. Laravel lo hace fácil usando su función incorporada [API de cola unificada](/docs/{{version}}/queues). Para poner en cola un correo, use el método `queue` en el facade `Mail` después de especificar los destinatarios del mensaje:
+Con el envío de correos electrónicos puede alargar drásticamente el tiempo de respuesta de su aplicación, muchos desarrolladores eligen poner correos electrónicos en cola para el envío en segundo plano. Laravel lo hace fácil usando su función incorporada [API de cola unificada](/queues.html). Para poner en cola un correo, use el método `queue` en el facade `Mail` después de especificar los destinatarios del mensaje:
 
 ```php
 Mail::to($request->user())
@@ -679,7 +679,7 @@ Mail::to($request->user())
     ->queue(new OrderShipped($order));
 ```
 
-Este método se encargará automáticamente de insertar un trabajo en la cola para que el mensaje se envíe en segundo plano. Necesitarás [configurar tus colas](/docs/{{version}}/queues) antes de usar esta característica.
+Este método se encargará automáticamente de insertar un trabajo en la cola para que el mensaje se envíe en segundo plano. Necesitarás [configurar tus colas](/queues.html) antes de usar esta característica.
 
 #### Cola de mensajes retrasada
 
@@ -769,7 +769,7 @@ Al desarrollar una aplicación que envía correos electrónicos, probablemente n
 
 #### Driver Log
 
-En lugar de enviar sus correos electrónicos, el driver de correos `log` escribirá todos los mensajes de correo electrónico en tus archivos de logs para su inspección. Para obtener más información sobre cómo configurar su aplicación por entorno, revisa la [configuración en la documentación](/docs/{{version}}/configuration#environment-configuration).
+En lugar de enviar sus correos electrónicos, el driver de correos `log` escribirá todos los mensajes de correo electrónico en tus archivos de logs para su inspección. Para obtener más información sobre cómo configurar su aplicación por entorno, revisa la [configuración en la documentación](/configuration.html#environment-configuration).
 
 #### Destinatario universal
 

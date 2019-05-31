@@ -831,7 +831,7 @@ $path = database_path('factories/UserFactory.php');
 <a name="method-mix"></a>
 #### `mix()` {#collection-method}
 
-La función `mix` retorna la ruta al [archivo versionado Mix](/docs/{{version}}/mix):
+La función `mix` retorna la ruta al [archivo versionado Mix](/mix.html):
 
 ```php
 $path = mix('css/app.css');
@@ -876,7 +876,7 @@ $path = storage_path('app/file.txt');
 <a name="method-__"></a>
 #### `__()` {#collection-method}
 
-La función `__` traduce la cadena de traducción dada o clave de traducción dada usando tus [archivos de localización](/docs/{{version}}/localization):
+La función `__` traduce la cadena de traducción dada o clave de traducción dada usando tus [archivos de localización](/localization.html):
 
 ```php
 echo __('Welcome to our application');
@@ -1273,7 +1273,7 @@ return (string) Str::uuid();
 <a name="method-trans"></a>
 #### `trans()` {#collection-method}
 
-La función `trans` traduce la clave de traducción dada usando tus [archivos de localización](/docs/{{version}}/localization):
+La función `trans` traduce la clave de traducción dada usando tus [archivos de localización](/localization.html):
 
 ```php
 echo trans('messages.welcome');
@@ -1397,7 +1397,7 @@ $previous = url()->previous();
 <a name="method-abort"></a>
 #### `abort()` {#collection-method}
 
-La función `abort` arroja [una excepción HTTP](/docs/{{version}}/errors#http-exceptions) que será renderizada por el [manejador de excepciones](/docs/{{version}}/errors#the-exception-handler):
+La función `abort` arroja [una excepción HTTP](/errors.html#http-exceptions) que será renderizada por el [manejador de excepciones](/errors.html#the-exception-handler):
 
 ```php
 abort(403);
@@ -1434,7 +1434,7 @@ Como el método `abort`, puedes proporcionar además el texto de respuesta para 
 <a name="method-app"></a>
 #### `app()` {#collection-method}
 
-La función `app` retorna la instancia del [contenedor de servicio](/docs/{{version}}/container):
+La función `app` retorna la instancia del [contenedor de servicio](/container.html):
 
 ```php
 $container = app();
@@ -1449,7 +1449,7 @@ $api = app('HelpSpot\API');
 <a name="method-auth"></a>
 #### `auth()` {#collection-method}
 
-La función `auth` retorna una instancia del [autenticador](/docs/{{version}}/authentication). Puedes usarla en vez del facade `Auth` por conveniencia:
+La función `auth` retorna una instancia del [autenticador](/authentication.html). Puedes usarla en vez del facade `Auth` por conveniencia:
 
 ```php
 $user = auth()->user();
@@ -1464,7 +1464,7 @@ $user = auth('admin')->user();
 <a name="method-back"></a>
 #### `back()` {#collection-method}
 
-La función `back` genera una [respuesta de redirección HTTP](/docs/{{version}}/responses#redirects) a la ubicación previa del usuario:
+La función `back` genera una [respuesta de redirección HTTP](/responses.html#redirects) a la ubicación previa del usuario:
 
 ```php
 return back($status = 302, $headers = [], $fallback = false);
@@ -1475,7 +1475,7 @@ return back();
 <a name="method-bcrypt"></a>
 #### `bcrypt()` {#collection-method}
 
-La función `bcrypt` [encripta](/docs/{{version}}/hashing) el valor dado usando Bcrypt. Puedes usarlo como una alternativa al facade `Hash`:
+La función `bcrypt` [encripta](/hashing.html) el valor dado usando Bcrypt. Puedes usarlo como una alternativa al facade `Hash`:
 
 ```php
 $password = bcrypt('my-secret-password');
@@ -1506,7 +1506,7 @@ Para lo inverso de `blank`, mira el método [`filled`](#method-filled).
 <a name="method-broadcast"></a>
 #### `broadcast()` {#collection-method}
 
-La función `broadcast` [emite](/docs/{{version}}/broadcasting) el [evento](/docs/{{version}}/events) dado a sus listeners:
+La función `broadcast` [emite](/broadcasting.html) el [evento](/events.html) dado a sus listeners:
 
 ```php
 broadcast(new UserRegistered($user));
@@ -1515,7 +1515,7 @@ broadcast(new UserRegistered($user));
 <a name="method-cache"></a>
 #### `cache()` {#collection-method}
 
-La función `cache` puede ser usada para obtener un valor de la [cache](/docs/{{version}}/cache). Si la clave dada no existe en la cache, un valor opcional por defecto será retornado:
+La función `cache` puede ser usada para obtener un valor de la [cache](/cache.html). Si la clave dada no existe en la cache, un valor opcional por defecto será retornado:
 
 ```php
 $value = cache('key');
@@ -1543,7 +1543,7 @@ $traits = class_uses_recursive(App\User::class);
 <a name="method-collect"></a>
 #### `collect()` {#collection-method}
 
-La función `collect` crea una instancia de [colecciones](/docs/{{version}}/collections) del valor dado:
+La función `collect` crea una instancia de [colecciones](/collections.html) del valor dado:
 
 ```php
 $collection = collect(['taylor', 'abigail']);
@@ -1552,7 +1552,7 @@ $collection = collect(['taylor', 'abigail']);
 <a name="method-config"></a>
 #### `config()` {#collection-method}
 
-La función `config` obtiene el valor de una variable de [configuración](/docs/{{version}}/configuration). Los valores de configuración pueden ser accesados usando la sintaxis de "punto", la cual incluye el nombre del archivo y la opción que deseas acceder. Un valor por defecto puede ser especificado y es retornado si la opción de configuración no existe:
+La función `config` obtiene el valor de una variable de [configuración](/configuration.html). Los valores de configuración pueden ser accesados usando la sintaxis de "punto", la cual incluye el nombre del archivo y la opción que deseas acceder. Un valor por defecto puede ser especificado y es retornado si la opción de configuración no existe:
 
 ```php
 $value = config('app.timezone');
@@ -1569,7 +1569,7 @@ config(['app.debug' => true]);
 <a name="method-cookie"></a>
 #### `cookie()` {#collection-method}
 
-La función `cookie` crea una nueva instancia de [cookie](/docs/{{version}}/requests#cookies):
+La función `cookie` crea una nueva instancia de [cookie](/requests.html#cookies):
 
 ```php
 $cookie = cookie('name', 'value', $minutes);
@@ -1578,7 +1578,7 @@ $cookie = cookie('name', 'value', $minutes);
 <a name="method-csrf-field"></a>
 #### `csrf_field()` {#collection-method}
 
-La función `csrf_field` genera un campo de entrada `hidden` que contiene el valor del token CSRF. Por ejemplo, usando la [sintaxis de Blade](/docs/{{version}}/blade):
+La función `csrf_field` genera un campo de entrada `hidden` que contiene el valor del token CSRF. Por ejemplo, usando la [sintaxis de Blade](/blade.html):
 
 ```php
 {{ csrf_field() }}
@@ -1609,7 +1609,7 @@ Si no quieres detener la ejecución de tu script, usa la función [`dump`](#meth
 <a name="method-decrypt"></a>
 #### `decrypt()` {#collection-method}
 
-La función `decrypt` desencripta el valor dado usando el [encriptador](/docs/{{version}}/encryption) de Laravel:
+La función `decrypt` desencripta el valor dado usando el [encriptador](/encryption.html) de Laravel:
 
 ```php
 $decrypted = decrypt($encrypted_value);
@@ -1618,7 +1618,7 @@ $decrypted = decrypt($encrypted_value);
 <a name="method-dispatch"></a>
 #### `dispatch()` {#collection-method}
 
-La función `dispatch` empuja el [trabajo](/docs/{{version}}/queues#creating-jobs) dado sobre la [cola de trabajos](/docs/{{version}}/queues) de Laravel:
+La función `dispatch` empuja el [trabajo](/queues.html#creating-jobs) dado sobre la [cola de trabajos](/queues.html) de Laravel:
 
 ```php
 dispatch(new App\Jobs\SendEmails);
@@ -1627,7 +1627,7 @@ dispatch(new App\Jobs\SendEmails);
 <a name="method-dispatch-now"></a>
 #### `dispatch_now()` {#collection-method}
 
-La función `dispatch_now` ejecuta el [trabajo](/docs/{{version}}/queues#creating-jobs) dado inmediatamente y retorna el valor de su método `handle`:
+La función `dispatch_now` ejecuta el [trabajo](/queues.html#creating-jobs) dado inmediatamente y retorna el valor de su método `handle`:
 
 ```php
 $result = dispatch_now(new App\Jobs\SendEmails);
@@ -1653,7 +1653,7 @@ Puedes usar el comando de Artisan `dump-server` para interceptar todas las llama
 <a name="method-encrypt"></a>
 #### `encrypt()` {#collection-method}
 
-La función `encrypt` encripta el valor dado usando el [encriptador](/docs/{{version}}/encryption) de Laravel:
+La función `encrypt` encripta el valor dado usando el [encriptador](/encryption.html) de Laravel:
 
 ```php
 $encrypted = encrypt($unencrypted_value);
@@ -1662,7 +1662,7 @@ $encrypted = encrypt($unencrypted_value);
 <a name="method-env"></a>
 #### `env()` {#collection-method}
 
-La función `env` recupera el valor de una [variable de entorno](/docs/{{version}}/configuration#environment-configuration) o retorna un valor por defecto:
+La función `env` recupera el valor de una [variable de entorno](/configuration.html#environment-configuration) o retorna un valor por defecto:
 
 ```php
 $env = env('APP_ENV');
@@ -1678,7 +1678,7 @@ Si ejecutas el comando `config:cache` durante tu proceso de despliegue, debería
 <a name="method-event"></a>
 #### `event()` {#collection-method}
 
-La función `event` despacha el [evento](/docs/{{version}}/events) dado a sus listeners:
+La función `event` despacha el [evento](/events.html) dado a sus listeners:
 
 ```php
 event(new UserRegistered($user));
@@ -1687,7 +1687,7 @@ event(new UserRegistered($user));
 <a name="method-factory"></a>
 #### `factory()` {#collection-method}
 
-La función `factory` crea un constructor de model factories para una clase dada, nombre y cantidad. Este puede ser usado mientras [pruebas](/docs/{{version}}/database-testing#writing-factories) o haces [seeding](/docs/{{version}}/seeding#using-model-factories):
+La función `factory` crea un constructor de model factories para una clase dada, nombre y cantidad. Este puede ser usado mientras [pruebas](/database-testing.html#writing-factories) o haces [seeding](/seeding.html#using-model-factories):
 
 ```php
 $user = factory(App\User::class)->make();
@@ -1718,7 +1718,7 @@ Para el inverso de `filled`, mira el método [`blank`](#method-blank).
 <a name="method-info"></a>
 #### `info()` {#collection-method}
 
-La función`info` escribirá información al [log](/docs/{{version}}/logging):
+La función`info` escribirá información al [log](/logging.html):
 
 ```php
 info('Some helpful information!');
@@ -1733,7 +1733,7 @@ info('User login attempt failed.', ['id' => $user->id]);
 <a name="method-logger"></a>
 #### `logger()` {#collection-method}
 
-La función `logger` puede ser usada para escribir mensaje de nivel `debug` al [log](/docs/{{version}}/logging):
+La función `logger` puede ser usada para escribir mensaje de nivel `debug` al [log](/logging.html):
 
 ```php
 logger('Debug message');
@@ -1745,7 +1745,7 @@ Un arreglo de datos contextuales puede además ser pasado a la función:
 logger('User has logged in.', ['id' => $user->id]);
 ```
 
-Una instancia del [logger](/docs/{{version}}/errors#logging) será retornada si no hay un valor pasado a la función:
+Una instancia del [logger](/errors.html#logging) será retornada si no hay un valor pasado a la función:
 
 ```php
 logger()->error('You are not allowed here.');
@@ -1754,7 +1754,7 @@ logger()->error('You are not allowed here.');
 <a name="method-method-field"></a>
 #### `method_field()` {#collection-method}
 
-La función `method_field` genera un campo de entrada HTML `hidden` que contiene el valor falsificado del verbo de los formularios HTTP. Por ejemplo, usando la [sintaxis de Blade](/docs/{{version}}/blade):
+La función `method_field` genera un campo de entrada HTML `hidden` que contiene el valor falsificado del verbo de los formularios HTTP. Por ejemplo, usando la [sintaxis de Blade](/blade.html):
 
 ```php
 <form method="POST">
@@ -1774,7 +1774,7 @@ $now = now();
 <a name="method-old"></a>
 #### `old()` {#collection-method}
 
-La función `old` [recupera](/docs/{{version}}/requests#retrieving-input) un [viejo valor de entrada](/docs/{{version}}/requests#old-input) flasheado en la sesión:
+La función `old` [recupera](/requests.html#retrieving-input) un [viejo valor de entrada](/requests.html#old-input) flasheado en la sesión:
 
 ```php
 $value = old('value');
@@ -1804,7 +1804,7 @@ return optional(User::find($id), function ($user) {
 <a name="method-policy"></a>
 #### `policy()` {#collection-method}
 
-El método `policy` recupera una instancia de la [política](/docs/{{version}}/authorization#creating-policies) para una clase dada:
+El método `policy` recupera una instancia de la [política](/authorization.html#creating-policies) para una clase dada:
 
 ```php
 $policy = policy(App\User::class);
@@ -1813,7 +1813,7 @@ $policy = policy(App\User::class);
 <a name="method-redirect"></a>
 #### `redirect()` {#collection-method}
 
-La función `redirect` retorna una [respuesta de redirección HTTP](/docs/{{version}}/responses#redirects) o retorna la instancia del redirector si no hay argumentos llamados:
+La función `redirect` retorna una [respuesta de redirección HTTP](/responses.html#redirects) o retorna la instancia del redirector si no hay argumentos llamados:
 
 ```php
 return redirect($to = null, $status = 302, $headers = [], $secure = null);
@@ -1826,7 +1826,7 @@ return redirect()->route('route.name');
 <a name="method-report"></a>
 #### `report()` {#collection-method}
 
-La función `report` reportará una excepción usando el método `report` de tu [manejador de excepciones](/docs/{{version}}/errors#the-exception-handler):
+La función `report` reportará una excepción usando el método `report` de tu [manejador de excepciones](/errors.html#the-exception-handler):
 
 ```php
 report($e);
@@ -1835,7 +1835,7 @@ report($e);
 <a name="method-request"></a>
 #### `request()` {#collection-method}
 
-La función `request` retorna la instancia de la [solicitud](/docs/{{version}}/requests) actual u obtiene un elemento de entrada:
+La función `request` retorna la instancia de la [solicitud](/requests.html) actual u obtiene un elemento de entrada:
 
 ```php
 $request = request();
@@ -1846,7 +1846,7 @@ $value = request('key', $default);
 <a name="method-rescue"></a>
 #### `rescue()` {#collection-method}
 
-La función `rescue` ejecuta la función de retorno dada y almacena en cache cualquier excepción que ocurra durante su ejecución. Todas las excepciones que son capturadas serán enviadas al método `report` de tu [manejador de excepciones](/docs/{{version}}/errors#the-exception-handler); no obstante, la solicitud continuará procesando:
+La función `rescue` ejecuta la función de retorno dada y almacena en cache cualquier excepción que ocurra durante su ejecución. Todas las excepciones que son capturadas serán enviadas al método `report` de tu [manejador de excepciones](/errors.html#the-exception-handler); no obstante, la solicitud continuará procesando:
 
 ```php
 return rescue(function () {
@@ -1871,7 +1871,7 @@ return rescue(function () {
 <a name="method-resolve"></a>
 #### `resolve()` {#collection-method}
 
-La función `resolve` resuelve un nombre de clase o interfaz dado a su instancia usando el[contenedor de servicios](/docs/{{version}}/container):
+La función `resolve` resuelve un nombre de clase o interfaz dado a su instancia usando el[contenedor de servicios](/container.html):
 
 ```php
 $api = resolve('HelpSpot\API');
@@ -1880,7 +1880,7 @@ $api = resolve('HelpSpot\API');
 <a name="method-response"></a>
 #### `response()` {#collection-method}
 
-La función `response` crea una instancia de [respuesta](/docs/{{version}}/responses) u obtiene una instancia del factory de respuesta:
+La función `response` crea una instancia de [respuesta](/responses.html) u obtiene una instancia del factory de respuesta:
 
 ```php
 return response('Hello World', 200, $headers);
@@ -1902,7 +1902,7 @@ return retry(5, function () {
 <a name="method-session"></a>
 #### `session()` {#collection-method}
 
-La función `session` puede ser usada para obtener o establecer valores de [session](/docs/{{version}}/session):
+La función `session` puede ser usada para obtener o establecer valores de [session](/session.html):
 
 ```php
 $value = session('key');
@@ -2018,7 +2018,7 @@ $result = transform(null, $callback, 'The value is blank');
 <a name="method-validator"></a>
 #### `validator()` {#collection-method}
 
-La función `validator` crea un nueva instancia del [validador](/docs/{{version}}/validation) con los argumentos dados. Puedes usarlo en vez del facade `Validator` por conveniencia:
+La función `validator` crea un nueva instancia del [validador](/validation.html) con los argumentos dados. Puedes usarlo en vez del facade `Validator` por conveniencia:
 
 ```php
 $validator = validator($data, $rules, $messages);
@@ -2044,7 +2044,7 @@ $result = value(function () {
 <a name="method-view"></a>
 #### `view()` {#collection-method}
 
-La función `view` recupera una instancia de la [vista](/docs/{{version}}/views):
+La función `view` recupera una instancia de la [vista](/views.html):
 
 ```php
 return view('auth.login');

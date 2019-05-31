@@ -40,12 +40,12 @@ Route::get('/', function () {
 ```
 
 ::: tip
-¿Sabias que también puedes devolver [colecciones de Eloquent](/docs/{{version}}/eloquent-collections) desde tus rutas o controladores? Estas serán convertidas automáticamente a JSON. ¡Inténtalo!
+¿Sabias que también puedes devolver [colecciones de Eloquent](/eloquent-collections.html) desde tus rutas o controladores? Estas serán convertidas automáticamente a JSON. ¡Inténtalo!
 :::
 
 #### Objetos de respuesta
 
-Típicamente, no sólo estarás devolviendo cadenas básicas o arreglos desde tus acciones de ruta. Además, estarás devolviendo instancias `Illuminate\Http\Response` completas o [vistas](/docs/{{version}}/views).
+Típicamente, no sólo estarás devolviendo cadenas básicas o arreglos desde tus acciones de ruta. Además, estarás devolviendo instancias `Illuminate\Http\Response` completas o [vistas](/views.html).
 
 Devolver una instancia `Response` completa te permite personalizar el código de estado y los encabezados HTTP de la respuesta. Una instancia `Response` hereda desde la clase `Symfony\Component\HttpFoundation\Response`, la cual proporciona una variedad de métodos para construir respuestas HTTP:
 
@@ -131,7 +131,7 @@ Route::get('dashboard', function () {
 });
 ```
 
-Algunas veces podras querer redireccionar al usuario a su página previa, tal como cuando un formulario enviado no es válido. Puedes hacer eso usando la función helper global `back`. Ya que esta característica utiliza la [sesión](/docs/{{version}}/session), asegurate de que la ruta llamando a la función `back` está usando el grupo de middleware `web` o tiene todos los middleware de sesión aplicados.
+Algunas veces podras querer redireccionar al usuario a su página previa, tal como cuando un formulario enviado no es válido. Puedes hacer eso usando la función helper global `back`. Ya que esta característica utiliza la [sesión](/session.html), asegurate de que la ruta llamando a la función `back` está usando el grupo de middleware `web` o tiene todos los middleware de sesión aplicados.
 
 ```php
 Route::post('user/profile', function () {
@@ -185,7 +185,7 @@ public function getRouteKey()
 <a name="redirecting-controller-actions"></a>
 ### Redireccionando a acciones de controlador
 
-También puedes generar redirecciones a [acciones de controlador](/docs/{{version}}/controllers). Para hacer eso, pasa el controlador y nombre de acción al método `action`. Recuerda, no necesitas especificar el espacio de nombres completo del controlador ya que el `RouteServiceProvider` de Laravel establecerá el espacio de nombres del controlador base:
+También puedes generar redirecciones a [acciones de controlador](/controllers.html). Para hacer eso, pasa el controlador y nombre de acción al método `action`. Recuerda, no necesitas especificar el espacio de nombres completo del controlador ya que el `RouteServiceProvider` de Laravel establecerá el espacio de nombres del controlador base:
 
 ```php
 return redirect()->action('HomeController@index');
@@ -211,7 +211,7 @@ return redirect()->away('https://www.google.com');
 <a name="redirecting-with-flashed-session-data"></a>
 ### Redireccionando con datos de sesión
 
-El redireccionamiento a una nueva URL y [el envío de los datos de la sesión](/docs/{{version}}/session#flash-data) son hechos usualmente al mismo tiempo. Típicamente, esto es hecho después de ejecutar una acción exitosamente cuando mueves rápidamente un mensaje de éxito de la sesión. Por conveniencia, puedes crear una instancia `RedirectResponse` y mover rápidamente los datos de la sesión en un solo encadenamiento de método fluido:
+El redireccionamiento a una nueva URL y [el envío de los datos de la sesión](/session.html#flash-data) son hechos usualmente al mismo tiempo. Típicamente, esto es hecho después de ejecutar una acción exitosamente cuando mueves rápidamente un mensaje de éxito de la sesión. Por conveniencia, puedes crear una instancia `RedirectResponse` y mover rápidamente los datos de la sesión en un solo encadenamiento de método fluido:
 
 ```php
 Route::post('user/profile', function () {
@@ -221,7 +221,7 @@ Route::post('user/profile', function () {
 });
 ```
 
-Después de que el usuario es redireccionado, puedes mostrar el mensaje enviado desde la [sesión](/docs/{{version}}/session). Por ejemplo, usando la [sintaxis de Blade](/docs/{{version}}/blade):
+Después de que el usuario es redireccionado, puedes mostrar el mensaje enviado desde la [sesión](/session.html). Por ejemplo, usando la [sintaxis de Blade](/blade.html):
 
 ```php
 @if (session('status'))
@@ -234,12 +234,12 @@ Después de que el usuario es redireccionado, puedes mostrar el mensaje enviado 
 <a name="other-response-types"></a>
 ## Otros tipos de respuesta
 
-El helper `response` puede ser usado para generar otros tipos de instancias de respuesta. Cuando el helper `response` es ejecutado sin argumentos, una implementación del [contrato](/docs/{{version}}/contracts) `Illuminate\Contracts\Routing\ResponseFactory` es devuelta. Este contrato proporciona varios métodos útiles para generar respuestas.
+El helper `response` puede ser usado para generar otros tipos de instancias de respuesta. Cuando el helper `response` es ejecutado sin argumentos, una implementación del [contrato](/contracts.html) `Illuminate\Contracts\Routing\ResponseFactory` es devuelta. Este contrato proporciona varios métodos útiles para generar respuestas.
 
 <a name="view-responses"></a>
 ### Respuestas de vista
 
-Si necesitas control sobre el estado y encabezados de la respuesta pero también necesitas devolver una [vista](/docs/{{version}}/views) como el contenido de la respuesta, deberías usar el método `view`:
+Si necesitas control sobre el estado y encabezados de la respuesta pero también necesitas devolver una [vista](/views.html) como el contenido de la respuesta, deberías usar el método `view`:
 
 ```php
 return response()
@@ -312,7 +312,7 @@ return response()->file($pathToFile, $headers);
 <a name="response-macros"></a>
 ## Macros de respuesta
 
-Si prefieres definir una respuesta personalizada que puedas volver a usar en múltiples rutas y controladores, puedes usar el método `macro` de la clase facade `Response`. Por ejemplo, desde un método `boot` del [proveedor de servicio](/docs/{{version}}/providers)
+Si prefieres definir una respuesta personalizada que puedas volver a usar en múltiples rutas y controladores, puedes usar el método `macro` de la clase facade `Response`. Por ejemplo, desde un método `boot` del [proveedor de servicio](/providers.html)
 
 ```php
 <?php

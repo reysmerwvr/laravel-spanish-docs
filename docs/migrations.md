@@ -26,12 +26,12 @@
 
 Las migraciones son como el control de versión para tu base de datos, permiten que tu equipo modifique y comparta fácilmente el esquema de base de datos de la aplicación. Las migraciones son emparejadas típicamente con el constructor de esquema de Laravel para construir fácilmente el esquema de base de datos de tu aplicación. Si inclusive has tenido que decirle a un miembro de equipo que agregue una columna manualmente a sus esquemas de bases de datos local, has encarado el problema que solucionan las migraciones de base de datos.
 
-La clase [facade](/docs/{{version}}/facades) `Schema` de Laravel proporciona soporte de base de datos orientado a la programación orientada a objetos para la creación y manipulación de tablas a través de todos los sistemas de bases de datos soportados por Laravel.
+La clase [facade](/facades.html) `Schema` de Laravel proporciona soporte de base de datos orientado a la programación orientada a objetos para la creación y manipulación de tablas a través de todos los sistemas de bases de datos soportados por Laravel.
 
 <a name="generating-migrations"></a>
 ## Generando migraciones
 
-Para crear una migración, usa el [comando Artisan](/docs/{{version}}/artisan) `make:migration`:
+Para crear una migración, usa el [comando Artisan](/artisan.html) `make:migration`:
 
 ```php
 php artisan make:migration create_users_table
@@ -102,7 +102,7 @@ php artisan migrate
 ```
 
 ::: danger Nota
-Si estás usando [La máquina virtual de Homestead](/docs/{{version}}/homestead), deberías ejecutar este comando desde dentro de tu máquina virtual.
+Si estás usando [La máquina virtual de Homestead](/homestead.html), deberías ejecutar este comando desde dentro de tu máquina virtual.
 :::
 
 #### Forzando las migraciones para ejecutar en producción
@@ -553,5 +553,5 @@ Schema::disableForeignKeyConstraints();
 ```
 
 ::: danger Nota
-SQLite deshabilita las restricciones de clave foránea de forma predeterminada. Al usar SQLite, asegúrese de [habilitar el soporte de clave foránea](/docs/{{version}}/database#configuration) en la configuración de tu base de datos antes de intentar crearlos en sus migraciones.
+SQLite deshabilita las restricciones de clave foránea de forma predeterminada. Al usar SQLite, asegúrese de [habilitar el soporte de clave foránea](/database.html#configuration) en la configuración de tu base de datos antes de intentar crearlos en sus migraciones.
 :::

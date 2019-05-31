@@ -47,7 +47,7 @@
 Laravel Cashier proporciona una expresiva interfaz fluida para los servicios de pagos en línea por suscripción de [Stripe](https://stripe.com). Maneja casi todo el código de facturación de suscripción que estás teniendo pavor de escribir. Además de la gestión de suscripción, Cashier puede manejar cupones, cambio de suscripciones, "cantidades" de suscripción, cancelación de períodos de gracia e incluso generar PDFs de facturas.
 
 ::: danger Nota
-Esta documentación es para la integración de Stripe de Cashier. Si estás utilizando Braintree, consulta la [documentación de integración de Braintree](/docs/{{version}}/braintree).
+Esta documentación es para la integración de Stripe de Cashier. Si estás utilizando Braintree, consulta la [documentación de integración de Braintree](/braintree.html).
 :::
 
 ::: danger Nota
@@ -74,7 +74,7 @@ composer require laravel/cashier
 <a name="database-migrations"></a>
 ### Migraciones de bases de datos
 
-Antes de usar Cashier, también necesitaremos [preparar la base de datos](/docs/{{version}}/migrations). Necesitas agregar varias columnas a tu tabla `users` y crear una nueva tabla `subscriptions` para manejar todas las subscripciones de nuestros clientes:
+Antes de usar Cashier, también necesitaremos [preparar la base de datos](/migrations.html). Necesitas agregar varias columnas a tu tabla `users` y crear una nueva tabla `subscriptions` para manejar todas las subscripciones de nuestros clientes:
 
 ```php
 Schema::table('users', function (Blueprint $table) {
@@ -197,7 +197,7 @@ if ($user->subscribed('main')) {
 }
 ```
 
-El método `subscribed` también constituye un gran candidato para un [middleware de ruta](/docs/{{version}}/middleware), permitiéndote filtrar el acceso a rutas y controladores basados en el estado de suscripción:
+El método `subscribed` también constituye un gran candidato para un [middleware de ruta](/middleware.html), permitiéndote filtrar el acceso a rutas y controladores basados en el estado de suscripción:
 
 ```php
 public function handle($request, Closure $next)
@@ -458,7 +458,7 @@ $user = User::create([
 ```
 
 ::: danger Nota
-Asegúrate de agregar un [mutador de fecha](/docs/{{version}}/loquent-mutators#date-mutators) para `trial_ends_at` en tu definición de modelo.
+Asegúrate de agregar un [mutador de fecha](/eloquent-mutators.html#date-mutators) para `trial_ends_at` en tu definición de modelo.
 :::
 
 Cashier se refiere a este tipo de período de prueba como un "período de prueba genérico", debido a que no está conectado a ninguna suscripción existente. El método `onTrial` en la instancia `User` devolverá `true` si la fecha actual no es mayor al valor de `trial_ends_at`:
@@ -587,12 +587,12 @@ Una vez que hayas resgistrado tu ruta, asegúrate de configurar la URL de webhoo
 De forma predeterminada, este controlador manejará automáticamente la cancelación de suscripciones que tengan demasiados cargos fallidos (como sean definidos por tus opciones de configuración de Stripe), actualizaciones de clientes, eliminaciones de clientes, actualizaciones de suscripciones y cambios de tarjetas de crédito; sin embargo, como vamos a descubrir pronto, puedes extender este controlador para manejar cualquier evento de webhook que quieras.
 
 ::: danger Nota
-Asegurate de proteger las peticiones entrantes con el middleware [webhook de verificación de firma][(/docs/{{version}}/billing#verifying-webhook-signatures] incluido en Cashier.
+Asegurate de proteger las peticiones entrantes con el middleware [webhook de verificación de firma][/billing.html#verifying-webhook-signatures] incluido en Cashier.
 :::
 
 #### Webhooks & Protección CSRF
 
-Ya que los webhooks de Stripe necesitan pasar por alto la [protección CSRF](/docs/{{version}}/csrf) de Laravel, asegurate de listar la URI como una excepción en tu middleware `VerifyCsrfToken` o lista la ruta fuera del grupo de middleware `web`:
+Ya que los webhooks de Stripe necesitan pasar por alto la [protección CSRF](/csrf.html) de Laravel, asegurate de listar la URI como una excepción en tu middleware `VerifyCsrfToken` o lista la ruta fuera del grupo de middleware `web`:
 
 ```php
 protected $except = [

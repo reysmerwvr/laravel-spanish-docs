@@ -122,7 +122,7 @@ Log::emergency('The system is down!');
 <a name="writing-log-messages"></a>
 ## Escribiendo mensajes de error
 
-Puedes escribir información a los registros usando el [facade](/docs/{{version}}/facades) `Log`. Como mencionamos anteriormente, el registrador proporciona los ocho niveles de registro definidos en la [especificación RFC 5424](https://tools.ietf.org/html/rfc5424): **emergency**, **alert**, **critical**, **error**, **warning**, **notice**, **info** y **debug**:
+Puedes escribir información a los registros usando el [facade](/facades.html) `Log`. Como mencionamos anteriormente, el registrador proporciona los ocho niveles de registro definidos en la [especificación RFC 5424](https://tools.ietf.org/html/rfc5424): **emergency**, **alert**, **critical**, **error**, **warning**, **notice**, **info** y **debug**:
 
 ```php
 Log::emergency($message);
@@ -230,7 +230,7 @@ class CustomizeFormatter
 ```
 
 ::: tip
-Todas tus clases "tap" son resultas por el [contenedor de servicios](/docs/{{version}}/container), así que cualquier dependencia del constuctor que requieran será inyectada automáticamente.
+Todas tus clases "tap" son resultas por el [contenedor de servicios](/container.html), así que cualquier dependencia del constuctor que requieran será inyectada automáticamente.
 :::
 
 <a name="creating-monolog-handler-channels"></a>

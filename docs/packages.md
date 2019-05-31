@@ -33,7 +33,7 @@ Al escribir una aplicación Laravel, generalmente no importa si usas interfaces 
 <a name="package-discovery"></a>
 ## Descubrimiento de paquetes
 
-En el archivo de configuración `config/app.php` de una aplicación Laravel, la opción `providers` define una lista de proveedores de servicios que Laravel debe cargar. Cuando alguien instala tu paquete normalmente querrás que tu proveedor de servicio sea incluido en esta lista. En lugar de requerir que los usuarios agreguen manualmente su proveedor de servicios a la lista, puede definir el proveedor en la sección `extra` del archivo `composer.json` de tu paquete. Además de los proveedores de servicios, también puedes enumerar los [facades](/docs/{{version}}/facades) que desees registrar:
+En el archivo de configuración `config/app.php` de una aplicación Laravel, la opción `providers` define una lista de proveedores de servicios que Laravel debe cargar. Cuando alguien instala tu paquete normalmente querrás que tu proveedor de servicio sea incluido en esta lista. En lugar de requerir que los usuarios agreguen manualmente su proveedor de servicios a la lista, puede definir el proveedor en la sección `extra` del archivo `composer.json` de tu paquete. Además de los proveedores de servicios, también puedes enumerar los [facades](/facades.html) que desees registrar:
 
 ```php
 "extra": {
@@ -79,9 +79,9 @@ Puede deshabilitar el descubrimiento de paquetes para todos los paquetes que usa
 <a name="service-providers"></a>
 ## Proveedores de servicios
 
-Los [Proveedores de Servicios](/docs/{{version}}/providers) son la conexión entre tu paquete y Laravel. Un proveedor de servicios es responsable de enlazar cosas a Laravel con el [Contenedor de Servicios](/docs/{{version}}/container) e informar a Laravel dónde cargar los recursos del paquete como vistas y archivos de configuración y de configuración regional.
+Los [Proveedores de Servicios](/providers.html) son la conexión entre tu paquete y Laravel. Un proveedor de servicios es responsable de enlazar cosas a Laravel con el [Contenedor de Servicios](/container.html) e informar a Laravel dónde cargar los recursos del paquete como vistas y archivos de configuración y de configuración regional.
 
-Un Proveedor de Servicios extiende de la clase `Illuminate\Support\ServiceProvider` y contiene dos métodos: `register` y `boot`. La clase base `ServiceProvider` está ubicada en `illuminate/support`, donde debemos especificar todas las dependencias de nuestro paquete. Para obtener más información sobre la estructura y el propósito de los proveedores de servicios, visita su [documentación](/docs/{{version}}/providers).
+Un Proveedor de Servicios extiende de la clase `Illuminate\Support\ServiceProvider` y contiene dos métodos: `register` y `boot`. La clase base `ServiceProvider` está ubicada en `illuminate/support`, donde debemos especificar todas las dependencias de nuestro paquete. Para obtener más información sobre la estructura y el propósito de los proveedores de servicios, visita su [documentación](/providers.html).
 
 <a name="resources"></a>
 ## Recursos
@@ -157,7 +157,7 @@ public function boot()
 <a name="migrations"></a>
 ### Migraciones
 
-Si tu paquete contiene [migraciones de base de datos](/docs/{{version}}/migraciones), puedes usar el método `loadMigrationsFrom` para informarle a Laravel cómo cargarlas. El método `loadMigrationsFrom` acepta la ruta a las migraciones de tu paquete como su único argumento:
+Si tu paquete contiene [migraciones de base de datos](/migraciones.html), puedes usar el método `loadMigrationsFrom` para informarle a Laravel cómo cargarlas. El método `loadMigrationsFrom` acepta la ruta a las migraciones de tu paquete como su único argumento:
 
 ```php
 /**
@@ -176,7 +176,7 @@ Una vez que se hayan registrado las migraciones de tu paquete, éstas se ejecuta
 <a name="translations"></a>
 ### Traducciones
 
-Si tu paquete contiene [archivos de traducción](/docs/{{version}}/localization) puedes usar el método `loadTranslationsFrom` para informarle a Laravel cómo cargarlos. Por ejemplo, si tu paquete se llama `courier`, debes agregar lo siguiente al método` boot` de tu proveedor de servicios:
+Si tu paquete contiene [archivos de traducción](/localization.html) puedes usar el método `loadTranslationsFrom` para informarle a Laravel cómo cargarlos. Por ejemplo, si tu paquete se llama `courier`, debes agregar lo siguiente al método` boot` de tu proveedor de servicios:
 
 ```php
 /**
@@ -221,7 +221,7 @@ Ahora, cuando los usuarios de tu paquete ejecutan el comando Artisan `vendor:pub
 <a name="views"></a>
 ### Vistas
 
-Para registrar las [vistas](/docs/{{version}}/views) de tu paquete con Laravel necesitas decirle a Laravel dónde están ubicadas. Puedes hacerlo utilizando el método `loadViewsFrom` del proveedor de servicios. El método `loadViewsFrom` acepta dos argumentos: la ruta a sus plantillas de vista y el nombre de tu paquete. Por ejemplo, si el nombre de tu paquete es `courier`, debe agregar lo siguiente al método `boot` de tu proveedor de servicios:
+Para registrar las [vistas](/views.html) de tu paquete con Laravel necesitas decirle a Laravel dónde están ubicadas. Puedes hacerlo utilizando el método `loadViewsFrom` del proveedor de servicios. El método `loadViewsFrom` acepta dos argumentos: la ruta a sus plantillas de vista y el nombre de tu paquete. Por ejemplo, si el nombre de tu paquete es `courier`, debe agregar lo siguiente al método `boot` de tu proveedor de servicios:
 
 ```php
 /**
@@ -272,7 +272,7 @@ Ahora, cuando los usuarios de su paquete ejecutan el comando Artisan `vendor:pub
 <a name="commands"></a>
 ## Comandos
 
-Para registrar los comandos Artisan de tu paquete con Laravel puedes usar el método `commands`. Este método espera un arreglo con los nombres de clases de comando. Una vez que los comandos han sido registrados, puedes ejecutarlos usando [Artisan CLI](/docs/{{version}}/artisan):
+Para registrar los comandos Artisan de tu paquete con Laravel puedes usar el método `commands`. Este método espera un arreglo con los nombres de clases de comando. Una vez que los comandos han sido registrados, puedes ejecutarlos usando [Artisan CLI](/artisan.html):
 
 ```php
 /**

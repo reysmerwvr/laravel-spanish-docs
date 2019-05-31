@@ -9,7 +9,7 @@
 <a name="introduction"></a>
 ## Introducción
 
-Todos los conjuntos de multi-resultados retornados por Eloquent son instancias del objeto `Illuminate\Database\Eloquent\Collection`, incluyendo los resultados obtenidos por medio del método `get` o accedidos por medio de una relación. El objeto de la colección Eloquent extiende la [collección base](/docs/{{version}}/collections) de Laravel, así hereda naturalmente docenas de métodos usados para trabajar fluidamente con el arreglo subyacente de modelos de Eloquent.
+Todos los conjuntos de multi-resultados retornados por Eloquent son instancias del objeto `Illuminate\Database\Eloquent\Collection`, incluyendo los resultados obtenidos por medio del método `get` o accedidos por medio de una relación. El objeto de la colección Eloquent extiende la [collección base](/collections.html) de Laravel, así hereda naturalmente docenas de métodos usados para trabajar fluidamente con el arreglo subyacente de modelos de Eloquent.
 
 Todas las colecciones tambien sirven como iteradores, permitiendo que iteres sobre ellas como si fueran simples arreglos de PHP:
 
@@ -35,7 +35,7 @@ $names = $users->reject(function ($user) {
 ```
 
 ::: danger Nota
-Mientras los métodos de colección de Eloquent devuelven una nueva instancia de una colección de Eloquent, los métodos `pluck`, `keys`, `zip`, `collapse`, `flatten` y `flip` devuelven una instancia de [colección base](/docs/{{version}}/collections). De igual forma, si una operación devuelve una colección que no contiene modelos Eloquent, será automáticamente convertida a una colección base.
+Mientras los métodos de colección de Eloquent devuelven una nueva instancia de una colección de Eloquent, los métodos `pluck`, `keys`, `zip`, `collapse`, `flatten` y `flip` devuelven una instancia de [colección base](/collections.html). De igual forma, si una operación devuelve una colección que no contiene modelos Eloquent, será automáticamente convertida a una colección base.
 :::
 
 <a name="available-methods"></a>
@@ -43,7 +43,7 @@ Mientras los métodos de colección de Eloquent devuelven una nueva instancia de
 
 ### La colección base
 
-Todas las colecciones de Eloquent extienden el objeto de [colección de Laravel](/docs/{{version}}/collections) base; sin embargo, heredan todos los métodos poderosos proporcionados por la clase de colección base:
+Todas las colecciones de Eloquent extienden el objeto de [colección de Laravel](/collections.html) base; sin embargo, heredan todos los métodos poderosos proporcionados por la clase de colección base:
 
 Adicionalmente, la clase `Illuminate\Database\Eloquent\Collection` proporciona una serie de métodos para ayudarte a administrar tus colecciones de modelos. La mayoría de los métodos retornan instancias de `Illuminate\Database\Eloquent\Collection`; sin embargo, algunos métodos retornan una instancia base `Illuminate\Support\Collection`.
 

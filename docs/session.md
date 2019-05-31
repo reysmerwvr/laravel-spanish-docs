@@ -34,7 +34,7 @@ La opción de configuración `driver` de la sesión define donde los datos de la
 - `array` - las sesiones son almacenadas en un arreglo de PHP y no serán guardadas de forma permanente.
 
 ::: tip
-El driver array es usado durante [las pruebas](/docs/{{version}}/testing) y previene que los datos almacenados en la sesión sean guardados de forma permanente.
+El driver array es usado durante [las pruebas](/testing.html) y previene que los datos almacenados en la sesión sean guardados de forma permanente.
 :::
 
 <a name="driver-prerequisites"></a>
@@ -73,7 +73,7 @@ Antes de usar sesiones Redis con Laravel, necesitarás instalar el paquete `pred
 <a name="retrieving-data"></a>
 ### Obteniendo datos
 
-Hay dos formás principales de trabajar con datos de sesión en Laravel: el helper global `session` y por medio de una instancia `Request`. Primero, vamos a echar un vistazo al acceder a la sesión por medio de una instancia `Request`, la cual puede ser referenciada en un método de controlador. Recuerda, las dependencias de métodos de controlador son inyectadas automáticamente por medio del [contenedor de servicio](/docs/{{version}}/container) de Laravel:
+Hay dos formás principales de trabajar con datos de sesión en Laravel: el helper global `session` y por medio de una instancia `Request`. Primero, vamos a echar un vistazo al acceder a la sesión por medio de una instancia `Request`, la cual puede ser referenciada en un método de controlador. Recuerda, las dependencias de métodos de controlador son inyectadas automáticamente por medio del [contenedor de servicio](/container.html) de Laravel:
 
 ```php
 <?php
@@ -129,7 +129,7 @@ Route::get('home', function () {
 ```
 
 ::: tip
-Hay una pequeña diferencia práctica entre usar la sesión por medio de una instancia de solicitud HTTP contra usar el helper global `session`. Ambos métodos pueden ser [probados](/docs/{{version}}/testing) por medio del método `assertSessionHas`, el cual está disponible en todos tus casos de prueba.
+Hay una pequeña diferencia práctica entre usar la sesión por medio de una instancia de solicitud HTTP contra usar el helper global `session`. Ambos métodos pueden ser [probados](/testing.html) por medio del método `assertSessionHas`, el cual está disponible en todos tus casos de prueba.
 :::
 
 #### Obteniendo todos los datos de sesión
@@ -270,7 +270,7 @@ Ya que el propósito de estos métodos no es entendible rápidamente y sin dific
 <a name="registering-the-driver"></a>
 #### Registrando el manejador
 
-Una vez que tu manejador ha sido implementado, estás listo para registrarlo en el framework. Para agregar manejadores adicionales para el backend de sesión de Laravel, puedes usar el método `extend` del método en la `Session` [facade](/docs/{{version}}/facades). Deberías ejecutar el método `extend` desde el método `boot` de un [proveedor de servicio](/docs/{{version}}/providers). Puedes hacer esto desde el existente `AppServiceProvider` o crear un nuevo proveedor de servicios completo:
+Una vez que tu manejador ha sido implementado, estás listo para registrarlo en el framework. Para agregar manejadores adicionales para el backend de sesión de Laravel, puedes usar el método `extend` del método en la `Session` [facade](/facades.html). Deberías ejecutar el método `extend` desde el método `boot` de un [proveedor de servicio](/providers.html). Puedes hacer esto desde el existente `AppServiceProvider` o crear un nuevo proveedor de servicios completo:
 
 ```php
 <?php

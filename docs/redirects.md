@@ -18,7 +18,7 @@ Route::get('dashboard', function () {
 });
 ```
 
-Algunas veces puedes querer redirigir al usuario a su ubicación anterior, como cuando un formulario enviado es inválido. Puedes hacer eso usando la función helper global `back`. Dado que esta característica usa la [sesión](/docs/{{version}}/session), asegurate que la ruta llamando a la función `back` está usando el grupo de middleware `web` o tiene todo el middleware de sesión aplicado:
+Algunas veces puedes querer redirigir al usuario a su ubicación anterior, como cuando un formulario enviado es inválido. Puedes hacer eso usando la función helper global `back`. Dado que esta característica usa la [sesión](/session.html), asegurate que la ruta llamando a la función `back` está usando el grupo de middleware `web` o tiene todo el middleware de sesión aplicado:
 
 ```php
 Route::post('user/profile', function () {
@@ -72,7 +72,7 @@ public function getRouteKey()
 <a name="redirecting-controller-actions"></a>
 ## Redireccionando a acciones de controlador
 
-Puedes también generar redirecciones a [acciones de controlador](/docs/{{version}}/controllers). Para ello, pasa el nombre del controlador y la acción al método `action`. Recuerda, no necesitas especificar el nombre de espacio completo para el controlador dado que el `RouteServiceProvider` de Laravel automáticamente establecerá el nombre de espacio del controlador base:
+Puedes también generar redirecciones a [acciones de controlador](/ontrollers.html). Para ello, pasa el nombre del controlador y la acción al método `action`. Recuerda, no necesitas especificar el nombre de espacio completo para el controlador dado que el `RouteServiceProvider` de Laravel automáticamente establecerá el nombre de espacio del controlador base:
 
 ```php
 return redirect()->action('HomeController@index');
@@ -89,7 +89,7 @@ return redirect()->action(
 <a name="redirecting-with-flashed-session-data"></a>
 ## Redireccionando con datos de sesión
 
-Redireccionar a una nueva URL y [enviar datos a la sesión](/docs/{{version}}/session#flash-data) es usualmente hecho al mismo tiempo. Típicamente, esto es hecho luego de realizar una acción exitosamente cuando envías un mensaje de éxito a la sesión. Por conveniencia, puedes crear una instancia `RedirectResponse` y enviar datos a la sesión en un única y fluida cadena de métodos: 
+Redireccionar a una nueva URL y [enviar datos a la sesión](/session.html#flash-data) es usualmente hecho al mismo tiempo. Típicamente, esto es hecho luego de realizar una acción exitosamente cuando envías un mensaje de éxito a la sesión. Por conveniencia, puedes crear una instancia `RedirectResponse` y enviar datos a la sesión en un única y fluida cadena de métodos: 
 
 ```php
 Route::post('user/profile', function () {
@@ -99,7 +99,7 @@ Route::post('user/profile', function () {
 });
 ```
 
-Luego de que el usuario es redireccionado, puedes mostrar el mensaje desde la [sesión](/docs/{{version}}/session). Por ejemplo, usando la [síntaxis de Blade](/docs/{{version}}/blade):
+Luego de que el usuario es redireccionado, puedes mostrar el mensaje desde la [sesión](/session.html). Por ejemplo, usando la [síntaxis de Blade](/blade.html):
 
 ```php
 @if (session('status'))

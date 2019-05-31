@@ -21,7 +21,7 @@ Al momento de construir APIs JSON, con frecuencia necesitas convertir tus modelo
 <a name="serializing-to-arrays"></a>
 ### Serializando a arreglos
 
-Para convertir un modelo y sus [relaciones](/docs/{{version}}/eloquent-relationships) cargadas a un arreglo, debes usar el método `toArray`. Este método es recursivo, ya que todos los atributos y todas las relaciones (incluyendo las relaciones de relaciones) serán convertidas a arreglos:
+Para convertir un modelo y sus [relaciones](/eloquent-relationships.html) cargadas a un arreglo, debes usar el método `toArray`. Este método es recursivo, ya que todos los atributos y todas las relaciones (incluyendo las relaciones de relaciones) serán convertidas a arreglos:
 
 ```php
 $user = App\User::with('roles')->first();
@@ -29,7 +29,7 @@ $user = App\User::with('roles')->first();
 return $user->toArray();
 ```
 
-También puedes convertir [colecciones](/docs/{{version}}/eloquent-collections) completas de modelos en arreglos:
+También puedes convertir [colecciones](/eloquent-collections.html) completas de modelos en arreglos:
 
 ```php
 $users = App\User::all();
@@ -134,7 +134,7 @@ return $user->makeHidden('attribute')->toArray();
 <a name="appending-values-to-json"></a>
 ## Añadiendo Valores a JSON
 
-Ocasionalmente, al momento de convertir modelos a un arreglo o JSON, puedes querer agregar atributos que no tienen una columna correspondiente en tu base de datos. Para hacer eso, primero define un [accesador](/docs/{{version}}/eloquent-mutators) para el valor:
+Ocasionalmente, al momento de convertir modelos a un arreglo o JSON, puedes querer agregar atributos que no tienen una columna correspondiente en tu base de datos. Para hacer eso, primero define un [accesador](/eloquent-mutators.html) para el valor:
 
 ```php
 <?php
@@ -194,7 +194,7 @@ return $user->setAppends(['is_admin'])->toArray();
 
 #### Personalizar el formato de la fecha por atributo
 
-Puedes personalizar el formato de serialización de atributos de fecha de Eloquent individuales especificando el formato de la fecha en la [declaración de la conversión](/docs/{{version}}/eloquent-mutators#attribute-casting):
+Puedes personalizar el formato de serialización de atributos de fecha de Eloquent individuales especificando el formato de la fecha en la [declaración de la conversión](/eloquent-mutators.html#attribute-casting):
 
 ```php
 protected $casts = [

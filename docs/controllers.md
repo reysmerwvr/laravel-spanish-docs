@@ -119,7 +119,7 @@ php artisan make:controller ShowProfile --invokable
 <a name="controller-middleware"></a>
 ## Middleware de controlador
 
-Los [Middleware](/docs/{{version}}/middleware) pueden ser asignados a las rutas del controlador en tus archivos de ruta:
+Los [Middleware](/middleware.html) pueden ser asignados a las rutas del controlador en tus archivos de ruta:
 
 ```php
 Route::get('profile', 'UserController@show')->middleware('auth');
@@ -332,7 +332,7 @@ Recuerda mantener la lógica de tus controladores enfocada. Si te encuentras a t
 
 #### Inyección al constructor
 
-El [contenedor de servicio](/docs/{{version}}/container) de Laravel es usado para resolver todos los controladores de Laravel. Como resultado, estás habilitado para declarar el tipo de cualquier dependencia que tu controlador pueda necesitar en su constructor. Las dependencias declaradas serán automáticamente resueltas e inyectadas dentro de la instancia del controlador:
+El [contenedor de servicio](/container.html) de Laravel es usado para resolver todos los controladores de Laravel. Como resultado, estás habilitado para declarar el tipo de cualquier dependencia que tu controlador pueda necesitar en su constructor. Las dependencias declaradas serán automáticamente resueltas e inyectadas dentro de la instancia del controlador:
 
 ```php
 <?php
@@ -361,7 +361,7 @@ class UserController extends Controller
 }
 ```
 
-También puedes declarar el tipo de cualquier [Contrato de Laravel](/docs/{{version}}/contracts). Si el contenedor puede resolverlo, puedes declararlo. Dependiendo de tu aplicación, inyectar tus dependencias dentro de tu controlador puede proporcionar mejo capacidad para pruebas.
+También puedes declarar el tipo de cualquier [Contrato de Laravel](/contracts.html). Si el contenedor puede resolverlo, puedes declararlo. Dependiendo de tu aplicación, inyectar tus dependencias dentro de tu controlador puede proporcionar mejo capacidad para pruebas.
 
 #### Inyección de métodos
 

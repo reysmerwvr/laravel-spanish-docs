@@ -126,7 +126,7 @@ class ExampleTest extends TestCase
 }
 ```
 
-Un uso común de la sesión es para mantener el estado del usuario autenticado. El método helper `actingAs` proporciona una foma sencilla de autenticar un usuario dado como el usuario actual. Por ejemplo, podemos usar un [model factory](/docs/{{version}}/database-testing#writing-factories) para generar y autenticar un usuario:
+Un uso común de la sesión es para mantener el estado del usuario autenticado. El método helper `actingAs` proporciona una foma sencilla de autenticar un usuario dado como el usuario actual. Por ejemplo, podemos usar un [model factory](/database-testing.html#writing-factories) para generar y autenticar un usuario:
 
 ```php
 <?php

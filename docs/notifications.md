@@ -47,7 +47,7 @@
 <a name="introduction"></a>
 ## Introducción
 
-Además de soporte para [enviar correos electrónicos](/docs/{{version}}/mail), Laravel brinda soporte para el envío de notificaciones mediante una variedad de canales de entrega, incluyendo correo, SMS (a través de [Nexmo](https://www.nexmo.com/)) y [Slack](https://slack.com). Las notificaciones pueden ser también almacenadas en una base de datos para que puedan ser mostradas en la interfaz de tu página web.
+Además de soporte para [enviar correos electrónicos](/mail.html), Laravel brinda soporte para el envío de notificaciones mediante una variedad de canales de entrega, incluyendo correo, SMS (a través de [Nexmo](https://www.nexmo.com/)) y [Slack](https://slack.com). Las notificaciones pueden ser también almacenadas en una base de datos para que puedan ser mostradas en la interfaz de tu página web.
 
 Generalmente, las notificaciones deben ser mensajes cortos e informativos que notifiquen a los usuarios que algo ocurrió en tu aplicación. Por ejemplo, si estás escribiendo una aplicación de facturación, podrías enviar una notificación de "Recibo de Pago" a tus usuarios mediante correo electrónico y por SMS.
 
@@ -68,7 +68,7 @@ Este comando colocará una clase de notificación nueva en tu directorio `app/No
 <a name="using-the-notifiable-trait"></a>
 ### Usar el atributo notifiable
 
-Las notificaciones pueden ser enviadas en dos formas: usando el método `notify` del atributo `Notifiable` o usando `Notification` [facade](/docs/{{version}}/facades). Primero, exploremos el uso del atributo:
+Las notificaciones pueden ser enviadas en dos formas: usando el método `notify` del atributo `Notifiable` o usando `Notification` [facade](/facades.html). Primero, exploremos el uso del atributo:
 
 ```php
 <?php
@@ -99,7 +99,7 @@ Recuerda que puedes usar el atributo `Illuminate\Notifications\Notifiable` en cu
 <a name="using-the-notification-facade"></a>
 ### Usar la facade notification
 
-Alternativamente, puedes enviar notificaciones mediante la [facade](/docs/{{version}}/facades) `Notification`. Esto es útil principalmente cuando necesitas enviar una notificación a múltiples entidades notificables, como un grupo de usuarios. Para enviar notificaciones usando la facade, pasa todas las entidades notificables y la instancia de notificación al método `send`:
+Alternativamente, puedes enviar notificaciones mediante la [facade](/facades.html) `Notification`. Esto es útil principalmente cuando necesitas enviar una notificación a múltiples entidades notificables, como un grupo de usuarios. Para enviar notificaciones usando la facade, pasa todas las entidades notificables y la instancia de notificación al método `send`:
 
 ```php
 Notification::send($users, new InvoicePaid($invoice));
@@ -133,7 +133,7 @@ public function via($notifiable)
 ### Notificaciones en cola
 
 ::: danger Nota
-Antes de poner notificaciones en cola, se debe configurar una cola y [activar un worker](/docs/{{version}}/queues).
+Antes de poner notificaciones en cola, se debe configurar una cola y [activar un worker](/queues.html).
 :::
 
 Enviar notificaciones puede tomar tiempo, especialmente si el canal necesita una API externa para llamar o entregar la notificación. Para acelerar el tiempo de respuesta de tu notificación, permite que sea puesta en cola añadiendo la interfaz `ShouldQueue` y el atributo `Queueable` a tu clase. La interfaz y el atributo son importados para todas las notificaciones generadas usando `make:notification`, así que puedesn añadir de inmediato a tu clase de notificación:
@@ -238,7 +238,7 @@ public function toMail($notifiable)
 }
 ```
 
-Además, puedes devolver un [objeto mailable](/docs/{{version}}/mail) desde el método `toMail`:
+Además, puedes devolver un [objeto mailable](/mail.html) desde el método `toMail`:
 
 ```php
 use App\Mail\InvoicePaid as Mailable;
@@ -580,12 +580,12 @@ $user->notifications()->delete();
 <a name="broadcast-prerequisites"></a>
 ### Prerrequisitos
 
-Antes de difundir notificaciones, debes configurar y familiarizarse con los servicios [broadcasting de eventos](/docs/{{version}}/broadcasting) de Laravel. La difusión de eventos brinda una forma de reaccionar a los eventos de Laravel disparados por el servidor, desde el cliente JavaScript.
+Antes de difundir notificaciones, debes configurar y familiarizarse con los servicios [broadcasting de eventos](/broadcasting.html) de Laravel. La difusión de eventos brinda una forma de reaccionar a los eventos de Laravel disparados por el servidor, desde el cliente JavaScript.
 
 <a name="formatting-broadcast-notifications"></a>
 ### Formato de notificaciones de difusión
 
-EL canal `broadcast` difunde notificaciones usando los servicios [broadcasting de eventos](/docs/{{version}}/broadcasting) de Laravel, permitiéndole al cliente JavaScript capturar notificaciones en tiempo real. Si una notificación posee soporte para difusión, debes definir un método `toBroadcast` en la clase de notificación. Este método recibirá una entidad `$notifiable` y debe devolver una instancia `BroadcastMessage`. Los datos devueltos estarán codificados como JSON y se difundirán al cliente JavaScript. Observemos un ejemplo del método `toBroadcast`:
+EL canal `broadcast` difunde notificaciones usando los servicios [broadcasting de eventos](/broadcasting.html) de Laravel, permitiéndole al cliente JavaScript capturar notificaciones en tiempo real. Si una notificación posee soporte para difusión, debes definir un método `toBroadcast` en la clase de notificación. Este método recibirá una entidad `$notifiable` y debe devolver una instancia `BroadcastMessage`. Los datos devueltos estarán codificados como JSON y se difundirán al cliente JavaScript. Observemos un ejemplo del método `toBroadcast`:
 
 ```php
 use Illuminate\Notifications\Messages\BroadcastMessage;
@@ -622,7 +622,7 @@ Adicional a los datos especificados, las notificaciones de difusión contendrán
 <a name="listening-for-notifications"></a>
 ### Escuchar notificaciones
 
-Las notificaciones se difundirán en un canal privado formateado utilizando la convención `{notifiable}.{id}`. Por lo tanto, si estás enviando una notificación a una instancia `App\User` con una ID de `1`, la notificación será difundida en el canal privado `App.User.1`. Al usar [Laravel Echo](/docs/{{version}}/broadcasting), puedes fácilmente escuchar notificaciones en un canal utilizando el método helper `notification`:
+Las notificaciones se difundirán en un canal privado formateado utilizando la convención `{notifiable}.{id}`. Por lo tanto, si estás enviando una notificación a una instancia `App\User` con una ID de `1`, la notificación será difundida en el canal privado `App.User.1`. Al usar [Laravel Echo](/broadcasting.html), puedes fácilmente escuchar notificaciones en un canal utilizando el método helper `notification`:
 
 ```php
 Echo.private('App.User.' + userId)

@@ -76,7 +76,7 @@ También puedes establecer la opción `host` a la ruta de un socket de UNIX. Si 
 
 Antes de comenzar a utilizar el caché con Redis en Laravel, deberás instalar el paquete `predis/predis` (~1.0) por medio de Composer o instalar la extensión de PHP PhpRedis por medio de PECL.
 
-Para más información sobre cómo configurar Redis, consulta la [página de la documentación de Laravel](/docs/{{version}}/redis#configuration).
+Para más información sobre cómo configurar Redis, consulta la [página de la documentación de Laravel](/redis.html#configuration).
 
 <a name="cache-usage"></a>
 ## Uso de daché
@@ -84,7 +84,7 @@ Para más información sobre cómo configurar Redis, consulta la [página de la 
 <a name="obtaining-a-cache-instance"></a>
 ### Obtener una instancia de caché
 
-Las [interfaces](/docs/{{version}}/contracts) `Illuminate\Contracts\Cache\Factory` y `Illuminate\Contracts\Cache\Repository` proporcionan acceso a los servicios de caché de Laravel. La interfaz `Factory` proporciona acceso a todos los controladores de caché definidos para tu aplicación. La interfaz `Repository` típicamente es una implementación del controlador de caché predeterminado para tu aplicación según lo especificado en tu archivo de configuración de `cache`.
+Las [interfaces](/contracts.html) `Illuminate\Contracts\Cache\Factory` y `Illuminate\Contracts\Cache\Repository` proporcionan acceso a los servicios de caché de Laravel. La interfaz `Factory` proporciona acceso a todos los controladores de caché definidos para tu aplicación. La interfaz `Repository` típicamente es una implementación del controlador de caché predeterminado para tu aplicación según lo especificado en tu archivo de configuración de `cache`.
 
 Sin embargo, también puedes usar el facade `Cache`, que es lo que usaremos a lo largo de esta documentación. El facade `Cache` proporciona acceso conveniente y directo a las implementaciones subyacientes de las interfaces de Laravel.
 
@@ -333,7 +333,7 @@ Cache::lock('foo')->forceRelease();
 <a name="the-cache-helper"></a>
 ### El helper cache
 
-Además de usar el facade `Cache` o [la interfaz de caché](/docs/{{version}}/contracts), también puedes usar la función global `cache` para recuperar y almacenar información a través del caché. Cuando se llama a la función `cache` con un solo argumento, devolverá el valor de la clave dada:
+Además de usar el facade `Cache` o [la interfaz de caché](/contracts.html), también puedes usar la función global `cache` para recuperar y almacenar información a través del caché. Cuando se llama a la función `cache` con un solo argumento, devolverá el valor de la clave dada:
 
 ```php
 $value = cache('key');
@@ -356,7 +356,7 @@ cache()->remember('users', $seconds, function () {
 ```
 
 ::: tip
-Al realizar pruebas utilizando la función global `cache`, deberás usar el método `Cache::shouldReceive` como si estuvieras [probando un facade](/docs/{{version}}/mocking#mocking-facades).
+Al realizar pruebas utilizando la función global `cache`, deberás usar el método `Cache::shouldReceive` como si estuvieras [probando un facade](/mocking.html#mocking-facades).
 :::
 
 <a name="cache-tags"></a>
@@ -409,7 +409,7 @@ Cache::tags('authors')->flush();
 <a name="writing-the-driver"></a>
 ### Escribir el controlador
 
-Para crear el controlador de caché, primero se debe implementar la [interfaz](/docs/{{version}}/contracts) `Illuminate\Contracts\Cache\Store`. Por lo tanto, una implementación de caché de MongoDB se vería de la siguiente manera:
+Para crear el controlador de caché, primero se debe implementar la [interfaz](/contracts.html) `Illuminate\Contracts\Cache\Store`. Por lo tanto, una implementación de caché de MongoDB se vería de la siguiente manera:
 
 ```php
 <?php
@@ -485,14 +485,14 @@ class CacheServiceProvider extends ServiceProvider
 }
 ```
 
-El primer argumento pasado al método `extend` es el nombre del controlador. Esto corresponde a la opción `driver` en el archivo de configuración `config/cache.php`. El segundo argumento es un Closure que debe regresar una instancia de `Illuminate\Cache\Repository`. El Closure debe pasar una instancia de `$app`, que es una instancia del [contenedor de servicios](/docs/{{version}}/container).
+El primer argumento pasado al método `extend` es el nombre del controlador. Esto corresponde a la opción `driver` en el archivo de configuración `config/cache.php`. El segundo argumento es un Closure que debe regresar una instancia de `Illuminate\Cache\Repository`. El Closure debe pasar una instancia de `$app`, que es una instancia del [contenedor de servicios](/container.html).
 
 Una vez que hayas registrado tu extensión, actualiza la opción `driver` en tu archivo de configuración `config/cache.php` con el nombre de tu extensión.
 
 <a name="events"></a>
 ## Eventos
 
-Para ejecutar código en cada operación de caché, puedes escuchar los [eventos](/docs/{{version}}/events) activados por el caché. Normalmente, debes colocar estos listener de eventos dentro de tu `EventServiceProvider`:
+Para ejecutar código en cada operación de caché, puedes escuchar los [eventos](/events.html) activados por el caché. Normalmente, debes colocar estos listener de eventos dentro de tu `EventServiceProvider`:
 
 ```php
 /**

@@ -11,7 +11,7 @@
 ## Creando vistas
 
 ::: tip 
-Para buscar más información sobre ¿Cómo escribir plantillas de Blade? Revisa la [documentación de Blade](/docs/{{version}}/blade) completa para comenzar.
+Para buscar más información sobre ¿Cómo escribir plantillas de Blade? Revisa la [documentación de Blade](/blade.html) completa para comenzar.
 :::
 
 Las vistas contienen el HTML servido por tu aplicación y separa la lógica de tu controlador/aplicación de la lógica de presentación. Las vistas son almacenadas en el directorio `resources/views`. Una vista sencilla podría lucir de esta forma:
@@ -34,7 +34,7 @@ Route::get('/', function () {
 });
 ```
 
-Como puedes ver, el primer argumento pasado al helper `view` corresponde al nombre del archivo de la vista en el directorio `resources/views`. El segundo argumento es un arreglo de datos que debería estar disponible para la vista. En este caso, estamos pasando la variable `name`, la cual es mostrada en la vista usando la [sintaxis de Blade](/docs/{{version}}/blade).
+Como puedes ver, el primer argumento pasado al helper `view` corresponde al nombre del archivo de la vista en el directorio `resources/views`. El segundo argumento es un arreglo de datos que debería estar disponible para la vista. En este caso, estamos pasando la variable `name`, la cual es mostrada en la vista usando la [sintaxis de Blade](/blade.html).
 
 Las vistas también pueden estar anidadas dentro de sub-directorios del directorio `resources/views`. La notación de "Punto" puede ser usada para referenciar vistas anidadas. Por ejemplo, si tu vista está almacenada en `resources/views/admin/profile.blade.php`, puedes hacer referencia a esta de la siguiente forma:
 
@@ -62,7 +62,7 @@ Usando el método `first`, puedes crear la primera vista que existe en un arregl
 return view()->first(['custom.admin', 'admin'], $data);
 ```
 
-También puedes ejecutar este método por medio de la clase [facade](/docs/{{version}}/facades) `View`:
+También puedes ejecutar este método por medio de la clase [facade](/facades.html) `View`:
 
 ```php
 use Illuminate\Support\Facades\View;
@@ -126,7 +126,7 @@ class AppServiceProvider extends ServiceProvider
 
 Los view composers son funciones de retorno o métodos de clase que son ejecutados cuando una vista es renderizada. Si tienes datos que quieres que estén enlazados a una vista cada vez que la vista es renderizada, un view composer puede ayudarte a organizar esa lógica dentro de una sola ubicación.
 
-Para este ejemplo, vamos a registrar los View Composers dentro de un [proveedor de servicio](/docs/{{version}}/providers). Usaremos la clase facade `View` para acceder a la implementación de contrato `Illuminate\Contracts\View\Factory` subyacente. Recuerda, Laravel no incluye un directorio predeterminado para los View Composers. Eres libre de organizarlos del modo que desees. Por ejemplo, podrías crear un directorio `app/Http/View/Composers`:
+Para este ejemplo, vamos a registrar los View Composers dentro de un [proveedor de servicio](/providers.html). Usaremos la clase facade `View` para acceder a la implementación de contrato `Illuminate\Contracts\View\Factory` subyacente. Recuerda, Laravel no incluye un directorio predeterminado para los View Composers. Eres libre de organizarlos del modo que desees. Por ejemplo, podrías crear un directorio `app/Http/View/Composers`:
 
 ```php
 <?php
@@ -219,7 +219,7 @@ class ProfileComposer
 Justo antes de que la vista sea renderizada, el método `compose` del Composer es ejecutado con la instancia `Illuminate\View\View`. Puedes usar el método `with` para enlazar datos a la vista.
 
 ::: tip
-Todos los View Composers son resueltos por medio del [contenedor de servicio](/docs/{{version}}/container), de modo que puedas colocar la referencia a cualquiera de las dependencias que necesites dentro de un constructor del Composer.
+Todos los View Composers son resueltos por medio del [contenedor de servicio](/container.html), de modo que puedas colocar la referencia a cualquiera de las dependencias que necesites dentro de un constructor del Composer.
 :::
 
 #### Adjuntando un composer a múltiples vistas

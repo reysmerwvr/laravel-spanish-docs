@@ -364,7 +364,7 @@ Las directivas `@auth` y `@guest` pueden ser utilizadas para determinar rápidam
 @endguest
 ```
 
-Si es necesario, puede especificar el [guard de autenticación](/docs/{{version}}/authentication) que debe verificarse al usar las directivas `@auth` y `@guest`:
+Si es necesario, puede especificar el [guard de autenticación](/authentication.html) que debe verificarse al usar las directivas `@auth` y `@guest`:
 
 ```php
 @auth('admin')
@@ -569,7 +569,7 @@ Dado que los formularios HTML no pueden hacer solicitudes `PUT`, `PATCH` o `DELE
 <a name="validation-errors"></a>
 ### Errores de validación
 
-La directiva `@error` puede ser usada para comprobar rápidamente si existen [mensajes de error de validación](/docs/{{version}}/validation#quick-displaying-the-validation-errors) para un atributo dado. Para una directiva `@error`, puedes imprimir la variable `$message` para mostrar el mensaje de error:
+La directiva `@error` puede ser usada para comprobar rápidamente si existen [mensajes de error de validación](/validation.html#quick-displaying-the-validation-errors) para un atributo dado. Para una directiva `@error`, puedes imprimir la variable `$message` para mostrar el mensaje de error:
 
 ```php
 <!-- /resources/views/post/create.blade.php -->
@@ -704,7 +704,7 @@ Si te gustaría agregar contenido al inicio de una pila, debes usar la directiva
 <a name="service-injection"></a>
 ## Inyeción de servicios
 
-La directiva `@inject` puede ser utilizada para recuperar un servicio del [contenedor de servicios](/docs/{{version}}/container) de Laravel. El primer argumento pasado a `@inject` es el nombre de la variable en la que se colocará el servicio, mientras que el segundo argumento es el nombre de la clase o interfaz del servicio que desea resolver:
+La directiva `@inject` puede ser utilizada para recuperar un servicio del [contenedor de servicios](/container.html) de Laravel. El primer argumento pasado a `@inject` es el nombre de la variable en la que se colocará el servicio, mientras que el segundo argumento es el nombre de la clase o interfaz del servicio que desea resolver:
 
 ```php
 @inject('metrics', 'App\Services\MetricsService')

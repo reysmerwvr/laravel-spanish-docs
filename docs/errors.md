@@ -53,7 +53,7 @@ public function report(Exception $exception)
 ```
 
 ::: tip
-En lugar de hacer uso de muchos `instanceof` en tu método `report`, considera usar [excepciones reportables](/docs/{{version}}/errors#renderable-exceptions)
+En lugar de hacer uso de muchos `instanceof` en tu método `report`, considera usar [excepciones reportables](/errors.html#renderable-exceptions)
 :::
 
 #### Contexto de log global
@@ -171,7 +171,7 @@ class RenderException extends Exception
 ```
 
 ::: tip
-Puedes declarar el tipo de cualquier dependencia requerida en el método `report` y el [contenedor de servicios](/docs/{{version}}/container) las inyectará automáticamente en el método.
+Puedes declarar el tipo de cualquier dependencia requerida en el método `report` y el [contenedor de servicios](/container.html) las inyectará automáticamente en el método.
 :::
 
 <a name="http-exceptions"></a>

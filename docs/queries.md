@@ -121,7 +121,7 @@ foreach ($roles as $name => $title) {
 <a name="chunking-results"></a>
 ### Particionando los resultados
 
-Si nececesitas trabajar con miles de registros de bases de datos, considera usar el método `chunk`. Este método obtiene una partición pequeña de los resultados cada vez y pone cada partición dentro de un `Closure` para su procesamiento. Este método es muy útil para escribir [comandos de Artisan](/docs/{{version}}/artisan) que procesan miles de registros. Por ejemplo, vamos a trabajar con la tabla completa `users` en particiones de 100 registros cada vez:
+Si nececesitas trabajar con miles de registros de bases de datos, considera usar el método `chunk`. Este método obtiene una partición pequeña de los resultados cada vez y pone cada partición dentro de un `Closure` para su procesamiento. Este método es muy útil para escribir [comandos de Artisan](/artisan.html) que procesan miles de registros. Por ejemplo, vamos a trabajar con la tabla completa `users` en particiones de 100 registros cada vez:
 
 ```php
 DB::table('users')->orderBy('id')->chunk(100, function ($users) {

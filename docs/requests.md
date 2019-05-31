@@ -17,7 +17,7 @@
 <a name="accessing-the-request"></a>
 ## Accediendo a la solicitud
 
-Para obtener una instancia de la solicitud HTTP actual por medio de una inyección de dependencia, deberías poner la referencia de la clase `Illuminate\Http\Request` en tu método de controlador. La instancia de la solicitud entrante automáticamente será inyectada por el [contenedor de servicio](/docs/{{version}}/container):
+Para obtener una instancia de la solicitud HTTP actual por medio de una inyección de dependencia, deberías poner la referencia de la clase `Illuminate\Http\Request` en tu método de controlador. La instancia de la solicitud entrante automáticamente será inyectada por el [contenedor de servicio](/container.html):
 
 ```php
 <?php
@@ -288,11 +288,11 @@ if ($request->filled('name')) {
 <a name="old-input"></a>
 ### Entrada antigua
 
-Laravel permite que mantengas los datos de una solicitud durante la próxima solicitud. Esta característica es útil particularmente para volver a llenar los formularios después de detectar errores de validación. Sin embargo, si estás usando las [características de validación](/docs/{{version}}/validation) incluidas con Laravel, es poco probable que necesites usar manualmente estos métodos, ya que algunas de las facilidades de validación integradas con Laravel las ejecutarán automáticamente.
+Laravel permite que mantengas los datos de una solicitud durante la próxima solicitud. Esta característica es útil particularmente para volver a llenar los formularios después de detectar errores de validación. Sin embargo, si estás usando las [características de validación](/validation.html) incluidas con Laravel, es poco probable que necesites usar manualmente estos métodos, ya que algunas de las facilidades de validación integradas con Laravel las ejecutarán automáticamente.
 
 #### Enviando datos a la sesión
 
-El método `flash` en la clase `Illuminate\Http\Request` enviará los datos ingresados a la [sesión](/docs/{{version}}/session) para que así estén disponibles durante la próxima solicitud realizada por el usuario:
+El método `flash` en la clase `Illuminate\Http\Request` enviará los datos ingresados a la [sesión](/session.html) para que así estén disponibles durante la próxima solicitud realizada por el usuario:
 
 ```php
 $request->flash();
@@ -320,13 +320,13 @@ return redirect('form')->withInput(
 
 #### Obteniendo datos antiguos
 
-Para obtener los datos de la sesión anterior, usa el método `old` en la instancia `Request`. El método old extrarerá los datos de la solicitiud y [sesión](/docs/{{version}}/session) anterior:
+Para obtener los datos de la sesión anterior, usa el método `old` en la instancia `Request`. El método old extrarerá los datos de la solicitiud y [sesión](/session.html) anterior:
 
 ```php
 $username = $request->old('username');
 ```
 
-Laravel también proporciona un helper global `old`. Si estás mostrando datos antiguos dentro de una [plantilla Blade](/docs/{{version}}/blade), es más conveniente usar el helper `old`. Si no existen datos antiguos para el campo dado, será devuelto `null`:
+Laravel también proporciona un helper global `old`. Si estás mostrando datos antiguos dentro de una [plantilla Blade](/blade.html), es más conveniente usar el helper `old`. Si no existen datos antiguos para el campo dado, será devuelto `null`:
 
 ```php
 <input type="text" name="username" value="{{ old('username') }}">
@@ -434,7 +434,7 @@ Hay una variedad de otros métodos disponibles en instancias `UploadedFile`. Rev
 <a name="storing-uploaded-files"></a>
 ### Almacenando archivos cargados
 
-Para almacenar un archivo cargado, típicamente usarás uno de tus [sistemas de archivos](/docs/{{version}}/filesystem) configurados. La clase `UploadedFile` tiene un método `store` el cual moverá un archivo cargado a uno de tus discos, el cual puede ser una ubicación de tu sistema de archivo local o incluso una ubicación de almacenamiento en la nube como Amazon S3.
+Para almacenar un archivo cargado, típicamente usarás uno de tus [sistemas de archivos](/filesystem.html) configurados. La clase `UploadedFile` tiene un método `store` el cual moverá un archivo cargado a uno de tus discos, el cual puede ser una ubicación de tu sistema de archivo local o incluso una ubicación de almacenamiento en la nube como Amazon S3.
 
 El método `store` acepta la ruta dónde el archivo debería ser almacenado relativa al directorio raíz configurado del sistema de archivo. Esta ruta no debería contener un nombre de archivo, ya que un ID único será generado automáticamente para servir como el nombre del archivo.
 

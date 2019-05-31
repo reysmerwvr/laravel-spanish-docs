@@ -34,7 +34,7 @@ $collection = collect([1, 2, 3]);
 ```
 
 ::: tip
-Las respuestas de [Eloquent](/docs/{{version}}/eloquent) siempre retornan una instancia de `Collection`.
+Las respuestas de [Eloquent](/eloquent.html) siempre retornan una instancia de `Collection`.
 :::
 
 <a name="extending-collections"></a>
@@ -58,7 +58,7 @@ $upper = $collection->toUpper();
 // ['FIRST', 'SECOND']
 ```
 
-Por lo general, los macros para una colección se declaran en un [proveedor de servicios](/docs/{{version}}/providers).
+Por lo general, los macros para una colección se declaran en un [proveedor de servicios](/providers.html).
 
 <a name="available-methods"></a>
 ## Métodos disponibles
@@ -250,7 +250,7 @@ $chunks->toArray();
 // [[1, 2, 3, 4], [5, 6, 7]]
 ```
 
-Este método es especialmente útil en las [vistas](/docs/{{version}}/views) cuando se trabaja con un sistema de grillas como el de [Bootstrap](https://getbootstrap.com/docs/4.1/layout/grid/). Imagina que tienes una colección de modelos [Eloquent](/docs/{{version}}/eloquent) y quieres mostrar en una grilla lo siguiente:
+Este método es especialmente útil en las [vistas](/views.html) cuando se trabaja con un sistema de grillas como el de [Bootstrap](https://getbootstrap.com/docs/4.1/layout/grid/). Imagina que tienes una colección de modelos [Eloquent](/eloquent.html) y quieres mostrar en una grilla lo siguiente:
 
 ```php
 @foreach ($products->chunk(3) as $chunk)
@@ -2087,7 +2087,7 @@ $collection->all();
 // [9, 18, 27, 36, 45, 54, 63, 72, 81, 90]
 ```
 
-Este método puede ser útil cuando se combina con Factories para crear modelos [Eloquent](/docs/{{version}}/eloquent):
+Este método puede ser útil cuando se combina con Factories para crear modelos [Eloquent](/eloquent.html):
 
 ```php
 $categories = Collection::times(3, function ($number) {
@@ -2108,7 +2108,7 @@ $categories->all();
 <a name="method-toarray"></a>
 #### `toArray()` 
 
-El método `toArray` convierte la colección en un simple `array` de PHP. Si los valores de la colección son modelos [Eloquent](/docs/{{version}}/eloquent), los modelos también se convertirán en arreglos:
+El método `toArray` convierte la colección en un simple `array` de PHP. Si los valores de la colección son modelos [Eloquent](/eloquent.html), los modelos también se convertirán en arreglos:
 
 ```php
 $collection = collect(['name' => 'Desk', 'price' => 200]);

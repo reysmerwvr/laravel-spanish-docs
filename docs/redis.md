@@ -137,7 +137,7 @@ Además de las opciones predeterminadas de configuración del servidor `host`, `
 <a name="interacting-with-redis"></a>
 ## Interactuar con redis
 
-Puedes interactuar con Redis llamando varios métodos en el [facade](/docs/{{version}}/facades) `Redis`. El facade `Redis` admite métodos dinámicos, lo que significa que puedes llamar a cualquier [comando de Redis](https://redis.io/commands) en el facade y el comando será pasado directamente a Redis. En este ejemplo, vamos a llamar al comando `GET` de Redis llamando al método `get` en el facade `Redis`:
+Puedes interactuar con Redis llamando varios métodos en el [facade](/facades.html) `Redis`. El facade `Redis` admite métodos dinámicos, lo que significa que puedes llamar a cualquier [comando de Redis](https://redis.io/commands) en el facade y el comando será pasado directamente a Redis. En este ejemplo, vamos a llamar al comando `GET` de Redis llamando al método `get` en el facade `Redis`:
 
 ```php
 <?php
@@ -210,7 +210,7 @@ Redis::pipeline(function ($pipe) {
 
 Laravel proporciona una interfaz conveniente para los comandos `publish` y `subscribe` de Redis. Estos comandos de Redis te permiten escuchar mensajes en un "canal" dado. Puedes publicar mensajes en el canal desde otra aplicación, o incluso utilizando otro lenguaje de programación, lo que permite una comunicación sencilla entre aplicaciones y procesos.
 
-Primero, configuremos un listener para el canal usando el método `subscribe`. Vamos a colocar una llamada a este método en un [comando de Artisan](/docs/{{version}}/artisan) ya que llamar al método `subscribe` comienza un proceso de larga ejecución:
+Primero, configuremos un listener para el canal usando el método `subscribe`. Vamos a colocar una llamada a este método en un [comando de Artisan](/artisan.html) ya que llamar al método `subscribe` comienza un proceso de larga ejecución:
 
 ```php
 <?php

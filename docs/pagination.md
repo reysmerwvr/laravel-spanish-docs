@@ -15,7 +15,7 @@
 <a name="introduction"></a>
 ## Introducción
 
-En otros frameworks, la paginación puede ser muy difícil. El paginador de Laravel está integrado con el [constructor de consultas](/docs/{{version}}/queries) y el [ORM Eloquent](/docs/{{version}}/eloquent), proporcionando una conveniente y fácil manera de usar paginación de resultados de forma predeterminada. El HTML generado por el paginador es compatible con el [Framework de CSS Bootstrap](https://getbootstrap.com/).
+En otros frameworks, la paginación puede ser muy difícil. El paginador de Laravel está integrado con el [constructor de consultas](/queries.html) y el [ORM Eloquent](/eloquent.html), proporcionando una conveniente y fácil manera de usar paginación de resultados de forma predeterminada. El HTML generado por el paginador es compatible con el [Framework de CSS Bootstrap](https://getbootstrap.com/).
 
 <a name="basic-usage"></a>
 ## Uso básico
@@ -23,7 +23,7 @@ En otros frameworks, la paginación puede ser muy difícil. El paginador de Lara
 <a name="paginating-query-builder-results"></a>
 ### Paginando los resultados del constructor de consultas
 
-Hay varias formas de paginar los elementos. La más simple es usando el método `paginate` en el [constructor de consultas](/docs/{{version}}/queries) o una [Consulta de Eloquent](/docs/{{version}}/eloquent). El método `paginate` se encarga automáticamente de la configuración del límite y desplazamiento apropiado de la página actual que está siendo vista por el usuario. Por defecto, la página actual es detectada por el valor del argumento de cadena de consulta `page` en la solicitud HTTP. Este valor es detectado automáticamente por Laravel y también es insertado automáticamente dentro de los enlaces generados por el paginador.
+Hay varias formas de paginar los elementos. La más simple es usando el método `paginate` en el [constructor de consultas](/queries.html) o una [Consulta de Eloquent](/eloquent.html). El método `paginate` se encarga automáticamente de la configuración del límite y desplazamiento apropiado de la página actual que está siendo vista por el usuario. Por defecto, la página actual es detectada por el valor del argumento de cadena de consulta `page` en la solicitud HTTP. Este valor es detectado automáticamente por Laravel y también es insertado automáticamente dentro de los enlaces generados por el paginador.
 
 En este ejemplo, el único argumento pasado al método `paginate` es el número de elementos que prefieres que sean mostrados "por página". En este caso, vamos a especificar que nos gustaría mostrar `15` elementos por página:
 
@@ -66,7 +66,7 @@ $users = DB::table('users')->simplePaginate(15);
 <a name="paginating-eloquent-results"></a>
 ### Paginando resultados de eloquent
 
-También puedes paginar consultas de [Eloquent](/docs/{{version}}/eloquent). En este ejemplo, paginaremos el modelo `User` con `15` elementos por página. Como puedes ver, la sintaxis es casi idéntica a la paginación de los resultados del constructor de consultas.
+También puedes paginar consultas de [Eloquent](/eloquent.html). En este ejemplo, paginaremos el modelo `User` con `15` elementos por página. Como puedes ver, la sintaxis es casi idéntica a la paginación de los resultados del constructor de consultas.
 
 ```php
 $users = App\User::paginate(15);
@@ -100,7 +100,7 @@ Cuando creas manualmente una instancia del paginador, deberías manualmente "rec
 <a name="displaying-pagination-results"></a>
 ## Mostrando los resultados de la paginación
 
-Cuando ejecutas el método `paginate`, recibirás una instancia de la clase `Illuminate\Pagination\LengthAwarePaginator`. Cuando ejecutas el método `simplePaginate`, recibirás una instancia de la clase `Illuminate\Pagination\Paginator`. Estos objetos proporcionan varios métodos que afectan la presentación del conjunto de resultados. Además de estos métodos helpers, las instancias del paginador son iteradoras, es decir, pueden ser recorridas por un ciclo repetitivo igual que un arreglo. Así, una vez que has obtenido los resultados, puedes mostrar los resultados y renderizar los enlaces de página usando [Blade](/docs/{{version}}/blade):
+Cuando ejecutas el método `paginate`, recibirás una instancia de la clase `Illuminate\Pagination\LengthAwarePaginator`. Cuando ejecutas el método `simplePaginate`, recibirás una instancia de la clase `Illuminate\Pagination\Paginator`. Estos objetos proporcionan varios métodos que afectan la presentación del conjunto de resultados. Además de estos métodos helpers, las instancias del paginador son iteradoras, es decir, pueden ser recorridas por un ciclo repetitivo igual que un arreglo. Así, una vez que has obtenido los resultados, puedes mostrar los resultados y renderizar los enlaces de página usando [Blade](/blade.html):
 
 ```php
 <div class="container">

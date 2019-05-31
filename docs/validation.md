@@ -144,7 +144,7 @@ $request->validate([
 <a name="quick-displaying-the-validation-errors"></a>
 ### Mostrando los errores de validación
 
-¿Qué sucede si los parámetros de solicitud entrantes no pasan las reglas de validación dados? Cómo mencionamos anteriormente, Laravel redirigirá al usuario de regreso a su ubicación previa. En adición, todos los errores de validación serán automáticamente [movidos instantáneamente a la sesión](/docs/{{version}}/session#flash-data).
+¿Qué sucede si los parámetros de solicitud entrantes no pasan las reglas de validación dados? Cómo mencionamos anteriormente, Laravel redirigirá al usuario de regreso a su ubicación previa. En adición, todos los errores de validación serán automáticamente [movidos instantáneamente a la sesión](/session.html#flash-data).
 
 De nuevo, observa que no tuvimos que enlazar explícitamente los mensajes de error con la vista en nuestra ruta `GET`. Esto es porque Laravel revisará los errores en la sesión de datos y los enlazará automáticamente a la vista si están disponibles. La variable `$errors` será una instancia de `Illuminate\Support\MessageBag`. Para mayor información sobre cómo trabajar con este objeto, [revisa su documentación](#working-with-error-messages).
 
@@ -174,7 +174,7 @@ Así, en nuestro ejemplo, el usuario será redirigido al método `create` de nue
 
 #### Directiva `@error`
 
-También puedes usar la directiva `@error` de [Blade](/docs/{{version}}/blade) para rápidamente comprobar si los mensajes de error de validación existen para un atributo dado. Dentro de una directiva `@error`, puedes mostrar la variable `$message` para mostrar el mensaje de error:
+También puedes usar la directiva `@error` de [Blade](/blade.html) para rápidamente comprobar si los mensajes de error de validación existen para un atributo dado. Dentro de una directiva `@error`, puedes mostrar la variable `$message` para mostrar el mensaje de error:
 
 ```php
 <!-- /resources/views/post/create.blade.php -->
@@ -237,7 +237,7 @@ public function rules()
 ```
 
 ::: tip
-Puedes declarar el tipo de cualquier dependencia que necesites dentro de la firma del método `rules`. Se resolverán automáticamente a través del [contenedor de servicio](/docs/{{version}}/container) de Laravel.
+Puedes declarar el tipo de cualquier dependencia que necesites dentro de la firma del método `rules`. Se resolverán automáticamente a través del [contenedor de servicio](/container.html) de Laravel.
 :::
 
 Así que, ¿Cómo son evaluadas las reglas de validación? Todo lo que necesitas hacer es poner la referencia de la solicitud en tu método de controlador. La Form Request entrante es validada antes de que el método de controlador sea ejecutado, significa que no necesitas complicar tu controlador con ninguna lógica de validación:
@@ -323,7 +323,7 @@ public function authorize()
 ```
 
 ::: tip 
-Puedes declarar el tipo de cualquier dependencia que necesites dentro de la firma del método `authorize`. Se resolverán automáticamente a través de Laravel [contenedor de servicio](/docs/{{version}}/container).
+Puedes declarar el tipo de cualquier dependencia que necesites dentro de la firma del método `authorize`. Se resolverán automáticamente a través de Laravel [contenedor de servicio](/container.html).
 :::
 
 <a name="customizing-the-error-messages"></a>
@@ -368,7 +368,7 @@ public function attributes()
 <a name="manually-creating-validators"></a>
 ## Creando validadores manualmente
 
-Si no quieres usar el método `messages` en la solicitud, puedes crear una instancia de validador manualmente usando la clase [facade](/docs/{{version}}/facades) `Validator`. El método `make` en la clase facade genera una nueva instancia del validador:
+Si no quieres usar el método `messages` en la solicitud, puedes crear una instancia de validador manualmente usando la clase [facade](/facades.html) `Validator`. El método `make` en la clase facade genera una nueva instancia del validador:
 
 ```php
 <?php
@@ -1376,7 +1376,7 @@ $validator = Validator::make($request->all(), [
 <a name="using-extensions"></a>
 ### Usando extensiones
 
-Otro método para registrar reglas de validación personalizadas es usar el método `extend` en la clase [facade](/docs/{{version}}/facades) `Validator`. Usemos este método dentro de un [proveedor de servicio](/docs/{{version}}/providers) para registrar una regla de validación personalizada:
+Otro método para registrar reglas de validación personalizadas es usar el método `extend` en la clase [facade](/facades.html) `Validator`. Usemos este método dentro de un [proveedor de servicio](/providers.html) para registrar una regla de validación personalizada:
 
 ```php
 <?php
@@ -1432,7 +1432,7 @@ También necesitarás definir un mensaje de error para tu regla personalizada. P
 // The rest of the validation error messages...
 ```
 
-Al momento de crear una regla de validación personalizada, algunas veces puedes necesitar definir reemplazos de marcadores personalizados para los mensajes de error. Puedes hacer eso creando un Validador personalizado cómo se describió anteriormente, entonces hacer una ejecución del método `replacer` en la clase facade `Validator`. Puedes hacer esto dentro del método `boot` de un [proveedor de servicio](/docs/{{version}}/providers):
+Al momento de crear una regla de validación personalizada, algunas veces puedes necesitar definir reemplazos de marcadores personalizados para los mensajes de error. Puedes hacer eso creando un Validador personalizado cómo se describió anteriormente, entonces hacer una ejecución del método `replacer` en la clase facade `Validator`. Puedes hacer esto dentro del método `boot` de un [proveedor de servicio](/providers.html):
 
 ```php
 /**

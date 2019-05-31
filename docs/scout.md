@@ -28,7 +28,7 @@
 <a name="introduction"></a>
 ## Introducción
 
-Laravel Scout proporciona una sencilla solución para agregar búsquedas de texto completo a tus [modelos Eloquent](/docs/{{version}}/eloquent). Usando observadores de modelo, Scout mantendrá automáticamente tus índices de búsqueda sincronizados con tus registros de Eloquent.
+Laravel Scout proporciona una sencilla solución para agregar búsquedas de texto completo a tus [modelos Eloquent](/eloquent.html). Usando observadores de modelo, Scout mantendrá automáticamente tus índices de búsqueda sincronizados con tus registros de Eloquent.
 
 Actualmente, Scout viene con el controlador (driver) [Algolia](https://www.algolia.com/); sin embargo, la escritura de controladores personalizados es simple y eres libre de extender Scout con tus propias implementaciones de búsqueda.
 
@@ -66,7 +66,7 @@ class Post extends Model
 <a name="queueing"></a>
 ### Colas
 
-Aunque no es estrictamente necesario para usar Scout, deberías considerar fuertemente configurar un [controlador de cola](/docs/{{version}}/queues) antes de usar el paquete. La ejecución de un trabajador (worker) de cola permitirá a Scout poner en cola todas las operaciones que sincronizan la información de tu modelo con tus índices de búsqueda, proporcionando mejores tiempos de respuesta para la interfaz web de tu aplicación.
+Aunque no es estrictamente necesario para usar Scout, deberías considerar fuertemente configurar un [controlador de cola](/queues.html) antes de usar el paquete. La ejecución de un trabajador (worker) de cola permitirá a Scout poner en cola todas las operaciones que sincronizan la información de tu modelo con tus índices de búsqueda, proporcionando mejores tiempos de respuesta para la interfaz web de tu aplicación.
 
 Una vez que hayas configurado tu controlador de cola, establece el valor de la opción `queue` en tu archivo de configuración `config/scout.php` a `true`:
 
@@ -212,7 +212,7 @@ $order->save();
 
 #### Agregando por medio de consulta
 
-Si prefieres agregar una colección de modelos a tu índice de búsqueda por medio de una consulta Eloquent, puedes encadenar el método `searchable` con una consulta Eloquent. El método `searchable` [dividirá (chunk) los resultados](/docs/{{version}}/eloquent#chunking-results) de la consulta y agregará los registros a tu índice de búsqueda. Otra vez, si has configurado Scout para usar colas, todos estas porciones serán agregadas en segundo plano por tus workers de cola:
+Si prefieres agregar una colección de modelos a tu índice de búsqueda por medio de una consulta Eloquent, puedes encadenar el método `searchable` con una consulta Eloquent. El método `searchable` [dividirá (chunk) los resultados](/eloquent.html#chunking-results) de la consulta y agregará los registros a tu índice de búsqueda. Otra vez, si has configurado Scout para usar colas, todos estas porciones serán agregadas en segundo plano por tus workers de cola:
 
 ```php
 // Agregando Por Medio de consulta Eloquent...
@@ -256,7 +256,7 @@ $orders->searchable();
 <a name="removing-records"></a>
 ### Eliminando registros
 
-Para eliminar un registro de tu índice, llama a `delete` en el modelo de la base de datos. Esta forma de eliminar es también compatible con los modelos [eliminados lógicamente](/docs/{{version}}/eloquent#soft-deleting):
+Para eliminar un registro de tu índice, llama a `delete` en el modelo de la base de datos. Esta forma de eliminar es también compatible con los modelos [eliminados lógicamente](/eloquent.html#soft-deleting):
 
 ```php
 $order = App\Order::find(1);
@@ -361,7 +361,7 @@ $orders = App\Order::search('Star Trek')->where('user_id', 1)->get();
 <a name="pagination"></a>
 ### Paginación
 
-Además de obtener una colección de modelos, puedes paginar los resultados de tu búsqueda usando el método `paginate`. Este método devolverá una instancia `Paginator` justo como si hubieras [paginada una consulta Eloquent tradicional](/docs/{{version}}/pagination):
+Además de obtener una colección de modelos, puedes paginar los resultados de tu búsqueda usando el método `paginate`. Este método devolverá una instancia `Paginator` justo como si hubieras [paginada una consulta Eloquent tradicional](/pagination.html):
 
 ```php
 $orders = App\Order::search('Star Trek')->paginate();
@@ -373,7 +373,7 @@ Puedes especificar cuántos modelos obtener por página al pasar la cantidad com
 $orders = App\Order::search('Star Trek')->paginate(15);
 ```
 
-Una vez que has obtenido los resultados, puedes mostrar los resultados y renderizar los enlaces de página usando [Blade](/docs/{{version}}/blade) justo como si hubieras paginado una consulta Eloquent tradicional:
+Una vez que has obtenido los resultados, puedes mostrar los resultados y renderizar los enlaces de página usando [Blade](/blade.html) justo como si hubieras paginado una consulta Eloquent tradicional:
 
 ```php
 <div class="container">
@@ -388,7 +388,7 @@ Una vez que has obtenido los resultados, puedes mostrar los resultados y renderi
 <a name="soft-deleting"></a>
 ### Eliminación lógica
 
-Si tus modelos indexados son de [eliminación lógica](/docs/{{version}}/eloquent#soft-deleting) y necesitas buscar tus modelos eliminados lógicamente, establece la opción `soft_delete` del archivo `config/scout.php` en `true`:
+Si tus modelos indexados son de [eliminación lógica](/eloquent.html#soft-deleting) y necesitas buscar tus modelos eliminados lógicamente, establece la opción `soft_delete` del archivo `config/scout.php` en `true`:
 
 ```php
 'soft_delete' => true,
@@ -477,7 +477,7 @@ Una vez que tu motor ha sido registrado, puedes especificarlo como tu `driver` p
 <a name="builder-macros"></a>
 ## Macros de constructor (builder)
 
-Si deseas definir un método constructor personalizado, puedes usar el método `macro` en la clase `Laravel\Scout\Builder`. Típicamente, las "macros" deben ser definidas dentro de un método `boot` de un [proveedor de servicios](/docs/{{version}}/providers):
+Si deseas definir un método constructor personalizado, puedes usar el método `macro` en la clase `Laravel\Scout\Builder`. Típicamente, las "macros" deben ser definidas dentro de un método `boot` de un [proveedor de servicios](/providers.html):
 
 ```php
 <?php

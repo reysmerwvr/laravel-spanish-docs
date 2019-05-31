@@ -360,7 +360,7 @@ mix.js('resources/js/app.js', 'public/js')
     .version();
 ```
 
-Luego de generar el archivo versionado, no sabrás el nombre exacto del archivo. Así que, debes usar la función global de Laravel `mix` dentro de tus [vistas](/docs/{{version}}/views) para cargar los assets apropiados. La función `mix` determinará automáticamente el nombre actual del archivo:
+Luego de generar el archivo versionado, no sabrás el nombre exacto del archivo. Así que, debes usar la función global de Laravel `mix` dentro de tus [vistas](/views.html) para cargar los assets apropiados. La función `mix` determinará automáticamente el nombre actual del archivo:
 
 ```php
 <link rel="stylesheet" href="{{ mix('/css/app.css') }}">

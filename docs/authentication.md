@@ -44,7 +44,7 @@ Los proveedores definen cómo se retornan los usuarios de tu almacenamiento pers
 <a name="introduction-database-considerations"></a>
 ### Consideraciones de la base de datos
 
-De manera predeterminada, Laravel incluye un [Modelo de Eloquent](/docs/{{version}}/eloquent) `App\User` en tu directorio `app`. Este modelo puede ser utilizado por el controlador de autenticación predeterminado de Eloquent. Si tu aplicación no utiliza Eloquent, deberás utilizar el controlador de autenticación `database` el cual utiliza el constructor de consultas (query builder) de Laravel.
+De manera predeterminada, Laravel incluye un [Modelo de Eloquent](/eloquent.html) `App\User` en tu directorio `app`. Este modelo puede ser utilizado por el controlador de autenticación predeterminado de Eloquent. Si tu aplicación no utiliza Eloquent, deberás utilizar el controlador de autenticación `database` el cual utiliza el constructor de consultas (query builder) de Laravel.
 
 Al crear el esquema de la base de datos para el modelo `App\User`, asegurate de que la columna password sea de al menos 60 caracteres de longitud. Mantener una longitud de columna de cadena predeterminada a 255 caracteres sería una buena opción.
 
@@ -135,7 +135,7 @@ Para modificar los campos del formulario que son requeridos cuando se registren 
 
 El método `validator` de `RegisterController` contiene las reglas de validación para los usuarios nuevos de tu aplicación. Eres libre de modificar este metodo según te convenga.
 
-El método `create` de `RegisterController` es responsable de crear registros nuevos de `App\User` en tu base de datos usando el [ORM Eloquent](/docs/{{version}}/eloquent). Eres libre de modificar este método de acuerdo a las necesidades de tu base de datos.
+El método `create` de `RegisterController` es responsable de crear registros nuevos de `App\User` en tu base de datos usando el [ORM Eloquent](/eloquent.html). Eres libre de modificar este método de acuerdo a las necesidades de tu base de datos.
 
 <a name="retrieving-the-authenticated-user"></a>
 ### Retornando el usuario autenticado
@@ -189,13 +189,13 @@ if (Auth::check()) {
 ```
 
 ::: tip
-Aún cuando es posible determinar si un usuario está autenticado utilizando el método `check`, típicamente deberás usar un middleware para verificar que el usuario está autenticado antes de permitir al usuario acceder a ciertas rutas / controladores. Para aprender más acerca de esto, echa un vistazo a la documentación para [proteger rutas](/docs/{{version}}/authentication#protecting-routes).
+Aún cuando es posible determinar si un usuario está autenticado utilizando el método `check`, típicamente deberás usar un middleware para verificar que el usuario está autenticado antes de permitir al usuario acceder a ciertas rutas / controladores. Para aprender más acerca de esto, echa un vistazo a la documentación para [proteger rutas](/authentication.html#protecting-routes).
 :::
 
 <a name="protecting-routes"></a>
 ### Proteger rutas
 
-Puedes utilizar [middleware de rutas](/docs/{{version}}/middleware) para permitir acceder a ciertas rutas a los usuarios autenticados. Laravel incluye un middleware `auth`, el cual está definido en `Illuminate\Auth\Middleware\Authenticate`. Ya que este middleware está registrado en tu kernel HTTP, todo lo que necesitas hacer es adjuntar el middleware a la definición de la ruta:
+Puedes utilizar [middleware de rutas](/middleware.html) para permitir acceder a ciertas rutas a los usuarios autenticados. Laravel incluye un middleware `auth`, el cual está definido en `Illuminate\Auth\Middleware\Authenticate`. Ya que este middleware está registrado en tu kernel HTTP, todo lo que necesitas hacer es adjuntar el middleware a la definición de la ruta:
 
 ```php
 Route::get('profile', function () {
@@ -203,7 +203,7 @@ Route::get('profile', function () {
 })->middleware('auth');
 ```
 
-Si estás utilizando [controladores](/docs/{{version}}/controllers), puedes hacer una llamada al método `middleware` desde el constructor de tu controlador en lugar de adjuntarlo a la definición de la ruta:
+Si estás utilizando [controladores](/controllers.html), puedes hacer una llamada al método `middleware` desde el constructor de tu controlador en lugar de adjuntarlo a la definición de la ruta:
 
 ```php
 public function __construct()
@@ -214,7 +214,7 @@ public function __construct()
 
 #### Redireccionar usuarios no autenticados
 
-Cuando el middleware `auth` detecta un usuario no autorizado, redirigirá al usuario a la [ruta nombrada](/docs/{{version}}/routing#named-routes) `login`. Puedes modificar este comportamiento actualizando la función `redirectTo` en tu archivo `app/Http/Middleware/Authenticate.php`:
+Cuando el middleware `auth` detecta un usuario no autorizado, redirigirá al usuario a la [ruta nombrada](/routing.html#named-routes) `login`. Puedes modificar este comportamiento actualizando la función `redirectTo` en tu archivo `app/Http/Middleware/Authenticate.php`:
 
 ```php
 /**
@@ -250,7 +250,7 @@ Si estás utilizando la clase `LoginController` incorporada en Laravel, el trait
 
 Nota que no estás obligado a utilizar los controladores de autenticación incluidos en Laravel. Si deseas eliminar estos controladores, tendrás que encargarte de administrar la autenticación de usuarios utilizando las clases de autenticación de Laravel directamente. No te preocupes, ¡es algo sencillo!.
 
-Vamos a acceder a los servicios de autenticación de Laravel por medio del [facade](/docs/{{version}}/facades), así que hay que asegurarnos de importar el facade `Auth` al inicio de la clase. Después, veamos el método `attempt`:
+Vamos a acceder a los servicios de autenticación de Laravel por medio del [facade](/facades.html), así que hay que asegurarnos de importar el facade `Auth` al inicio de la clase. Después, veamos el método `attempt`:
 
 ```php
 <?php
@@ -345,7 +345,7 @@ if (Auth::viaRemember()) {
 
 #### Autenticar una instancia de usuario
 
-Si necesitas registrar una instancia de usuario existente en tu aplicación, puedes llamar al método `login` con la instancia de usuario. El objeto proporcionado deberá ser una implementación de la [interfaz](/docs/{{version}}/contracts) `Illuminate\Contracts\Auth\Authenticatable`. El modelo `App\User` incluido en Laravel ya implementa esta interfaz:
+Si necesitas registrar una instancia de usuario existente en tu aplicación, puedes llamar al método `login` con la instancia de usuario. El objeto proporcionado deberá ser una implementación de la [interfaz](/contracts.html) `Illuminate\Contracts\Auth\Authenticatable`. El modelo `App\User` incluido en Laravel ya implementa esta interfaz:
 
 ```php
 Auth::login($user);
@@ -384,7 +384,7 @@ if (Auth::once($credentials)) {
 <a name="http-basic-authentication"></a>
 ## Autenticación HTTP básica
 
-La [autenticación HTTP básica](https://en.wikipedia.org/wiki/Basic_access_authentication) proporciona una manera rápida de autenticar usuarios en tu aplicación sin configurar una página de "login" dedicada. Para iniciar, adjunta el [middleware](/docs/{{version}}/middleware) `auth.basic` a tu ruta. El middleware `auth.basic` está incluido en el framework de Laravel, por lo que no hay necesidad de definirlo:
+La [autenticación HTTP básica](https://en.wikipedia.org/wiki/Basic_access_authentication) proporciona una manera rápida de autenticar usuarios en tu aplicación sin configurar una página de "login" dedicada. Para iniciar, adjunta el [middleware](/middleware.html) `auth.basic` a tu ruta. El middleware `auth.basic` está incluido en el framework de Laravel, por lo que no hay necesidad de definirlo:
 
 ```php
 Route::get('profile', function () {
@@ -406,7 +406,7 @@ RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 <a name="stateless-http-basic-authentication"></a>
 ### Autenticación HTTP básica sin estado
 
-También puedes utilizar la Autenticación HTTP Básica sin establecer una cookie de identificación en la sesión, esto es particularmente útil para la autenticacíon API. Para hacer esto [define un middleware](/docs/{{version}}/middleware) que llame al método `onceBasic`. Si el método no devuelve ninguna respuesta, la petición puede pasarse a la aplicación:
+También puedes utilizar la Autenticación HTTP Básica sin establecer una cookie de identificación en la sesión, esto es particularmente útil para la autenticacíon API. Para hacer esto [define un middleware](/middleware.html) que llame al método `onceBasic`. Si el método no devuelve ninguna respuesta, la petición puede pasarse a la aplicación:
 
 ```php
 <?php
@@ -432,7 +432,7 @@ class AuthenticateOnceWithBasicAuth
 }
 ```
 
-A continuación [registra el middleware de ruta](/docs/{{version}}/middleware#registering-middleware) y adjúntalo a la ruta:
+A continuación [registra el middleware de ruta](/middleware.html#registering-middleware) y adjúntalo a la ruta:
 
 ```php
 Route::get('api/user', function () {
@@ -479,7 +479,7 @@ Cuando el método `logoutOtherDevices` es invocado, las otras sesiones del usuar
 <a name="adding-custom-guards"></a>
 ## Agregar guards personalizados
 
-Puedes definir tu propio guard de autenticación utilizando el método `extend` en el facade `Auth`. Debes colocar la llamada a este método `extend` en el [proveedor de servicios](/docs/{{version}}/providers). Ya que Laravel cuenta con un `AuthServiceProvider`, puedes colocar el código en ese proveedor:
+Puedes definir tu propio guard de autenticación utilizando el método `extend` en el facade `Auth`. Debes colocar la llamada a este método `extend` en el [proveedor de servicios](/providers.html). Ya que Laravel cuenta con un `AuthServiceProvider`, puedes colocar el código en ese proveedor:
 
 ```php
 <?php
@@ -673,7 +673,7 @@ Esta interfaz es simple. El método `getAuthIdentifierName` debe retornar el nom
 <a name="events"></a>
 ## Eventos
 
-Laravel genera una variedad de [eventos](/docs/{{version}}/events) durante el proceso de autenticación. Puedes adjuntar listeners a estos eventos en tu `EventServiceProvider`:
+Laravel genera una variedad de [eventos](/events.html) durante el proceso de autenticación. Puedes adjuntar listeners a estos eventos en tu `EventServiceProvider`:
 
 ```php
 /**

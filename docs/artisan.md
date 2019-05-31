@@ -93,7 +93,7 @@ Después de generar tu comando, debes rellenar las propiedades `signature` y `de
 Para una mayor reutilización del código, es una buena práctica mantener ligeros tus comandos de consola y dejar que se remitan a los servicios de aplicaciones para llevar a cabo sus tareas. En el siguiente ejemplo, toma en cuenta que inyectamos una clase de servicio para hacer el "trabajo pesado" de enviar los correos electrónicos.
 :::
 
-Echemos un vistazo a un comando de ejemplo. Observa que podemos inyectar cualquier dependencia que necesitemos en el método `handle()` del comando. El [contenedor de servicios](/docs/{{version}}/container) de Laravel automáticamente inyectará todas las dependencias cuyos tipos (interfaces y/o clases) estén asignados en los parámetros del constructor (type-hinting):
+Echemos un vistazo a un comando de ejemplo. Observa que podemos inyectar cualquier dependencia que necesitemos en el método `handle()` del comando. El [contenedor de servicios](/container.html) de Laravel automáticamente inyectará todas las dependencias cuyos tipos (interfaces y/o clases) estén asignados en los parámetros del constructor (type-hinting):
 
 ```php
 <?php
@@ -172,7 +172,7 @@ El Closure está vinculado a la instancia del comando subyacente, así tienes ac
 
 #### Determinación de tipos (type-hinting) de dependencias
 
-Además de recibir los argumentos y opciones de tu comando, en los Closures de comandos puedes también determinar los tipos de las dependencias adicionales que te gustaría resolver del [contenedor de servicios](/docs/{{version}}/container):
+Además de recibir los argumentos y opciones de tu comando, en los Closures de comandos puedes también determinar los tipos de las dependencias adicionales que te gustaría resolver del [contenedor de servicios](/container.html):
 
 ```php
 use App\User;
@@ -488,7 +488,7 @@ protected function commands()
 }
 ```
 
-También puedes registrar comandos manualmente agregando su nombre de clase en la propiedad `$commands` de tu archivo `app/Console/Kernel.php`. Cuando Artisan arranca, todos los comandos listados en esta propiedad serán resueltos por el [contenedor de servicios](/docs/{{version}}/container) y serán registrados con Artisan:
+También puedes registrar comandos manualmente agregando su nombre de clase en la propiedad `$commands` de tu archivo `app/Console/Kernel.php`. Cuando Artisan arranca, todos los comandos listados en esta propiedad serán resueltos por el [contenedor de servicios](/container.html) y serán registrados con Artisan:
 
 ```php
 protected $commands = [
@@ -517,7 +517,7 @@ Alternativamente, puedes pasar todo el comando de Artisan para el metodo `call` 
 Artisan::call('email:send 1 --queue=default');
 ```
 
-Usando el método `queue` en el facade `Artisan`, puedes incluso poner en cola comandos Artisan para ser procesados en segundo plano por tus [queue workers](/docs/{{version}}/queues). Antes de usar este método, asegurate que tengas configurado tu cola y se esté ejecutando un oyente de cola (queue listener):
+Usando el método `queue` en el facade `Artisan`, puedes incluso poner en cola comandos Artisan para ser procesados en segundo plano por tus [queue workers](/queues.html). Antes de usar este método, asegurate que tengas configurado tu cola y se esté ejecutando un oyente de cola (queue listener):
 
 ```php
 Route::get('/foo', function () {

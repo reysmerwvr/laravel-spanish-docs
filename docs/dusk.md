@@ -294,7 +294,7 @@ $browser->maximize();
 <a name="browser-macros"></a>
 ### Macros de navegador
 
-Si desea definir un método de navegador personalizado que puedas reutilizar en una variedad de tus pruebas, puedes usar el método `macro` en la clase` Browser`. Normalmente, deberías llamar a este método desde el método `boot` del [proveedor de servicios](/docs/{{version}}/providers):
+Si desea definir un método de navegador personalizado que puedas reutilizar en una variedad de tus pruebas, puedes usar el método `macro` en la clase` Browser`. Normalmente, deberías llamar a este método desde el método `boot` del [proveedor de servicios](/providers.html):
 
 ```php
 <?php

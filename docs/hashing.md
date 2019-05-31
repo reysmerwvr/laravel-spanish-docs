@@ -9,7 +9,7 @@
 <a name="introduction"></a>
 ## Introducción
 
-El [facade](/docs/{{version}}/facades) `Has` de Laravel proporciona hashing seguro de Bcrypt y Argon2 para almacenar contraseñas de usuarios. Si estás usando las clases integradas `LoginController` y `RegisterController` que están incluidas con tu aplicación de Laravel usarán Bcrypt para registro y autenticación de forma predeterminada.
+El [facade](/facades.html) `Has` de Laravel proporciona hashing seguro de Bcrypt y Argon2 para almacenar contraseñas de usuarios. Si estás usando las clases integradas `LoginController` y `RegisterController` que están incluidas con tu aplicación de Laravel usarán Bcrypt para registro y autenticación de forma predeterminada.
 
 ::: tip
 Bcrypt es una buena opción para el hashing de contraseñas dado que su "factor de trabajo" es ajustable, lo que quiere decir que el tiempo que toma generar un hash puede ser aumentado a medida que la capacidad de hardware incrementa.
@@ -85,7 +85,7 @@ Para mayor información de estas opciones, revisa la [documentación oficial de 
 
 #### Verificando una contraseña contra un hash
 
-El método `check` te permite verificar que una cadena de texto plano dada corresponde a un hash dado. Sin embargo, si estás usando el `LoginController` [incluido con Laravel](/docs/{{version}}/authentication), probablemente no necesitarás usar esto directamente, ya que este controlador automáticamente llama a este método:
+El método `check` te permite verificar que una cadena de texto plano dada corresponde a un hash dado. Sin embargo, si estás usando el `LoginController` [incluido con Laravel](/authentication.html), probablemente no necesitarás usar esto directamente, ya que este controlador automáticamente llama a este método:
 
 ```php
 if (Hash::check('plain-text', $hashedPassword)) {

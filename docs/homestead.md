@@ -472,7 +472,7 @@ Después de actualizar el archivo `Homestead.yaml`, deberás volver a provisiona
 <a name="configuring-cron-schedules"></a>
 ### Configurar tareas programadas
 
-Laravel proporciona una manera conveniente de ejecutar [tareas programadas](/docs/5.8/scheduling) al configurar las tareas por medio del comando de Artisan `schedule:run` para que se ejecute cada minuto. El comando `schedule:run` va a examinar las tareas programadas definidas en tu clase `App\Console\Kernel` para determinar cuáles tareas deben ser ejecutadas.
+Laravel proporciona una manera conveniente de ejecutar [tareas programadas](/scheduling.html) al configurar las tareas por medio del comando de Artisan `schedule:run` para que se ejecute cada minuto. El comando `schedule:run` va a examinar las tareas programadas definidas en tu clase `App\Console\Kernel` para determinar cuáles tareas deben ser ejecutadas.
 
 Si deseas que el comando `schedule:run` sea ejecutado en un sitio de Homestead, debes indicar la opción `schedule` como `true` cuando definas el sitio:
 

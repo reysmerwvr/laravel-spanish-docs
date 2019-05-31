@@ -35,16 +35,16 @@
 
 En muchas aplicaciones web modernas, los WebSockets son usados para implementar interfaces de usuarios actualizadas en tiempo real. Cuando algún dato es actualizado en el servidor, un mensaje es típicamente enviado a través de una conexión WebSocket para ser manejado por el cliente. Esto proporciona una alternativa más robusta y eficiente para monitorear continuamente tu aplicación en busca de cambios.
 
-Para asistirte en la construcción de ese tipo de aplicaciones, Laravel hace fácil "emitir" tus [eventos](/docs/{{version}}/events) a través de una conexión WebSocket. Emitir tus eventos te permite compartir los mismos nombres de eventos entre tu código del lado del servidor y tu aplicación JavaScript del lado de cliente.
+Para asistirte en la construcción de ese tipo de aplicaciones, Laravel hace fácil "emitir" tus [eventos](/events.html) a través de una conexión WebSocket. Emitir tus eventos te permite compartir los mismos nombres de eventos entre tu código del lado del servidor y tu aplicación JavaScript del lado de cliente.
 
 ::: tip
-Antes de sumergirnos en la emisión de eventos, asegurate de haber leído toda la documentación de Laravel sobre [eventos y listeners](/docs/{{version}}/events).
+Antes de sumergirnos en la emisión de eventos, asegurate de haber leído toda la documentación de Laravel sobre [eventos y listeners](/events.html).
 :::
 
 <a name="configuration"></a>
 ### Configuración
 
-Toda la configuración de transmisión de eventos de tu aplicación está almacenada en el archivo de configuración `config/broadcasting.php`. Laravel soporta múltiples drivers de transmisión: [Pusher](https://pusher.com), [Redis](/docs/{{version}}/redis) y un driver `log` para desarrollo local y depuración. Adicionalmente, un driver `null` es incluido, que te permite deshabilitar totalmente las emisiones. Un ejemplo de configuración para cada uno de los drivers está incluido en el archivo de configuración `config/broadcasting.php`.
+Toda la configuración de transmisión de eventos de tu aplicación está almacenada en el archivo de configuración `config/broadcasting.php`. Laravel soporta múltiples drivers de transmisión: [Pusher](https://pusher.com), [Redis](/redis.html) y un driver `log` para desarrollo local y depuración. Adicionalmente, un driver `null` es incluido, que te permite deshabilitar totalmente las emisiones. Un ejemplo de configuración para cada uno de los drivers está incluido en el archivo de configuración `config/broadcasting.php`.
 
 #### Proveedor de servicios Broadcast
 
@@ -128,7 +128,7 @@ Finalmente, necesitarás ejecutar un servidor de Socket.IO compatible. Laravel n
 
 #### Prerrequisitos de la cola
 
-Antes de transmitir eventos, también necesitarás configurar y ejecutar un [listener de colas](/docs/{{version}}/queues). Toda la transmisión de eventos es realizada mediante trabajos en cola para que el tiempo de respuesta de tu aplicación no se vea necesariamente afectado.
+Antes de transmitir eventos, también necesitarás configurar y ejecutar un [listener de colas](/queues.html). Toda la transmisión de eventos es realizada mediante trabajos en cola para que el tiempo de respuesta de tu aplicación no se vea necesariamente afectado.
 
 <a name="concept-overview"></a>
 ## Descripción general
@@ -262,7 +262,7 @@ class ServerCreated implements ShouldBroadcast
 }
 ```
 
-Luego, sólo necesitas [ejecutar el evento](/docs/{{version}}/events) como normalmente lo harías. Una vez que el evento ha sido ejecutado, [un trabajo en cola](/docs/{{version}}/queues) transmitirá automáticamente el evento a través de tu driver de transmisión especificado.
+Luego, sólo necesitas [ejecutar el evento](/events.html) como normalmente lo harías. Una vez que el evento ha sido ejecutado, [un trabajo en cola](/queues.html) transmitirá automáticamente el evento a través de tu driver de transmisión especificado.
 
 <a name="broadcast-name"></a>
 ### Nombre de la transmisión
@@ -411,7 +411,7 @@ Todos los callbacks de autorización reciben al usuario actualmente autenticado 
 
 #### Enlace de modelos del callback de autorización
 
-Igual que las rutas HTTP, las rutas de los canales pueden tomar ventaja de [modelo de enlace de rutas](/docs/{{version}}/routing#route-model-binding) de forma implícita y explícita. Por ejemplo, en lugar de recibir la cadena o ID númerico de la orden, puedes solicitar una instancia del modelo `Order`:
+Igual que las rutas HTTP, las rutas de los canales pueden tomar ventaja de [modelo de enlace de rutas](/routing.html#route-model-binding) de forma implícita y explícita. Por ejemplo, en lugar de recibir la cadena o ID númerico de la orden, puedes solicitar una instancia del modelo `Order`:
 
 ```php
 use App\Order;
@@ -485,7 +485,7 @@ class OrderChannel
 ```
 
 ::: tip
-Como muchas otras clases en Laravel, las clases de canales automáticamente serán resueltas por el [contenedor de servicios](/docs/{{version}}/container). Así que, puedes declarar el tipo de cualquier dependencia requerida por tu canal en su constructor.
+Como muchas otras clases en Laravel, las clases de canales automáticamente serán resueltas por el [contenedor de servicios](/container.html). Así que, puedes declarar el tipo de cualquier dependencia requerida por tu canal en su constructor.
 :::
 
 <a name="broadcasting-events"></a>
@@ -750,7 +750,7 @@ Echo.private('chat')
 <a name="notifications"></a>
 ## Notificaciones
 
-Al juntar transmisión de eventos con [notificaciones](/docs/{{version}}/notifications), tu aplicación de JavaScript puede recibir nuevas notificaciones mientras ocurren sin necesidad de refrescar la página. Primero, asegurate de leer la documentación sobre el uso [del canal de transmisión de notificaciones](/docs/{{version}}/notifications#broadcast-notifications).
+Al juntar transmisión de eventos con [notificaciones](/notifications.html), tu aplicación de JavaScript puede recibir nuevas notificaciones mientras ocurren sin necesidad de refrescar la página. Primero, asegurate de leer la documentación sobre el uso [del canal de transmisión de notificaciones](/notifications.html#broadcast-notifications).
 
 Una vez que has configurado una notificación para usar el canal de transmisión, puedes escuchar a los eventos de la transmisión usando el método `notification` de Echo. Recuerda, el nombre del canal debe ser igual al nombre de la clase de la entidad recibiendo la notificaciones:
 

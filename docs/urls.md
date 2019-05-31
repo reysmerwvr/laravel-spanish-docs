@@ -48,7 +48,7 @@ echo url()->full();
 echo url()->previous();
 ```
 
-Cada uno de estos métodos también puede ser accedido por medio del [facade](/docs/{{version}}/facades) `URL`:
+Cada uno de estos métodos también puede ser accedido por medio del [facade](/facades.html) `URL`:
 
 ```php
 use Illuminate\Support\Facades\URL;
@@ -75,7 +75,7 @@ echo route('post.show', ['post' => 1]);
 // http://example.com/post/1
 ```
 
-Con frecuencia estarás generando URLs usando la clave primaria de [modelos de Eloquent](/docs/{{version}}/eloquent). Por esta razón, puedes pasar modelos de Eloquent como valores de parámetros. El helper `route` extraerá automáticamente la clave primaria del modelo:
+Con frecuencia estarás generando URLs usando la clave primaria de [modelos de Eloquent](/eloquent.html). Por esta razón, puedes pasar modelos de Eloquent como valores de parámetros. El helper `route` extraerá automáticamente la clave primaria del modelo:
 
 ```php
 echo route('post.show', ['post' => $post]);
@@ -189,7 +189,7 @@ Route::get('/{locale}/posts', function () {
 })->name('post.index');
 ```
 
-Es complicado pasar siempre el parámetro `locale` cada vez que ejecutas el helper `route`. Así, puedes usar el método `URL::defaults` para definir un valor predeterminado para este parámetro que siempre será aplicado durante la solicitud actual. Puedes querer ejecutar este método desde un [middleware de ruta](/docs/{{version}}/middleware#assigning-middleware-to-routes) de modo que tengas acceso a la solicitud actual:
+Es complicado pasar siempre el parámetro `locale` cada vez que ejecutas el helper `route`. Así, puedes usar el método `URL::defaults` para definir un valor predeterminado para este parámetro que siempre será aplicado durante la solicitud actual. Puedes querer ejecutar este método desde un [middleware de ruta](/middleware.html#assigning-middleware-to-routes) de modo que tengas acceso a la solicitud actual:
 
 ```php
 <?php

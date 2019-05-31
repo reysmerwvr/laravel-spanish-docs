@@ -259,7 +259,7 @@ $user->save();
 <a name="date-casting"></a>
 ### Conversión de fechas
 
-Al usar el tipo de conversión `date` o` datetime`, puedes especificar el formato de la fecha. Este formato se utilizará cuando el [modelo se serializa a un arreglo o JSON](/docs/{{version}}/eloquent-serialization):
+Al usar el tipo de conversión `date` o` datetime`, puedes especificar el formato de la fecha. Este formato se utilizará cuando el [modelo se serializa a un arreglo o JSON](/eloquent-serialization.html):
 
 ```php
 /**

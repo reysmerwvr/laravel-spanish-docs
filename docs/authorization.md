@@ -24,7 +24,7 @@
 <a name="introduction"></a>
 ## Introducción
 
-Además de proveer servicios de [autenticación](/docs/{{version}}/authentication) por defecto, Laravel además provee una forma simple de autorizar acciones del usuario contra un recurso dado. Como con la autenticación, el enfoque de Laravel para la autorización es simple, y hay dos maneras principales de autorizar acciones: **gates** y **policies** (puertas y políticas).
+Además de proveer servicios de [autenticación](/authentication.html) por defecto, Laravel además provee una forma simple de autorizar acciones del usuario contra un recurso dado. Como con la autenticación, el enfoque de Laravel para la autorización es simple, y hay dos maneras principales de autorizar acciones: **gates** y **policies** (puertas y políticas).
 
 Piensa en los gates y políticas como rutas y controladores. Los Gates proveen una manera simple, basada en funciones anónimas, para definir las reglas de autorización; mientras que las políticas, como los controladores, agrupan la lógica para un modelo o recurso en específico. Vamos a explorar los gates primero y luego las políticas.
 
@@ -158,7 +158,7 @@ Similar a la comprobación `before`, si el callback `after` retorna un resultado
 
 Los políticas son clases que organizan la lógica de autorización para un modelo o recurso en particular. Por ejemplo, si tu aplicación es un blog, puedes tener un modelo `Post` con su correspondiente `PostPolicy` para autorizar acciones de usuario como crear o actualizar posts.
 
-Puedes generar una política usando el comando `make:policy` [artisan command](/docs/{{version}}/artisan). La política generada será ubicada en el directorio `app/Policies`. Si el directorio no existe en tu aplicación, Laravel lo creará por ti:
+Puedes generar una política usando el comando `make:policy` [artisan command](/artisan.html). La política generada será ubicada en el directorio `app/Policies`. Si el directorio no existe en tu aplicación, Laravel lo creará por ti:
 
 ```php
 php artisan make:policy PostPolicy
@@ -171,7 +171,7 @@ php artisan make:policy PostPolicy --model=Post
 ```
 
 ::: tip
-Todas las políticas son resueltas a través del [contenedor de servicios de Laravel](/docs/{{version}}/container), lo que te permite especificar las dependencias necesarias en el constructor de la política y estas serán automaticamente inyectadas.
+Todas las políticas son resueltas a través del [contenedor de servicios de Laravel](/container.html), lo que te permite especificar las dependencias necesarias en el constructor de la política y estas serán automaticamente inyectadas.
 :::
 
 <a name="registering-policies"></a>
@@ -382,7 +382,7 @@ Route::put('/post/{post}', function (Post $post) {
 })->middleware('can:update,post');
 ```
 
-En este ejemplo, estamos pasando al middleware `can` dos argumentos, el primero es el nombre de la acción que deseamos autorizar y el segundo es el parámetro de la ruta que deseamos pasar al método de la política. En este caso, como estamos usando [implicit model binding](/docs/{{version}}/routing#implicit-binding), un modelo `Post` ser pasado al método de la política. Si el usuario no está autorizado a ejecutar la acción dada, el middleware generará una respuesta HTTP con el código de estatus `403`.
+En este ejemplo, estamos pasando al middleware `can` dos argumentos, el primero es el nombre de la acción que deseamos autorizar y el segundo es el parámetro de la ruta que deseamos pasar al método de la política. En este caso, como estamos usando [implicit model binding](/routing.html#implicit-binding), un modelo `Post` ser pasado al método de la política. Si el usuario no está autorizado a ejecutar la acción dada, el middleware generará una respuesta HTTP con el código de estatus `403`.
 
 #### Acciones que no requieren modelos
 
@@ -449,7 +449,7 @@ public function create(Request $request)
 
 #### Autorizando controladores de recursos
 
-Si estás utilizando [controladores de recursos](/docs/{{version}}/controllers#resource-controllers), puedes hacer uso del método `authorizeResource` en el constructor del controlador. Este método agregará la definición de middleware `can` apropiada a los métodos del controlador de recursos.
+Si estás utilizando [controladores de recursos](/controllers.html#resource-controllers), puedes hacer uso del método `authorizeResource` en el constructor del controlador. Este método agregará la definición de middleware `can` apropiada a los métodos del controlador de recursos.
 
 El método `authorizeResource` acepta el nombre de clase del modelo como primer argumento y el nombre del parametro de ruta / petición que contendrá el ID del modelo como segundo argumento:
 

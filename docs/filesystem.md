@@ -479,7 +479,7 @@ Para configurar el sistema de archivos personalizado necesitarás un adaptador d
 composer require spatie/flysystem-dropbox
 ```
 
-Luego, debes crear un [proveedor de servicios](/docs/{{version}}/providers) como `DropboxServiceProvider`. En el método `boot` del proveedor, puedes usar el método `extend` del facade `Storage` para definir el driver personalizado:
+Luego, debes crear un [proveedor de servicios](/providers.html) como `DropboxServiceProvider`. En el método `boot` del proveedor, puedes usar el método `extend` del facade `Storage` para definir el driver personalizado:
 
 ```php
 <?php

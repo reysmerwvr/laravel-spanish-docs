@@ -49,7 +49,7 @@ Eloquent ahora proporciona soporte para el tipo de relación `hasOneThrough`. Po
 
 ### Autodescubrimiento de políticas de autorización
 
-Cuando se utiliza Laravel 5.7, cada [política de autorización](/docs/{{version}}/authorization#creating-policies) debía ser asociada explícitamente y registrada en el `AuthServiceProvider` de tu aplicación:
+Cuando se utiliza Laravel 5.7, cada [política de autorización](/authorization.html#creating-policies) debía ser asociada explícitamente y registrada en el `AuthServiceProvider` de tu aplicación:
 
     /**
      * The policy mappings for the application.
@@ -99,10 +99,10 @@ En versiones anteriores de Laravel, los canales de transmisión privados y de pr
 
 ### Token Guard Token Hashing
 
-El `token` guard de Laravel, que proporciona autenticación de API básica, ahora admite el almacenamiento de tokens de API como hashes SHA-256. Esto proporciona una seguridad mejorada sobre el almacenamiento de tokens de texto sin formato. Para obtener más información sobre los tokens con hash, revisa la [documentación de autenticación API](/docs/{{version}}/api-authentication).
+El `token` guard de Laravel, que proporciona autenticación de API básica, ahora admite el almacenamiento de tokens de API como hashes SHA-256. Esto proporciona una seguridad mejorada sobre el almacenamiento de tokens de texto sin formato. Para obtener más información sobre los tokens con hash, revisa la [documentación de autenticación API](/api-authentication.html).
 
 ::: danger Nota
-Si bien Laravel viene con una protección de autenticación simple basada en token, te recomendamos encarecidamente que consideres usar [Laravel Passport](/docs/{{version}}/passport) Para aplicaciones de producción robustas que ofrecen autenticación API.
+Si bien Laravel viene con una protección de autenticación simple basada en token, te recomendamos encarecidamente que consideres usar [Laravel Passport](/passport.html) Para aplicaciones de producción robustas que ofrecen autenticación API.
 :::
 
 ### Mejoras a la validación de correos electrónicos
@@ -131,7 +131,7 @@ Sin embargo, esto puede volverse engorroso y repetitivo si estás especificando 
 
 ### Eventos para modelos pivote o tabla intermedia 
 
-En versiones anteriores de Laravel, los eventos del modelo Eloquent no se distribuían al adjuntar, separar o sincronizar modelos personalizados de tabla intermedia / pivote de una relación de muchos a muchos. Cuando usas [modelos personalizados para tablas intermedias](/docs/{{version}}/eloquent-relationships#defining-custom-intermediate-table-models) en Laravel 5.8, estos eventos ahora serán enviados.
+En versiones anteriores de Laravel, los eventos del modelo Eloquent no se distribuían al adjuntar, separar o sincronizar modelos personalizados de tabla intermedia / pivote de una relación de muchos a muchos. Cuando usas [modelos personalizados para tablas intermedias](/eloquent-relationships.html#defining-custom-intermediate-table-models) en Laravel 5.8, estos eventos ahora serán enviados.
 
 ### Mejoras al método call de Artisan
 
@@ -161,7 +161,7 @@ Con el fin de hacer que los objetos de mocking sean más convenientes, se han ag
 
 ### Preservación de llaves para recursos Eloquent
 
-Al devolver una [colección de recursos Eloquent](/docs/{{version}}/eloquent-resources) desde una ruta, Laravel restablece las llaves de la colección para que estén en orden numérico simple:
+Al devolver una [colección de recursos Eloquent](/eloquent-resources.html) desde una ruta, Laravel restablece las llaves de la colección para que estén en orden numérico simple:
 
     use App\User;
     use App\Http\Resources\User as UserResource;

@@ -19,7 +19,7 @@
 <a name="server-requirements"></a>
 ### Requisitos del servidor
 
-El framework Laravel tiene algunos requisitos del sistema. Todos estos requisitos son cubiertos por la máquina virtual [Laravel Homestead](/docs/5.8/homestead), así que es altamente recomendable que uses Homestead como tu entorno local de desarrollo de Laravel.
+El framework Laravel tiene algunos requisitos del sistema. Todos estos requisitos son cubiertos por la máquina virtual [Laravel Homestead](/homestead.html), así que es altamente recomendable que uses Homestead como tu entorno local de desarrollo de Laravel.
 
 Sin embargo, si no estás utilizando Homestead, deberás asegurarte de que tu servidor cumpla con los siguientes requisitos:
 
@@ -78,7 +78,7 @@ Si tienes instalado PHP de manera local y te gustaría utilizar el servidor de d
 php artisan serve    
 ```
 
-Otras opciones de desarrollo local más robustas están disponibles mediante [Homestead](/docs/5.8/homestead) y [Valet](/docs/5.8/valet).
+Otras opciones de desarrollo local más robustas están disponibles mediante [Homestead](/homestead.html) y [Valet](/valet.html).
 
 <a name="configuration"></a>
 ### Configuración
@@ -93,7 +93,7 @@ Todos los archivos de configuración para el framework Laravel están almacenado
 
 #### Permisos para directorios
 
-Después de haber instalado Laravel, necesitarás congigurar algunos permisos. Los directorios dentro de `storage` y `bootstrap/cache` deberán tener permiso de escritura para tu servidor web o Laravel no va a funcionar. Si estás utilizando la máquina virtual [Homestead](/docs/5.8/homestead), estos permisos ya están establecidos.
+Después de haber instalado Laravel, necesitarás congigurar algunos permisos. Los directorios dentro de `storage` y `bootstrap/cache` deberán tener permiso de escritura para tu servidor web o Laravel no va a funcionar. Si estás utilizando la máquina virtual [Homestead](/homestead.html), estos permisos ya están establecidos.
 
 #### Clave de la aplicación
 

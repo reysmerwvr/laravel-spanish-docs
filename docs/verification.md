@@ -59,7 +59,7 @@ Auth::routes(['verify' => true]);
 <a name="protecting-routes"></a>
 ### Protegiendo rutas
 
-[El middleware de rutas](/docs/{{version}}/middleware) puede ser usado para permitir que sólo usuarios autorizados puedan acceder a una ruta dada. Laravel viene con un middleware `verified`, que está definido en `Illuminate\Auth\Middleware\EnsureEmailIsVerified`. Dado que este middleware ya está registrado en el kernel HTTP de tu aplicación, lo único que necesitas hacer es adjuntar el middleware a una definición de ruta:
+[El middleware de rutas](/middleware.html) puede ser usado para permitir que sólo usuarios autorizados puedan acceder a una ruta dada. Laravel viene con un middleware `verified`, que está definido en `Illuminate\Auth\Middleware\EnsureEmailIsVerified`. Dado que este middleware ya está registrado en el kernel HTTP de tu aplicación, lo único que necesitas hacer es adjuntar el middleware a una definición de ruta:
 
 ```php
 Route::get('profile', function () {
@@ -84,7 +84,7 @@ protected $redirectTo = '/dashboard';
 <a name="events"></a>
 ## Eventos
 
-Laravel despacha [eventos](/docs/{{version}}/events) durante el proceso de verificación de correo electrónico. Puedes agregar listeners a estos eventos en tu `EventServiceProvider`:
+Laravel despacha [eventos](/events.html) durante el proceso de verificación de correo electrónico. Puedes agregar listeners a estos eventos en tu `EventServiceProvider`:
 
 ```php
 /**

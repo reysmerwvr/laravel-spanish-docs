@@ -13,7 +13,7 @@
 <a name="introduction"></a>
 ## Introducción
 
-Laravel hace que la interacción con las bases de datos sea extremadamente fácil a través de una variedad de backends de bases de datos usando SQL nativo, el constructor de consultas [query builder](/docs/{{version}}/queries) y el [ORM Eloquent](/docs/{{version}}/eloquent). Actualmente, Laravel soporta cuatro bases de datos.
+Laravel hace que la interacción con las bases de datos sea extremadamente fácil a través de una variedad de backends de bases de datos usando SQL nativo, el constructor de consultas [query builder](/queries.html) y el [ORM Eloquent](/eloquent.html). Actualmente, Laravel soporta cuatro bases de datos.
 
 - MySQL
 - PostgreSQL
@@ -25,7 +25,7 @@ Laravel hace que la interacción con las bases de datos sea extremadamente fáci
 
 La configuración de base de datos para tu aplicación está localizada en `config/database.php`. Puedes definir todo lo concerniente a tus conexiones de bases de datos, y también especificar qué conexión debería ser usada por defecto. Ejemplos para la mayoría de los sistemas de bases de datos soportados son proporcionados en este archivo.
 
-Por defecto, la [configuración de entorno](/docs/{{version}}/configuration#environment-configuration) de muestra de Laravel está lista para usar con [Laravel Homestead](/docs/{{version}}/homestead), la cual es una máquina virtual conveniente para el desarrollo con Laravel en tu máquina local. Eres libre de modificar esta configuración de acuerdo a tus necesidades de tu base de datos local.
+Por defecto, la [configuración de entorno](/configuration.html#environment-configuration) de muestra de Laravel está lista para usar con [Laravel Homestead](/homestead.html), la cual es una máquina virtual conveniente para el desarrollo con Laravel en tu máquina local. Eres libre de modificar esta configuración de acuerdo a tus necesidades de tu base de datos local.
 
 #### Configuración de SQLite
 
@@ -203,7 +203,7 @@ DB::statement('drop table users');
 <a name="listening-for-query-events"></a>
 ### Listeners de eventos de consultas
 
-Si prefieres recibir cada consulta SQL ejecutada por tu aplicación, puedes usar el método `listen`. Este método es útil para registrar consultas o depurar. Puedes registrar tus listeners de consultas en un [proveedor de servicio](/docs/{{version}}/providers):
+Si prefieres recibir cada consulta SQL ejecutada por tu aplicación, puedes usar el método `listen`. Este método es útil para registrar consultas o depurar. Puedes registrar tus listeners de consultas en un [proveedor de servicio](/providers.html):
 
 ```php
 <?php
@@ -287,5 +287,5 @@ DB::commit();
 ```
 
 ::: tip 
-Los métodos de transacción del Facade `DB` controlan las transacciones para ambos backends de bases de datos del constructor de consultas [query builder](/docs/{{version}}/queries) y el [ORM Eloquent](/docs/{{version}}/eloquent).
+Los métodos de transacción del Facade `DB` controlan las transacciones para ambos backends de bases de datos del constructor de consultas [query builder](/queries.html) y el [ORM Eloquent](/eloquent.html).
 :::

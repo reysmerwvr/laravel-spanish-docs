@@ -43,7 +43,7 @@ Después de instalar Horizon, publica sus assets usando el comando Artisan `hori
 php artisan horizon:install
 ```
 
-Debes también crear la tabla `failed_jobs` que Laravel usará para almacenar cualquier [trabajo en cola fallido](/docs/{{version}}/queues#dealing-with-failed-jobs):
+Debes también crear la tabla `failed_jobs` que Laravel usará para almacenar cualquier [trabajo en cola fallido](/queues.html#dealing-with-failed-jobs):
 
 ```php
 php artisan queue:failed-table
@@ -266,7 +266,7 @@ Puedes configurar cuántos segundos son considerados un "tiempo de inactividad" 
 <a name="metrics"></a>
 ## Métricas
 
-Horizon incluye un panel de métricas, el cual proporciona información de tus tiempos de trabajo y de espera en cola y tasa de rendimiento. Con el propósito de agregar contenido a este panel, deberías configurar el comando Artisan `snapshot` de Horizon para que se ejecute cada 5 minutos por medio del [planificador](/docs/{{version}}/scheduling) de tu aplicación:
+Horizon incluye un panel de métricas, el cual proporciona información de tus tiempos de trabajo y de espera en cola y tasa de rendimiento. Con el propósito de agregar contenido a este panel, deberías configurar el comando Artisan `snapshot` de Horizon para que se ejecute cada 5 minutos por medio del [planificador](/scheduling.html) de tu aplicación:
 
 ```php
 /**

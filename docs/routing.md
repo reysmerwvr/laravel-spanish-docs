@@ -469,7 +469,7 @@ La ruta alternativa siempre debe ser la última ruta registrada por tu aplicaci�
 <a name="rate-limiting"></a>
 ## Límite de rango
 
-Laravel incluye un [middleware](/docs/{{version}}/middleware) para limitar el rango de acceso a rutas dentro de tu aplicación. Para empezar, asigna el middleware `throttle` a una ruta o grupo de rutas. EL middleware `throttle` acepta dos parámetros que determinan el máximo número de peticiones que pueden hacerse en un número de minutos dado. Por ejemplo, específiquemos que un usuario autenticado puede acceder al siguiente grupo de rutas sesenta veces por minuto:
+Laravel incluye un [middleware](/middleware.html) para limitar el rango de acceso a rutas dentro de tu aplicación. Para empezar, asigna el middleware `throttle` a una ruta o grupo de rutas. EL middleware `throttle` acepta dos parámetros que determinan el máximo número de peticiones que pueden hacerse en un número de minutos dado. Por ejemplo, específiquemos que un usuario autenticado puede acceder al siguiente grupo de rutas sesenta veces por minuto:
 
 ```php
 Route::middleware('auth:api', 'throttle:60,1')->group(function () {

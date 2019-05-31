@@ -31,20 +31,20 @@
 
 El ORM Eloquent incluido con Laravel proporciona una genial y simple implentación básica de ActiveRecord para trabajar con tu base de datos. Cada tabla de base de datos tiene un correspondiente "Modelo" el cual es usado para interactuar con la tabla. Los modelos permiten que consultes los datos en tus tablas, así como también insertar nuevos registros dentro de la tabla.
 
-Antes de empezar, asegúrate de configurar una conexión de base de datos en `config/database.php`. Para mayor información sobre la configuración de tu base de datos, revisa [la documentación](/docs/{{version}}/database#configuration).
+Antes de empezar, asegúrate de configurar una conexión de base de datos en `config/database.php`. Para mayor información sobre la configuración de tu base de datos, revisa [la documentación](/database.html#configuration).
 
 <a name="defining-models"></a>
 ## Definiendo modelos
 
 Para empezar, vamos a crear un modelo de Eloquent. Los modelos residen típicamente en el directorio `app`, pero eres libre de colocarlos en cualquier parte que pueda ser auto-cargada de acuerdo a tu archivo `composer.json`. Todos los modelos de Eloquent extienden la clase `Illuminate\Database\Eloquent\Model`.
 
-La forma más fácil de crear una instancia del modelo es usando el [Comando Artisan](/docs/{{version}}/artisan) `make:model`:
+La forma más fácil de crear una instancia del modelo es usando el [Comando Artisan](/artisan.html) `make:model`:
 
 ```php
 php artisan make:model Flight
 ```
 
-Si prefieres generar una [migración de base de datos](/docs/{{version}}/migrations) cuando generes el modelo, puedes usar la opción `--migration` o `-m`:
+Si prefieres generar una [migración de base de datos](/migrations.html) cuando generes el modelo, puedes usar la opción `--migration` o `-m`:
 
 ```php
 php artisan make:model Flight --migration
@@ -249,7 +249,7 @@ class Flight extends Model
 <a name="retrieving-models"></a>
 ## Obteniendo modelos
 
-Una vez que has creado un modelo y [su tabla de base de datos asociada](/docs/{{version}}/migrations#writing-migrations), estás listo para empezar a obtener datos de tu base de datos. Piensa en cada modelo de Eloquent como un [constructor de consultas](/docs/{{version}}/queries) muy poderoso que te permite consultar fluidamente la tabla de base de datos asociada con el modelo. Por ejemplo:
+Una vez que has creado un modelo y [su tabla de base de datos asociada](/migrations.html#writing-migrations), estás listo para empezar a obtener datos de tu base de datos. Piensa en cada modelo de Eloquent como un [constructor de consultas](/queries.html) muy poderoso que te permite consultar fluidamente la tabla de base de datos asociada con el modelo. Por ejemplo:
 
 ```php
 <?php
@@ -263,7 +263,7 @@ foreach ($flights as $flight) {
 
 #### Añadiendo restricciones adicionales
 
-El método `all` de Eloquent devolverá todos los resultados en la tabla del modelo. Ya que cada modelo de Eloquent sirve como un [constructor de consultas](/docs/{{version}}/queries), también puedes añadir restricciones a las consultas y entonces usar el método `get` para obtener los resultados:
+El método `all` de Eloquent devolverá todos los resultados en la tabla del modelo. Ya que cada modelo de Eloquent sirve como un [constructor de consultas](/queries.html), también puedes añadir restricciones a las consultas y entonces usar el método `get` para obtener los resultados:
 
 ```php
 $flights = App\Flight::where('active', 1)
@@ -273,7 +273,7 @@ $flights = App\Flight::where('active', 1)
 ```
 
 ::: tip
-Ya que los modelos de Eloquent son constructores de consultas, deberías revisar todos los métodos disponibles en el [constructor de consultas](/docs/{{version}}/queries). Puedes usar cualquiera de estos métodos en tus consultas de Eloquent.
+Ya que los modelos de Eloquent son constructores de consultas, deberías revisar todos los métodos disponibles en el [constructor de consultas](/queries.html). Puedes usar cualquiera de estos métodos en tus consultas de Eloquent.
 :::
 
 #### Actualizando modelos
@@ -301,7 +301,7 @@ $flight->number; // "FR 900"
 <a name="collections"></a>
 ### Colecciones
 
-Para métodos de Eloquent como `all` y `get` que obtienen varios resultados, se devolverá una instancia de `Illuminate\Database\Eloquent\Collection`. La clase `Collection` proporciona [una variedad de métodos útiles](/docs/{{version}}/eloquent-collections#available-methods) para trabajar con los resultados de Eloquent:
+Para métodos de Eloquent como `all` y `get` que obtienen varios resultados, se devolverá una instancia de `Illuminate\Database\Eloquent\Collection`. La clase `Collection` proporciona [una variedad de métodos útiles](/eloquent-collections.html#available-methods) para trabajar con los resultados de Eloquent:
 
 ```php
 $flights = $flights->reject(function ($flight) {
@@ -382,7 +382,7 @@ Route::get('/api/flights/{id}', function ($id) {
 <a name="retrieving-aggregates"></a>
 ### Obteniendo agrupamientos
 
-También puedes usar los métodos `count`, `sum`, `max` y otros [métodos de agrupamiento](/docs/{{version}}/queries#aggregates) proporcionados por el [constructor de consulta](/docs/{{version}}/queries). Estos métodos devuelven el valor escalar apropiado en lugar de una completa instancia de modelo:
+También puedes usar los métodos `count`, `sum`, `max` y otros [métodos de agrupamiento](/queries.html#aggregates) proporcionados por el [constructor de consulta](/queries.html). Estos métodos devuelven el valor escalar apropiado en lugar de una completa instancia de modelo:
 
 ```php
 $count = App\Flight::where('active', 1)->count();
@@ -586,7 +586,7 @@ $flight->delete();
 
 #### Eliminando un modelo existente por clave
 
-En el ejemplo anterior, estamos obteniendo el modelo de la base de datos antes de ejecutar el método `delete`. Sin embargo, si conoces la clave primaria del modelo, puedes eliminar el modelo sin obtenerlo primero. Para hacer eso, ejecuta el método `destroy`.  Además de recibir una sola clave primaria como argumento, el método `destroy` aceptará múltiples claves primarias, o una [collection](/docs/{{version}}/collections) de claves primarias:
+En el ejemplo anterior, estamos obteniendo el modelo de la base de datos antes de ejecutar el método `delete`. Sin embargo, si conoces la clave primaria del modelo, puedes eliminar el modelo sin obtenerlo primero. Para hacer eso, ejecuta el método `destroy`.  Además de recibir una sola clave primaria como argumento, el método `destroy` aceptará múltiples claves primarias, o una [collection](/collections.html) de claves primarias:
 
 ```php
 App\Flight::destroy(1);
@@ -633,7 +633,7 @@ class Flight extends Model
 El trait `SoftDeletes` convertirá (cast) automáticamente el atributo `deleted_at` a una instancia de `DateTime` / `Carbon` para ti.
 :::
 
-Debes añadir la columna `deleted_at` a tu tabla de base de datos. El [constructor de esquemas](/docs/{{version}}/migrations) de Laravel contiene un método helper para crear esta columna:
+Debes añadir la columna `deleted_at` a tu tabla de base de datos. El [constructor de esquemas](/migrations.html) de Laravel contiene un método helper para crear esta columna:
 
 ```php
 Schema::table('flights', function (Blueprint $table) {
@@ -664,7 +664,7 @@ $flights = App\Flight::withTrashed()
                 ->get();
 ```
 
-El método `withTrashed` también puede ser usado en una consulta de [relación de Eloquent](/docs/{{version}}/eloquent-relationships):
+El método `withTrashed` también puede ser usado en una consulta de [relación de Eloquent](/eloquent-relationships.html):
 
 ```php
 $flight->history()->withTrashed()->get();
@@ -696,7 +696,7 @@ App\Flight::withTrashed()
         ->restore();
 ```
 
-Al igual que con el método `withTrashed`, el método `restore` también puede ser usado en [relaciones de Eloquent](/docs/{{version}}/eloquent-relationships):
+Al igual que con el método `withTrashed`, el método `restore` también puede ser usado en [relaciones de Eloquent](/eloquent-relationships.html):
 
 ```php
 $flight->history()->restore();
@@ -962,7 +962,7 @@ El evento `retrieved` se disparará cuando un modelo existente es obtenido de la
 Al realizar una actualización masiva a través de Eloquent, los eventos de modelo `saved` y `updated` no se activarán para los modelos actualizados. Esto se debe a que los modelos nunca se recuperan cuando se emite una actualización masiva.
 :::
 
-Para empezar, define una propiedad `$dispatchesEvents` en tu modelo Eloquent que mapee varios puntos del ciclo de vida de modelo de Eloquent a tus propias [clases de eventos](/docs/{{version}}/events):
+Para empezar, define una propiedad `$dispatchesEvents` en tu modelo Eloquent que mapee varios puntos del ciclo de vida de modelo de Eloquent a tus propias [clases de eventos](/events.html):
 
 ```php
 <?php

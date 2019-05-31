@@ -120,7 +120,7 @@ echo __('messages.welcome');
 echo __('I love programming.');
 ```
 
-Si estás usando el [motor de plantillas Blade](/docs/{{version}}/blade), puedes usar la sintaxis `{{ }}` para imprimir la cadena de traducción o usar la directiva `@lang`:
+Si estás usando el [motor de plantillas Blade](/blade.html), puedes usar la sintaxis `{{ }}` para imprimir la cadena de traducción o usar la directiva `@lang`:
 
 ```php
 {{ __('messages.welcome') }}

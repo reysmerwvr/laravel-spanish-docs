@@ -187,7 +187,7 @@ class ExampleTest extends TestCase
 <a name="mail-fake"></a>
 ## Fake de correos electrónicos
 
-Puedes usar el método `fake` de la clase facade `Mail` para prevenir que los correos sean enviados. Después puedes comprobar qué [correos de clases mailables](/docs/{{version}}/mail) fueron enviados a los usuarios e incluso inspeccionar los datos que recibieron. Al momento de usar fakes, las aserciones son hechas después de que el código bajo prueba sea ejecutado.
+Puedes usar el método `fake` de la clase facade `Mail` para prevenir que los correos sean enviados. Después puedes comprobar qué [correos de clases mailables](/mail.html) fueron enviados a los usuarios e incluso inspeccionar los datos que recibieron. Al momento de usar fakes, las aserciones son hechas después de que el código bajo prueba sea ejecutado.
 
 ```php
 <?php
@@ -241,7 +241,7 @@ Mail::assertNotQueued(...);
 <a name="notification-fake"></a>
 ## Fake de notificaciones
 
-Puedes usar el método `fake` de la clase facade `Notification` para prevenir que se envíen las notificaciones. Después puedes comprobar qué [notificaciones](/docs/{{version}}/notifications) fueron enviadas a los usuarios e incluso inspeccionar los datos que recibieron. Al momento de usar fakes, las aserciones son hechas después de que el código bajo prueba es ejecutado:
+Puedes usar el método `fake` de la clase facade `Notification` para prevenir que se envíen las notificaciones. Después puedes comprobar qué [notificaciones](/notifications.html) fueron enviadas a los usuarios e incluso inspeccionar los datos que recibieron. Al momento de usar fakes, las aserciones son hechas después de que el código bajo prueba es ejecutado:
 
 ```php
 <?php
@@ -386,7 +386,7 @@ De forma predeterminada, el método `fake` borrará todos los archivos en su dir
 <a name="mocking-facades"></a>
 ## Las clases facade
 
-Diferente de las llamadas de métodos estáticos tradicionales, [las clases facade](/docs/{{version}}/facades) pueden ser simuladas (mock). Esto proporciona una gran ventaja sobre los métodos estáticos tradicionales y te concede la misma capacidad de prueba que tendrías si estuvieras usando inyección de dependencias. Al momento de probar, con frecuencia puedes querer simular una llamada a una clase facade de Laravel en uno de tus controladores. Por ejemplo, considera la siguiente acción de controlador:
+Diferente de las llamadas de métodos estáticos tradicionales, [las clases facade](/facades.html) pueden ser simuladas (mock). Esto proporciona una gran ventaja sobre los métodos estáticos tradicionales y te concede la misma capacidad de prueba que tendrías si estuvieras usando inyección de dependencias. Al momento de probar, con frecuencia puedes querer simular una llamada a una clase facade de Laravel en uno de tus controladores. Por ejemplo, considera la siguiente acción de controlador:
 
 ```php
 <?php
@@ -411,7 +411,7 @@ class UserController extends Controller
 }
 ```
 
-Podemos simular (mock) la ejecución de la clase facade `Cache` usando el método `shouldReceive`, el cual devolverá una instancia mock de la clase [Mockery](https://github.com/padraic/mockery). Ya que las clases facades realmente son resueltas y administradas por el [contenedor de servicios](/docs/{{version}}/container) de Laravel, tendrán mucho más capacidad de prueba que una clase estática típica. Por ejemplo, vamos a simular (mock) nuestra llamada al método `get` de la clase facade `Cache`:
+Podemos simular (mock) la ejecución de la clase facade `Cache` usando el método `shouldReceive`, el cual devolverá una instancia mock de la clase [Mockery](https://github.com/padraic/mockery). Ya que las clases facades realmente son resueltas y administradas por el [contenedor de servicios](/container.html) de Laravel, tendrán mucho más capacidad de prueba que una clase estática típica. Por ejemplo, vamos a simular (mock) nuestra llamada al método `get` de la clase facade `Cache`:
 
 ```php
 <?php

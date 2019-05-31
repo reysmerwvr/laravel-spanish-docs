@@ -15,7 +15,7 @@ Mientras Laravel no dicta la pauta sobre que pre-procesadores de JavaScript o CS
 
 #### CSS
 
-[Laravel Mix](/docs/{{version}}/mix) proporciona una clara y expresiva API sobre compilación de Sass o Less, las cuales son extensiones de CSS plano que agregan variables, mixins y otras poderosas características que hacen el trabajo con CSS mucho más divertido. En este documento, discutiremos brevemente la compilación CSS en general; sin embargo, deberías consultar la [documentación de Laravel Mix](/docs/{{version}}/mix) completa para mayor información sobre compilación de Sass o Less.
+[Laravel Mix](/mix.html) proporciona una clara y expresiva API sobre compilación de Sass o Less, las cuales son extensiones de CSS plano que agregan variables, mixins y otras poderosas características que hacen el trabajo con CSS mucho más divertido. En este documento, discutiremos brevemente la compilación CSS en general; sin embargo, deberías consultar la [documentación de Laravel Mix](/mix.html) completa para mayor información sobre compilación de Sass o Less.
 
 #### JavaScript
 
@@ -40,13 +40,13 @@ Antes de compilar tu CSS, instala las dependencias de frontend de tu proyecto us
 npm install
 ```
 
-Una vez que las dependencias hayan sido instaladas usando `npm install`, puedes compilar tus archivos Sass a CSS plano usando [Laravel Mix](/docs/{{version}}/mix#working-with-stylesheets). El comando `npm run dev` procesará las instrucciones en tu archivo `webpack.mix.js`. Típicamente, tu CSS compilado estará ubicado en el directorio `public/css`:
+Una vez que las dependencias hayan sido instaladas usando `npm install`, puedes compilar tus archivos Sass a CSS plano usando [Laravel Mix](/mix.html#working-with-stylesheets). El comando `npm run dev` procesará las instrucciones en tu archivo `webpack.mix.js`. Típicamente, tu CSS compilado estará ubicado en el directorio `public/css`:
 
 ```php
 npm run dev
 ```
 
-El archivo `webpack.mix.js` incluido de forma predeterminada con Laravel compilará el archivo Sass `resources/sass/app.scss`. Este archivo `app.scss` importa un archivo de variables Sass y carga Bootstrap, el cual proporciona un buen punto de comienzo para la mayoría de las aplicaciones. Siéntete libre de personalizar el archivo `app.scss` en la forma que desees o incluso usar un pre-procesador completamente diferente [configurando Laravel Mix](/docs/{{version}}/mix).
+El archivo `webpack.mix.js` incluido de forma predeterminada con Laravel compilará el archivo Sass `resources/sass/app.scss`. Este archivo `app.scss` importa un archivo de variables Sass y carga Bootstrap, el cual proporciona un buen punto de comienzo para la mayoría de las aplicaciones. Siéntete libre de personalizar el archivo `app.scss` en la forma que desees o incluso usar un pre-procesador completamente diferente [configurando Laravel Mix](/mix.html).
 
 <a name="writing-javascript"></a>
 ## Escribiendo JavaScript
@@ -61,7 +61,7 @@ npm install
 De forma predeterminada, el archivo `package.json` de Laravel incluye unos cuantos paquetes tales como `vue` y `axios` para ayudarte a empezar a construir tu aplicación de JavaScript. Siéntete libre de agregar o eliminar del archivo `package.json` según sea necesario para tu aplicación.
 :::
 
-Una vez que los paquetes sean instalados, puedes usar el comando `npm run dev` para [compilar tus recursos](/docs/{{version}}/mix). Webpack es un empaquetador de módulos para aplicaciones modernas en JavaScript. Cuando ejecutes el comando `npm run dev`, Webpack ejecutará las instrucciones en tu archivo `webpack.mix.js`:
+Una vez que los paquetes sean instalados, puedes usar el comando `npm run dev` para [compilar tus recursos](/mix.html). Webpack es un empaquetador de módulos para aplicaciones modernas en JavaScript. Cuando ejecutes el comando `npm run dev`, Webpack ejecutará las instrucciones en tu archivo `webpack.mix.js`:
 
 ```php
 npm run dev

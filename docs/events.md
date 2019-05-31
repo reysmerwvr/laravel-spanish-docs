@@ -150,7 +150,7 @@ El comando `event:list` puede ser usado para mostrar una lista de todos los even
 <a name="defining-events"></a>
 ## Definiendo eventos
 
-Una clase de evento es un contenedor de datos que guarda la información relacionada con el evento. Por ejemplo, supongamos que nuestro evento `OrderShipped` (orden enviada) generado recibe un objeto [ORM Eloquent](/docs/{{version}}/eloquent):
+Una clase de evento es un contenedor de datos que guarda la información relacionada con el evento. Por ejemplo, supongamos que nuestro evento `OrderShipped` (orden enviada) generado recibe un objeto [ORM Eloquent](/eloquent.html):
 
 ```php
 <?php
@@ -219,7 +219,7 @@ class SendShipmentNotification
 ```
 
 ::: tip
-Tus oyentes de eventos también pueden declarar el tipo de cualquier dependencia que necesiten de sus constructores. Todos los oyentes de eventos se resuelven a través [contenedor de servicio](/docs/{{version}}/container) de Laravel, por lo que las dependencias se inyectarán automáticamente.
+Tus oyentes de eventos también pueden declarar el tipo de cualquier dependencia que necesiten de sus constructores. Todos los oyentes de eventos se resuelven a través [contenedor de servicio](/container.html) de Laravel, por lo que las dependencias se inyectarán automáticamente.
 :::
 
 #### Deteniendo la propagación de un evento
@@ -229,7 +229,7 @@ A veces, es posible que desees detener la propagación de un evento a otros oyen
 <a name="queued-event-listeners"></a>
 ## Oyentes de Eventos de Cola
 
-Los oyentes de colas pueden ser beneficiosos si tu oyente va a realizar una tarea lenta, como enviar un correo electrónico o realizar una solicitud HTTP. Antes de comenzar con oyentes de cola, asegúrate de [configurar su cola](/docs/{{version}}/queues) e iniciar un oyente de colas en tu servidor o entorno de desarrollo local.
+Los oyentes de colas pueden ser beneficiosos si tu oyente va a realizar una tarea lenta, como enviar un correo electrónico o realizar una solicitud HTTP. Antes de comenzar con oyentes de cola, asegúrate de [configurar su cola](/queues.html) e iniciar un oyente de colas en tu servidor o entorno de desarrollo local.
 
 Para especificar que un oyente debe estar en cola, agrega la interfaz `ShouldQueue` a la clase de oyente. Los oyentes generados por el comando de Artisan `event:generate` ya tienen esta interfaz importada en el espacio de nombres actual, por lo que puedes usarla inmediatamente:
 
@@ -247,7 +247,7 @@ class SendShipmentNotification implements ShouldQueue
 }
 ```
 
-¡Eso es! Ahora, cuando este oyente es llamado por un evento, el despachador de eventos lo colocará en cola automáticamente usando el [sistema de colas](/docs/{{version}}/queues) de Laravel. Si no se lanzan excepciones cuando la cola ejecuta el oyente, el trabajo en cola se eliminará automáticamente una vez que haya terminado de procesarse.
+¡Eso es! Ahora, cuando este oyente es llamado por un evento, el despachador de eventos lo colocará en cola automáticamente usando el [sistema de colas](/queues.html) de Laravel. Si no se lanzan excepciones cuando la cola ejecuta el oyente, el trabajo en cola se eliminará automáticamente una vez que haya terminado de procesarse.
 
 #### Personalizando la conexión de la cola y el nombre de la cola
 
@@ -396,7 +396,7 @@ class OrderController extends Controller
 ```
 
 ::: tip
-Al realizar pruebas, puede ser útil afirmar que ciertos eventos se enviaron sin activar realmente a tus oyentes. Las [funciones de ayuda (helpers) incluidas](/docs/{{version}}/mocking#event-fake) en Laravel hace que sea fácil de hacerlo.
+Al realizar pruebas, puede ser útil afirmar que ciertos eventos se enviaron sin activar realmente a tus oyentes. Las [funciones de ayuda (helpers) incluidas](/mocking.html#event-fake) en Laravel hace que sea fácil de hacerlo.
 :::
 
 <a name="event-subscribers"></a>

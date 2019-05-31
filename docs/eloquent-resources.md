@@ -356,7 +356,7 @@ Por defecto, tu recurso más externo está envuelto en una clave `data` cuando l
 }
 ```    
 
-Si deseas deshabilitar la envoltura del recurso más externo, puede usar el método `withoutWrapping` en la clase de recurso base. Por lo general, debes llamar a este método desde su `AppServiceProvider` u otro [proveedor de servicios](/docs/{{version}}/providers) que se carga en cada solicitud a tu aplicación:
+Si deseas deshabilitar la envoltura del recurso más externo, puede usar el método `withoutWrapping` en la clase de recurso base. Por lo general, debes llamar a este método desde su `AppServiceProvider` u otro [proveedor de servicios](/providers.html) que se carga en cada solicitud a tu aplicación:
 
 ```php
 <?php

@@ -48,7 +48,7 @@ Las tablas de base de datos frecuentemente están relacionadas a otra tabla. Por
 <a name="defining-relationships"></a>
 ## Definiendo relaciones
 
-Las relaciones de Eloquent se definen como métodos en tus clases de modelo de Eloquent. Debido a que, como los mismos modelos Eloquent, las relaciones también sirven como poderosos [constructores de consultas](/docs/{{version}}/queries), puesto que definir relaciones como métodos proporciona potentes capacidades de encadenamiento de métodos y consultas. Por ejemplo, podemos encadenar restricciones adicionales en esta relación `posts`:
+Las relaciones de Eloquent se definen como métodos en tus clases de modelo de Eloquent. Debido a que, como los mismos modelos Eloquent, las relaciones también sirven como poderosos [constructores de consultas](/queries.html), puesto que definir relaciones como métodos proporciona potentes capacidades de encadenamiento de métodos y consultas. Por ejemplo, podemos encadenar restricciones adicionales en esta relación `posts`:
 
 ```php
 $user->posts()->where('active', 1)->get();
@@ -907,7 +907,7 @@ Puedes registar el `morphMap` en la función `boot` de tu `AppServiceProvider` o
 <a name="querying-relations"></a>
 ## Consultando relaciones
 
-Ya que todos los tipos de relaciones Eloquent son definidas por medio de métodos, puedes ejecutar esos métodos para obtener una instancia de la relación sin ejecutar realmente las consultas de la relación. Además, todos los tipos de relaciones Eloquent también sirven como [constructores de consultas](/docs/{{version}}/queries), permitiendo que continues encadenando restricciones dentro de la consulta de la relación antes de ejecutar finalmente el SQL contra la base de datos.
+Ya que todos los tipos de relaciones Eloquent son definidas por medio de métodos, puedes ejecutar esos métodos para obtener una instancia de la relación sin ejecutar realmente las consultas de la relación. Además, todos los tipos de relaciones Eloquent también sirven como [constructores de consultas](/queries.html), permitiendo que continues encadenando restricciones dentro de la consulta de la relación antes de ejecutar finalmente el SQL contra la base de datos.
 
 Por ejemplo, imagina un sistema de blog en el cual un modelo `User` tiene muchos modelos `Post` asociados:
 
@@ -938,7 +938,7 @@ $user = App\User::find(1);
 $user->posts()->where('active', 1)->get();
 ```
 
-Puedes usar cualquiera de los métodos de [constructor de consultas](/docs/{{version}}/queries) y así que asegúrate de revisar la documentación del constructor de consultas para aprender sobre todos los métodos disponibles.
+Puedes usar cualquiera de los métodos de [constructor de consultas](/queries.html) y así que asegúrate de revisar la documentación del constructor de consultas para aprender sobre todos los métodos disponibles.
 
 #### Encadenando cláusulas `orWhere` en relaciones
 
@@ -954,7 +954,7 @@ $user->posts()
 // where user_id = ? and active = 1 or votes >= 100
 ```
 
-En la mayoria de los casos, probablemente pretendes usar [grupos de restricciones](/docs/{{version}}/queries#parameter-grouping) para agrupar logicamente las comprobaciones condicionales entre parentisis:
+En la mayoria de los casos, probablemente pretendes usar [grupos de restricciones](/queries.html#parameter-grouping) para agrupar logicamente las comprobaciones condicionales entre parentisis:
 
 ```php
 $user->posts()
@@ -1240,7 +1240,7 @@ $users = App\User::with(['posts' => function ($query) {
 }])->get();
 ```
 
-En este ejemplo, Eloquent solamente precargará los posts donde la columna `title` del post contenga la palabra `first`. Puedes ejecutar otros métodos del [constructor de consulta](/docs/{{version}}/queries) para personalizar más la operación de carga previa:
+En este ejemplo, Eloquent solamente precargará los posts donde la columna `title` del post contenga la palabra `first`. Puedes ejecutar otros métodos del [constructor de consulta](/queries.html) para personalizar más la operación de carga previa:
 
 ```php
 $users = App\User::with(['posts' => function ($query) {
@@ -1381,7 +1381,7 @@ $comment = $post->comments()->create([
 ```
 
 ::: tip
-Antes de usar el método `create`, asegurate de revisar la documentación sobre la [asignación masiva de atributos](/docs/{{version}}/eloquent#mass-assignment).
+Antes de usar el método `create`, asegurate de revisar la documentación sobre la [asignación masiva de atributos](/eloquent.html#mass-assignment).
 :::
 
 Puedes usar el método `createMany` para crear múltiples modelos relacionados:

@@ -82,7 +82,7 @@ $schedule->call(new DeleteRecentUsers)->daily();
 <a name="scheduling-artisan-commands"></a>
 ### Programando comandos de artisan
 
-Además de programador llamadas a Closures, también puedes programar [comandos de Artisan](/docs/{{version}}/artisan) y comandos del sistema operativo. Por ejemplo, puedes usar el método `command` para programar un comando de Artisan usando ya sea el nombre del comando o de la clase:
+Además de programador llamadas a Closures, también puedes programar [comandos de Artisan](/artisan.html) y comandos del sistema operativo. Por ejemplo, puedes usar el método `command` para programar un comando de Artisan usando ya sea el nombre del comando o de la clase:
 
 ```php
 $schedule->command('emails:send Taylor --force')->daily();
@@ -93,7 +93,7 @@ $schedule->command(EmailsCommand::class, ['Taylor', '--force'])->daily();
 <a name="scheduling-queued-jobs"></a>
 ### Programando trabajos en colas
 
-El método `job` puede ser usado para programar [un trabajo en cola](/docs/{{version}}/queues). Este método proporciona una forma conveniente de programar trabajos sin usar el método `call` para crear Closures de forma manual para agregar el trabajo a la cola:
+El método `job` puede ser usado para programar [un trabajo en cola](/queues.html). Este método proporciona una forma conveniente de programar trabajos sin usar el método `call` para crear Closures de forma manual para agregar el trabajo a la cola:
 
 ```php
 $schedule->job(new Heartbeat)->everyFiveMinutes();
@@ -256,7 +256,7 @@ Por defecto, las tareas programadas serán ejecutadas incluso si la instancia an
 $schedule->command('emails:send')->withoutOverlapping();
 ```
 
-En este ejemplo, el [comando de Artisan](/docs/{{version}}/artisan) `emails:send` será ejecutado cada minuto si ya no está siendo ejecutado. El método `withoutOverlapping` es especialmente útil si tienes tareas que varían drásticamente en su tiempo de ejecución, evitando que puedas predecir exactamente cuánto tiempo tomará una tarea.
+En este ejemplo, el [comando de Artisan](/artisan.html) `emails:send` será ejecutado cada minuto si ya no está siendo ejecutado. El método `withoutOverlapping` es especialmente útil si tienes tareas que varían drásticamente en su tiempo de ejecución, evitando que puedas predecir exactamente cuánto tiempo tomará una tarea.
 
 Si es necesario, puedes especificar cuántos minutos deben pasar antes de que el bloqueo "sin superposición" expire. Por defecto, el bloqueo expirará luego de 24 horas:
 
@@ -296,7 +296,7 @@ $schedule->command('analytics:report')
 <a name="maintenance-mode"></a>
 ### Modo de mantenimiento
 
-Las tareas programadas de Laravel no serán ejecutadas cuando Laravel está en [modo de mantenimiento](/docs/{{version}}/configuration#maintenance-mode), dado que no queremos que tus tareas interfieran con cualquier mantenimiento inacabado que puedes estar realizando en tu servidor. Sin embargo, si quieres forzar la ejecución de una tarea incluso en modo de mantenimiento, puedes usar el método `evenInMaintenanceMode`:
+Las tareas programadas de Laravel no serán ejecutadas cuando Laravel está en [modo de mantenimiento](/configuration.html#maintenance-mode), dado que no queremos que tus tareas interfieran con cualquier mantenimiento inacabado que puedes estar realizando en tu servidor. Sin embargo, si quieres forzar la ejecución de una tarea incluso en modo de mantenimiento, puedes usar el método `evenInMaintenanceMode`:
 
 ```php
 $schedule->command('emails:send')->evenInMaintenanceMode();
@@ -321,7 +321,7 @@ $schedule->command('emails:send')
          ->appendOutputTo($filePath);
 ```
 
-Usando el método `emailOutputTo`, puedes enviar el resultado a una dirección de correo electrónico de tu preferencia. Antes de enviar por correo electrónico el resultado de una tarea, debes configurar los [servicios de correo electrónico](/docs/{{version}}/mail) de Laravel:
+Usando el método `emailOutputTo`, puedes enviar el resultado a una dirección de correo electrónico de tu preferencia. Antes de enviar por correo electrónico el resultado de una tarea, debes configurar los [servicios de correo electrónico](/mail.html) de Laravel:
 
 ```php
 $schedule->command('foo')
