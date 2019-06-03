@@ -10,7 +10,7 @@ Actualmente esta traducción de la documentación de Laravel se encuentra en per
 
 ## Guía para contribuir
 
-Si está enviando documentación para la **versión estable actual**, envíala a la rama correspondiente. Por ejemplo, la documentación para Laravel 5.8 se enviaría a la rama `5.8`. La documentación destinada a la próxima versión de Laravel debe enviarse a la rama `master`.
+Si está enviando documentación para la **versión estable actual**, envíala a la rama correspondiente. Por ejemplo, la documentación para Laravel 5.8 se enviaría a la rama `5.8_press`. La documentación destinada a la próxima versión de Laravel debe enviarse a la rama `master`.
 
 ## Sobre esta traducción
 
