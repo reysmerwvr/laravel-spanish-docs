@@ -29,6 +29,14 @@ $user = App\User::with('roles')->first();
 return $user->toArray();
 ```
 
+Para convertir solo los atributos de un modelo a un arreglo, usa el método `attributedToArray`:
+
+```php
+$user = App\User::first();
+
+return $user->attributesToArray();
+```
+
 También puedes convertir [colecciones](/eloquent-collections.html) completas de modelos en arreglos:
 
 ```php
