@@ -222,7 +222,7 @@ use Laravel\Telescope\Telescope;
 public function register()
 {
     $this->hideSensitiveRequestDetails();
-    Telescope::tags(function (IncomingEntry $entry) {
+    Telescope::tag(function (IncomingEntry $entry) {
         if ($entry->type === 'request') {
             return ['status:'.$entry->content['response_status']];
         }
