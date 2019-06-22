@@ -119,7 +119,9 @@ Los componentes y slots proporcionan beneficios similares a secciones y layouts;
 </div>
 ```
 
+::: v-pre
 La variable `{{ $slot }}` tendrá el contenido que deseamos inyectar en el componente. Ahora, para construir el componente, podemos usar la directiva de Blade `@component`:
+:::
 
 ```php
 @component('alert')
