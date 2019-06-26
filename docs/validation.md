@@ -27,6 +27,7 @@
     - [Usando objetos de regla](#using-rule-objects)
     - [Usando closures](#using-closures)
     - [Usando extensiones](#using-extensions)
+    - [Extensiones implicitas](#implicit-extensions)
 
 <a name="introduction"></a>
 ## Introducción
@@ -1450,7 +1451,8 @@ public function boot()
 }
 ```
 
-#### Extensiones implícitas
+<a name="implicit-extensions"></a>
+### Extensiones implicitas
 
 De forma predeterminada, cuando un atributo que está siendo validado no está presente o contiene un valor vacío como es definido por la regla [`required`](#rule-required), las reglas de validación normal, incluyendo las extensiones personalizadas, no son ejecutadas. Por ejemplo, la regla [`unique`](#rule-unique) no será ejecutada contra un valor `null`:
 
@@ -1473,3 +1475,7 @@ Validator::extendImplicit('foo', function ($attribute, $value, $parameters, $val
 ::: danger Nota
 Una extensión "implícita" solamente _implica_ que el atributo es obligatorio. Si esto realmente invalida un atributo vacío o faltante depende de ti.
 :::
+
+#### Reglas de objetos implicitas
+
+Si te gustaría que una regla de objeto se ejecute cuando un atributo está vacío, debes implementar la interfaz `Illuminate\Contracts\Validation\ImplicitRule`. Esta interfaz funciona como una "interfaz marcador" para el validador; por lo tanto, no contiene ningún metodo que necesites implementar.
