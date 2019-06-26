@@ -320,6 +320,7 @@ Laravel proporciona una variedad de métodos de aserción personalizados para tu
 [assertSessionMissing](#assert-session-missing)
 [assertStatus](#assert-status)
 [assertSuccessful](#assert-successful)
+[assertSuccessful](#assert-successful)
 [assertViewHas](#assert-view-has)
 [assertViewHasAll](#assert-view-has-all)
 [assertViewIs](#assert-view-is)
@@ -645,10 +646,19 @@ $response->assertStatus($code);
 <a name="assert-successful"></a>
 #### assertSuccessful
 
-Comprueba que la respuesta tenga un código de estado de éxito:
+Comprueba que la respuesta tenga un código de estado de éxito (200):
 
 ```php
 $response->assertSuccessful();
+```
+
+<a name="assert-unauthorized"></a>
+#### assertUnauthorized
+
+Comprueba que la respuesta tiene un código de estado sin autorización (401):
+
+```php
+$response->assertUnauthorized();
 ```
 
 <a name="assert-view-has"></a>
