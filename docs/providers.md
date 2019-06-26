@@ -75,6 +75,7 @@ namespace App\Providers;
 
 use App\Contracts\ServerProvider;
 use App\Contracts\DowntimeNotifier;
+use App\Services\ServerToolsProvider;
 use Illuminate\Support\ServiceProvider;
 use App\Services\PingdomDowntimeNotifier;
 use App\Services\DigitalOceanServerProvider;
@@ -97,6 +98,7 @@ class AppServiceProvider extends ServiceProvider
     */
     public $singletons = [
         DowntimeNotifier::class => PingdomDowntimeNotifier::class,
+        ServerToolsProvider::class => ServerToolsProvider::class,
     ];
 }
 ```
