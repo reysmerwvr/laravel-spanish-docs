@@ -375,9 +375,9 @@ Si no quieres usar el método `messages` en la solicitud, puedes crear una insta
 
 namespace App\Http\Controllers;
 
-use Validator;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
 class PostController extends Controller
 {
