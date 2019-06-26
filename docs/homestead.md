@@ -126,8 +126,8 @@ Debes hacer checkout a alguna versión etiquetada de Homestead ya que la rama `m
 ```php
 cd ~/Homestead
 
-// Clonar el release deseado...
-git checkout v8.4.0
+// Checkout the stable "release" branch
+git checkout release
 ```
 
 Una vez que hayas clonado el repositorio, ejecuta el comando `bash init.sh` desde el directorio Homestead para crear el archivo de configuración `Homestead.yaml`. El archivo `Homestead.yaml` estará situado en el directorio Homestead:
@@ -761,7 +761,7 @@ Después, debes actualizar el código fuente de Homestead. Si clonaste el reposi
 ```php
 git fetch
 
-git checkout v8.4.0
+git pull origin release
 ```
 
 Estos comandos traen el código más reciente de Homestead del repositorio de GitHub, recuperan las últimas etiquetas y luego revisan la última versión etiquetada. Puede encontrar la última versión de lanzamiento estable en la [página de lanzamientos de GitHub](https://github.com/laravel/homestead/releases).
