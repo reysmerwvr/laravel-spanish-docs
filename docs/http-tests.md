@@ -483,10 +483,10 @@ $response->assertJsonStructure(array $structure);
 <a name="assert-json-validation-errors"></a>
 #### assertJsonValidationErrors
 
-Comprueba que la respuesta tenga los errores de validación JSON dados para las claves dadas:
+Comprueba que la respuesta tenga los errores de validación JSON dados:
 
 ```php
-$response->assertJsonValidationErrors($keys);
+$response->assertJsonValidationErrors(array $data);
 ```
 
 <a name="assert-location"></a>
