@@ -123,3 +123,11 @@ También puedes alimentar tu base de datos usando el comando `migrate:refresh`, 
 ```php
 php artisan migrate:refresh --seed
 ```
+
+#### Forzar la ejecución de seeders en producción
+
+Algunas operaciones de seeding pueden causar que alteres o pierdas datos. Para protegerte de ejecutar comandos de seeding en tu base de datos de producción, te será solicitada una confirmación antes de que los seeders sean ejecutados. Para forzar la ejecución de los seeders sin confirmación, usa la opción `--force`:
+
+```php
+php artisan db:seed --force
+```
