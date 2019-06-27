@@ -238,7 +238,7 @@ Todas tus clases "tap" son resultas por el [contenedor de servicios](/container.
 
 Monolog tiene una variedad de [manejadores disponibles](https://github.com/Seldaek/monolog/tree/master/src/Monolog/Handler). En algunos casos, el tipo de registro que quieres crear es simplemente un driver de Monolog con una instancia de un handler en específico. Estos canales pueden ser creados usando el driver `monolog`.
 
-Al usar el driver `monolog`, la opción de configuración `handler` es usada para especificar que handler será instanciado. Opcionalmente, cualquier parametros del constructor que el handler necesite puede ser especificado usando la opción de configuración `with`:
+Al usar el driver `monolog`, la opción de configuración `handler` es usada para especificar que handler será instanciado. Opcionalmente, cualquier parámetros del constructor que el handler necesite puede ser especificado usando la opción de configuración `with`:
 
 ```php
 'logentries' => [
