@@ -285,7 +285,7 @@ public function withValidator($validator)
 <a name="authorizing-form-requests"></a>
 ### Autorizando solicitudes de formularios
 
-La clase Form Request también contiene un método `authorize`. Dentro de este método, puedes verificar si el usuario autenticado realmente tiene la autoridad para actualizar un recurso dado. Por ejemplo, puedes determinar si un usuario posee un comentario de blog que está intentando actualizar:
+La clase Form Request también contiene un método `authorize`. Dentro de este método, puedes verificar si el usuario autenticado realmente tiene la autoridad para actualizar un recurso dado. Por ejemplo, puedes determinar si a un usuario le pertenece el comentario del blog que está intentando actualizar
 
 ```php
 /**
