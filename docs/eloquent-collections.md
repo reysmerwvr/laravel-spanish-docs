@@ -125,7 +125,7 @@ $users->loadMissing('comments', 'posts');
 $users->loadMissing('comments.author');
 ```
 
-#### `modelKeys`
+#### `modelKeys()`
 
 El método `modelKeys` retorna las claves primarias para todos los modelos en la colección:
 
