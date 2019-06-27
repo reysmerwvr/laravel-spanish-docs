@@ -132,7 +132,7 @@ Route::get('/unsubscribe/{user}', function (Request $request) {
 })->name('unsubscribe');
 ```
 
-Alternativamente, puedes asignar el middleware `Illuminate\Routing\Middleware\ValidateSignature` a la ruta. Si aún no está presnete, debes asignar una clave a este middleware en el arreglo `routeMiddleware` de tu kernel HTTP:
+Alternativamente, puedes asignar el middleware `Illuminate\Routing\Middleware\ValidateSignature` a la ruta. Si aún no está presente, debes asignar una clave a este middleware en el arreglo `routeMiddleware` de tu kernel HTTP:
 
 ```php
 /**
