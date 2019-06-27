@@ -1171,6 +1171,42 @@ Para precargar relaciones anidadas, puedes usar la sintaxis de "punto". Por ejem
 $books = App\Book::with('author.contacts')->get();
 ```
 
+#### Eager Load anidado de relaciones `morphTo`
+
+Si te gustaría hacer eager load de relaciones `morphTo`, así como de relaciones anidadas en varias entidades que podrían ser retornadas por dicha relación, puedes usar el método `with` en combinación con el método `morphWith` de la relación `morphTo`. Para ayudarte a ilustrar este método, vamos a considerar el siguiente método:
+
+```php
+<?php
+
+use Illuminate\Database\Eloquent\Model;
+
+class ActivityFeed extends Model
+{
+    /**
+    * Get the parent of the activity feed record.
+    */
+    public function parentable()
+    {
+        return $this->morphTo();
+    }
+}
+```
+
+En este ejemplo, vamos a asumir que los modelos `Èvent`, `Photo` y `Post` podrían crear moelos `ActivityFeed`. Adicionalmente, vamos a asumir que los modelos `Event` pertenecen a una modelo `Calendar`, que los modelos `Photo` están asociados con modelos `Tag` y los modelos `Post` pertenecen a una modelo `Author`.
+
+Usando estas definiciones de modelos y relaciones, podríamos retornar instancias del modelo `ActivityFeed` y hacer eager load de todos los modelos `parentable` y sus respectivas relaciones anidadas:
+
+```php
+$activities = ActivityFeed::query()
+    ->with(['parentable' => function ($morphTo) {
+        $morphTo->morphWith([
+            Event::class => ['calendar'],
+            Photo::class => ['tags'],
+            Post::class => ['author'],
+        ]);
+    }])->get();
+```
+
 #### Cargando previamente columnas específicas
 
 No siempre necesitas todas las columna de las relaciones que estás obteniendo. Por esta razón, Eloquent te permite que especificar cuáles columnas de la relación te gustaría obtener:
