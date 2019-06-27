@@ -40,7 +40,7 @@ Route::get('/', function () {
 ```
 
 ::: tip
-¿Sabias que también puedes devolver [colecciones de Eloquent](/eloquent-collections.html) desde tus rutas o controladores? Estas serán convertidas automáticamente a JSON. ¡Inténtalo!
+¿Sabías que también puedes devolver [colecciones de Eloquent](/eloquent-collections.html) desde tus rutas o controladores? Estas serán convertidas automáticamente a JSON. ¡Inténtalo!
 :::
 
 #### Objetos de respuesta
@@ -131,7 +131,7 @@ Route::get('dashboard', function () {
 });
 ```
 
-Algunas veces podras querer redireccionar al usuario a su página previa, tal como cuando un formulario enviado no es válido. Puedes hacer eso usando la función helper global `back`. Ya que esta característica utiliza la [sesión](/session.html), asegurate de que la ruta llamando a la función `back` está usando el grupo de middleware `web` o tiene todos los middleware de sesión aplicados.
+Algunas veces podrás querer redireccionar al usuario a su página previa, tal como cuando un formulario enviado no es válido. Puedes hacer eso usando la función helper global `back`. Ya que esta característica utiliza la [sesión](/session.html), asegurate de que la ruta llamando a la función `back` está usando el grupo de middleware `web` o tiene todos los middleware de sesión aplicados.
 
 ```php
 Route::post('user/profile', function () {
@@ -160,7 +160,7 @@ return redirect()->route('profile', ['id' => 1]);
 
 #### Rellenando parámetros a través de modelos de Eloquent
 
-Si estás redireccionando a una ruta con un parámetro "ID" que está siendo rellenado desde un modelo Eloquent, puedas pasar el modelo como tal. puedes pasar el modelo mismo. El ID será extraído automáticamente:
+Si estás redireccionando a una ruta con un parámetro "ID" que está siendo rellenado desde un modelo Eloquent, puedas pasar el modelo como tal. El ID será extraído automáticamente:
 
 ```php
 // For a route with the following URI: profile/{id}
