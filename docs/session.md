@@ -264,7 +264,7 @@ Ya que el propósito de estos métodos no es entendible rápidamente y sin dific
 - El método `close`, como el método `open`, también puede ser descartado. Para la mayoría de los drivers, no es necesario.
 - El método `read` debería devolver la versión de cadena de la sesión de datos asociada con la `$sessionId` dada. No hay necesidad de hacer alguna serialización u otra codificación al momento de obtener o almacenar los datos de la sesión en tu manejador, ya que Laravel ejcutará la serialización por ti.
 - El método `write` debería escribir la cadena `$data` asociada dada con la `$sessionId` para algún sistema de almacenamiento persistente, tal como MongoDB, Dynamo, etc. Otra vez, no deberías ejecutar alguna serialización - Laravel ya ha manejado esto por ti.
-- El método `destroy` debería remover los datos asociados con la $sessionId` desde el almacenamiento persistente.
+- El método `destroy` debería remover los datos asociados con la `$sessionId` desde el almacenamiento persistente.
 - El método `gc` debería destruir todos los datos de la sesión que son más viejos que el `$lifetime` dado, el cual es una marca de tiempo UNIX. Para los sistemas que se auto-expiran como Memcached y Redis, este método puede ser dejado vacío.
 
 <a name="registering-the-driver"></a>
