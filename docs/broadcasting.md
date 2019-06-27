@@ -44,7 +44,7 @@ Antes de sumergirnos en la emisión de eventos, asegurate de haber leído toda l
 <a name="configuration"></a>
 ### Configuración
 
-Toda la configuración de transmisión de eventos de tu aplicación está almacenada en el archivo de configuración `config/broadcasting.php`. Laravel soporta múltiples drivers de transmisión: [Pusher](https://pusher.com), [Redis](/redis.html) y un driver `log` para desarrollo local y depuración. Adicionalmente, un driver `null` es incluido, que te permite deshabilitar totalmente las emisiones. Un ejemplo de configuración para cada uno de los drivers está incluido en el archivo de configuración `config/broadcasting.php`.
+Toda la configuración de transmisión de eventos de tu aplicación está almacenada en el archivo de configuración `config/broadcasting.php`. Laravel soporta múltiples drivers de transmisión: [canales de Pusher](https://pusher.com), [Redis](/redis.html) y un driver `log` para desarrollo local y depuración. Adicionalmente, un driver `null` es incluido, que te permite deshabilitar totalmente las emisiones. Un ejemplo de configuración para cada uno de los drivers está incluido en el archivo de configuración `config/broadcasting.php`.
 
 #### Proveedor de servicios Broadcast
 
@@ -61,15 +61,15 @@ Antes de transmitir cualquier evento, necesitarás primero registrar `App\Provid
 <a name="driver-prerequisites"></a>
 ### Prerrequisitos del driver
 
-#### Pusher
+#### Canales de Pusher
 
-Si estás transmitiendo tus eventos mediante [Pusher](https://pusher.com), debes instalar el SDK de PHP de Pusher mediante el administrador de paquetes Composer:
+Si estás transmitiendo tus eventos mediante [canales de Pusher](https://pusher.com/channels), debes instalar el SDK de PHP para canales de Pusher mediante el administrador de paquetes Composer:
 
 ```bash
 composer require pusher/pusher-php-server "~3.0"
 ```
 
-Luego, debes configurar tus credenciales de Pusher en el archivo de configuración `config/broadcasting.php`. Un ejemplo de configuración de Pusher está incluido en este archivo, permitiéndote especificar rápidamente tu clave de Pusher, contraseña y ID de la aplicación. La configuración de `pusher` del archivo `config/broadcasting.php` también te permite especificar `options` adicionales que son soportadas por Pusher, como el cluster:
+Luego, debes configurar tus credenciales del canal en el archivo de configuración `config/broadcasting.php`. Un ejemplo de configuración de canal está incluido en este archivo, permitiéndote especificar rápidamente la clave del canal, contraseña y ID de la aplicación. La configuración de `pusher` del archivo `config/broadcasting.php` también te permite especificar `options` adicionales que son soportadas por canales, como el cluster:
 
 ```php
 'options' => [
@@ -78,7 +78,7 @@ Luego, debes configurar tus credenciales de Pusher en el archivo de configuraci�
 ],
 ```
 
-Al usar Pusher y [Laravel Echo](#installing-laravel-echo), debes especificar `pusher` como tu transmisor deseado al instanciar la instancia de Echo en tu archivo `resources/js/bootstrap.js`:
+Al usar canales y [Laravel Echo](#installing-laravel-echo), debes especificar `pusher` como tu transmisor deseado al instanciar la instancia de Echo en tu archivo `resources/js/bootstrap.js`:
 
 ```php
 import Echo from "laravel-echo";
@@ -87,7 +87,7 @@ window.Pusher = require('pusher-js');
 
 window.Echo = new Echo({
     broadcaster: 'pusher',
-    key: 'your-pusher-key'
+    key: 'your-pusher-channels-key'
 });
 ```
 
@@ -133,14 +133,14 @@ Antes de transmitir eventos, también necesitarás configurar y ejecutar un [lis
 <a name="concept-overview"></a>
 ## Descripción general
 
-La transmisión de eventos de Laravel te permite transmitir tus eventos del lado del servidor de Laravel a tu aplicación JavaScript del lado del cliente usando un enfoque basado en drivers a los WebSockets. Actualmente, Laravel viene con drivers de [Pusher](https://pusher.com) y Redis. Los eventos pueden ser fácilmente consumidos en el lado del cliente usando el paquete de JavaScript [Laravel Echo](#installing-laravel-echo).
+La transmisión de eventos de Laravel te permite transmitir tus eventos del lado del servidor de Laravel a tu aplicación JavaScript del lado del cliente usando un enfoque basado en drivers a los WebSockets. Actualmente, Laravel viene con drivers de [canales de Pusher](https://pusher.com) y Redis. Los eventos pueden ser fácilmente consumidos en el lado del cliente usando el paquete de JavaScript [Laravel Echo](#installing-laravel-echo).
 
 Los eventos son transmitidos mediante "canales", que pueden ser definidos como públicos o privados. Cualquier visitante en tu aplicación puede suscribirse a una canal público sin necesidad de autenticación o autorización; sin embargo, para poder suscribirse a canales privados, un usuario debe estar autenticado y autorizado para escuchar en dicho canal.
 
 <a name="using-example-application"></a>
 ### Usando una aplicación de ejemplo
 
-Antes de sumergirnos en cada componente de la transmisión de eventos, vamos a ver un resumen usando una tienda virtual como ejemplo. No discutiremos los detalles sobre configurar [Pusher](https://pusher.com) o [Laravel Echo](#installing-laravel-echo) dado que éstos será discutido a detalle en otras secciones de esta documentación.
+Antes de sumergirnos en cada componente de la transmisión de eventos, vamos a ver un resumen usando una tienda virtual como ejemplo. No discutiremos los detalles sobre configurar [canales de Pusher](https://pusher.com) o [Laravel Echo](#installing-laravel-echo) dado que éstos será discutido a detalle en otras secciones de esta documentación.
 
 En nuestra aplicación, vamos a asumir que tenemos una página que permite a los usuarios ver el estado de envío de sus ordenes. Vamos también a asumir que un evento `ShippingStatusUpdated` es ejecutado cuando un estado de envío es procesado por la aplicación:
 
@@ -389,7 +389,7 @@ Por defecto, Echo usará el endpoint `/broadcasting/auth` para autorizar acceso 
 ```php
 window.Echo = new Echo({
     broadcaster: 'pusher',
-    key: 'your-pusher-key',
+    key: 'your-pusher-channels-key',
     authEndpoint: '/custom/endpoint/auth'
 });
 ```
@@ -543,7 +543,7 @@ var socketId = Echo.socketId();
 <a name="installing-laravel-echo"></a>
 ### Instalando laravel echo
 
-Laravel Echo es una librería de JavaScript que hace que sea fácil suscribirse a canales y escuchar transmisiones de eventos en Laravel. Puedes instalar Echo mediante el administrador de paquetes NPM. En este ejemplo, también instalaremos el paquete `pusher-js` dado que usaremos el transmisor de Pusher:
+Laravel Echo es una librería de JavaScript que hace que sea fácil suscribirse a canales y escuchar transmisiones de eventos en Laravel. Puedes instalar Echo mediante el administrador de paquetes NPM. En este ejemplo, también instalaremos el paquete `pusher-js` dado que usaremos el transmisor de canales de Pusher:
 
 ```php
 npm install --save laravel-echo pusher-js
@@ -556,7 +556,7 @@ import Echo from "laravel-echo"
 
 window.Echo = new Echo({
     broadcaster: 'pusher',
-    key: 'your-pusher-key'
+    key: 'your-pusher-channels-key'
 });
 ```
 
@@ -565,7 +565,7 @@ Al crear una instancia de Echo que usa el conector `pusher`, puedes también esp
 ```php
 window.Echo = new Echo({
     broadcaster: 'pusher',
-    key: 'your-pusher-key',
+    key: 'your-pusher-channels-key',
     cluster: 'eu',
     encrypted: true
 });
@@ -573,14 +573,14 @@ window.Echo = new Echo({
 
 #### Usando una instancia de cliente existente
 
-Si ya tienes una instancia de cliente de Pusher o Socket.io que te gustaría que Echo usara, puedes pasarla a Echo mediante la opción de configuración `client`:
+Si ya tienes una instancia de cliente de canales de Pusher o Socket.io que te gustaría que Echo usara, puedes pasarla a Echo mediante la opción de configuración `client`:
 
 ```php
 const client = require('pusher-js');
 
 window.Echo = new Echo({
     broadcaster: 'pusher',
-    key: 'your-pusher-key',
+    key: 'your-pusher-channels-key',
     client: client
 });
 ```
@@ -629,7 +629,7 @@ Puedes haber notado en los ejemplos superiores que no especificamos un nombre de
 ```php
 window.Echo = new Echo({
     broadcaster: 'pusher',
-    key: 'your-pusher-key',
+    key: 'your-pusher-channels-key',
     namespace: 'App.Other.Namespace'
 });
 ```
@@ -724,7 +724,7 @@ Echo.join(`chat.${roomId}`)
 ## Eventos del cliente
 
 ::: tip
-Al usar [Pusher](https://pusher.com), debes habilitar la opción "Client Events" en la sección "App Settings" del [dashboard de tu aplicación](https://dashboard.pusher.com/) para enviar eventos del cliente.
+Al usar [canales de Pusher](https://pusher.com), debes habilitar la opción "Client Events" en la sección "App Settings" del [dashboard de tu aplicación](https://dashboard.pusher.com/) para enviar eventos del cliente.
 :::
 
 Algunas veces puedes querer transmitir un evento a otros clientes conectados sin tocar tu aplicación en lo absoluto. Esto puede ser particularmente útil para cosas como "escribir" notificaciones, donde quieres advertir a los usuarios de tu aplicación que otro usuario está escribiendo un mensaje en una pantalla dada. 
