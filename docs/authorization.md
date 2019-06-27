@@ -429,7 +429,7 @@ class PostController extends Controller
 
 #### Acciones que no requieren modelos
 
-Como hemos discutido previamente, algunas acciones como `create` pueden no requerir una instancia de un modelo. En estas situaciones, puedes pasar el nombre de la clase al método `authorize`. El nombre de la clase determinará la política a usar para autorizar la acción: 
+Como hemos discutido previamente, algunas acciones como `create` pueden no requerir una instancia de un modelo. En estas situaciones, deberías pasar el nombre de la clase al método `authorize`. El nombre de la clase determinará la política a usar para autorizar la acción: 
 
 ```php
 /**
