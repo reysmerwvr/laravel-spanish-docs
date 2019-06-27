@@ -471,6 +471,18 @@ class PostController extends Controller
 }
 ```
 
+Métodos de controlador y sus políticas respectivas:
+
+| Controller | Policy   |
+| ---------- | -------- | 
+| index      | viewAny  |
+| show       | view     |
+| create     | create   |
+| store      | create   |
+| edit       | update   |
+| update     | update   |
+| destroy    | delete   |
+
 ::: tip
 Puedes usar el comando `make:policy` con la opción `--model` para rápidamente generar una clase de política para un modelo dado: `php artisan make:policy PostPolicy --model=Post`.
 :::
