@@ -233,6 +233,7 @@ Método  |  Descripción
 `$results->getOptions()`  |  Obtiene las opciones del paginador.
 `$results->getUrlRange($start, $end)`  |  Crea un rango de URLs de paginación.
 `$results->hasMorePages()`  |  Determina si hay suficientes elementos para dividir en varias páginas.
+`$results->items()`  |  Obtener los elementos de la página actual.
 `$results->lastItem()`  |  Obtiene el número de resultado del último elemento en los resultados.
 `$results->lastPage()`  |  Obtiene el número de página de la última página disponible. (No disponible cuando se utiliza `simplePaginate`).
 `$results->nextPageUrl()`  |  Obtiene la URL para la próxima página.
