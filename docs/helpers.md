@@ -1958,6 +1958,14 @@ $user = tap($user)->update([
 ]);
 ```
 
+Para agregar un método `tap` a una clase, puedes agregar el trait `Illuminate\Support\Traits\Tappable` a la clase. El método `tap` de este trait acepta un Closoure como único argumento. La instancia del objeto será pasada al Closure y luego retornada por el método `tap`:
+
+```php
+return $user->tap(function ($user) {
+    //
+});
+```
+
 <a name="method-throw-if"></a>
 #### `throw_if()` {#collection-method}
 
