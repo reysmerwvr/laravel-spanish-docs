@@ -74,7 +74,7 @@ Luego, debes configurar tus credenciales del canal en el archivo de configuraci�
 ```php
 'options' => [
     'cluster' => 'eu',
-    'encrypted' => true
+    'useTLS' => true
 ],
 ```
 
@@ -560,14 +560,14 @@ window.Echo = new Echo({
 });
 ```
 
-Al crear una instancia de Echo que usa el conector `pusher`, puedes también especificar un `cluster` así como también si la conexión debe ser encriptada:
+Al crear una instancia de Echo que usa el conector `pusher`, puedes especificar un `cluster` así como si la conexión debería ser realizada mediante TLS (por defecto, cuando `forceTLS` es `false`, una conexión no-TLS será realizada si la página fue cargada mediante HTTP, o como fallback si la conexión TLS falla):
 
 ```php
 window.Echo = new Echo({
     broadcaster: 'pusher',
     key: 'your-pusher-channels-key',
     cluster: 'eu',
-    encrypted: true
+    forceTLS: true
 });
 ```
 
