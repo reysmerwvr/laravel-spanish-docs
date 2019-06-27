@@ -449,7 +449,7 @@ public function create(Request $request)
 
 #### Autorizando controladores de recursos
 
-Si estás utilizando [controladores de recursos](/controllers.html#resource-controllers), puedes hacer uso del método `authorizeResource` en el constructor del controlador. Este método agregará la definición de middleware `can` apropiada a los métodos del controlador de recursos.
+Si estás utilizando [controladores de recursos](/controllers.html#resource-controllers), puedes hacer uso del método `authorizeResource` en el constructor del controlador. Este método agregará las deficiones de middleware `can` apropiadas a los métodos del controlador de recursos.
 
 El método `authorizeResource` acepta el nombre de clase del modelo como primer argumento y el nombre del parametro de ruta / petición que contendrá el ID del modelo como segundo argumento:
 
@@ -471,17 +471,17 @@ class PostController extends Controller
 }
 ```
 
-Métodos de controlador y sus políticas respectivas:
+Los siguientes métodos de controlador serán mapeados con su método de política respectivo:
 
-| Controller | Policy   |
-| ---------- | -------- | 
-| index      | viewAny  |
-| show       | view     |
-| create     | create   |
-| store      | create   |
-| edit       | update   |
-| update     | update   |
-| destroy    | delete   |
+| Método de controlador | Método de política |
+| --------------------- | ------------------ | 
+| index                 | viewAny            |
+| show                  | view               |
+| create                | create             |
+| store                 | create             |
+| edit                  | update             |
+| update                | update             |
+| destroy               | delete             |
 
 ::: tip
 Puedes usar el comando `make:policy` con la opción `--model` para rápidamente generar una clase de política para un modelo dado: `php artisan make:policy PostPolicy --model=Post`.
