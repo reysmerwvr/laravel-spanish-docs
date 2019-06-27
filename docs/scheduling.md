@@ -293,6 +293,10 @@ $schedule->command('analytics:report')
          ->runInBackground();
 ```
 
+::: danger Nota
+El método `runInBackground` sólo puede ser usado al programar tareas mediante los métodos `command` y `exec`.
+:::
+
 <a name="maintenance-mode"></a>
 ### Modo de mantenimiento
 
