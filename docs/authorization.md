@@ -475,7 +475,6 @@ Los siguientes métodos de controlador serán mapeados con su método de políti
 
 | Método de controlador | Método de política |
 | --------------------- | ------------------ | 
-| index                 | viewAny            |
 | show                  | view               |
 | create                | create             |
 | store                 | create             |
