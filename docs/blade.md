@@ -16,7 +16,7 @@
     - [La variable loop](#the-loop-variable)
     - [Comentarios](#comments)
     - [PHP](#php)
-- [Forms](#forms)
+- [Formularios](#forms)
 	- [Campo CSRF](#csrf-field)
     - [Campo method](#method-field)
     - [Errores de validación](#validation-errors)  
