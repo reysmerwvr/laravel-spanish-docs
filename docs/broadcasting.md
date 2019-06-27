@@ -66,7 +66,7 @@ Antes de transmitir cualquier evento, necesitarás primero registrar `App\Provid
 Si estás transmitiendo tus eventos mediante [canales de Pusher](https://pusher.com/channels), debes instalar el SDK de PHP para canales de Pusher mediante el administrador de paquetes Composer:
 
 ```bash
-composer require pusher/pusher-php-server "~3.0"
+composer require pusher/pusher-php-server "~4.0"
 ```
 
 Luego, debes configurar tus credenciales del canal en el archivo de configuración `config/broadcasting.php`. Un ejemplo de configuración de canal está incluido en este archivo, permitiéndote especificar rápidamente la clave del canal, contraseña y ID de la aplicación. La configuración de `pusher` del archivo `config/broadcasting.php` también te permite especificar `options` adicionales que son soportadas por canales, como el cluster:
