@@ -84,6 +84,7 @@ Laravel incluye una variedad de funciones "helpers" globales de PHP. Muchas de e
 [Str::before](#method-str-before)
 [Str::camel](#method-camel-case)
 [Str::contains](#method-str-contains)
+[Str::containsAll](#method-str-contains-all)
 [Str::endsWith](#method-ends-with)
 [Str::finish](#method-str-finish)
 [Str::is](#method-str-is)
@@ -979,6 +980,19 @@ Puedes además pasar un arreglo de valores para determinar si la cadena dada con
 use Illuminate\Support\Str;
 
 $contains = Str::contains('This is my name', ['my', 'foo']);
+
+// true
+```
+
+<a name="method-str-contains-all"></a>
+#### `Str::containsAll()` {#collection-method}
+
+El método `Str::containsAll` determina si la cadena dada contiene todos los valores del arreglo:
+
+```php
+use Illuminate\Support\Str;
+
+$containsAll = Str::containsAll('This is my name', ['my', 'name']);
 
 // true
 ```
