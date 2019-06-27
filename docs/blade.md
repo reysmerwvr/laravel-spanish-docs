@@ -129,6 +129,14 @@ La variable `{{ $slot }}` tendrá el contenido que deseamos inyectar en el compo
 @endcomponent
 ```
 
+Para instruir a Laravel para que cargue la primera vista que existe desde un arreglo de posibles vistas para el componente, puedes usar la directiva `componentFirst`:
+
+```php
+@componentFirst(['custom.alert', 'alert'])
+    <strong>Whoops!</strong> Something went wrong!
+@endcomponent
+```
+
 A veces es útil definir múltiples slots para un componente. Vamos a modificar nuestro componente alerta para permitir la inyección de un "título". Los slots nombrados podrán despegarse al hacer "echo" a la variable que coincida con sus nombres:
 
 ```php
