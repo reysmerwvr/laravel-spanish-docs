@@ -1,8 +1,8 @@
 ::: v-pre
 
-# Enrutamiento
+# Rutas
 
-- [Enrutamiento básico](#basic-routing)
+- [Rutas básicas](#basic-routing)
     - [Redireccionar rutas](#redirect-routes)
     - [Las rutas de vistas](#view-routes)
 - [Los parámetros de rutas](#route-parameters)
@@ -25,7 +25,7 @@
 - [Accediendo la ruta actual](#accessing-the-current-route)
 
 <a name="basic-routing"></a>
-## Enrutamiento básico
+## Rutas básicas
 
 Las rutas de Laravel más básicas aceptan una URI y una `Closure`, proporcionando un método muy fácil y expresivo de definición de rutas:
 
