@@ -8,6 +8,7 @@ module.exports = {
   	themeConfig: {
     	nav: [
 			{ text: 'Inicio', link: '/' },
+			{ text: 'Glosario', link: '/glossary'},			
 			{ text: 'Créditos', link: '/credits' },
 			{ text: 'Styde', link: 'https://styde.net/'},
        	],
