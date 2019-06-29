@@ -1,216 +1,273 @@
+::: v-pre
+
 # Pruebas HTTP
 
 - [Introducción](#introduction)
-    - [Personalizando Encabezados de Solicitud](#customizing-request-headers)
-- [Sesión Y Autenticación](#session-and-authentication)
+    - [Personalizando encabezados de solicitud](#customizing-request-headers)
+    - [Depurando respuestas](#debugging-responses)
+- [Sesión y autenticación](#session-and-authentication)
 - [Probando APIs JSON](#testing-json-apis)
-- [Probando Subidas De Archivos](#testing-file-uploads)
-- [Aserciones Disponibles](#available-assertions)
-    - [Aserciones de Respuesta](#response-assertions)
-    - [Aserciones de Autenticación](#authentication-assertions)
+- [Probando subidas de archivos](#testing-file-uploads)
+- [Aserciones disponibles](#available-assertions)
+    - [Aserciones de respuesta](#response-assertions)
+    - [Aserciones de autenticación](#authentication-assertions)
 
 <a name="introduction"></a>
 ## Introducción
 
 Laravel proporciona una API muy fluida para hacer solicitudes HTTP a tu aplicación y examinar la salida. Por ejemplo, echemos un vistazo a la prueba definida a continuación:
 
-    <?php
+```php
+<?php
 
-    namespace Tests\Feature;
+namespace Tests\Feature;
 
-    use Tests\TestCase;
-    use Illuminate\Foundation\Testing\RefreshDatabase;
-    use Illuminate\Foundation\Testing\WithoutMiddleware;
+use Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
 
-    class ExampleTest extends TestCase
+class ExampleTest extends TestCase
+{
+    /**
+    * A basic test example.
+    *
+    * @return void
+    */
+    public function testBasicTest()
     {
-        /**
-         * A basic test example.
-         *
-         * @return void
-         */
-        public function testBasicTest()
-        {
-            $response = $this->get('/');
+        $response = $this->get('/');
 
-            $response->assertStatus(200);
-        }
+        $response->assertStatus(200);
     }
+}
+```
 
 El método `get` simula una solicitud `GET` dentro de la aplicación, mientras que el método `assertStatus` comprueba que la respuesta devuelta debería tener el código de estado HTTP dado. Además de esta sencilla aserción, Laravel también contiene una variedad de aserciones para inspeccionar de la respuesta los encabezados, contenidos, estructura JSON y más.
 
 <a name="customizing-request-headers"></a>
-### Personalizando Encabezados de Solicitud
+### Personalizando encabezados de solicitud
 
 Puedes usar el método `withHeaders` para personalzar los encabezados de la solicitud antes que sean enviados a la aplicación. Esto permitirá que agregues algunos encabezados personalizados de tu preferencia a la solicitud:
 
-    <?php
+```php
+<?php
 
-    class ExampleTest extends TestCase
+class ExampleTest extends TestCase
+{
+    /**
+    * A basic functional test example.
+    *
+    * @return void
+    */
+    public function testBasicExample()
     {
-        /**
-         * A basic functional test example.
-         *
-         * @return void
-         */
-        public function testBasicExample()
-        {
-            $response = $this->withHeaders([
-                'X-Header' => 'Value',
-            ])->json('POST', '/user', ['name' => 'Sally']);
+        $response = $this->withHeaders([
+            'X-Header' => 'Value',
+        ])->json('POST', '/user', ['name' => 'Sally']);
 
-            $response
-                ->assertStatus(201)
-                ->assertJson([
-                    'created' => true,
-                ]);
-        }
+        $response
+            ->assertStatus(200)
+            ->assertJson([
+                'created' => true,
+            ]);
     }
+}
+```
 
-> {tip} El middleware CSRF es automáticamente deshabilitado cuando se ejecutan las pruebas.
+::: tip
+El middleware CSRF es automáticamente deshabilitado cuando se ejecutan las pruebas.
+:::
+
+<a name="debugging-responses"></a>
+### Depurando respuestas
+
+Luego de hacer una solicitud de prueba a tu aplicación, los métodos `dump` y `dumpHeaders` pueden ser usados para examinar y depurar el contenido de la respuesta:
+
+```php
+<?php
+
+namespace Tests\Feature;
+
+use Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
+
+class ExampleTest extends TestCase
+{
+    /**
+    * A basic test example.
+    *
+    * @return void
+    */
+    public function testBasicTest()
+    {
+        $response = $this->get('/');
+        $response->dumpHeaders();
+        $response->dump();
+    }
+}
+```
 
 <a name="session-and-authentication"></a>
-## Sesión Y Autenticación
+## Sesión y autenticación
 
 Laravel proporciona varias funciones helper para trabajar con la sesión durante las pruebas HTTP. Primero, puedes colocar los datos de la sesión en un arreglo dado usando el método `withSession`. Esto es útil para cargar la sesión con los datos antes de realizar una solicitud a tu aplicación:
 
-    <?php
+```php
+<?php
 
-    class ExampleTest extends TestCase
+class ExampleTest extends TestCase
+{
+    public function testApplication()
     {
-        public function testApplication()
-        {
-            $response = $this->withSession(['foo' => 'bar'])
-                             ->get('/');
-        }
+        $response = $this->withSession(['foo' => 'bar'])
+                            ->get('/');
     }
+}
+```
 
-Un uso común de la sesión es para mantener el estado del usuario autenticado. El método helper `actingAs` proporciona una foma sencilla de autenticar un usuario dado como el usuario actual. Por ejemplo, podemos usar un [model factory](/docs/{{version}}/database-testing#writing-factories) para generar y autenticar un usuario:
+Un uso común de la sesión es para mantener el estado del usuario autenticado. El método helper `actingAs` proporciona una foma sencilla de autenticar un usuario dado como el usuario actual. Por ejemplo, podemos usar un [model factory](/database-testing.html#writing-factories) para generar y autenticar un usuario:
 
-    <?php
+```php
+<?php
 
-    use App\User;
+use App\User;
 
-    class ExampleTest extends TestCase
+class ExampleTest extends TestCase
+{
+    public function testApplication()
     {
-        public function testApplication()
-        {
-            $user = factory(User::class)->create();
+        $user = factory(User::class)->create();
 
-            $response = $this->actingAs($user)
-                             ->withSession(['foo' => 'bar'])
-                             ->get('/');
-        }
+        $response = $this->actingAs($user)
+                            ->withSession(['foo' => 'bar'])
+                            ->get('/');
     }
+}
+```
 
 También puedes especificar que "guard" debe ser usado para autenticar el usuario dado al pasar el nombre del guard como segundo argumento del método `actingAs`:
 
-    $this->actingAs($user, 'api')
+```php
+$this->actingAs($user, 'api')
+```
 
 <a name="testing-json-apis"></a>
 ## Probando APIs JSON
 
 Laravel también proporciona varios helpers para probar APIs JSON y sus respuestas. Por ejemplo, los métodos `json`, `get`, `post`, `put`, `patch` y `delete` pueden ser usados para hacer solicitudes con varios verbos HTTP. También puedes pasar datos y encabezados fácilmente a estos métodos. Para empezar, vamos a escribir una prueba para hacer una solicitud `POST` a `/user` y comprobar que los datos esperados fueron devueltos:
 
-    <?php
+```php
+<?php
 
-    class ExampleTest extends TestCase
+class ExampleTest extends TestCase
+{
+    /**
+    * A basic functional test example.
+    *
+    * @return void
+    */
+    public function testBasicExample()
     {
-        /**
-         * A basic functional test example.
-         *
-         * @return void
-         */
-        public function testBasicExample()
-        {
-            $response = $this->json('POST', '/user', ['name' => 'Sally']);
+        $response = $this->json('POST', '/user', ['name' => 'Sally']);
 
-            $response
-                ->assertStatus(201)
-                ->assertJson([
-                    'created' => true,
-                ]);
-        }
+        $response
+            ->assertStatus(200)
+            ->assertJson([
+                'created' => true,
+            ]);
     }
+}
+```
 
-> {tip} El método `assertJson` convierte la respuesta a un arreglo y utiliza `PHPUnit::assertArraySubset` para verificar que el arreglo dado exista dentro de la respuesta JSON devuelta por la aplicación. Así, si hay otras propiedades en la respuesta JSON, esta prueba aún pasará siempre y cuando el fragmento dado esté presente.
+::: tip
+El método `assertJson` convierte la respuesta a un arreglo y utiliza `PHPUnit::assertArraySubset` para verificar que el arreglo dado exista dentro de la respuesta JSON devuelta por la aplicación. Así, si hay otras propiedades en la respuesta JSON, esta prueba aún pasará siempre y cuando el fragmento dado esté presente.
+:::
 
 <a name="verifying-exact-match"></a>
-### Verificando una Coincidencia JSON Exacta
+### Verificando una coincidencia JSON exacta
 
 Si prefieres verificar que el arreglo dado esté contenido **exactamente** en la respuesta JSON devuelta por la aplicación, deberías usar el método `assertExactJson`:
 
-    <?php
+```php
+<?php
 
-    class ExampleTest extends TestCase
+class ExampleTest extends TestCase
+{
+    /**
+    * A basic functional test example.
+    *
+    * @return void
+    */
+    public function testBasicExample()
     {
-        /**
-         * A basic functional test example.
-         *
-         * @return void
-         */
-        public function testBasicExample()
-        {
-            $response = $this->json('POST', '/user', ['name' => 'Sally']);
+        $response = $this->json('POST', '/user', ['name' => 'Sally']);
 
-            $response
-                ->assertStatus(201)
-                ->assertExactJson([
-                    'created' => true,
-                ]);
-        }
+        $response
+            ->assertStatus(200)
+            ->assertExactJson([
+                'created' => true,
+            ]);
     }
+}
+```
 
 <a name="testing-file-uploads"></a>
-## Probando Subidas De Archivos
+## Probando subidas de archivos
 
 La clase `Illuminate\Http\UploadedFile` proporciona un método `fake` el cual puede ser usado para generar archivos de prueba o imágenes para prueba. Esto, combinado con el método `fake` de la clase facade `Storage` simplifica grandemente la prueba de subidas de archivos. Por ejemplo, puedes combinar estas dos características para probar fácilmente un formulario de subida de un avatar:
 
-    <?php
+```php
+<?php
 
-    namespace Tests\Feature;
+namespace Tests\Feature;
 
-    use Tests\TestCase;
-    use Illuminate\Http\UploadedFile;
-    use Illuminate\Support\Facades\Storage;
-    use Illuminate\Foundation\Testing\RefreshDatabase;
-    use Illuminate\Foundation\Testing\WithoutMiddleware;
+use Tests\TestCase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
 
-    class ExampleTest extends TestCase
+class ExampleTest extends TestCase
+{
+    public function testAvatarUpload()
     {
-        public function testAvatarUpload()
-        {
-            Storage::fake('avatars');
+        Storage::fake('avatars');
 
-            $file = UploadedFile::fake()->image('avatar.jpg');
+        $file = UploadedFile::fake()->image('avatar.jpg');
 
-            $response = $this->json('POST', '/avatar', [
-                'avatar' => $file,
-            ]);
+        $response = $this->json('POST', '/avatar', [
+            'avatar' => $file,
+        ]);
 
-            // Assert the file was stored...
-            Storage::disk('avatars')->assertExists($file->hashName());
+        // Assert the file was stored...
+        Storage::disk('avatars')->assertExists($file->hashName());
 
-            // Assert a file does not exist...
-            Storage::disk('avatars')->assertMissing('missing.jpg');
-        }
+        // Assert a file does not exist...
+        Storage::disk('avatars')->assertMissing('missing.jpg');
     }
+}
+```
 
-#### Personalización De Archivo Fake
+#### Personalización de archivo fake
 
 Al momento de crear archivos usando el método `fake`, puedes especificar el ancho, la altura y el tamaño de la imagen con el propósito de probar mejor tus reglas de validación:
 
-    UploadedFile::fake()->image('avatar.jpg', $width, $height)->size(100);
+```php
+UploadedFile::fake()->image('avatar.jpg', $width, $height)->size(100);
+```
 
 Además de crear imágenes, puedes crear archivos de cualquier otro tipo usando el método `create`:
 
-    UploadedFile::fake()->create('document.pdf', $sizeInKilobytes);
+```php
+UploadedFile::fake()->create('document.pdf', $sizeInKilobytes);
+```
 
 <a name="available-assertions"></a>
-## Aserciones Disponibles
+## Aserciones disponibles
 
 <a name="response-assertions"></a>
-### Aserciones de Respuesta
+### Aserciones de respuesta
 
 Laravel proporciona una variedad de métodos de aserción personalizados para tus pruebas [PHPUnit](https://phpunit.de/). Estas aserciones pueden ser accedidas en la respuesta que es retornada por los métodos de prueba `json`, `get`, `post`, `put` y `delete`:
 
@@ -263,6 +320,7 @@ Laravel proporciona una variedad de métodos de aserción personalizados para tu
 [assertSessionMissing](#assert-session-missing)
 [assertStatus](#assert-status)
 [assertSuccessful](#assert-successful)
+[assertSuccessful](#assert-successful)
 [assertViewHas](#assert-view-has)
 [assertViewHasAll](#assert-view-has-all)
 [assertViewIs](#assert-view-is)
@@ -275,283 +333,372 @@ Laravel proporciona una variedad de métodos de aserción personalizados para tu
 
 Comprueba que la respuesta contenga el cookie dado:
 
-    $response->assertCookie($cookieName, $value = null);
+```php
+$response->assertCookie($cookieName, $value = null);
+```
 
 <a name="assert-cookie-expired"></a>
 #### assertCookieExpired
 
 Comprueba que la respuesta contenga el cookie dado y que esté vencido:
 
-    $response->assertCookieExpired($cookieName);
+```php
+$response->assertCookieExpired($cookieName);
+```
 
 <a name="assert-cookie-not-expired"></a>
 #### assertCookieNotExpired
 
 Comprueba que la respuesta contenga la cookie dada y que no haya expirado:
 
-    $response->assertCookieNotExpired($cookieName);
+```php
+$response->assertCookieNotExpired($cookieName);
+```
 
 <a name="assert-cookie-missing"></a>
 #### assertCookieMissing
 
 Comprueba que la respuesta no contenga el cookie dado:
 
-    $response->assertCookieMissing($cookieName);
+```php
+$response->assertCookieMissing($cookieName);
+```
 
 <a name="assert-dont-see"></a>
 #### assertDontSee
 
 Comprueba que la cadena dada no esté contenida dentro de la respuesta:
 
-    $response->assertDontSee($value);
+```php
+$response->assertDontSee($value);
+```
 
 <a name="assert-dont-see-text"></a>
 #### assertDontSeeText
 
 Comprueba que la cadena dada no esté contenida dentro del texto de la respuesta:
 
-    $response->assertDontSeeText($value);
+```php
+$response->assertDontSeeText($value);
+```
 
 <a name="assert-exact-json"></a>
 #### assertExactJson
 
 Comprueba que la respuesta contenga una coincidencia exacta de los datos JSON dados:
 
-    $response->assertExactJson(array $data);
+```php
+$response->assertExactJson(array $data);
+```
 
 <a name="assert-forbidden"></a>
 #### assertForbidden
 
 Comprueba que la respuesta tenga un código de estado "prohibido":
 
-    $response->assertForbidden();
+```php
+$response->assertForbidden();
+```
 
 <a name="assert-header"></a>
 #### assertHeader
 
 Comprueba que el encabezado dado esté presente en la respuesta:
 
-    $response->assertHeader($headerName, $value = null);
+```php
+$response->assertHeader($headerName, $value = null);
+```
 
 <a name="assert-header-missing"></a>
 #### assertHeaderMissing
 
 Comprueba que el encabezado dado no esté presente en la respuesta:
 
-    $response->assertHeaderMissing($headerName);
+```php
+$response->assertHeaderMissing($headerName);
+```
 
 <a name="assert-json"></a>
 #### assertJson
 
 Comprueba que la respuesta contenga los datos JSON dados:
 
-    $response->assertJson(array $data);
+```php
+$response->assertJson(array $data);
+```
 
 <a name="assert-json-count"></a>
 #### assertJsonCount
 
 Comprueba que la respuesta JSON tenga un arreglo con el número esperado de elementos en la llave dada:
 
-    $response->assertJsonCount($count, $key = null);
+```php
+$response->assertJsonCount($count, $key = null);
+```
 
 <a name="assert-json-fragment"></a>
 #### assertJsonFragment
 
 Comprueba que la respuesta contenga el fragmento JSON dado:
 
-    $response->assertJsonFragment(array $data);
+```php
+$response->assertJsonFragment(array $data);
+```
 
 <a name="assert-json-missing"></a>
 #### assertJsonMissing
 
 Comprueba que la respuesta no contenga el fragmento JSON dado:
 
-    $response->assertJsonMissing(array $data);
+```php
+$response->assertJsonMissing(array $data);
+```
 
 <a name="assert-json-missing-exact"></a>
 #### assertJsonMissingExact
 
 Comprueba que la respuesta no contenga el fragmento exacto JSON:
 
-    $response->assertJsonMissingExact(array $data);
+```php
+$response->assertJsonMissingExact(array $data);
+```
 
 <a name="assert-json-missing-validation-errors"></a>
 #### assertJsonMissingValidationErrors
 
 Comprueba que la respuesta no contenga errores de validación JSON para la llaves dadas:
 
-    $response->assertJsonMissingValidationErrors($keys);
+```php
+$response->assertJsonMissingValidationErrors($keys);
+```
 
 <a name="assert-json-structure"></a>
 #### assertJsonStructure
 
 Comprueba que la respuesta tenga una estructura JSON dada:
 
-    $response->assertJsonStructure(array $structure);
+```php
+$response->assertJsonStructure(array $structure);
+```
 
 <a name="assert-json-validation-errors"></a>
 #### assertJsonValidationErrors
 
-Comprueba que la respuesta tenga los errores de validación JSON dados para las claves dadas:
+Comprueba que la respuesta tenga los errores de validación JSON dados:
 
-    $response->assertJsonValidationErrors($keys);
+```php
+$response->assertJsonValidationErrors(array $data);
+```
 
 <a name="assert-location"></a>
 #### assertLocation
 
 Comprueba que la respuesta tenga el valor URI dado en el encabezado `Location`:
 
-    $response->assertLocation($uri);
+```php
+$response->assertLocation($uri);
+```
 
 <a name="assert-not-found"></a>
 #### assertNotFound
 
 Comprueba que la respuesta tenga un código de estado "no encontrado":
 
-    $response->assertNotFound();
+```php
+$response->assertNotFound();
+```
 
 <a name="assert-ok"></a>
 #### assertOk
 
 Comprueba que la respuesta tenga un código de estado 200:
 
-    $response->assertOk();
+```php
+$response->assertOk();
+```
 
 <a name="assert-plain-cookie"></a>
 #### assertPlainCookie
 
 Comprueba que la respuesta contenga el cookie dado (desencriptado):
 
-    $response->assertPlainCookie($cookieName, $value = null);
+```php
+$response->assertPlainCookie($cookieName, $value = null);
+```
 
 <a name="assert-redirect"></a>
 #### assertRedirect
 
 Comprueba que la respuesta es una redirección a una URI dada:
 
-    $response->assertRedirect($uri);
+```php
+$response->assertRedirect($uri);
+```
 
 <a name="assert-see"></a>
 #### assertSee
 
 Comprueba que la cadena dada esté contenida dentro de la respuesta:
 
-    $response->assertSee($value);;
+```php
+$response->assertSee($value);;
+```
 
 <a name="assert-see-in-order"></a>
 #### assertSeeInOrder
 
 Comprueba que las cadenas dadas estén en orden dentro de la respuesta:
 
-    $response->assertSeeInOrder(array $values);
+```php
+$response->assertSeeInOrder(array $values);
+```
 
 <a name="assert-see-text"></a>
 #### assertSeeText
 
 Comprueba que la cadena dada esté contenida dentro del texto de la respuesta:
 
-    $response->assertSeeText($value);
+```php
+$response->assertSeeText($value);
+```
 
 <a name="assert-see-text-in-order"></a>
 #### assertSeeTextInOrder
 
 Comprueba que las cadenas dadas estén en orden dentro del texto de respuesta:
 
-    $response->assertSeeTextInOrder(array $values);
+```php
+$response->assertSeeTextInOrder(array $values);
+```
 
 <a name="assert-session-has"></a>
 #### assertSessionHas
 
 Comprueba que la sesión contenga la porción dada de datos:
 
-    $response->assertSessionHas($key, $value = null);
+```php
+$response->assertSessionHas($key, $value = null);
+```
 
 <a name="assert-session-has-all"></a>
 #### assertSessionHasAll
 
 Comprueba que la sesión tenga una lista dada de valores:
 
-    $response->assertSessionHasAll(array $data);
+```php
+$response->assertSessionHasAll(array $data);
+```
 
 <a name="assert-session-has-errors"></a>
 #### assertSessionHasErrors
 
 Comprueba que la sesión contenga un error para el campo dado:
 
-    $response->assertSessionHasErrors(array $keys, $format = null, $errorBag = 'default');
+```php
+$response->assertSessionHasErrors(array $keys, $format = null, $errorBag = 'default');
+```
 
 <a name="assert-session-has-errors-in"></a>
 #### assertSessionHasErrorsIn
 
 Comprueba que la sesión tenga los errores dados:
 
-    $response->assertSessionHasErrorsIn($errorBag, $keys = [], $format = null);
+```php
+$response->assertSessionHasErrorsIn($errorBag, $keys = [], $format = null);
+```
 
 <a name="assert-session-has-no-errors"></a>
 #### assertSessionHasNoErrors
 
 Comprueba que la sesión no contenga errores:
 
-    $response->assertSessionHasNoErrors();
+```php
+$response->assertSessionHasNoErrors();
+```
 
 <a name="assert-session-doesnt-have-errors"></a>
 #### assertSessionDoesntHaveErrors
 
 Comprueba que la sesión no contenga errores para las llaves dadas:
 
-    $response->assertSessionDoesntHaveErrors($keys = [], $format = null, $errorBag = 'default');
+```php
+$response->assertSessionDoesntHaveErrors($keys = [], $format = null, $errorBag = 'default');
+```
 
 <a name="assert-session-missing"></a>
 #### assertSessionMissing
 
 Comprueba que la sesión no contenga la llave dada:
 
-    $response->assertSessionMissing($key);
+```php
+$response->assertSessionMissing($key);
+```
 
 <a name="assert-status"></a>
 #### assertStatus
 
 Comprueba que la respuesta tenga un código dado:
 
-    $response->assertStatus($code);
+```php
+$response->assertStatus($code);
+```
 
 <a name="assert-successful"></a>
 #### assertSuccessful
 
-Comprueba que la respuesta tenga un código de estado de éxito:
+Comprueba que la respuesta tenga un código de estado de éxito (200):
 
-    $response->assertSuccessful();
+```php
+$response->assertSuccessful();
+```
+
+<a name="assert-unauthorized"></a>
+#### assertUnauthorized
+
+Comprueba que la respuesta tiene un código de estado sin autorización (401):
+
+```php
+$response->assertUnauthorized();
+```
 
 <a name="assert-view-has"></a>
 #### assertViewHas
 
 Comprueba que la vista de la respuesta dada contiene los valores indicados:
 
-    $response->assertViewHas($key, $value = null);
+```php
+$response->assertViewHas($key, $value = null);
+```
 
 <a name="assert-view-has-all"></a>
 #### assertViewHasAll
 
 Comprueba que la vista de la respuesta tiene una lista de datos:
 
-    $response->assertViewHasAll(array $data);
+```php
+$response->assertViewHasAll(array $data);
+```
 
 <a name="assert-view-is"></a>
 #### assertViewIs
 
 Comprueba que la vista dada fue retornada por la ruta:
 
-    $response->assertViewIs($value);
+```php
+$response->assertViewIs($value);
+```
 
 <a name="assert-view-missing"></a>
 #### assertViewMissing
 
 Comprueba que a la vista de la respuesta le está faltando una porción de datos enlazados:
 
-    $response->assertViewMissing($key);
+```php
+$response->assertViewMissing($key);
+```
 
 <a name="authentication-assertions"></a>
-### Aserciones de Autenticación
+### Aserciones de autenticación
 
 Laravel también proporciona una variedad de aserciones relacionadas con la autenticación para tus pruebas [PHPUnit](https://phpunit.de/):
 
