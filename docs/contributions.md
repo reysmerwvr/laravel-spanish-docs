@@ -1,16 +1,16 @@
 # Guía De Contribución
 
-- [Reporte De Errores](#bug-reports)
-- [Discusión De Desarrollo De Código](#core-development-discussion)
+- [Reporte de errores](#bug-reports)
+- [Discusión sobre el desarrollo del núcleo](#core-development-discussion)
 - [¿Cuál rama?](#which-branch)
-- [Assets Compilados](#compiled-assets)
-- [Vulnerabilidades De Seguridad](#security-vulnerabilities)
-- [Estilo De Código](#coding-style)
+- [Recursos compilados](#compiled-assets)
+- [Vulnerabilidades de seguridad](#security-vulnerabilities)
+- [Estilo de código](#coding-style)
     - [PHPDoc](#phpdoc)
     - [StyleCI](#styleci)
 
 <a name="bug-reports"></a>
-## Reportes De Errores
+## Reportes de errores
 
 Para fomentar la colaboración activa, Laravel alenta fuertemente el uso de pull requests, no solo reportes de errores. "Los reportes de errores" pueden además ser enviados en el formulario de un pull request que contenga un test fallido.
 
@@ -20,7 +20,6 @@ Recuerda, los reportes de errores son creados con la esperanza de que otros con 
 
 El código fuente de Laravel es manejado en GitHub, y allí están los repositorios para cada uno de los proyectos de Laravel:
 
-<div class="content-list" markdown="1">
 - [Laravel Application](https://github.com/laravel/laravel)
 - [Laravel Art](https://github.com/laravel/art)
 - [Laravel Documentation](https://github.com/laravel/docs)
@@ -36,10 +35,13 @@ El código fuente de Laravel es manejado en GitHub, y allí están los repositor
 - [Laravel Socialite](https://github.com/laravel/socialite)
 - [Laravel Telescope](https://github.com/laravel/telescope)
 - [Laravel Website](https://github.com/laravel/laravel.com)
-</div>
+
+::: danger Nota importante sobre la traducción
+Los reportes sobre errores o detalles encontrados en esta traducción deben ser realizados en el repositorio oficial de la traducción.
+:::
 
 <a name="core-development-discussion"></a>
-## Discusión De Desarrollo De Código
+## Discusión sobre el desarrollo del núcleo
 
 Tu puedes proponer nuevas funcionalidades o mejoras del comportamiento existente de Laravel en el [tablero de ideas](https://github.com/laravel/ideas/issues) de ideas de Laravel. Si propones una nueva funcionalidad, esté dispuesto a implementar al menos parte del código que se necesitaría para completar la funcionalidad.
 
@@ -48,16 +50,16 @@ Discusiones informales sobre errores, nuevas funcionalidades e implementación d
 <a name="which-branch"></a>
 ## ¿Cuál rama?
 
-**Todas** las correcciones de errores deben ser enviadas a la última rama estable o a la [actual rama LTS](/docs/{{version}}/releases#support-policy). Las correcciones de errores **nunca** deben ser enviadas a la rama `master` a menos que ellos reparen funcionalidades que existan solo en los próximos lanzamientos.
+**Todas** las correcciones de errores deben ser enviadas a la última rama estable o a la [actual rama LTS](/releases.html#support-policy). Las correcciones de errores **nunca** deben ser enviadas a la rama `master` a menos que ellos reparen funcionalidades que existan solo en los próximos lanzamientos.
 
-Funcionalidades **menores** que son **totalmente compatible** con la versión actual pueden enviarse a la última rama estable.
+Funcionalidades **menores** que son **totalmente compatible** con la versión actual de Laravel pueden enviarse a la última rama estable.
 
-Las nuevas funcionalidades **mayores** deben siempre ser enviadas a la rama `master`, la cual contiene el próximo lanzamiento.
+Las nuevas funcionalidades **mayores** deben siempre ser enviadas a la rama `master`, la cual contiene el próximo lanzamiento de Laravel.
 
 Si no estás seguro si tu funcionalidad califica como mayor o menor, por favor pregúntale a Taylor Otwell en el canal `#internals` del [servidor Discord de Laravel](https://discordapp.com/invite/mPZNm7A).
 
 <a name="compiled-assets"></a>
-## Assets Compilados
+## Recursos compilados
 
 Si estás enviando un cambio que afectará un archivo compilado, tal como muchos de los archivos en `resources/sass` o `resources/js` del repositorio `laravel/laravel`, no hagas commit de los archivos compilados. Debido a su gran tamaño, ellos no pueden realistamente ser revisado por el encargado. Esto podría ser usado como una forma de inyectar código malicioso dentro de Laravel. Para evitar esto de manera defensiva, todos los archivos compilados serán generados y confirmados por los mantenedores de Laravel.
 
@@ -67,7 +69,7 @@ Si estás enviando un cambio que afectará un archivo compilado, tal como muchos
 Si tu descubres una vulnerabilidad de seguridad dentro de Laravel, por favor envía un email a Taylor Otwell a <a href="mailto:taylor@laravel.com">taylor@laravel.com</a>. Todas las vulnerabilidades de seguridad serán tratadas con prontitud.
 
 <a name="coding-style"></a>
-## Estilo De Código
+## Estilo de código
 
 Laravel sigue el estándar de código [PSR-2](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md) y el estándar de auto carga [PSR-4](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader.md).
 
@@ -76,19 +78,21 @@ Laravel sigue el estándar de código [PSR-2](https://github.com/php-fig/fig-sta
 
 A continuación se muestra un ejemplo de un bloque de documentación válido de Laravel. Nota que el atributo `@param` es seguido por dos espacios, el tipo de argumento, dos espacios más y finalmente el nombre de la variable:
 
-    /**
-     * Register a binding with the container.
-     *
-     * @param  string|array  $abstract
-     * @param  \Closure|string|null  $concrete
-     * @param  bool  $shared
-     * @return void
-     * @throws \Exception
-     */
-    public function bind($abstract, $concrete = null, $shared = false)
-    {
-        //
-    }
+```php
+/**
+* Register a binding with the container.
+*
+* @param  string|array  $abstract
+* @param  \Closure|string|null  $concrete
+* @param  bool  $shared
+* @return void
+* @throws \Exception
+*/
+public function bind($abstract, $concrete = null, $shared = false)
+{
+    //
+}
+```
 
 <a name="styleci"></a>
 ### StyleCI
