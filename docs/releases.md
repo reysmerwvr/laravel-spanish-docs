@@ -1,20 +1,20 @@
 # Notas de Lanzamiento
 
-- [Esquema de Versiones](#versioning-scheme)
-- [Política de Soporte](#support-policy)
+- [Esquema de versiones](#versioning-scheme)
+- [Política de soporte](#support-policy)
 - [Laravel 5.8](#laravel-5.8)
 
 <a name="versioning-scheme"></a>
-## Esquema de Versiones
+## Esquema de versiones
 
 El esquema de versiones de Laravel mantiene la siguiente convención: `paradigma.mayor.menor`. Los lanzamientos mayores del framework se publican cada seis meses (febrero y agosto), mientras que los lanzamientos menores se liberan cada semana. Los lanzamientos menores **nunca** deben contener cambios de ruptura (breaking changes).
 
-Cuando haces referencia al framework Laravel o sus componentes desde tu aplicación o paquete, debes utilizar siempre una restricción de versión como `5.8.*`, ya que las versiones mayores de Laravel no incluyen cambios de ruptura. Sin embargo, nos esforzamos por asegurarnos siempre de que puedas actualizar a una nueva versión mayor en un día o menos.
+Cuando haces referencia al framework Laravel o sus componentes desde tu aplicación o paquete, debes utilizar siempre una restricción de versión como `5.7.*`, ya que las versiones mayores de Laravel no incluyen cambios de ruptura. Sin embargo, nos esforzamos por asegurarnos siempre de que puedas actualizar a una nueva versión mayor en un día o menos.
 
 Los lanzamientos de cambios de paradigma están separados por muchos años y representan cambios fundamentales en la arquitectura y las convenciones del framework. Actualmente, no hay ningún cambio de paradigma en desarrollo.
 
 <a name="support-policy"></a>
-## Política De Soporte
+## Política de soporte
 
 Para las versiones LTS, como Laravel 5.5, se proporcionan correcciones de errores durante 2 años y correcciones de seguridad por 3 años. Estas versiones proporcionan la ventana más larga de soporte y mantenimiento. Para las versiones generales, las correcciones de errores se proporcionan durante 6 meses y las correcciones de seguridad durante 1 año. Para todos los componentes adicionales, incluyendo Lumen, solo la última versión recibe correcciones de errores.
 
@@ -35,7 +35,7 @@ Para las versiones LTS, como Laravel 5.5, se proporcionan correcciones de errore
 
 Laravel 5.8 continúa las mejoras realizadas en Laravel 5.7 con la introducción de relaciones "has-one-through" (uno a través) en Eloquent, mejoras a la validación de correos electrónicos, registro automático de políticas de autorización basado en convenciones, driver para caché y sesiones con DynamoDB, mejoras a la configuración de la zona horaria para las tareas programadas, soporte para asignar múltiples guards autenticación a canales de broadcast, cumplimento de PSR-16 para drivers de caché, mejoras al comando `artisan serve`, soporte para PHPUnit 8.0, soporte para Carbon 2.0, soporte para Pheanstalk 4.0 y una variedad de otras correcciones de errores y mejoras de usabilidad.
 
-### Relaciones `HasOneThrough` De Eloquent
+### Relaciones `HasOneThrough` de Eloquent
 
 Eloquent ahora proporciona soporte para el tipo de relación `hasOneThrough`. Por ejemplo, imagina un modelo Supplier que tiene un (`hasOne`) modelo Account, y un modelo Account tiene un modelo AccountHistory. Puedes usar una relación `hasOneThrough` para acceder al historial de cuenta de un proveedor a través del modelo Account:
 
@@ -47,9 +47,9 @@ Eloquent ahora proporciona soporte para el tipo de relación `hasOneThrough`. Po
         return $this->hasOneThrough(AccountHistory::class, Account::class);
     }
 
-### Autodescubrimiento De Políticas De Autorización
+### Autodescubrimiento de políticas de autorización
 
-Cuando se utiliza Laravel 5.7, cada [política de autorización](/docs/{{version}}/authorization#creating-policies) debía ser asociada explícitamente y registrada en el `AuthServiceProvider` de tu aplicación:
+Cuando se utiliza Laravel 5.7, cada [política de autorización](/authorization.html#creating-policies) debía ser asociada explícitamente y registrada en el `AuthServiceProvider` de tu aplicación:
 
     /**
      * The policy mappings for the application.
@@ -70,7 +70,9 @@ Si deseas proporcionar tu propia lógica para el descubrimiento de políticas, p
         // return policy class name...
     });
 
-> {note} Cualquier política que se asigne explícitamente en su `AuthServiceProvider` tendrá prioridad sobre cualquier posible política de autodescubrimiento.
+::: danger Nota
+Cualquier política que se asigne explícitamente en su `AuthServiceProvider` tendrá prioridad sobre cualquier posible política de autodescubrimiento.
+:::
 
 ### Cumplimiento de PSR-16 para caché
 
@@ -87,7 +89,7 @@ Si estás pasando un número entero a cualquiera de estos métodos, debes actual
     // Laravel 5.7 / 5.8 - Store item for 30 seconds...
     Cache::put('foo', 'bar', now()->addSeconds(30));
 
-### Múltiples Guards de Autentificación para Broadcast
+### Múltiples guards de autentificación para broadcast
 
 En versiones anteriores de Laravel, los canales de transmisión privados y de presencia autenticaban al usuario a través de la protección de autenticación predeterminada de tu aplicación. A partir de Laravel 5.8, ahora puedes asignar múltiples "guards" (guardias) que deben autenticar la solicitud entrante:
 
@@ -97,15 +99,17 @@ En versiones anteriores de Laravel, los canales de transmisión privados y de pr
 
 ### Token Guard Token Hashing
 
-El `token` guard de Laravel, que proporciona autenticación de API básica, ahora admite el almacenamiento de tokens de API como hashes SHA-256. Esto proporciona una seguridad mejorada sobre el almacenamiento de tokens de texto sin formato. Para obtener más información sobre los tokens con hash, revisa la [documentación de autenticación API](/docs/{{version}}/api-authentication).
+El `token` guard de Laravel, que proporciona autenticación de API básica, ahora admite el almacenamiento de tokens de API como hashes SHA-256. Esto proporciona una seguridad mejorada sobre el almacenamiento de tokens de texto sin formato. Para obtener más información sobre los tokens con hash, revisa la [documentación de autenticación API](/api-authentication.html).
 
-> **Nota:** Si bien Laravel viene con una protección de autenticación simple basada en token, te recomendamos encarecidamente que consideres usar [Laravel Passport](/docs/{{version}}/passport) Para aplicaciones de producción robustas que ofrecen autenticación API.
+::: danger Nota
+Si bien Laravel viene con una protección de autenticación simple basada en token, te recomendamos encarecidamente que consideres usar [Laravel Passport](/passport.html) Para aplicaciones de producción robustas que ofrecen autenticación API.
+:::
 
-### Mejoras a la Validación de Correos Electrónicos
+### Mejoras a la validación de correos electrónicos
 
 Laravel 5.8 introduce mejoras en la lógica de validación de correos electrónicos subyacente del validador al adoptar el paquete `egulias/email-validator` utilizado por SwiftMailer. La lógica de validación de correos electrónicos anterior de Laravel a veces consideraba que los correos electrónicos válidos, como `example@bär.se`, eran inválidos.
 
-### Zona Horaria Predetermina Para Las Tareas Programadas
+### Zona horaria predetermina para las tareas programadas
 
 Laravel te permite personalizar la zona horaria de una tarea programada usando el método `timezone`:
 
@@ -125,11 +129,11 @@ Sin embargo, esto puede volverse engorroso y repetitivo si estás especificando 
         return 'America/Chicago';
     }
 
-### Eventos Para Modelos Pivote O Tabla intermedia 
+### Eventos para modelos pivote o tabla intermedia 
 
-En versiones anteriores de Laravel, [los eventos del modelo Eloquent](/docs/{{version}}/eloquent#events) no se disparaban al adjuntar, separar o sincronizar modelos personalizados de tabla intermedia / pivote de una relación de muchos a muchos. Cuando usas [modelos personalizados para tablas intermedias](/docs/{{version}}/eloquent-relationships#defining-custom-intermediate-table-models) en Laravel 5.8, los eventos aplicables al modelo ahora serán disparados.
+En versiones anteriores de Laravel, los eventos del modelo Eloquent no se distribuían al adjuntar, separar o sincronizar modelos personalizados de tabla intermedia / pivote de una relación de muchos a muchos. Cuando usas [modelos personalizados para tablas intermedias](/eloquent-relationships.html#defining-custom-intermediate-table-models) en Laravel 5.8, estos eventos ahora serán enviados.
 
-### Mejoras Al Método Call De Artisan
+### Mejoras al método call de Artisan
 
 Laravel te permite invocar comandos de Artisan a través del método `Artisan::call`. En versiones anteriores de Laravel, las opciones del comando se pasan a través de un arreglo como el segundo parámetro del método.
 
@@ -141,7 +145,7 @@ Sin embargo, Laravel 5.8 te permite pasar el comando completo, incluidas las opc
 
     Artisan::call('migrate:install --database=foo');
 
-### Métodos De Pruebas Mock Y Spy
+### Métodos de pruebas mock y spy
 
 Con el fin de hacer que los objetos de mocking sean más convenientes, se han agregado los nuevos métodos `mock` y` spy` a la clase de prueba base de Laravel. Estos métodos vinculan automáticamente la clase simulada en el contenedor. Por ejemplo: 
 
@@ -155,9 +159,9 @@ Con el fin de hacer que los objetos de mocking sean más convenientes, se han ag
         $mock->shouldReceive('process')->once();
     });
 
-### Preservación De Llaves Para Recursos Eloquent
+### Preservación de llaves para recursos Eloquent
 
-Al devolver una [colección de recursos Eloquent](/docs/{{version}}/eloquent-resources) desde una ruta, Laravel restablece las llaves de la colección para que estén en orden numérico simple:
+Al devolver una [colección de recursos Eloquent](/eloquent-resources.html) desde una ruta, Laravel restablece las llaves de la colección para que estén en orden numérico simple:
 
     use App\User;
     use App\Http\Resources\User as UserResource;
@@ -193,7 +197,7 @@ Cuando la propiedad `preserveKeys` se establece en `true`, las llaves de la cole
         return UserResource::collection(User::all()->keyBy->id);
     });
 
-### Método De Orden Superior `orWhere` Para Eloquent
+### Método de orden superior `orWhere` para Eloquent
 
 En versiones anteriores de Laravel, la combinación de múltiples scopes de modelo Eloquent a través de un operador de consulta `or` requería el uso de Closure callbacks:
 
@@ -206,15 +210,15 @@ Laravel 5.8 introduce un método de "orden superior" `orWhere` que te permite en
 
     $users = App\User::popular()->orWhere->active()->get();
 
-### Mejoras Al Comando Artisan Serve
+### Mejoras al comando artisan serve
 
 En versiones anteriores de Laravel, el comando `serve` de Artisan levantaría tu aplicación en el puerto `8000`. Si otro proceso del comando `serve` ya estaba escuchando en este puerto, un intento de levantar una segunda aplicación a través de `serve` fallaría. A partir de Laravel 5.8, `serve` ahora buscará los puertos disponibles hasta el puerto `8009`, lo que te permite levantar múltiples aplicaciones a la vez.
 
-### Mapeo de Archivos Blade
+### Mapeo de archivos blade
 
 Al compilar plantillas Blade, Laravel ahora agrega un comentario en la parte superior del archivo compilado que contiene la ruta a la plantilla Blade original.
 
-### Drivers de DynamoDB Para Cache Y Sesión
+### Drivers de DynamoDB para cache y sesión
 
 Laravel 5.8 introduce [DynamoDB](https://aws.amazon.com/dynamodb/) drivers para cache y sesión. DynamoDB es una base de datos NoSQL sin servidor proporcionada por Amazon Web Services. La configuración predeterminada para el driver de caché `dynamodb` se puede encontrar en el [archivo de configuración para cache](https://github.com/laravel/laravel/blob/master/config/cache.php) de Laravel 5.8.
 
