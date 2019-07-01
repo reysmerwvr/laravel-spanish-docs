@@ -585,7 +585,7 @@ Antes de difundir notificaciones, debes configurar y familiarizarse con los serv
 <a name="formatting-broadcast-notifications"></a>
 ### Formato de notificaciones de difusión
 
-EL canal `broadcast` difunde notificaciones usando los servicios [broadcasting de eventos](/broadcasting.html) de Laravel, permitiéndole al cliente JavaScript capturar notificaciones en tiempo real. Si una notificación posee soporte para difusión, debes definir un método `toBroadcast` en la clase de notificación. Este método recibirá una entidad `$notifiable` y debe devolver una instancia `BroadcastMessage`. Los datos devueltos estarán codificados como JSON y se difundirán al cliente JavaScript. Observemos un ejemplo del método `toBroadcast`:
+EL canal `broadcast` difunde notificaciones usando los servicios [broadcasting de eventos](/broadcasting.html) de Laravel, permitiéndole al cliente JavaScript capturar notificaciones en tiempo real. Si una notificación posee soporte para difusión, debes definir un método `toBroadcast` en la clase de notificación. Este método recibirá una entidad `$notifiable` y debe devolver una instancia `BroadcastMessage`. Si el método `toBroadcast` no existe, el método `toArray` será usado para recopilar los datos que deberían ser transmitidos. Los datos devueltos estarán codificados como JSON y se difundirán al cliente JavaScript. Observemos un ejemplo del método `toBroadcast`:
 
 ```php
 use Illuminate\Notifications\Messages\BroadcastMessage;
