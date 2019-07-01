@@ -286,6 +286,44 @@ class SendShipmentNotification implements ShouldQueue
 }
 ```
 
+#### Cola condicional de listeners
+
+Algunas veces, necesitarás determinar si un listener debe ser agregado a una cola en base a datos que sólo están disponibles en tiempo de ejecución. Para lograr esto, un método `shouldQueue` puede ser agregar a un listener para determinar si el listener debe ser agregado a una cola y ejecutado de forma sincronica:
+
+```php
+<?php
+
+namespace App\Listeners;
+
+use App\Events\OrderPlaced;
+use Illuminate\Contracts\Queue\ShouldQueue;
+
+class RewardGiftCard implements ShouldQueue
+{
+    /**
+    * Reward a gift card to the customer.
+    *
+    * @param  \App\Events\OrderPlaced  $event
+    * @return void
+    */
+    public function handle(OrderPlaced $event)
+    {
+        //
+    }
+
+    /**
+    * Determine whether the listener should be queued.
+    *
+    * @param  \App\Events\OrderPlaced  $event
+    * @return bool
+    */
+    public function shouldQueue(OrderPlaced $event)
+    {
+        return $event->order->subtotal >= 5000;
+    }
+}
+```
+
 <a name="manually-accessing-the-queue"></a>
 ### Accediendo manualmente a la cola
 
