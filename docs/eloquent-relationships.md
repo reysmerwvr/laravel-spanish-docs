@@ -20,6 +20,7 @@
     - [Métodos de relación vs. propiedades dinámicas](#relationship-methods-vs-dynamic-properties)
     - [Consultando la existencia de relación](#querying-relationship-existence)
     - [Consultando la ausencia de relación](#querying-relationship-absence)
+    - [Consultando relaciones polimorficas](#querying-polymorphic-relationships)
     - [Contando modelos relacionados](#counting-related-models)
 - [Precarga (eager loading)](#eager-loading)
     - [Restringiendo precargas](#constraining-eager-loads)
@@ -1049,6 +1050,49 @@ use Illuminate\Database\Eloquent\Builder;
 
 $posts = App\Post::whereDoesntHave('comments.author', function (Builder $query) {
     $query->where('banned', 1);
+})->get();
+```
+
+<a name="querying-polymorphic-relationships"></a>
+### Consultando relaciones polimorficas
+
+Para consultar la existencia de relaciones `MorphTo`, puedes usar el método `whereHasMorph` y sus métodos correspondientes:
+
+```php
+$comments = App\Comment::whereHasMorph(
+    'commentable', 
+    ['App\Post', 'App\Video'], 
+    function ($query) {
+        $query->where('title', 'like', 'foo%');
+    }
+)->get();
+
+$comments = App\Comment::doesntHaveMorph(
+    'commentable', 
+    ['App\Post', 'App\Video']
+)->get();    
+```
+
+Puedes usar el parametro `$type` para agregar diferentes restricciones dependiendo del modelo relacionado:
+
+```php
+$comments = App\Comment::whereHasMorph(
+    'commentable', 
+    ['App\Post', 'App\Video'], 
+    function ($query, $type) {
+        $query->where('title', 'like', 'foo%');
+        if ($type === 'App\Post') {
+            $query->orWhere('content', 'like', 'foo%');
+        }
+    }
+)->get();            
+```
+
+En lugar de pasar un arreglo de posibles modelos polimorficos, puedes proporcionar un `*` como comodín y dejar que Laravel retorne todos los posibles tipos polimorficos desde la base de datos. Laravel ejecutará una solicitud adicional para poder realizar esta operación:
+
+```php
+$comments = App\Comment::whereHasMorph('commentable', '*', function ($query) {
+    $query->where('title', 'like', 'foo%');
 })->get();
 ```
 
