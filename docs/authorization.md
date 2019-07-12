@@ -483,7 +483,7 @@ Los siguientes métodos de controlador serán mapeados con su método de políti
 | destroy               | delete             |
 
 ::: tip
-Puedes usar el comando `make:policy` con la opción `--model` para rápidamente generar una clase de política para un modelo dado: `php artisan make:policy PostPolicy --model=Post`.
+Puedes usar el comando `make:policy` con la opción `--model` para generar rápidamente una clase de política para un modelo dado: `php artisan make:policy PostPolicy --model=Post`.
 :::
 
 <a name="via-blade-templates"></a>
