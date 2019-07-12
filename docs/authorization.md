@@ -87,7 +87,7 @@ Gate::define('posts.update', 'App\Policies\PostPolicy@update');
 Gate::define('posts.delete', 'App\Policies\PostPolicy@delete');
 ```
 
-Por defecto, las habilidades `view`, `create`, `update`, y `delete` serán definidas. Además puedes sobrescribir las habilidades por defecto pasando un arreglo como tercer argumento al método `resource`. Las llaves del arreglo definen los nombre de las habilidades mientras que los valores definen los nombres de los métodos. Por ejemplo, el siguiente código creará dos nuevas definiciones de Gate - `posts.image` y `posts.photo`:
+Por defecto, las habilidades `view`, `create`, `update`, y `delete` serán definidas. Además puedes sobrescribir las habilidades por defecto pasando un arreglo como tercer argumento al método `resource`. Las llaves del arreglo definen los nombres de las habilidades mientras que los valores definen los nombres de los métodos. Por ejemplo, el siguiente código creará dos nuevas definiciones de Gate - `posts.image` y `posts.photo`:
 
 ```php
 Gate::resource('posts', 'PostPolicy', [
@@ -164,7 +164,7 @@ Puedes generar una política usando el [comando de Artisan](/artisan.html) `make
 php artisan make:policy PostPolicy
 ```
 
-El comando `make:policy` generar una clase de política vacía. Si quieres generar una clase con los métodos de política para un "CRUD" básico ya incluidos en la clase, puedes especificar la opción `--model` al ejecutar el comando:
+El comando `make:policy` genera una clase de política vacía. Si quieres generar una clase con los métodos de política para un "CRUD" básico ya incluidos en la clase, puedes especificar la opción `--model` al ejecutar el comando:
 
 ```php
 php artisan make:policy PostPolicy --model=Post
@@ -266,7 +266,7 @@ class PostPolicy
 }
 ```
 
-Puedes continuar definiendo métodos adicionales en la política como sea necesario para las diferentes acciones que esté autorice. Por ejemplo, puedes definir métodos `view` o `delete` para autorizar varias acciones de `Post`, pero recuerda que eres libre de darle los nombres que quieras a los métodos de la política.
+Puedes continuar definiendo métodos adicionales en la política como sea necesario para las diferentes acciones que este autorice. Por ejemplo, puedes definir métodos `view` o `delete` para autorizar varias acciones de `Post`, pero recuerda que eres libre de darle los nombres que quieras a los métodos de la política.
 
 ::: tip
 Si usas la opción `--model` cuando generes tu política con el comando de Artisan, éste contendrá métodos para las acciones `view`, `create`, `update`, `delete`, `restore` y `forceDelete`.
@@ -382,7 +382,7 @@ Route::put('/post/{post}', function (Post $post) {
 })->middleware('can:update,post');
 ```
 
-En este ejemplo, estamos pasando al middleware `can` dos argumentos, el primero es el nombre de la acción que deseamos autorizar y el segundo es el parámetro de la ruta que deseamos pasar al método de la política. En este caso, como estamos usando [implicit model binding](/routing.html#implicit-binding), un modelo `Post` ser pasado al método de la política. Si el usuario no está autorizado a ejecutar la acción dada, el middleware generará una respuesta HTTP con el código de estatus `403`.
+En este ejemplo, estamos pasando al middleware `can` dos argumentos, el primero es el nombre de la acción que deseamos autorizar y el segundo es el parámetro de la ruta que deseamos pasar al método de la política. En este caso, como estamos usando [implicit model binding](/routing.html#implicit-binding), un modelo `Post` será pasado al método de la política. Si el usuario no está autorizado a ejecutar la acción dada, el middleware generará una respuesta HTTP con el código de estatus `403`.
 
 #### Acciones que no requieren modelos
 
