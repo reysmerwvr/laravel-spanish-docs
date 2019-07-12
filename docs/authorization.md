@@ -158,7 +158,7 @@ Similar a la comprobación `before`, si el callback `after` retorna un resultado
 
 Los políticas son clases que organizan la lógica de autorización para un modelo o recurso en particular. Por ejemplo, si tu aplicación es un blog, puedes tener un modelo `Post` con su correspondiente `PostPolicy` para autorizar acciones de usuario como crear o actualizar posts.
 
-Puedes generar una política usando el comando `make:policy` [artisan command](/artisan.html). La política generada será ubicada en el directorio `app/Policies`. Si el directorio no existe en tu aplicación, Laravel lo creará por ti:
+Puedes generar una política usando el [comando de Artisan](/artisan.html) `make:policy`. La política generada será ubicada en el directorio `app/Policies`. Si el directorio no existe en tu aplicación, Laravel lo creará por ti:
 
 ```php
 php artisan make:policy PostPolicy
