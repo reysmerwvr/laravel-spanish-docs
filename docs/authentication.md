@@ -30,10 +30,10 @@
 ## Introducción
 
 ::: tip
-**¿Quieres comenzar rápido?** Simplemente ejecuta `php artisan make:auth` y `php artisan migrate` en una nueva aplicación de Laravel. Luego, dirigete en tu navegador a `http://tu-app.test/register` o cualquier otra URL asignada a tu aplicación. ¡Estos dos comandos se encargarán de generar todo el sistema de autenticación!
+**¿Quieres comenzar rápido?** Simplemente ejecuta `php artisan make:auth` y `php artisan migrate` en una nueva aplicación de Laravel. Luego, dirígete en tu navegador a `http://tu-app.test/register` o cualquier otra URL asignada a tu aplicación. ¡Estos dos comandos se encargarán de generar todo el sistema de autenticación!
 :::
 
-Laravel hace la implementación de la autenticación algo muy sencillo. De hecho, casi todo se configura para ti por defecto. El archivo de configuración de la autenticación está localizado en `config/auth.php`, el cual contiene varias opciones bien documentadas para ajustar el comportmiento de los servicios de autenticación.
+Laravel hace la implementación de la autenticación algo muy sencillo. De hecho, casi todo se configura para ti por defecto. El archivo de configuración de la autenticación está localizado en `config/auth.php`, el cual contiene varias opciones bien documentadas para ajustar el comportamiento de los servicios de autenticación.
 
 En esencia, las características de la autenticación de Laravel están compuestas de "guards" (guardias) y "providers" (proveedores). Los Guards definen cómo los usuarios son autenticados para cada petición. Por ejemplo, Laravel contiene un guard `session` el cual mantiene el estado utilizando el almacenamiento de sesión y las cookies.
 
@@ -46,9 +46,9 @@ Los proveedores definen cómo se retornan los usuarios de tu almacenamiento pers
 
 De manera predeterminada, Laravel incluye un [Modelo de Eloquent](/eloquent.html) `App\User` en tu directorio `app`. Este modelo puede ser utilizado por el controlador de autenticación predeterminado de Eloquent. Si tu aplicación no utiliza Eloquent, deberás utilizar el controlador de autenticación `database` el cual utiliza el constructor de consultas (query builder) de Laravel.
 
-Al crear el esquema de la base de datos para el modelo `App\User`, asegurate de que la columna password sea de al menos 60 caracteres de longitud. Mantener una longitud de columna de cadena predeterminada a 255 caracteres sería una buena opción.
+Al crear el esquema de la base de datos para el modelo `App\User`, asegúrate de que la columna password sea de al menos 60 caracteres de longitud. Mantener una longitud de columna de cadena predeterminada a 255 caracteres sería una buena opción.
 
-Además, debes verificar que tu tabla `users` (o equivalente) contenga un campo nulo, de tipo cadena llamado `remember_token` de 100 caracteres. Esta columna se usará para almacenar un token para los usuarios que seleccionen la opción "remember me" (recuérdame) cuando inicien sesión en tu aplicación.
+Además, debes verificar que tu tabla `users` (o equivalente) contenga un campo nulo de tipo cadena llamado `remember_token` de 100 caracteres. Esta columna se usará para almacenar un token para los usuarios que seleccionen la opción "remember me" (recuérdame) cuando inicien sesión en tu aplicación.
 
 <a name="authentication-quickstart"></a>
 ## Inicio rápido de autenticación
@@ -133,7 +133,7 @@ protected function guard()
 
 Para modificar los campos del formulario que son requeridos cuando se registren usuarios nuevos en tu aplicación, o para personalizar cómo los nuevos usuarios son almacenados en tu base de datos, puedes modificar la clase `RegisterController`. Esta clase es responsable de validar y crear usuarios nuevos en tu aplicación.
 
-El método `validator` de `RegisterController` contiene las reglas de validación para los usuarios nuevos de tu aplicación. Eres libre de modificar este metodo según te convenga.
+El método `validator` de `RegisterController` contiene las reglas de validación para los usuarios nuevos de tu aplicación. Eres libre de modificar este método según te convenga.
 
 El método `create` de `RegisterController` es responsable de crear registros nuevos de `App\User` en tu base de datos usando el [ORM Eloquent](/eloquent.html). Eres libre de modificar este método de acuerdo a las necesidades de tu base de datos.
 
@@ -231,7 +231,7 @@ protected function redirectTo($request)
 
 #### Especificar un guard
 
-Cuando adjuntes el middleware `auth` a una ruta, también puedes especificar cual guard deberá ser utilizado para autenticar al usuario. El guard especificado deberá corresponder a una de las llaves en el arreglo `guards` del archivo de configuración `auth.php`:
+Cuando adjuntes el middleware `auth` a una ruta, también puedes especificar cuál guard deberá ser utilizado para autenticar al usuario. El guard especificado deberá corresponder a una de las llaves en el arreglo `guards` del archivo de configuración `auth.php`:
 
 ```php
 public function __construct()
@@ -297,11 +297,13 @@ if (Auth::attempt(['email' => $email, 'password' => $password, 'active' => 1])) 
 }
 ```
 
-> {nota} En estos ejemplos, `email` no es una opción requerida, solamente es utilizado como ejemplo. Debes utilizar cualquier columna que corresponda a "username" en tu base de datos.
+::: danger Nota 
+En estos ejemplos, `email` no es una opción requerida, solamente es utilizado como ejemplo. Debes utilizar cualquier columna que corresponda a "username" en tu base de datos.
+:::
 
 #### Acceso a instancias específicas de guard
 
-Puedes especificar que instancia de guard deseas usar utilizando el método `guard` en el facade `Auth`. Esto te permitirá administrar la autentincación para partes separadas de tu aplicación utilizando modelos autenticables o tablas de usuarios independientes.
+Puedes especificar qué instancia de guard deseas usar utilizando el método `guard` en el facade `Auth`. Esto te permitirá administrar la autentincación para partes separadas de tu aplicación utilizando modelos autenticables o tablas de usuarios independientes.
 
 El nombre del guard pasado al método `guard` deberá corresponder a uno de los guards configurados en tu archivo de configuración `auth.php`:
 
@@ -443,7 +445,7 @@ Route::get('api/user', function () {
 <a name="logging-out"></a>
 ## Logging Out
 
-Para manualmente cerrar la sesión de un usuario en tu aplicación, puedes usar el método `logout` en el facade `Auth`. Esto limpiará la información de autenticación en la sesión del usuario:
+Para cerrar manualmente la sesión de un usuario en tu aplicación, puedes usar el método `logout` en el facade `Auth`. Esto limpiará la información de autenticación en la sesión del usuario:
 
 ```php
 use Illuminate\Support\Facades\Auth;
@@ -526,7 +528,7 @@ Como puedes ver en el ejemplo anterior, el callback pasado al método `extend` d
 
 La forma más sencilla de implementar un sistema de autenticación basado en peticiones HTTP es usando el método `Auth:viaRequest`. Este método te permite definir rápidamente tu proceso de autenticación usando sólo un Closure.
 
-Para comenzar, llama al método `Auth::viaRequest` dentro del método `boot` de tu `AuthServiceProvider`. El método `viaRequest` acepta el nombre de un driver de autenticación como su primer argumento. Este nombre puede ser cualquier cadena que describa tu guard personalizado. El segundo argumento pasado al método método debe ser un Closure que reciba la petición HTTP entrante y retorne una instancia de usuario o, si la autenticación falla, `null`:
+Para comenzar, llama al método `Auth::viaRequest` dentro del método `boot` de tu `AuthServiceProvider`. El método `viaRequest` acepta el nombre de un driver de autenticación como su primer argumento. Este nombre puede ser cualquier cadena que describa tu guard personalizado. El segundo argumento pasado al método debe ser un Closure que reciba la petición HTTP entrante y retorne una instancia de usuario o, si la autenticación falla, `null`:
 
 ```php
 use App\User;
@@ -548,7 +550,7 @@ public function boot()
 }
 ```
 
-Una vez que tu driver de autenticación personalizado ha sido definido, usalo como un driver dentro de la configuración de `guards` de tu archivo de configuración `auth.php`:
+Una vez que tu driver de autenticación personalizado ha sido definido, úsalo como un driver dentro de la configuración de `guards` de tu archivo de configuración `auth.php`:
 
 ```php
 'guards' => [
