@@ -168,7 +168,7 @@ class ComposerServiceProvider extends ServiceProvider
 }
 ```
 
-::: note
+::: danger Nota
 Recuerda, si creas un nuevo proveedor de servicio para contener tus registros de View Composers, necesitarás agregar el proveedor de servicio al arreglo `providers` en el archivo de configuración `config/app.php`.
 :::
 
