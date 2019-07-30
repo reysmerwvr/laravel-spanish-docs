@@ -220,6 +220,8 @@ No estás limitado a mostrar sólo el contenido de las variables pasadas a la vi
 The current UNIX timestamp is {{ time() }}.
 ```
 
+::: v-pre
+
 ::: tip
 Las declaraciones de Blade `{{  }}` son enviadas automáticamente mediante la función `htmlspecialchars` de PHP para prevenir ataques XSS.
 :::
