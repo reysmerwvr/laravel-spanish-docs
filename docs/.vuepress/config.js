@@ -10,6 +10,7 @@ module.exports = {
 			{ text: 'Inicio', link: '/' },
 			{ text: 'Glosario', link: '/glossary'},			
 			{ text: 'Créditos', link: '/credits' },
+			{ text: 'Descargar documentación', link: '/descargar-documentacion'},
 			{ text: 'Styde', link: 'https://styde.net/'},
        	],
 		search: true,
