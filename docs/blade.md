@@ -228,7 +228,9 @@ Las declaraciones de Blade `{{  }}` son enviadas automáticamente mediante la fu
 
 #### Mostrar datos no escapados
 
+::: v-pre
 De manera predeterminada, las declaraciónes `{{  }}` de Blade son enviadas mediante la función `htmlspecialchars` de PHP para prevenir ataques XSS. Si no deseas que tu información sea escapada, puedes utilizar la siguiente sintáxis:
+:::
 
 ```php
 Hello, {!! $name !!}.
