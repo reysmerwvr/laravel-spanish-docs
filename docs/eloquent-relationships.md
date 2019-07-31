@@ -960,8 +960,10 @@ $user->posts()
 En la mayoria de los casos, probablemente pretendes usar [grupos de restricciones](/queries.html#parameter-grouping) para agrupar logicamente las comprobaciones condicionales entre parentisis:
 
 ```php
+use Illuminate\Database\Eloquent\Builder;
+
 $user->posts()
-        ->where(function ($query) {
+        ->where(function (Builder $query) {
             return $query->where('active', 1)
                             ->orWhere('votes', '>=', 100);
         })
@@ -1061,10 +1063,12 @@ $posts = App\Post::whereDoesntHave('comments.author', function (Builder $query) 
 Para consultar la existencia de relaciones `MorphTo`, puedes usar el método `whereHasMorph` y sus métodos correspondientes:
 
 ```php
+use Illuminate\Database\Eloquent\Builder;
+
 $comments = App\Comment::whereHasMorph(
     'commentable', 
     ['App\Post', 'App\Video'], 
-    function ($query) {
+    function (Builder $query) {
         $query->where('title', 'like', 'foo%');
     }
 )->get();
@@ -1078,10 +1082,12 @@ $comments = App\Comment::doesntHaveMorph(
 Puedes usar el parametro `$type` para agregar diferentes restricciones dependiendo del modelo relacionado:
 
 ```php
+use Illuminate\Database\Eloquent\Builder;
+
 $comments = App\Comment::whereHasMorph(
     'commentable', 
     ['App\Post', 'App\Video'], 
-    function ($query, $type) {
+    function (Builder $query, $type) {
         $query->where('title', 'like', 'foo%');
         if ($type === 'App\Post') {
             $query->orWhere('content', 'like', 'foo%');
@@ -1093,7 +1099,9 @@ $comments = App\Comment::whereHasMorph(
 En lugar de pasar un arreglo de posibles modelos polimorficos, puedes proporcionar un `*` como comodín y dejar que Laravel retorne todos los posibles tipos polimorficos desde la base de datos. Laravel ejecutará una solicitud adicional para poder realizar esta operación:
 
 ```php
-$comments = App\Comment::whereHasMorph('commentable', '*', function ($query) {
+use Illuminate\Database\Eloquent\Builder;
+
+$comments = App\Comment::whereHasMorph('commentable', '*', function (Builder $query) {
     $query->where('title', 'like', 'foo%');
 })->get();
 ```
@@ -1125,9 +1133,11 @@ echo $posts[0]->comments_count;
 También puedes poner un alias al resultado de la cuenta de la relación, permitiendo múltiples cuentas en la misma relación:
 
 ```php
+use Illuminate\Database\Eloquent\Builder;
+
 $posts = App/post::withCount([
     'comments',
-    'comments as pending_comments_count' => function ($query) {
+    'comments as pending_comments_count' => function (Builder $query) {
         $query->where('approved', false);
     }
 ])->get();
@@ -1243,8 +1253,10 @@ En este ejemplo, vamos a asumir que los modelos `Èvent`, `Photo` y `Post` podr�
 Usando estas definiciones de modelos y relaciones, podríamos retornar instancias del modelo `ActivityFeed` y hacer eager load de todos los modelos `parentable` y sus respectivas relaciones anidadas:
 
 ```php
+use Illuminate\Database\Eloquent\Relations\MorphTo;
+
 $activities = ActivityFeed::query()
-    ->with(['parentable' => function ($morphTo) {
+    ->with(['parentable' => function (MorphTo $morphTo) {
         $morphTo->morphWith([
             Event::class => ['calendar'],
             Photo::class => ['tags'],
@@ -1317,7 +1329,9 @@ $books = App\Book::without('author')->get();
 Algunas veces puedes desear cargar previamente una relación, pero también especificar condiciones de consulta para la consulta de carga previa. Aquí está un ejemplo:
 
 ```php
-$users = App\User::with(['posts' => function ($query) {
+use Illuminate\Database\Eloquent\Builder;
+
+$users = App\User::with(['posts' => function (Builder $query) {
     $query->where('title', 'like', '%first%');
 }])->get();
 ```
@@ -1325,7 +1339,9 @@ $users = App\User::with(['posts' => function ($query) {
 En este ejemplo, Eloquent solamente precargará los posts donde la columna `title` del post contenga la palabra `first`. Puedes ejecutar otros métodos del [constructor de consulta](/queries.html) para personalizar más la operación de carga previa:
 
 ```php
-$users = App\User::with(['posts' => function ($query) {
+use Illuminate\Database\Eloquent\Builder;
+
+$users = App\User::with(['posts' => function (Builder $query) {
     $query->orderBy('created_at', 'desc');
 }])->get();
 ```
@@ -1350,7 +1366,9 @@ if ($someCondition) {
 Si necesitas establecer restricciones de consultas adicionales en la consulta de carga previa, puedes pasar un arreglo clave / valor con las relaciones que deseas cargar. Los valores del arreglo deberían ser instancias de `Closure`, las cuales reciben la instancia de consulta:
 
 ```php
-$books->load(['author' => function ($query) {
+use Illuminate\Database\Eloquent\Builder;
+
+$books->load(['author' => function (Builder $query) {
     $query->orderBy('published_date', 'asc');
 }]);
 ```
