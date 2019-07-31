@@ -85,7 +85,6 @@ Si estás utilizando Windows, puede que necesites habilitar la virtualización p
 - CouchDB
 - Crystal & Lucky Framework
 - Docker
-- Dot Net Core
 - Elasticsearch
 - Gearman
 - Go
@@ -94,6 +93,7 @@ Si estás utilizando Windows, puede que necesites habilitar la virtualización p
 - MariaDB
 - MinIO
 - MongoDB
+- MySQL 8
 - Neo4j
 - Oh My Zsh
 - Ruby & Rails
