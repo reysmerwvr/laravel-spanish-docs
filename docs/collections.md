@@ -96,6 +96,7 @@ Por el resto de esta documentación, discutiremos cada método disponible en la 
 [diffKeys](#method-diffkeys)
 [dump](#method-dump)
 [duplicates](#method-duplicates)
+[duplicatesStrict](#method-duplicatesstrict)
 [each](#method-each)
 [eachSpread](#method-eachspread)
 [every](#method-every)
@@ -558,8 +559,27 @@ El método `duplicates` obtiene y retorna valores duplicados de la colección:
     
     $collection->duplicates();
     
-    // [ 2 => 'a', 4 => 'b' ]
+    // [2 => 'a', 4 => 'b']
 ```
+
+If the collection contains arrays or objects, you can pass the key of the attributes that you wish to check for duplicate values:
+
+```php
+$employees = collect([
+    ['email' => 'abigail@example.com', 'position' => 'Developer'],
+    ['email' => 'james@example.com', 'position' => 'Designer'],
+    ['email' => 'victoria@example.com', 'position' => 'Developer'],
+])
+
+$employees->duplicates('position');
+
+// [2 => 'Developer']
+```
+
+<a name="method-duplicatesstrict"></a>
+#### `duplicatesStrict()`
+
+Este método tiene la misma firma que el método [`duplicates`](#method-duplicates), sin embargo, todos los valores son comparandos usando comparaciones "estrictas".
 
 <a name="method-each"></a>
 #### `each()`
