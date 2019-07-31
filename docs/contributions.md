@@ -24,7 +24,6 @@ El código fuente de Laravel es manejado en GitHub, y allí están los repositor
 - [Laravel Art](https://github.com/laravel/art)
 - [Laravel Documentation](https://github.com/laravel/docs)
 - [Laravel Cashier](https://github.com/laravel/cashier)
-- [Laravel Cashier for Braintree](https://github.com/laravel/cashier-braintree)
 - [Laravel Envoy](https://github.com/laravel/envoy)
 - [Laravel Framework](https://github.com/laravel/framework)
 - [Laravel Homestead](https://github.com/laravel/homestead)
@@ -86,6 +85,7 @@ A continuación se muestra un ejemplo de un bloque de documentación válido de 
 * @param  \Closure|string|null  $concrete
 * @param  bool  $shared
 * @return void
+*
 * @throws \Exception
 */
 public function bind($abstract, $concrete = null, $shared = false)
