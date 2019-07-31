@@ -45,7 +45,7 @@ Laravel se ha esforzado en hacer que toda la experiencia del desarrollo de PHP s
 
 Laravel Homestead es el box de Vagrant pre-empaquetado oficial que brinda un maravilloso entorno de desarrollo sin la necesidad de que tengas que instalar PHP, un serivor web, ni ningún otro servidor de software en tu máquina local. ¡Basta de preocuparte por estropear tu sistema operativo! Los boxes de Vagrant son completamente desechables. Si algo sale mal, simplemente puedes destruir y volver a crear el box en cuestión de minutos.
 
-Homestead puede ejecutarse en sistemas Windows, Mac y Linux e incluye el servidor Web Nginx, PHP 7.3, PHP 7.2, PHP 7.1, MySQL, PostgreSQL, Redis, Memcached, Node y todas las demás herramientas que necesitas para desarrollar aplicaciones de Laravel sorprendentes.
+Homestead puede ejecutarse en sistemas Windows, Mac y Linux e incluye el Nginx, PHP, MySQL, PostgreSQL, Redis, Memcached, Node y todas las demás herramientas que necesitas para desarrollar aplicaciones de Laravel sorprendentes.
 
 ::: danger Nota
 Si estás utilizando Windows, puede que necesites habilitar la virtualización por hardware (VT-x). Usualmente puede habilitarse en el BIOS. Si estás utilizando Hyper-V en un sistema UEFI puede que requieras también deshabilitar Hyper-V para poder acceder a VT-x.
@@ -59,6 +59,8 @@ Si estás utilizando Windows, puede que necesites habilitar la virtualización p
 - PHP 7.3
 - PHP 7.2
 - PHP 7.1
+- PHP 7.0
+- PHP 5.6
 - Nginx
 - MySQL
 - Sqlite3
@@ -599,7 +601,7 @@ Recuerda, Vagrant es inherentemente inseguro y estarás comparitendo tu máquina
 <a name="multiple-php-versions"></a>
 ### Múltiples versiones de PHP
 
-Homestead 6 introduce soporte para múltiples versiones de PHP en una misma máquina virtual. Puedes especificar qué versión de PHP deseas utilizar para un sitio en particular desde tu archivo `Homestead.yaml`. Las versiones disponibles de PHP son "7.1", "7.2" y "7.3" (por defecto):
+Homestead 6 introduce soporte para múltiples versiones de PHP en una misma máquina virtual. Puedes especificar qué versión de PHP deseas utilizar para un sitio en particular desde tu archivo `Homestead.yaml`. Las versiones disponibles de PHP son "5.6", "7.0", "7.1", "7.2" y "7.3" (por defecto):
 
 ```php
 sites:
@@ -611,6 +613,8 @@ sites:
 Además, puedes utilizar cualquiera de las versiones soportadas de PHP desde el CLI:
 
 ```php
+php5.6 artisan list
+php7.0 artisan list
 php7.1 artisan list
 php7.2 artisan list
 php7.3 artisan list
