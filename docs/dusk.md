@@ -242,7 +242,7 @@ class ExampleTest extends DuskTestCase
         $this->browse(function ($browser) use ($user) {
             $browser->visit('/login')
                     ->type('email', $user->email)
-                    ->type('password', 'secret')
+                    ->type('password', 'password')
                     ->press('Login')
                     ->assertPathIs('/home');
         });
