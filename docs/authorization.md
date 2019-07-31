@@ -517,6 +517,16 @@ Estas directivas son accesos directos convenientes para no tener que escribir se
 @endunless
 ```
 
+También puedes determinar si un usuario tiene habilidad de autorización desde una lista de habilidades dadas. Para lograr esto, usa la directiva `@canary`:
+
+```php
+@canany(['update', 'view'])
+    //
+@elsecanany(['create', 'delete'])
+    //
+@endcanany
+```
+
 #### Acciones que no requieren modelos
 
 Así como otros métodos de autorización, puedes pasar el nombre de una clase a las directivas `@can` y `@cannot` si la acción no requiere una instancia de un modelo:
