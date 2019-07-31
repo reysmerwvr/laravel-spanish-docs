@@ -1,3 +1,9 @@
+---
+meta:
+  - name: "google-site-verification"
+    content: a8baxwNufWgibAyyyVSStbqTm5YZ6y7JwS-kGLhtuDA
+---
+
 # Documentación de Laravel 5.8 en español
 
 Bienvenido a la documentación de Laravel 5.8 en español.
