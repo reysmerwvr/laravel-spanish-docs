@@ -644,7 +644,7 @@ use Illuminate\Database\Eloquent\Model;
 class Image extends Model
 {
     /**
-    * Get all of the owning imageable models.
+    * Get the owning imageable model.
     */
     public function imageable()
     {
@@ -734,7 +734,7 @@ use Illuminate\Database\Eloquent\Model;
 class Comment extends Model
 {
     /**
-    * Get all of the owning commentable models.
+    * Get the owning commentable model.
     */
     public function commentable()
     {
