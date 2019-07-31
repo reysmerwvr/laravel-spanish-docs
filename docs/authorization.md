@@ -48,6 +48,10 @@ public function boot()
 {
     $this->registerPolicies();
 
+    Gate::define('edit-settings', function ($user) {
+        return $user->isAdmin;
+    });
+
     Gate::define('update-post', function ($user, $post) {
         return $user->id == $post->user_id;
     });
@@ -102,6 +106,10 @@ Gate::resource('posts', 'PostPolicy', [
 Para autorizar una acción usando gates, deberías usar los métodos `allows` o `denies`. Nota que no necesitas pasar el usuario autenticado cuando llames a estos métodos. Laravel se ocupará de esto por ti de forma automática:
 
 ```php
+if (Gate::allows('edit-settings')) {
+    // The current user can edit settings
+}
+
 if (Gate::allows('update-post', $post)) {
     // The current user can update the post...
 }
@@ -120,6 +128,18 @@ if (Gate::forUser($user)->allows('update-post', $post)) {
 
 if (Gate::forUser($user)->denies('update-post', $post)) {
     // The user can't update the post...
+}
+```
+
+Puedes autorizar múltiples acciones a la vez con los métodos `any` o `none`:
+
+```php
+if (Gate::any(['update-post', 'delete-post'], $post)) {
+    // The user can update or delete the post
+}
+
+if (Gate::none(['update-post', 'delete-post'], $post)) {
+    // The user cannot update or delete the post
 }
 ```
 
@@ -520,10 +540,10 @@ Estas directivas son accesos directos convenientes para no tener que escribir se
 También puedes determinar si un usuario tiene habilidad de autorización desde una lista de habilidades dadas. Para lograr esto, usa la directiva `@canary`:
 
 ```php
-@canany(['update', 'view'])
-    //
-@elsecanany(['create', 'delete'])
-    //
+@canany(['update', 'view', 'delete'], $post)
+    // The current user can update, view, or delete the post
+@elsecanany(['create'], \App\Post::class)
+    // The current user can create a post
 @endcanany
 ```
 
