@@ -79,15 +79,29 @@ Si estás utilizando Windows, puede que necesites habilitar la virtualización p
 ### Software opcional
 
 - Apache
+- Blackfire
+- Cassandra
+- Chronograf
+- CouchDB
 - Crystal & Lucky Framework
+- Docker
 - Dot Net Core
 - Elasticsearch
+- Gearman
 - Go
+- Grafana
+- InfluxDB
 - MariaDB
+- MinIO
 - MongoDB
 - Neo4j
 - Oh My Zsh
 - Ruby & Rails
+- Open Resty
+- PM2
+- Python
+- RabbitMQ
+- Solr
 - Webdriver & Laravel Dusk Utilities
 - Zend Z-Ray
 
