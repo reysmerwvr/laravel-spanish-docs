@@ -1336,7 +1336,7 @@ Algunas veces puedes desear cargar previamente una relación, pero también espe
 ```php
 use Illuminate\Database\Eloquent\Builder;
 
-$users = App\User::with(['posts' => function (Builder $query) {
+$users = App\User::with(['posts' => function ($query) {
     $query->where('title', 'like', '%first%');
 }])->get();
 ```
@@ -1346,7 +1346,7 @@ En este ejemplo, Eloquent solamente precargará los posts donde la columna `titl
 ```php
 use Illuminate\Database\Eloquent\Builder;
 
-$users = App\User::with(['posts' => function (Builder $query) {
+$users = App\User::with(['posts' => function ($query) {
     $query->orderBy('created_at', 'desc');
 }])->get();
 ```
@@ -1373,7 +1373,7 @@ Si necesitas establecer restricciones de consultas adicionales en la consulta de
 ```php
 use Illuminate\Database\Eloquent\Builder;
 
-$books->load(['author' => function (Builder $query) {
+$books->load(['author' => function ($query) {
     $query->orderBy('published_date', 'asc');
 }]);
 ```
