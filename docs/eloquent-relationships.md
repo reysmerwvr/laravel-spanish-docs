@@ -903,7 +903,9 @@ Relation::morphMap([
 ]);
 ```
 
-Puedes registar el `morphMap` en la función `boot` de tu `AppServiceProvider` o crear un proveedor de servicios separado si lo deseas.   
+::: tip TIP
+Al agregar un "morph map" a tu aplicación existente, cada valor de la columna de morfología `*_type` en tu base de datos que aún contenga una clase completamente calificada necesitará ser convertida a su nombre de "mapa".
+:::
 
 <a name="querying-relations"></a>
 ## Consultando relaciones
