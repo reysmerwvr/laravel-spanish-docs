@@ -36,6 +36,10 @@ Schema::table('users', function ($table) {
 
 Una vez que la migración ha sido creada, ejecuta el comando de Artisan `migrate`.
 
+::: tip TIP
+Si eliges usar un nombre de columna diferente, asegurate de actualizar la opción `storage_key` de la configuración de tu API en el archivo `config/auth.php`.
+:::
+
 <a name="generating-tokens"></a>
 ## Generando tokens
 
