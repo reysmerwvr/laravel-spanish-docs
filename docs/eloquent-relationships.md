@@ -1065,6 +1065,7 @@ Para consultar la existencia de relaciones `MorphTo`, puedes usar el método `wh
 ```php
 use Illuminate\Database\Eloquent\Builder;
 
+// Retrieve comments associated to posts or videos with a title like foo%...
 $comments = App\Comment::whereHasMorph(
     'commentable', 
     ['App\Post', 'App\Video'], 
@@ -1073,9 +1074,13 @@ $comments = App\Comment::whereHasMorph(
     }
 )->get();
 
-$comments = App\Comment::doesntHaveMorph(
+// Retrieve comments associated to posts with a title not like foo%...
+$comments = App\Comment::whereDoesntHaveMorph(
     'commentable', 
-    ['App\Post', 'App\Video']
+    'App\Post', 
+    function (Builder $query) {
+        $query->where('title', 'like', 'foo%');
+    }
 )->get();    
 ```
 
