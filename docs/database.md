@@ -7,7 +7,7 @@
     - [Conexiones de lectura y escritura](#read-and-write-connections)
     - [Usando múltiples conexiones de bases de datos](#using-multiple-database-connections)
 - [Ejecutando consultas SQL nativas](#running-queries)
-    - [Listeners de eventos de consultas](#listening-for-query-events)
+- [Listeners de eventos de consultas](#listening-for-query-events)
 - [Transacciones de bases de datos](#database-transactions)
 
 <a name="introduction"></a>
@@ -201,7 +201,7 @@ DB::statement('drop table users');
 ```
 
 <a name="listening-for-query-events"></a>
-### Listeners de eventos de consultas
+## Listeners de eventos de consultas
 
 Si prefieres recibir cada consulta SQL ejecutada por tu aplicación, puedes usar el método `listen`. Este método es útil para registrar consultas o depurar. Puedes registrar tus listeners de consultas en un [proveedor de servicio](/providers.html):
 
