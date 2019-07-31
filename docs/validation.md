@@ -149,7 +149,7 @@ $request->validate([
 
 De nuevo, observa que no tuvimos que enlazar explícitamente los mensajes de error con la vista en nuestra ruta `GET`. Esto es porque Laravel revisará los errores en la sesión de datos y los enlazará automáticamente a la vista si están disponibles. La variable `$errors` será una instancia de `Illuminate\Support\MessageBag`. Para mayor información sobre cómo trabajar con este objeto, [revisa su documentación](#working-with-error-messages).
 
-::: tip
+::: tip TIP
 La variable `$errors` es enlazada a la vista por el middleware `Illuminate\View\Middleware\ShareErrorsFromSession`, el cual es proporcionado por el grupo de middleware `web`. **Cuando este middleware se aplique una variable `$errors` siempre estará disponible en tus vistas**, permitiendo que asumas convenientemente que la variable `$errors` está definida siempre y puede ser usada con seguridad.
 :::
 
@@ -237,7 +237,7 @@ public function rules()
 }
 ```
 
-::: tip
+::: tip TIP
 Puedes declarar el tipo de cualquier dependencia que necesites dentro de la firma del método `rules`. Se resolverán automáticamente a través del [contenedor de servicio](/container.html) de Laravel.
 :::
 
@@ -323,7 +323,7 @@ public function authorize()
 }
 ```
 
-::: tip 
+::: tip TIP 
 Puedes declarar el tipo de cualquier dependencia que necesites dentro de la firma del método `authorize`. Se resolverán automáticamente a través de Laravel [contenedor de servicio](/container.html).
 :::
 
@@ -1219,7 +1219,7 @@ $v = Validator::make($data, [
 
 En el ejemplo anterior, el campo `email` solamente será validado si está presente en el arreglo `$data`.
 
-::: tip 
+::: tip TIP 
 Si estás intentando validar un campo que siempre deba estar presente pero puede estar vacío, revisa [esta nota sobre campos opcionales](#a-note-on-optional-fields)
 :::
 
@@ -1250,7 +1250,7 @@ $v->sometimes(['reason', 'cost'], 'required', function ($input) {
 });
 ```
 
-::: tip
+::: tip TIP
 El parámetro `$input` pasado a tu `Closure` será una instancia de `Illuminate\Support\Fluent` y puede ser usado para acceder a tus campos y archivos.
 :::
 

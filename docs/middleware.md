@@ -63,7 +63,7 @@ Como puedes ver, si la `edad` dada es menor o igual a `200`, el middleware retor
 
 Es mejor visualizar el middleware como una serie de "capas" que deben pasar las solicitudes HTTP antes de que lleguen a tu aplicación. Cada capa puede examinar la solicitud e incluso rechazarla por completo.
 
-::: tip
+::: tip TIP
 Todos los middleware son resueltos a través del [contenedor de servicio](/container.html), de esta forma, puedes declarar el tipo de cualquier dependencia que necesites dentro del constructor del middleware.
 :::
 
@@ -208,7 +208,7 @@ Route::group(['middleware' => ['web']], function () {
 });
 ```
 
-::: tip
+::: tip TIP
 Por defecto, el grupo de middleware `web` es automaticamente aplicado a tu archivo `routes/web.php` por el `RouteServiceProvider`.
 :::
 

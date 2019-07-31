@@ -170,7 +170,7 @@ El comando `make:policy` genera una clase de política vacía. Si quieres genera
 php artisan make:policy PostPolicy --model=Post
 ```
 
-::: tip
+::: tip TIP
 Todas las políticas son resueltas a través del [contenedor de servicios de Laravel](/container.html), lo que te permite especificar las dependencias necesarias en el constructor de la política y estas serán automaticamente inyectadas.
 :::
 
@@ -268,7 +268,7 @@ class PostPolicy
 
 Puedes continuar definiendo métodos adicionales en la política como sea necesario para las diferentes acciones que este autorice. Por ejemplo, puedes definir métodos `view` o `delete` para autorizar varias acciones de `Post`, pero recuerda que eres libre de darle los nombres que quieras a los métodos de la política.
 
-::: tip
+::: tip TIP
 Si usas la opción `--model` cuando generes tu política con el comando de Artisan, éste contendrá métodos para las acciones `view`, `create`, `update`, `delete`, `restore` y `forceDelete`.
 :::
 
@@ -482,7 +482,7 @@ Los siguientes métodos de controlador serán mapeados con su método de políti
 | update                | update             |
 | destroy               | delete             |
 
-::: tip
+::: tip TIP
 Puedes usar el comando `make:policy` con la opción `--model` para generar rápidamente una clase de política para un modelo dado: `php artisan make:policy PostPolicy --model=Post`.
 :::
 

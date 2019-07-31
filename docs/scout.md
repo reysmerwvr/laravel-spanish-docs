@@ -404,7 +404,7 @@ $orders = App\Order::search('Star Trek')->withTrashed()->get();
 $orders = App\Order::search('Star Trek')->onlyTrashed()->get();
 ```
 
-::: tip
+::: tip TIP
 Cuando un modelo eliminado lógicamente es eliminado permanentemente utilizando `forceDelete`, Scout lo removerá del índice de búsqueda automáticamente.
 :::
 

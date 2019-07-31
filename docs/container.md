@@ -78,7 +78,7 @@ Un conocimiento profundo del contenedor de servicios de Laravel es esencial para
 
 La mayoría de los enlaces de tu contenedor de servicios serán registrados dentro de [proveedores de servicios](/providers.html), así que la mayoría de estos ejemplos muestra el uso del contenedor en ese contexto.
 
-::: tip
+::: tip TIP
 No hay necesidad de enlazar clases al contenedor si no dependen de ninguna interfaz. El contenedor no necesita ser instruido en cómo construir esos objetos, dado que puede resolver dichos objetos automáticamente usando reflejos.
 :::
 

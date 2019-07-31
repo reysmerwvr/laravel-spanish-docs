@@ -29,7 +29,7 @@
 <a name="introduction"></a>
 ## Introducción
 
-::: tip
+::: tip TIP
 **¿Quieres comenzar rápido?** Simplemente ejecuta `php artisan make:auth` y `php artisan migrate` en una nueva aplicación de Laravel. Luego, dirígete en tu navegador a `http://tu-app.test/register` o cualquier otra URL asignada a tu aplicación. ¡Estos dos comandos se encargarán de generar todo el sistema de autenticación!
 :::
 
@@ -66,7 +66,7 @@ php artisan make:auth
 
 Este comando debe ser utilizado en aplicaciones nuevas e instalará vistas de diseño, registro e inicio de sesión, así como todas las rutas necesarias para la autenticación. También será generado un `HomeController` que se encargará de manejar las peticiones posteriores al login, como mostrar el dashboard de la aplicación.
 
-::: tip
+::: tip TIP
 Si tu aplicación no necesita registro, puedes desactivarlo eliminando el recién creado `RegisterController` y modificando tu declaración de ruta: `Auth::routes(['register' => false]);`.
 :::
 
@@ -101,7 +101,7 @@ protected function redirectTo()
 }
 ```
 
-::: tip
+::: tip TIP
 El método `redirectTo` toma precedencia sobre el atributo `redirectTo`.
 :::
 
@@ -188,7 +188,7 @@ if (Auth::check()) {
 }
 ```
 
-::: tip
+::: tip TIP
 Aún cuando es posible determinar si un usuario está autenticado utilizando el método `check`, típicamente deberás usar un middleware para verificar que el usuario está autenticado antes de permitir al usuario acceder a ciertas rutas / controladores. Para aprender más acerca de esto, echa un vistazo a la documentación para [proteger rutas](/authentication.html#protecting-routes).
 :::
 
@@ -330,7 +330,7 @@ if (Auth::attempt(['email' => $email, 'password' => $password], $remember)) {
 }
 ```
 
-::: tip
+::: tip TIP
 Si estás utilizando el `LoginController` integrado en tu instalación de Laravel, la lógica apropiada para "recordar" usuarios ya se encontrará implementada por los traits utilizados por el controlador.
 :::
 

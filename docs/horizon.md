@@ -158,7 +158,7 @@ redirect_stderr=true
 stdout_logfile=/home/forge/app.com/horizon.log
 ```
 
-::: tip
+::: tip TIP
 Si no estás cómodo administrando tus propios servidores, considera usar [Laravel Forge](https://forge.laravel.com). Forge aprovisiona tus propios servidores PHP 7+ con todo lo que necesitas para administrar modernas aplicaciones robustas de Laravel con Horizon.
 :::
 

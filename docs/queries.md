@@ -369,7 +369,7 @@ $users = DB::table('users')
             ->get();
 ```
 
-::: tip
+::: tip TIP
 El método `unionAll` también está disponible y tiene la misma forma de uso que `union`.
 :::
 
@@ -576,7 +576,7 @@ Como puedes ver, al pasar una `Closure` dentro del método `orWhere`, instruyes 
 select * from users where name = 'John' and (votes > 100 or title = 'Admin')
 ```
 
-::: tip
+::: tip TIP
 Siempre debes agrupar llamadas `orWhere` para evitar comportamiento inesperado cuando se apliquen alcances globales.
 :::
 

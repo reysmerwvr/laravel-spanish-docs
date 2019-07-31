@@ -10,7 +10,7 @@
 <a name="creating-views"></a>
 ## Creando vistas
 
-::: tip 
+::: tip TIP 
 Para buscar más información sobre ¿Cómo escribir plantillas de Blade? Revisa la [documentación de Blade](/blade.html) completa para comenzar.
 :::
 
@@ -218,7 +218,7 @@ class ProfileComposer
 
 Justo antes de que la vista sea renderizada, el método `compose` del Composer es ejecutado con la instancia `Illuminate\View\View`. Puedes usar el método `with` para enlazar datos a la vista.
 
-::: tip
+::: tip TIP
 Todos los View Composers son resueltos por medio del [contenedor de servicio](/container.html), de modo que puedas colocar la referencia a cualquiera de las dependencias que necesites dentro de un constructor del Composer.
 :::
 

@@ -252,7 +252,7 @@ class ExampleTest extends DuskTestCase
 
 Como puedes ver en el ejemplo anterior, el método `browse` acepta una función callback. Una instancia de navegador será pasada automáticamente a esta función de retorno por Dusk y es el objeto principal utilizado para interactuar y hacer aserciones en la aplicación.
 
-::: tip
+::: tip TIP TIP
 Esta prueba puede ser usada para probar la pantalla login generada por el comando Artisan `make:auth`.
 :::
 
@@ -529,7 +529,7 @@ Incluso puedes enviar una "tecla de función" al selector CSS principal que cont
 $browser->keys('.app', ['{command}', 'j']);
 ```
 
-::: tip
+::: tip TIP TIP
 Todas las teclas modificadoras se envuelven entre corchetes `{}` y coinciden con las constantes definidas en la clase `Facebook\WebDriver\WebDriverKeys`, la cual puede ser [encontrada en GitHub](https://github.com/facebook/php-webdriver/blob/community/lib/WebDriverKeys.php).
 :::
 

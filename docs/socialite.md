@@ -17,7 +17,7 @@
 
 Además de la típica, autenticación basada en formularios, Laravel también proporciona una sencilla y conveniente forma de autenticar con proveedores OAuth usando [Laravel Socialite](https://github.com/laravel/socialite). Actualmente Socialite soporta autenticación con Facebook, Twitter, LinkedIn, Google, Github, GitLab y Bitbucket.
 
-::: tip
+::: tip TIP
 Los adaptadores para otras plataformas son listados en el sitio web de [Proveedores de Socialite](https://socialiteproviders.netlify.com/) manejado por la comunidad.
 :::
 
@@ -48,7 +48,7 @@ Antes de usar Socialite, también necesitaras agregar las credenciales para los 
 ],
 ```
 
-::: tip
+::: tip TIP
 Si la opción `redirect` contiene una ruta relativa, será resuelta automáticamente a una URL completamente calificada.
 :::
 

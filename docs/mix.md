@@ -306,7 +306,7 @@ mix.scripts([
 
 Esta opción es particularmente útil para proyectos antiguos donde no necesitas compilación de Webpack para tu JavaScript.
 
-::: tip
+::: tip TIP
 Una ligera variación de `mix.scripts()` es `mix.babel()`. Su firma de método es identica a `scripts`; sin embargo, el archivo concatenado recibirá compilación de Babel, que traduce cualquier código ES2015 a JavaScript plano que todos los navegadores entenderán.
 :::
 

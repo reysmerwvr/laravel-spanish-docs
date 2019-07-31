@@ -58,7 +58,7 @@ class VerifyCsrfToken extends Middleware
 }
 ```
 
-::: tip
+::: tip TIP
 El middleware CSRF está deshabilitado automáticamente al [ejecutar pruebas](/testing.html).
 :::
 
@@ -81,7 +81,7 @@ $.ajaxSetup({
 });
 ```
 
-::: tip
+::: tip TIP
 Por defecto, el archivo `resources/js/bootstrap.js` registra el valor de la etiqueta meta `csrf-token` con la biblioteca HTTP Axios. Si no estás usando esta biblioteca, necesitarás configurar este comportamiento de forma manual para tu aplicación.
 :::
 

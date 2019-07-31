@@ -12,7 +12,7 @@
 <a name="installation"></a>
 ## Instalación
 
-::: tip
+::: tip TIP
 ¿Te gustaría un curso en video para profundizar tu aprendizaje? En Styde cuentas con un [completo curso de Laravel](https://styde.net/laravel-5/) totalmente gratuito que incluye más de 40 lecciones.
 :::
 
@@ -38,7 +38,7 @@ Sin embargo, si no estás utilizando Homestead, deberás asegurarte de que tu se
 
 Laravel utiliza [Composer](https://getcomposer.org) para administrar sus dependencias. Por lo que, antes de utilizar Laravel, deberás asegurarte de tener Composer instalado en tu sistema.
 
-::: tip
+::: tip TIP
 En la lección [instalación de Composer y Laravel](https://styde.net/instalacion-de-composer-y-laravel/) del curso gratuito [Laravel desde cero](https://styde.net/laravel-5/) de Styde puedes ver el proceso de instalación paso a paso.
 :::
 

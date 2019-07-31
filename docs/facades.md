@@ -34,7 +34,7 @@ Las Facades tienen múltiples beneficios. Brindan una sintaxis tersa y memorizab
 
 Sin embargo, deben guardarse ciertas precauciones al hacer uso de facades. El peligro principal de las facades es la corrupción de alcance de clases. Como las facades son tan fáciles de usar y no requieren inyección, puede resultar fácil dejar que tus clases sigan creciendo y usar muchas facades en una sola clase. Usando inyección de dependencias, este potencial es mitigado por la retroalimentación visual que un constructor grande te da cuando tu clase está creciendo demasiado. Entonces, al usar facades, pon especial atención al tamaño de tu clase para que su alcance de responsabilidades permanezca limitado.
 
-::: tip
+::: tip TIP
 Cuando se construye un paquete de terceros que interactúa con Laravel, es mejor inyectar [contratos de Laravel](/contracts.html) en vez de usar facades. Como los paquetes son construidos fuera de Laravel, no tendrás acceso a las funciones (helpers) de testing para facades de Laravel.
 :::
 

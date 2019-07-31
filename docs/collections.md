@@ -33,7 +33,7 @@ Como se ha mencionado más arriba, el helper `collect` retorna una nueva instanc
 $collection = collect([1, 2, 3]);
 ```
 
-::: tip
+::: tip TIP
 Las respuestas de [Eloquent](/eloquent.html) siempre retornan una instancia de `Collection`.
 :::
 
@@ -1835,7 +1835,7 @@ $sorted->values()->all();
 
 Si tus necesidades de ordenamiento son más avanzadas, puedes pasar una funión de retorno a `sort` con tu propio algoritmo. Consulta la documentación de PHP en [`uasort`](https://secure.php.net/manual/en/function.uasort.php#refsect1-function.uasort-parameters), que es lo que llama el método `sort` de la colección.
 
-::: tip
+::: tip TIP
 Si necesitas ordenar una colección de matrices u objetos anidados, consulta los métodos [`sortBy`](#method-sortby) y [`sortByDesc`](#method-sortbydesc).
 :::
 

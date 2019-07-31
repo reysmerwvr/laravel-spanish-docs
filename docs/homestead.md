@@ -296,7 +296,7 @@ provider: virtualbox
 elasticsearch: 6
 ```
 
-::: tip
+::: tip TIP
 Echa un vistazo a la [documentación de Elasticsearch](https://www.elastic.co/guide/en/elasticsearch/reference/current) para aprender a personalizar tu configuración.
 :::
 

@@ -272,7 +272,7 @@ $flights = App\Flight::where('active', 1)
                 ->get();
 ```
 
-::: tip
+::: tip TIP
 Ya que los modelos de Eloquent son constructores de consultas, deberías revisar todos los métodos disponibles en el [constructor de consultas](/queries.html). Puedes usar cualquiera de estos métodos en tus consultas de Eloquent.
 :::
 
@@ -629,7 +629,7 @@ class Flight extends Model
 }
 ```
 
-::: tip 
+::: tip TIP 
 El trait `SoftDeletes` convertirá (cast) automáticamente el atributo `deleted_at` a una instancia de `DateTime` / `Carbon` para ti.
 :::
 
@@ -751,7 +751,7 @@ class AgeScope implements Scope
 }
 ```
 
-::: tip
+::: tip TIP
 Si tu scope global está agregando columnas a la cláusula select de la consulta, deberías usar el método `addSelect` en lugar de `select`. Esto evitará el reemplazo no intencional de la cláusula select existente de la consulta.
 :::
 

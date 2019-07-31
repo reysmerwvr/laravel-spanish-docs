@@ -12,13 +12,13 @@
 <a name="introduction"></a>
 ## Introducción
 
-::: tip
+::: tip TIP TIP
 **¿Quieres comenzar rápido?** Simplemente ejecuta `php artisan make:auth` en una aplicación de Laravel nueva y navega hasta `http://your-app.test/register` o cualquier otra URL asignada a tu aplicación. Este simple comando se encargará de maquetar todo tu sistema de autenticación, ¡incluyendo el restablecimiento de contraseñas!.
 :::
 
 La mayoría de las aplicaciones web proporciona una forma para que los usuarios restablecen sus contraseñas olvidadas. En lugar de forzarte a reimplementar esto en cada aplicación, Laravel proporciona métodos convenientes para enviar recordatorios de contraseñas y realizar restablecimientos de contraseñas.
 
-::: tip
+::: tip TIP TIP
 Antes de usar las características de restablecimiento de contraseñas de Laravel, tu usuario debe usar el trait `Illuminate\Notifications\Notifiable`.
 :::
 

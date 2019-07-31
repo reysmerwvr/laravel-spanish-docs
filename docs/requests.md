@@ -153,7 +153,7 @@ Route::get('/', function (ServerRequestInterface $request) {
 });
 ```
 
-::: tip
+::: tip TIP
 Si devuelves una instancia de respuesta PSR-7 desde una ruta o controlador, automáticamente será convertida de vuelta a una instancia de respuesta de Laravel y será mostrada por el framework.
 :::
 
@@ -255,7 +255,7 @@ $input = $request->except(['credit_card']);
 $input = $request->except('credit_card');
 ```
 
-::: tip
+::: tip TIP
 El método `only` devuelve todos los pares clave / valor que solicites; sin embargo, no devolverá pares clave / valor que no estén presentes en la solicitud.
 :::
 
@@ -490,7 +490,7 @@ class TrustProxies extends Middleware
 }
 ```
 
-::: tip
+::: tip TIP
 Si estás usando Balanceo de Carga Elástico AWS, tu valor `$headers` debe ser `Request::HEADER_X_FORWARDED_AWS_ELB`. Para más información de las constantes que pueden ser usadas en la propiedad `$headers`, revisa la documentación de Symfony sobre [proxies de confianza](https://symfony.com/doc/current/deployment/proxies.html).
 :::
 

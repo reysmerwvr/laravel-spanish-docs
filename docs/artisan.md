@@ -89,7 +89,7 @@ php artisan make:command SendEmails
 
 Después de generar tu comando, debes rellenar las propiedades `signature` y `description` de la clase, las cuales serán usadas cuando se muestra tu comando en la pantalla `list`. El método `handle` será llamado cuando tu comando es ejecutado. Puedes colocar tu lógica del comando en este método.
 
-::: tip
+::: tip TIP
 Para una mayor reutilización del código, es una buena práctica mantener ligeros tus comandos de consola y dejar que se remitan a los servicios de aplicaciones para llevar a cabo sus tareas. En el siguiente ejemplo, toma en cuenta que inyectamos una clase de servicio para hacer el "trabajo pesado" de enviar los correos electrónicos.
 :::
 

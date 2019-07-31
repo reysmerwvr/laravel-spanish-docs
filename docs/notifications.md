@@ -92,7 +92,7 @@ use App\Notifications\InvoicePaid;
 $user->notify(new InvoicePaid($invoice));
 ```
 
-::: tip
+::: tip TIP
 Recuerda que puedes usar el atributo `Illuminate\Notifications\Notifiable` en cualquiera de tus modelos. No estás limitado a incluirlo solamente en tu modelo `User`.
 :::
 
@@ -110,7 +110,7 @@ Notification::send($users, new InvoicePaid($invoice));
 
 Cada clase de notificación tiene un método `via` que determina mediante cuáles canales será entregada la notificación. Las notificaciones pueden ser enviadas por los canales  `mail`, `database`, `broadcast`, `nexmo`, y `slack`.
 
-::: tip
+::: tip TIP
 Si estás interesado en utilizar otros canales de entrega como Telegram o Pusher, revisa el sitio dirigido por la comunidad [Laravel Notification Channels](http://laravel-notification-channels.com).
 :::
 
@@ -207,7 +207,7 @@ public function toMail($notifiable)
 }
 ```
 
-::: tip
+::: tip TIP
 Nota que se está usando el método `$this->invoice->id` en el método `toMail`. Puedes pasar cualquier dato que la notificación necesite para generar su mensaje dentro del constructor de la notificación.
 :::
 
@@ -215,7 +215,7 @@ En este ejemplo, registramos un saludo, una línea de texto, un llamado a la acc
 
 <img src="https://laravel.com/assets/img/notification-example.png" width="551" height="596">
 
-::: tip
+::: tip TIP
 Al enviar notificaciones por correo, asegúrate de establecer el valor `name` en tu archivo `config/app.php`. Este valor será usado en el encabezado y pie de los mensajes de notificación por correo.
 :::
 
@@ -469,7 +469,7 @@ Este comando publicará los componentes de correo de Markdown al directorio `res
 
 Después de exportar los componentes, el directorio `resources/views/vendor/mail/html/themes` contendrá un archivo `default.css`. Puedes personalizar el CSS en este archivo y los estilos automáticamente se alinearán con las representaciones HTML de las notificaciones Markdown.
 
-::: tip
+::: tip TIP
 Si prefieres construir un tema completamente nuevo para los componentes Markdown, escribe un nuevo archivo CSS dentro del directorio `html/themes` y cambia la opción `theme` del archivo de configuración `mail`.
 :::
 
@@ -537,7 +537,7 @@ foreach ($user->unreadNotifications as $notification) {
 }
 ```
 
-::: tip
+::: tip TIP
 Para acceder a las notificaciones desde el cliente JavaScript, se debe definir un controlador de notificaciones para tu aplicación que devuelva las notificaciones para una entidad notificable, como el usuario actual. puedes entonces elaborar una petición HTTP al URI de ese controlador desde el cliente JavaScript.
 :::
 
@@ -615,7 +615,7 @@ return (new BroadcastMessage($data))
                 ->onQueue('broadcasts');
 ```
 
-::: tip
+::: tip TIP
 Adicional a los datos especificados, las notificaciones de difusión contendrán también un campo `type` que contiene el nombre de clase de la notificación.
 :::
 
@@ -1027,7 +1027,7 @@ protected $listen = [
 ];
 ```
 
-::: tip
+::: tip TIP
 Luego de registrar listeners en tu `EventServiceProvider`, usa el comando Artisan `event:generate` para generar rápidamente clases de listeners.
 :::
 

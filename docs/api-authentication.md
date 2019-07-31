@@ -110,7 +110,7 @@ class ApiTokenController extends Controller
 }
 ```
 
-::: tip
+::: tip TIP
 Dado que los tokens de la API en el ejemplo supierior tienen suficiente entropía, es impractico crear "tablas arcoiris" que buscar el valor original del token con hash. Por lo tanto, métodos de hashing lentos como `bcrypt` son innecesarios. 
 :::
 

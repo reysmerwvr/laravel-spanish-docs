@@ -33,7 +33,7 @@ La opción de configuración `driver` de la sesión define donde los datos de la
 - `memcached` / `redis` - las sesiones son almacenadas en rápidos almacenes basados en cache.
 - `array` - las sesiones son almacenadas en un arreglo de PHP y no serán guardadas de forma permanente.
 
-::: tip
+::: tip TIP
 El driver array es usado durante [las pruebas](/testing.html) y previene que los datos almacenados en la sesión sean guardados de forma permanente.
 :::
 
@@ -128,7 +128,7 @@ Route::get('home', function () {
 });
 ```
 
-::: tip
+::: tip TIP
 Hay una pequeña diferencia práctica entre usar la sesión por medio de una instancia de solicitud HTTP contra usar el helper global `session`. Ambos métodos pueden ser [probados](/testing.html) por medio del método `assertSessionHas`, el cual está disponible en todos tus casos de prueba.
 :::
 
@@ -254,7 +254,7 @@ class MongoSessionHandler implements \SessionHandlerInterface
 }
 ```
 
-::: tip
+::: tip TIP
 Laravel no viene con un directorio para contener tus extensiones. Eres libre de colocarlos en cualquier parte que quieras. En este ejemplo, hemos creado un directorio `Extensions` para alojar el manejador `MongoSessionHandler`.
 :::
 

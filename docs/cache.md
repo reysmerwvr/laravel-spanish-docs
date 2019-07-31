@@ -42,7 +42,7 @@ Schema::create('cache', function ($table) {
 });
 ```
 
-::: tip
+::: tip TIP
 También puedes utilizar el comando `php artisan cache:table` para generar una migración con el esquema apropiado.
 :::
 
@@ -224,7 +224,7 @@ El método `forever` puede ser utilizado para almacenar un elemento en la memori
 Cache::forever('key', 'value');
 ```
 
-::: tip
+::: tip TIP
 Si utilizas el controlador de Memcached, los elementos almacenados "permanentemente" podrán ser eliminados una vez que la caché alcance su tamaño límite.
 :::
 
@@ -355,7 +355,7 @@ cache()->remember('users', $seconds, function () {
 });
 ```
 
-::: tip
+::: tip TIP
 Al realizar pruebas utilizando la función global `cache`, deberás usar el método `Cache::shouldReceive` como si estuvieras [probando un facade](/mocking.html#mocking-facades).
 :::
 
@@ -441,7 +441,7 @@ Cache::extend('mongo', function ($app) {
 });
 ```
 
-::: tip
+::: tip TIP
 Si te preguntas dónde puedes colocar el código de tu driver de caché personalizado, puedes crear un espacio de nombre `Extensions` en tu directorio `app`. Sin embargo, ten en cuenta que Laravel no tiene una estructura de aplicación rígida y por tanto eres libre de organizar tu aplicación de acuerdo a tus preferencias.
 :::
 

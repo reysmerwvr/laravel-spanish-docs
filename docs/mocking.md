@@ -379,7 +379,7 @@ class ExampleTest extends TestCase
 }
 ```
 
-::: tip
+::: tip TIP
 De forma predeterminada, el método `fake` borrará todos los archivos en su directorio temporal. Si prefieres mantener estos archivos, puedes usar en su lugar el método "persistentFake".
 :::
 

@@ -52,7 +52,7 @@ Nombre | Descripción
 `monolog` | Driver factory de Monolog que puede usar cualquier manejador de Monolog soportado
 `custom` | Driver que llama a un factory especificado para crear un canal
 
-::: tip 
+::: tip TIP 
 Comprueba la documentación en [personalización avanzada de canales](#advanced-monolog-channel-customization) para aprender más sobre `monolog` y drivers `personalizados`.
 :::
 
@@ -229,7 +229,7 @@ class CustomizeFormatter
 }
 ```
 
-::: tip
+::: tip TIP
 Todas tus clases "tap" son resultas por el [contenedor de servicios](/container.html), así que cualquier dependencia del constuctor que requieran será inyectada automáticamente.
 :::
 

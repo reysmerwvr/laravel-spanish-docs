@@ -286,6 +286,6 @@ Finalmente, puedes confirmar una transacción por medio del método `commit`:
 DB::commit();
 ```
 
-::: tip 
+::: tip TIP 
 Los métodos de transacción del Facade `DB` controlan las transacciones para ambos backends de bases de datos del constructor de consultas [query builder](/queries.html) y el [ORM Eloquent](/eloquent.html).
 :::

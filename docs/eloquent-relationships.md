@@ -1460,7 +1460,7 @@ $comment = $post->comments()->create([
 ]);
 ```
 
-::: tip
+::: tip TIP
 Antes de usar el método `create`, asegurate de revisar la documentación sobre la [asignación masiva de atributos](/eloquent.html#mass-assignment).
 :::
 
