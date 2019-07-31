@@ -117,6 +117,7 @@ module.exports = {
 					'/eloquent-relationships.md',
 					'/eloquent-collections.md',
 					'/eloquent-mutators.md',
+					'/eloquent-resources.md',
 					'/eloquent-serialization.md'
 				]
 			},
