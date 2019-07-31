@@ -428,7 +428,7 @@ Los canales privados y de presencia autentican al usuario actual a través de la
 ```php
 Broadcast::channel('channel', function() {
     // ...
-}, ['guards' => ['web', 'admin']])
+}, ['guards' => ['web', 'admin']]);
 ```
 
 <a name="defining-channel-classes"></a>
