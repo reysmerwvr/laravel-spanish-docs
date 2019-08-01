@@ -5,19 +5,16 @@
 <a name="high-impact-changes"></a>
 ## Cambios de alto impacto
 
-<div class="content-list" markdown="1">
 - [TTL de caché en segundos](#cache-ttl-in-seconds)
 - [Mejoras de seguridad de bloqueo de caché](#cache-lock-safety-improvements)
 - [Parseo de variables de entorno](#environment-variable-parsing)
 - [Cambio de directorio de archivos markdown](#markdown-file-directory-change)
 - [Canales de notificación Nexmo / Slack](#nexmo-slack-notification-channels)
 - [Nuevo tamaño por defecto de contraseña](#new-default-password-length)
-</div>
 
 <a name="medium-impact-changes"></a>
 ## Cambios de mediano impacto
 
-<div class="content-list" markdown="1">
 - [Generadores y servicios etiquetados de container](#container-generators)
 - [Restricciones de la versión de SQLite](#sqlite)
 - [Preferir clases string Y array sbre helpers](#string-and-array-helpers)
@@ -26,7 +23,6 @@
 - [Modelos de nombre que terminan con plurales irregulares](#model-names-ending-with-irregular-plurals)
 - [Modelos personalizados para pivote con IDs incrementales](#custom-pivot-models-with-incrementing-ids)
 - [Pheanstalk 4.0](#pheanstalk-4)
-</div>
 
 <a name="upgrade-5.8.0"></a>
 ## Actualizando de 5.8.0 desde 5.7
@@ -53,19 +49,21 @@ Luego, examina cualquier paquete de terceros que sean consumidos por tu aplicaci
 
 La firma del método `environment` del contrato `Illuminate\Contracts\Foundation\Application` [ha cambiado](https://github.com/laravel/framework/pull/26296). Si estás implementando este contrato en tu aplicación, debes actualizar la firma del método:
 
-    /**
-     * Get or check the current application environment.
-     *
-     * @param  string|array  $environments
-     * @return string|bool
-     */
-    public function environment(...$environments);
+```php
+/**
+* Get or check the current application environment.
+*
+* @param  string|array  $environments
+* @return string|bool
+*/
+public function environment(...$environments);
+```
 
 #### Métodos añadidos
 
 **Probabilidad de impacto: Muy baja**
 
-Los métodos `bootstrapPath`, `configPath`, `databasePath`, `environmentPath`, `resourcePath`, `storagePath`, `resolveProvider`, `bootstrapWith`, `configurationIsCached`, `detectEnvironment`, `environmentFile`, `environmentFilePath`, `getCachedConfigPath`, `getCachedRoutesPath`, `getLocale`, `getNamespace`, `getProviders`, `hasBeenBootstrapped`, `loadDeferredProviders`, `loadEnvironmentFrom`, `routesAreCached`, `setLocale`, `shouldSkipMiddleware` y `terminate`  [Fueron añadidos a la interfaz `Illuminate\Contracts\Foundation\Application`](https://github.com/laravel/framework/pull/26477).
+Los métodos `bootstrapPath`, `configPath`, `databasePath`, `environmentPath`, `resourcePath`, `storagePath`, `resolveProvider`, `bootstrapWith`, `configurationIsCached`, `detectEnvironment`, `environmentFile`, `environmentFilePath`, `getCachedConfigPath`, `getCachedRoutesPath`, `getLocale`, `getNamespace`, `getProviders`, `hasBeenBootstrapped`, `loadDeferredProviders`, `loadEnvironmentFrom`, `routesAreCached`, `setLocale`, `shouldSkipMiddleware` y `terminate` [fueron añadidos a la interfaz `Illuminate\Contracts\Foundation\Application`](https://github.com/laravel/framework/pull/26477).
 
 En el caso poco probable de que implementes esta interfaz, debes añadir estos métodos a la implementación. 
 
@@ -78,11 +76,15 @@ En el caso poco probable de que implementes esta interfaz, debes añadir estos m
 
 Cuando un usuario solicita un enlace para restablecer su contraseña, Laravel genera la URL utilizando el helper `route` para crear una URL a la ruta denominada` password.reset`. Cuando se usa Laravel 5.7, el token se pasa al helper `route` sin un nombre explícito, de manera que:
 
-    route('password.reset', $token);
+```php
+route('password.reset', $token);
+```
 
 Pero cuando se usa Laravel 5.8, el token se pasa al helper `route` como un parámetro explícito:
 
-    route('password.reset', ['token' => $token]);
+```php
+route('password.reset', ['token' => $token]);
+```
 
 Por lo tanto, si estás definiendo tu propia ruta `password.reset`, debes asegurarte de que contenga un parámetro` {token} `en tu URI.
 
@@ -107,14 +109,16 @@ Para permitir un tiempo de caducidad más granular al almacenar elementos, el ti
 
 Si estás pasando un número entero a cualquiera de estos métodos, debes actualizar tu código para asegurarte que ahora estás pasando la cantidad de segundos que deseas que el elemento permanezca en el caché. Alternativamente, puedes pasar una instancia de `DateTime` que indica cuándo debe expirar el elemento:
 
-    // Laravel 5.7 - Store item for 30 minutes...
-    Cache::put('foo', 'bar', 30);
+```php
+// Laravel 5.7 - Store item for 30 minutes...
+Cache::put('foo', 'bar', 30);
 
-    // Laravel 5.8 - Store item for 30 seconds...
-    Cache::put('foo', 'bar', 30);
+// Laravel 5.8 - Store item for 30 seconds...
+Cache::put('foo', 'bar', 30);
 
-    // Laravel 5.7 / 5.8 - Store item for 30 seconds...
-    Cache::put('foo', 'bar', now()->addSeconds(30));
+// Laravel 5.7 / 5.8 - Store item for 30 seconds...
+Cache::put('foo', 'bar', now()->addSeconds(30));
+```
 
 ::: danger Nota
 Este cambio hace que el sistema de caché Laravel sea totalmente compatible con el [estándar de la libreria de almacenamiento en caché PSR-16](https://www.php-fig.org/psr/psr-16/)
@@ -142,33 +146,41 @@ A manera de mitigar este escenario, los bloqueos ahora son generados con un "tok
 
 Si estás usando el método `Cache::lock()->get(Closure)` de interacción con bloqueos, no se requiere de cambios: 
 
-    Cache::lock('foo', 10)->get(function () {
-        // Lock will be released safely automatically...
-    });
+```php
+Cache::lock('foo', 10)->get(function () {
+    // Lock will be released safely automatically...
+});
+```
 
 Sin embargo, si estás llamando manualmente a `Cache::lock()->release()`, debes actualizar tu código para mantener una instancia del bloqueo. Luego, una vez que hayas terminado de realizar tu tarea, puedes llamar al método `release` en **la misma instancia de bloqueo**. Por ejemplo:
 
-    if ($lock = Cache::lock('foo', 10)->get()) {
-        // Perform task...
+```php
+if ($lock = Cache::lock('foo', 10)->get()) {
+    // Perform task...
 
-        $lock->release();
-    }
+    $lock->release();
+}
+```
 
 A veces, es posible que desees adquirir un bloqueo en un proceso y liberarlo en otro proceso. Por ejemplo, puede adquirir un bloqueo durante una solicitud web y deseas liberar el bloqueo al final de un trabajo en cola que se activa con esa solicitud. En este escenario, debes pasar el "token de propietario" del ámbito del bloqueo al trabajo en cola para que el trabajo pueda volver a crear una instancia del bloqueo utilizando el token dado:
 
-    // Within Controller...
-    $podcast = Podcast::find(1);
+```php
+// Within Controller...
+$podcast = Podcast::find(1);
 
-    if ($lock = Cache::lock('foo', 120)->get()) {
-        ProcessPodcast::dispatch($podcast, $lock->owner());
-    }
+if ($lock = Cache::lock('foo', 120)->get()) {
+    ProcessPodcast::dispatch($podcast, $lock->owner());
+}
 
-    // Within ProcessPodcast Job...
-    Cache::restoreLock('foo', $this->owner)->release();
+// Within ProcessPodcast Job...
+Cache::restoreLock('foo', $this->owner)->release();
+```
 
 Si deseas liberar un bloqueo sin respetar a su propietario actual, puedes usar el método `forceRelease`: 
 
-    Cache::lock('foo')->forceRelease();
+```php
+Cache::lock('foo')->forceRelease();
+```
 
 <a name="the-repository-and-store-contracts"></a>
 ####  Los contratos `Repository` y `Store`
@@ -186,15 +198,17 @@ Para cumplir con el `PSR-16` los valores de retorno de los métodos` put` y `for
 
 La firma del método `firstWhere` [ha cambiado](https://github.com/laravel/framework/pull/26261) para coincidir con la firma del método` where`. Si estás sobreescribiendo este método, debes actualizar la firma del método para que coincida con su padre:
 
-    /**
-     * Get the first item by the given key value pair.
-     *
-     * @param  string  $key
-     * @param  mixed  $operator
-     * @param  mixed  $value
-     * @return mixed
-     */
-    public function firstWhere($key, $operator = null, $value = null);
+```php
+/**
+* Get the first item by the given key value pair.
+*
+* @param  string  $key
+* @param  mixed  $operator
+* @param  mixed  $value
+* @return mixed
+*/
+public function firstWhere($key, $operator = null, $value = null);
+```
 
 <a name="console"></a>
 ### Consola
@@ -252,15 +266,17 @@ El método `flush` [se agregó al contrato `Illuminate\Contracts\Container\Conta
 
 El constructor de consultas ahora devolverá valores JSON no citados al usar MySQL y MariaDB. Este comportamiento es consistente con las otras bases de datos soportadas:
 
-    $value = DB::table('users')->value('options->language');
+```php
+$value = DB::table('users')->value('options->language');
 
-    dump($value);
+dump($value);
 
-    // Laravel 5.7...
-    '"en"'
+// Laravel 5.7...
+'"en"'
 
-    // Laravel 5.8...
-    'en'
+// Laravel 5.8...
+'en'
+```
 
 Como resultado el operador `->>` ya no es soportado ni necesario.
 
@@ -281,34 +297,40 @@ A partir de Laravel 5.8, la [versión SQLite soportada más antigua](https://git
 
 A partir de Laravel 5.8, los nombres de modelos de múltiples palabras que terminan en una palabra con un plural irregular [ahora están correctamente pluralizados (solo válido para inglés)](https://github.com/laravel/framework/pull/26421).
 
-    // Laravel 5.7...
-    App\Feedback.php -> feedback (correctly pluralized)
-    App\UserFeedback.php -> user_feedbacks (incorrectly pluralized)
+```php
+// Laravel 5.7...
+App\Feedback.php -> feedback (correctly pluralized)
+App\UserFeedback.php -> user_feedbacks (incorrectly pluralized)
 
-    // Laravel 5.8
-    App\Feedback.php -> feedback (correctly pluralized)
-    App\UserFeedback.php -> user_feedback (correctly pluralized)
+// Laravel 5.8
+App\Feedback.php -> feedback (correctly pluralized)
+App\UserFeedback.php -> user_feedback (correctly pluralized)
+```
 
 Si tienes un modelo incorrectamente pluralizado, puedes continuar usando el nombre de la tabla anterior definiendo una propiedad `$table` en tu modelo:
 
-    /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
-    protected $table = 'user_feedbacks';
+```php
+/**
+* The table associated with the model.
+*
+* @var string
+*/
+protected $table = 'user_feedbacks';
+```
 
 <a name="custom-pivot-models-with-incrementing-ids"></a>
 #### Modelos personalizados para pivote con IDs incrementales
 
 Si has definido una relación de muchos a muchos que usa un modelo personalizado para tablas pivote, y ese modelo tiene una clave primaria autoincremental, debes asegurarte de que tu clase de modelo personalizado para pivote defina una propiedad `incrementing` que se establece en `true`:
 
-    /**
-     * Indicates if the IDs are auto-incrementing.
-     *
-     * @var bool
-     */
-    public $incrementing = true;
+```php
+/**
+* Indicates if the IDs are auto-incrementing.
+*
+* @var bool
+*/
+public $incrementing = true;
+```
 
 #### El método `loadCount` 
 
@@ -328,7 +350,9 @@ El método `originalIsEquivalent` del trait `Illuminate\Database\Eloquent\Concer
 
 La propiedad `deleted_at` [ahora se convertirá automáticamente](https://github.com/laravel/framework/pull/26985) en una instancia de` Carbon` cuando tu modelo Eloquent use el trait `Illuminate\Database\Eloquent\SoftDeletes`. Puedes sobreescribir este comportamiento escribiendo tu accesador personalizado para esa propiedad o agregándolo manualmente al atributo `casts`:
 
-    protected $casts = ['deleted_at' => 'string'];
+```php
+protected $casts = ['deleted_at' => 'string'];
+```
 
 #### Métodos `getForeignKey` Y `getOwnerKey` de belongsTo
 
@@ -345,20 +369,27 @@ El paquete [phpdotenv](https://github.com/vlucas/phpdotenv) que es usado para pa
 
 Comportamiento anterior:
 
-    ENV_VALUE=foo#bar
+```php
+ENV_VALUE=foo#bar
 
-    env('ENV_VALUE'); // foo#bar
+env('ENV_VALUE'); // foo#bar
+```
 
 Nuevo comportamiento:
 
-    ENV_VALUE=foo#bar
-    env('ENV_VALUE'); // foo
+```php
+ENV_VALUE=foo#bar
+
+env('ENV_VALUE'); // foo
+```
 
 Para mantener el comportamiento anterior, puedes envolver los valores de entorno en comillas:
 
-    ENV_VALUE="foo#bar"
+```php
+ENV_VALUE="foo#bar"
 
-    env('ENV_VALUE'); // foo#bar
+env('ENV_VALUE'); // foo#bar
+```
 
 Para más información, por favor revisa la [guía de actualización de phpdotenv](https://github.com/vlucas/phpdotenv/blob/master/UPGRADING.md)
 
@@ -387,13 +418,15 @@ El método `shouldReport` [se ha agregado al contrato `Illuminate\Contracts\Debu
 
 La firma del método `renderHttpException` de la clase `Illuminate\Foundation\Exceptions\Handler` [ha cambiado](https://github.com/laravel/framework/pull/25975). Si está sobreescribiendo este método en tu manejador de excepciones, debes actualizar la firma del método para que coincida con su padre:
 
-    /**
-     * Render the given HttpException.
-     *
-     * @param  \Symfony\Component\HttpKernel\Exception\HttpExceptionInterface  $e
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    protected function renderHttpException(HttpExceptionInterface $e);
+```php
+/**
+* Render the given HttpException.
+*
+* @param  \Symfony\Component\HttpKernel\Exception\HttpExceptionInterface  $e
+* @return \Symfony\Component\HttpFoundation\Response
+*/
+protected function renderHttpException(HttpExceptionInterface $e);
+```
 
 <a name="mail"></a>
 ### Correo electrónico
@@ -455,22 +488,24 @@ El uso de la función de "bloqueo emergente" del driver de cola Redis ahora es s
 
 El método `transform` del middleware `Illuminate\Foundation\Http\Middleware\TransformsRequest` ahora recibe la clave de entrada de solicitud "fully-qualified" cuando la entrada es un arreglo:
 
-    'employee' => [
-        'name' => 'Taylor Otwell',
-    ],
+```php
+'employee' => [
+    'name' => 'Taylor Otwell',
+],
 
-    /**
-     * Transform the given value.
-     *
-     * @param  string  $key
-     * @param  mixed  $value
-     * @return mixed
-     */
-    protected function transform($key, $value)
-    {
-        dump($key); // 'employee.name' (Laravel 5.8)
-        dump($key); // 'name' (Laravel 5.7)
-    }
+/**
+* Transform the given value.
+*
+* @param  string  $key
+* @param  mixed  $value
+* @return mixed
+*/
+protected function transform($key, $value)
+{
+    dump($key); // 'employee.name' (Laravel 5.8)
+    dump($key); // 'name' (Laravel 5.7)
+}
+```
 
 <a name="routing"></a>
 ### Enrutamiento (Routing)
@@ -523,19 +558,23 @@ Anteriormente, el helper `env` podia retornar valores de variables de entorno qu
 
 Comportamiento anterior:
 
-    dump(env('APP_ENV')); // local
+```php
+dump(env('APP_ENV')); // local
 
-    putenv('APP_ENV=staging');
+putenv('APP_ENV=staging');
 
-    dump(env('APP_ENV')); // staging
+dump(env('APP_ENV')); // staging
+```
 
 Nuevo comportamiento:
 
-    dump(env('APP_ENV')); // local
+```php
+dump(env('APP_ENV')); // local
 
-    putenv('APP_ENV=staging');
+putenv('APP_ENV=staging');
 
-    dump(env('APP_ENV')); // local
+dump(env('APP_ENV')); // local
+```
 
 <a name="testing"></a>
 ### Pruebas
@@ -544,8 +583,10 @@ Nuevo comportamiento:
 
 Los métodos `setUp` y` tearDown` ahora requieren un tipo de retorno nulo:
 
-    protected function setUp(): void
-    protected function tearDown(): void
+```php
+protected function setUp(): void
+protected function tearDown(): void
+```
 
 #### PHPUnit 8
 
@@ -562,12 +603,14 @@ De forma predeterminada, Laravel 5.8 usa PHPUnit 7. Sin embargo, opcionalmente p
 
 El método `validated` [se agregó al contrato `Illuminate\Contracts\Validation\Validator`](https://github.com/laravel/framework/pull/26419):
 
-    /**
-     * Get the attributes and values that were validated.
-     *
-     * @return array
-     */
-    public function validated();
+```php
+/**
+* Get the attributes and values that were validated.
+*
+* @return array
+*/
+public function validated();
+```
 
 Si estás implementando esta interfaz, debes agregar este método a tu implementación.
 
@@ -616,8 +659,10 @@ El método `getData` [se agregó al contrato `Illuminate\Contracts\View\View`](h
 
 Los canales de notificación de Nexmo y Slack se han extraído en paquetes oficiales. Para usar estos canales en su aplicación, requiera los siguientes paquetes:
 
-    composer require laravel/nexmo-notification-channel
-    composer require laravel/slack-notification-channel
+```php
+composer require laravel/nexmo-notification-channel
+composer require laravel/slack-notification-channel
+```
 
 <a name="miscellaneous"></a>
 ### Misceláneos 

@@ -39,36 +39,42 @@ Laravel 5.8 continúa las mejoras realizadas en Laravel 5.7 con la introducción
 
 Eloquent ahora proporciona soporte para el tipo de relación `hasOneThrough`. Por ejemplo, imagina un modelo Supplier que tiene un (`hasOne`) modelo Account, y un modelo Account tiene un modelo AccountHistory. Puedes usar una relación `hasOneThrough` para acceder al historial de cuenta de un proveedor a través del modelo Account:
 
-    /**
-     * Get the account history for the supplier.
-     */
-    public function accountHistory()
-    {
-        return $this->hasOneThrough(AccountHistory::class, Account::class);
-    }
+```php
+/**
+* Get the account history for the supplier.
+*/
+public function accountHistory()
+{
+    return $this->hasOneThrough(AccountHistory::class, Account::class);
+}
+```
 
 ### Autodescubrimiento de políticas de autorización
 
 Cuando se utiliza Laravel 5.7, cada [política de autorización](/authorization.html#creating-policies) debía ser asociada explícitamente y registrada en el `AuthServiceProvider` de tu aplicación:
 
-    /**
-     * The policy mappings for the application.
-     *
-     * @var array
-     */
-    protected $policies = [
-        'App\User' => 'App\Policies\UserPolicy',
-    ];
+```php
+/**
+* The policy mappings for the application.
+*
+* @var array
+*/
+protected $policies = [
+    'App\User' => 'App\Policies\UserPolicy',
+];
+```
 
 Laravel 5.8 introduce el autodescubrimiento de políticas siempre que el modelo y la política sigan las convenciones estándar de nomenclatura de Laravel. Específicamente, las políticas deben estar en un directorio `Policies` debajo del directorio que contiene los modelos. Así, por ejemplo, los modelos pueden colocarse en el directorio `app` mientras que las políticas pueden ubicarse en el directorio `app/Policies`. Además, el nombre de la política debe coincidir con el nombre del modelo y tener un sufijo `Policy`. Entonces, un modelo `User` corresponderá a una clase` UserPolicy`.
 
 Si deseas proporcionar tu propia lógica para el descubrimiento de políticas, puedes registrar un callback personalizado utilizando el método `Gate::guessPolicyNamesUsing`. Normalmente, este método debe llamarse desde el `AuthServiceProvider` de tu aplicación:
 
-    use Illuminate\Support\Facades\Gate;
+```php
+use Illuminate\Support\Facades\Gate;
 
-    Gate::guessPolicyNamesUsing(function ($modelClass) {
-        // return policy class name...
-    });
+Gate::guessPolicyNamesUsing(function ($modelClass) {
+    // return policy class name...
+});
+```
 
 ::: danger Nota
 Cualquier política que se asigne explícitamente en su `AuthServiceProvider` tendrá prioridad sobre cualquier posible política de autodescubrimiento.
@@ -80,22 +86,26 @@ Para permitir un tiempo de caducidad más granular al almacenar elementos y cump
 
 Si estás pasando un número entero a cualquiera de estos métodos, debes actualizar tu código para asegurarte de que ahora está pasando la cantidad de segundos que deseas que el elemento permanezca en el caché. Alternativamente, puedes pasar una instancia de `DateTime` que indique cuándo debe expirar el elemento:
 
-    // Laravel 5.7 - Store item for 30 minutes...
-    Cache::put('foo', 'bar', 30);
+```php
+// Laravel 5.7 - Store item for 30 minutes...
+Cache::put('foo', 'bar', 30);
 
-    // Laravel 5.8 - Store item for 30 seconds...
-    Cache::put('foo', 'bar', 30);
+// Laravel 5.8 - Store item for 30 seconds...
+Cache::put('foo', 'bar', 30);
 
-    // Laravel 5.7 / 5.8 - Store item for 30 seconds...
-    Cache::put('foo', 'bar', now()->addSeconds(30));
+// Laravel 5.7 / 5.8 - Store item for 30 seconds...
+Cache::put('foo', 'bar', now()->addSeconds(30));
+```
 
 ### Múltiples guards de autentificación para broadcast
 
 En versiones anteriores de Laravel, los canales de transmisión privados y de presencia autenticaban al usuario a través de la protección de autenticación predeterminada de tu aplicación. A partir de Laravel 5.8, ahora puedes asignar múltiples "guards" (guardias) que deben autenticar la solicitud entrante:
 
-    Broadcast::channel('channel', function() {
-        // ...
-    }, ['guards' => ['web', 'admin']])
+```php
+Broadcast::channel('channel', function() {
+    // ...
+}, ['guards' => ['web', 'admin']])
+```
 
 ### Token Guard Token Hashing
 
@@ -113,21 +123,25 @@ Laravel 5.8 introduce mejoras en la lógica de validación de correos electróni
 
 Laravel te permite personalizar la zona horaria de una tarea programada usando el método `timezone`:
 
-    $schedule->command('inspire')
-             ->hourly()
-             ->timezone('America/Chicago');
+```php
+$schedule->command('inspire')
+         ->hourly()
+         ->timezone('America/Chicago');
+```
 
 Sin embargo, esto puede volverse engorroso y repetitivo si estás especificando la misma zona horaria para todas sus tareas programadas. Por esa razón, ahora puede definir un método `scheduleTimezone` en su archivo `app/Console/Kernel.php`. Este método debe devolver la zona horaria predeterminada que debe asignarse a todas las tareas programadas:
 
-    /**
-     * Get the timezone that should be used by default for scheduled events.
-     *
-     * @return \DateTimeZone|string|null
-     */
-    protected function scheduleTimezone()
-    {
-        return 'America/Chicago';
-    }
+```php
+/**
+* Get the timezone that should be used by default for scheduled events.
+*
+* @return \DateTimeZone|string|null
+*/
+protected function scheduleTimezone()
+{
+    return 'America/Chicago';
+}
+```
 
 ### Eventos para modelos pivote o tabla intermedia 
 
@@ -137,78 +151,94 @@ En versiones anteriores de Laravel, los eventos del modelo Eloquent no se distri
 
 Laravel te permite invocar comandos de Artisan a través del método `Artisan::call`. En versiones anteriores de Laravel, las opciones del comando se pasan a través de un arreglo como el segundo parámetro del método.
 
-    use Illuminate\Support\Facades\Artisan;
+```php
+use Illuminate\Support\Facades\Artisan;
 
-    Artisan::call('migrate:install', ['database' => 'foo']);
+Artisan::call('migrate:install', ['database' => 'foo']);
+```
 
 Sin embargo, Laravel 5.8 te permite pasar el comando completo, incluidas las opciones, en el primer parámetro del método con una cadena:
 
-    Artisan::call('migrate:install --database=foo');
+```php
+Artisan::call('migrate:install --database=foo');
+```
 
 ### Métodos de pruebas mock y spy
 
 Con el fin de hacer que los objetos de mocking sean más convenientes, se han agregado los nuevos métodos `mock` y` spy` a la clase de prueba base de Laravel. Estos métodos vinculan automáticamente la clase simulada en el contenedor. Por ejemplo: 
 
-    // Laravel 5.7
-    $this->instance(Service::class, Mockery::mock(Service::class, function ($mock) {
-        $mock->shouldReceive('process')->once();
-    }));
+```php
+// Laravel 5.7
+$this->instance(Service::class, Mockery::mock(Service::class, function ($mock) {
+    $mock->shouldReceive('process')->once();
+}));
 
-    // Laravel 5.8
-    $this->mock(Service::class, function ($mock) {
-        $mock->shouldReceive('process')->once();
-    });
+// Laravel 5.8
+$this->mock(Service::class, function ($mock) {
+    $mock->shouldReceive('process')->once();
+});
+```
 
 ### Preservación de llaves para recursos Eloquent
 
 Al devolver una [colección de recursos Eloquent](/eloquent-resources.html) desde una ruta, Laravel restablece las llaves de la colección para que estén en orden numérico simple:
 
-    use App\User;
-    use App\Http\Resources\User as UserResource;
+```php
+use App\User;
+use App\Http\Resources\User as UserResource;
 
-    Route::get('/user', function () {
-        return UserResource::collection(User::all());
-    });
+Route::get('/user', function () {
+    return UserResource::collection(User::all());
+});
+```
 
 Al usar Laravel 5.8, puedes agregar una propiedad `preserveKeys` a tu clase de recurso que indica si se deben conservar las llaves de la colección. De forma predeterminada, y para mantener la coherencia con las versiones anteriores de Laravel, las llaves se restablecerán de forma predeterminada:
 
-    <?php
+```php
+<?php
 
-    namespace App\Http\Resources;
+namespace App\Http\Resources;
 
-    use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Resources\Json\JsonResource;
 
-    class User extends JsonResource
-    {
-        /**
-         * Indicates if the resource's collection keys should be preserved.
-         *
-         * @var bool
-         */
-        public $preserveKeys = true;
-    }
+class User extends JsonResource
+{
+    /**
+    * Indicates if the resource's collection keys should be preserved.
+    *
+    * @var bool
+    */
+    public $preserveKeys = true;
+}
+```
 
 Cuando la propiedad `preserveKeys` se establece en `true`, las llaves de la colección se conservarán:
 
-    use App\User;
-    use App\Http\Resources\User as UserResource;
+```php
+use App\User;
+use App\Http\Resources\User as UserResource;
 
-    Route::get('/user', function () {
-        return UserResource::collection(User::all()->keyBy->id);
-    });
+Route::get('/user', function () {
+    return UserResource::collection(User::all()->keyBy->id);
+});
+```
 
 ### Método de orden superior `orWhere` para Eloquent
 
 En versiones anteriores de Laravel, la combinación de múltiples scopes de modelo Eloquent a través de un operador de consulta `or` requería el uso de Closure callbacks:
 
-    // scopePopular and scopeActive methods defined on the User model...
-    $users = App\User::popular()->orWhere(function (Builder $query) {
-        $query->active();
-    })->get();
+```php
+// scopePopular and scopeActive methods defined on the User model...
+$users = App\User::popular()->orWhere(function (Builder $query) {
+    $query->active();
+})->get();
+```
 
 Laravel 5.8 introduce un método de "orden superior" `orWhere` que te permite encadenar estos scopes con fluidez sin el uso de Clousures:
 
-    $users = App\User::popular()->orWhere->active()->get();
+```php
+$users = App\User::popular()->orWhere->active()->get();
+```
 
 ### Mejoras al comando artisan serve
 
