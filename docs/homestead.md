@@ -8,10 +8,7 @@
     - [Configurar Homestead](#configuring-homestead)
     - [Iniciar el box de Vagrant](#launching-the-vagrant-box)
     - [Instalación por proyecto](#per-project-installation)
-    - [Instalación de MariaDB](#installing-mariadb)
-    - [Instalación de MongoDB](#installing-mongodb)
-    - [Instalación de Elasticsearch](#installing-elasticsearch)
-    - [Instalación de Neo4j](#installing-neo4j)
+    - [Instalando características opcionales](#installing-optional-features)
     - [Alias](#aliases)
 - [Uso diario](#daily-usage)
     - [Acceder a homestead globalmente](#accessing-homestead-globally)
@@ -273,51 +270,55 @@ vendor\\bin\\homestead make
 
 Después, ejecuta el comando `vagrant up` en tu terminal y podrás acceder a tu proyecto desde el navegador en `http://homestead.test`. Recuerda que aún vas a necesitar agregar una entrada para `homestead.test` en tu archivo `/etc/hosts` para el dominio de tu elección.
 
-<a name="installing-mariadb"></a>
-### Instalación de MariaDB
+<a name="installing-optional-features"></a>
+### Instalando características opcionales
 
-Si prefieres usar MariaDB en lugar de MySQL, debes agregar la opción `mariadb` en tu archivo `Homestead.yaml`. Esta opción removerá MySQL e instalará MariaDB. MariaDB funciona como un remplazo directo para MySQL, por lo que aún podrás seguir utilizando el driver `mysql` para configurar la base de datos en tu aplicación:
+Software opcional es instalado usando la opción "features" en tu archivo de configuración de Homestead. La mayoría de características son habilitadas o deshabilitadas con un valor booleano. A las características con soporte para múltiples versiones les puede ser pasada un número de versión.
 
 ```php
-box: laravel/homestead
-ip: "192.168.10.10"
-memory: 2048
-cpus: 4
-provider: virtualbox
-mariadb: true
+features:
+    - blackfire: true
+    - cassandra: true
+    - chronograf: true
+    - couchdb: true
+    - crystal: true
+    - docker: true
+    - elasticsearch: 6
+    - gearman: true
+    - golang: true
+    - grafana: true
+    - influxdb: true
+    - mariadb: true
+    - minio: true
+    - mongodb: true
+    - mysql8: true
+    - neo4j: true
+    - ohmyzsh: true
+    - openresty: true
+    - pm2: true
+    - python: true
+    - rabbitmq: true
+    - solr: true
+    - webdriver: true
 ```
 
-<a name="installing-mongodb"></a>
-### Instalación de MongoDB
+#### MariaDB
 
-Para instalar MongoDB Community Edition, actualiza tu archivo `Homestead.yaml` con la siguiente opción de configuración:
-	
-```php
-mongodb: true
-```
+Esto eliminará MySQL e instalar MariaDB. MariDB funciona como reemplazo de MySQL así que aún serás capaz de usar el driver de base de datos `mysql` en la configuración de la base de datos de tu aplicación.
+
+#### MongoDB
 
 La instalación por defecto establecerá el nombre de usuario de base de datos a `homestead` y su contraseña como `secret`.
 
-<a name="installing-elasticsearch"></a>
-### Instalación de Elasticsearch
+#### Elasticsearch
 
-Para instalar Elasticsearch, añade la opción `elasticsearch` en tu archivo `Homestead.yaml` y especifica una versión soportada, la cual puede ser una versión mayor o un número específico de versión (mayor.menor.parche). La instalación por defecto creará un cluster llamado 'homestead'. Nunca deberías dar a Elasticsearch más de la mitad de la memoria de tu sistema operativo, por lo que deberás asegurarte de que tu máquina tenga al menos el doble de la memoria asignada a Elasticsearch:
-
-```php
-box: laravel/homestead
-ip: "192.168.10.10"
-memory: 4096
-cpus: 4
-provider: virtualbox
-elasticsearch: 6
-```
+Puedes especificar una versión soportada de Elasticsearch, la cual puede ser una versión principal o un número de versión exacto (major.minor.patch). La instalación por defecto creará un cluster llamado 'homestead'. Nunca debes darle a Elasticsearch más de la mitada de la memoria del sistema operativo, así que asegurate de que tu maquina Homestead al menos tiene el doble de la cantidad asignada a Elasticsearch.
 
 ::: tip TIP
 Echa un vistazo a la [documentación de Elasticsearch](https://www.elastic.co/guide/en/elasticsearch/reference/current) para aprender a personalizar tu configuración.
 :::
 
-<a name="installing-neo4j"></a>
-### Instalación de Neo4j
+#### Neo4j
 
 [Neo4j](https://neo4j.com/) es un sistema de manejo de bases de datos gráfico. Para instalar Neo4j Community Edition, actualiza tu archivo `Homestead.yaml` con la siguiente opción de configuración:
 
