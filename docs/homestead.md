@@ -183,10 +183,10 @@ Siempre debes mapear proyectos individuales en su propio directorio en lugar de 
 ```php
 folders:
     - map: ~/code/project1
-        to: /home/vagrant/code/project1
+        to: /home/vagrant/project1
 
     - map: ~/code/project2
-        to: /home/vagrant/code/project2
+        to: /home/vagrant/project2
 ```
 
 ::: danger Nota
