@@ -469,9 +469,27 @@ Este comando publicará los componentes de correo de Markdown al directorio `res
 
 Después de exportar los componentes, el directorio `resources/views/vendor/mail/html/themes` contendrá un archivo `default.css`. Puedes personalizar el CSS en este archivo y los estilos automáticamente se alinearán con las representaciones HTML de las notificaciones Markdown.
 
-::: tip TIP
-Si prefieres construir un tema completamente nuevo para los componentes Markdown, escribe un nuevo archivo CSS dentro del directorio `html/themes` y cambia la opción `theme` del archivo de configuración `mail`.
-:::
+Si te gustaría construir un nuevo tema para los componentes Markdown de Laravel, puedes colocar un archivo CSS dentro del directorio `html/themes`. Luego de nombrar y guardar tus archivos de CSS, actualiza la opción `theme` del archivo de configuración `mail` para que coincida con el nombre de tu nuevo tema.
+
+Para personalizar un tema para una notificación individual, puedes llamar al método `theme` al momento de construir el mensaje de la notificación. El método `theme` acepta el nombre del tema que debería ser usado al momento de enviar la notificación:
+
+```php
+/**
+* Get the mail representation of the notification.
+*
+* @param  mixed  $notifiable
+* @return \Illuminate\Notifications\Messages\MailMessage
+*/
+
+public function toMail($notifiable)
+{
+    return (new MailMessage)
+                ->theme('invoices')
+                ->theme('invoice')
+                ->subject('Invoice Paid')
+                ->markdown('mail.invoice.paid', ['url' => $url]);
+}
+```
 
 <a name="database-notifications"></a>
 ## Notificaciones de base de datos
