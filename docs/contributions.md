@@ -1,4 +1,4 @@
-# Guía De Contribución
+# Guía de contribución
 
 - [Reporte de errores](#bug-reports)
 - [Discusión sobre el desarrollo del núcleo](#core-development-discussion)

@@ -1,4 +1,4 @@
-# Guía De Actualización
+# Guía de actualización
 
 - [Actualizando de 5.8.0 desde 5.7](#upgrade-5.8.0)
 
@@ -31,6 +31,10 @@
 
 ::: danger Nota
 Tratamos de documentar cada cambio significativo. Debido a que alguno de estos cambios significativos están en partes ocultas dentro del framework solo una porción de estos cambios podria afectar tu aplicación. 
+:::
+
+::: tip TIP
+En [Styde.net](https://styde.net/) contamos con un [tutorial detallado para actualizar a Laravel 5.8](https://styde.net/como-actualizar-de-laravel-5-7-a-5-8/).
 :::
 
 <a name="updating-dependencies"></a>
