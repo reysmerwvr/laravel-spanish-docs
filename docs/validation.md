@@ -932,6 +932,10 @@ El campo bajo validación debe existir en los valores de _anotherfield_.
 
 El campo bajo validación debe ser un entero.
 
+::: danger Nota
+Esta regla de validación no verifica que el campo sea del tipo de variable "entero", sólo que el campo sea una cadena o valor número que contenga un entero.
+:::
+
 <a name="rule-ip"></a>
 #### ip
 
