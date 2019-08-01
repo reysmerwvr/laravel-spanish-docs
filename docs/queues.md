@@ -569,6 +569,12 @@ Para mantener el proceso `queue:work` ejecutado permanentemente en segundo plano
 
 Recuerda, los workers en cola son procesos de larga duración y almacenan el estado de la aplicación iniciada en la memoria. Como resultado, no notarán cambios en la base de código después de que se han iniciado. Por lo tanto, durante el proceso de despliegue, asegúrate de [reiniciar los workers de cola](#queue-workers-and-deployment).
 
+Alternativamente, puedes ejecutar el comando `queue:listen`. Al usar el comando `queue:listen`, no tienes que reiniciar manualmente el worker luego de que tu código sea cambiado; sin embargo, este comando no es tan eficiente como `queue:work`:
+
+```php
+php artisan queue:listen
+```
+
 #### Especificando la conexión y cola
 
 También puedes especificar qué conexión de cola debe utilizar el worker. El nombre de conexión pasado al comando `work` debe corresponder a una de las conexiones definidas en tu archivo de configuración `config/queue.php`:
