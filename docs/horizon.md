@@ -28,7 +28,7 @@ Toda la configuración de tu worker es almacenada en un solo archivo de configur
 ## Instalación
 
 ::: danger Nota
-Debes asegurarte de que tu driver de cola está establecido a `redis` en tu archivo de configuración `queue`.
+Debes asegurarte de que tu conexión de cola está establecido a `redis` en tu archivo de configuración `queue`.
 :::
 
 Puedes usar Composer para instalar Horizon en tu proyecto de Laravel:
@@ -158,7 +158,7 @@ redirect_stderr=true
 stdout_logfile=/home/forge/app.com/horizon.log
 ```
 
-::: tip
+::: tip TIP
 Si no estás cómodo administrando tus propios servidores, considera usar [Laravel Forge](https://forge.laravel.com). Forge aprovisiona tus propios servidores PHP 7+ con todo lo que necesitas para administrar modernas aplicaciones robustas de Laravel con Horizon.
 :::
 

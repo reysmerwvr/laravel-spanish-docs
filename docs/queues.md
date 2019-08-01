@@ -32,7 +32,7 @@
 <a name="introduction"></a>
 ## Introducción
 
-::: tip
+::: tip TIP
 Laravel ahora ofrece Horizon, un hermoso tablero y sistema de configuración para las colas motorizadas por Redis. Entra en [Horizon documentation](/horizon.html) para más inormación.
 :::
 
@@ -455,7 +455,7 @@ public function retryUntil()
 }
 ```
 
-::: tip
+::: tip TIP
 También puedes definir un método `retryUntil` en los listeners de eventos en cola.
 :::
 
@@ -510,7 +510,7 @@ Redis::throttle('key')->allow(10)->every(60)->then(function () {
 });
 ```
 
-::: tip
+::: tip TIP
 En el ejemplo anterior, `key` puede ser cualquier cadena que identifique únicamente el tipo de trabajo que se quiere limitar. Por ejemplo, puedes desear construir la key basada en el nombre de clase del trabajo y las IDS de los modelos Eloquent en los cuáles opera.
 :::
 
@@ -530,7 +530,7 @@ Redis::funnel('key')->limit(1)->then(function () {
 });
 ```
 
-::: tip
+::: tip TIP
 Al utilizar límite de frecuencias, el número de intentos que el trabajo necesitará para ejecutarse exitosamente puede ser difícil de determinar. Por lo tanto, es útil combinar límite de frecuencias con [intentos basados en el tiempo](#time-based-attempts).
 :::
 
@@ -563,11 +563,17 @@ Laravel incluye un worker de cola que procesará trabajos nuevos a medida que é
 php artisan queue:work
 ```
 
-::: tip
+::: tip TIP
 Para mantener el proceso `queue:work` ejecutado permanentemente en segundo plano, debes usar un monitor de procesos como [Supervisor](#supervisor-configuration) para asegurar que el worker de cola no deja de ejecutarse.
 :::
 
 Recuerda, los workers en cola son procesos de larga duración y almacenan el estado de la aplicación iniciada en la memoria. Como resultado, no notarán cambios en la base de código después de que se han iniciado. Por lo tanto, durante el proceso de despliegue, asegúrate de [reiniciar los workers de cola](#queue-workers-and-deployment).
+
+Alternativamente, puedes ejecutar el comando `queue:listen`. Al usar el comando `queue:listen`, no tienes que reiniciar manualmente el worker luego de que tu código sea cambiado; sin embargo, este comando no es tan eficiente como `queue:work`:
+
+```php
+php artisan queue:listen
+```
 
 #### Especificando la conexión y cola
 
@@ -629,7 +635,7 @@ php artisan queue:restart
 
 Este comando indicará a todos los workers de cola que "mueran" luego de terminar el procesamiento de su trabajo actual para que ningún trabajo existente se pierda. Como los workers de cola morirán cuando se ejecute el comando `queue:restart`, un administrador de procesos debe estar en ejecución, como [Supervisor](#supervisor-configuration) para reiniciar automáticamente los workers de la cola.
 
-::: tip
+::: tip TIP
 La cola utiliza [caché](/cache.html) para almacenar señales de reinicio, por lo que debes verificar si un driver de caché está configurado debidamente en tu aplicación antes de utilizar esta característica.
 :::
 
@@ -677,7 +683,7 @@ Supervisor es un monitor de procesos para el sistema operativo Linux y reiniciar
 sudo apt-get install supervisor
 ```
 
-::: tip
+::: tip TIP
 Si configurar Supervisor por ti mismo suena abrumador, considera usar [Laravel Forge](https://forge.laravel.com), el cual instalará y configurará Supervisor automáticamente para tus proyectos en Laravel.
 :::
 

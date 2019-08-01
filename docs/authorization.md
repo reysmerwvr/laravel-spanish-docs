@@ -48,6 +48,10 @@ public function boot()
 {
     $this->registerPolicies();
 
+    Gate::define('edit-settings', function ($user) {
+        return $user->isAdmin;
+    });
+
     Gate::define('update-post', function ($user, $post) {
         return $user->id == $post->user_id;
     });
@@ -87,7 +91,7 @@ Gate::define('posts.update', 'App\Policies\PostPolicy@update');
 Gate::define('posts.delete', 'App\Policies\PostPolicy@delete');
 ```
 
-Por defecto, las habilidades `view`, `create`, `update`, y `delete` serán definidas. Además puedes sobrescribir las habilidades por defecto pasando un arreglo como tercer argumento al método `resource`. Las llaves del arreglo definen los nombre de las habilidades mientras que los valores definen los nombres de los métodos. Por ejemplo, el siguiente código creará dos nuevas definiciones de Gate - `posts.image` y `posts.photo`:
+Por defecto, las habilidades `view`, `create`, `update`, y `delete` serán definidas. Además puedes sobrescribir las habilidades por defecto pasando un arreglo como tercer argumento al método `resource`. Las llaves del arreglo definen los nombres de las habilidades mientras que los valores definen los nombres de los métodos. Por ejemplo, el siguiente código creará dos nuevas definiciones de Gate - `posts.image` y `posts.photo`:
 
 ```php
 Gate::resource('posts', 'PostPolicy', [
@@ -102,6 +106,10 @@ Gate::resource('posts', 'PostPolicy', [
 Para autorizar una acción usando gates, deberías usar los métodos `allows` o `denies`. Nota que no necesitas pasar el usuario autenticado cuando llames a estos métodos. Laravel se ocupará de esto por ti de forma automática:
 
 ```php
+if (Gate::allows('edit-settings')) {
+    // The current user can edit settings
+}
+
 if (Gate::allows('update-post', $post)) {
     // The current user can update the post...
 }
@@ -120,6 +128,18 @@ if (Gate::forUser($user)->allows('update-post', $post)) {
 
 if (Gate::forUser($user)->denies('update-post', $post)) {
     // The user can't update the post...
+}
+```
+
+Puedes autorizar múltiples acciones a la vez con los métodos `any` o `none`:
+
+```php
+if (Gate::any(['update-post', 'delete-post'], $post)) {
+    // The user can update or delete the post
+}
+
+if (Gate::none(['update-post', 'delete-post'], $post)) {
+    // The user cannot update or delete the post
 }
 ```
 
@@ -158,19 +178,19 @@ Similar a la comprobación `before`, si el callback `after` retorna un resultado
 
 Los políticas son clases que organizan la lógica de autorización para un modelo o recurso en particular. Por ejemplo, si tu aplicación es un blog, puedes tener un modelo `Post` con su correspondiente `PostPolicy` para autorizar acciones de usuario como crear o actualizar posts.
 
-Puedes generar una política usando el comando `make:policy` [artisan command](/artisan.html). La política generada será ubicada en el directorio `app/Policies`. Si el directorio no existe en tu aplicación, Laravel lo creará por ti:
+Puedes generar una política usando el [comando de Artisan](/artisan.html) `make:policy`. La política generada será ubicada en el directorio `app/Policies`. Si el directorio no existe en tu aplicación, Laravel lo creará por ti:
 
 ```php
 php artisan make:policy PostPolicy
 ```
 
-El comando `make:policy` generar una clase de política vacía. Si quieres generar una clase con los métodos de política para un "CRUD" básico ya incluidos en la clase, puedes especificar la opción `--model` al ejecutar el comando:
+El comando `make:policy` genera una clase de política vacía. Si quieres generar una clase con los métodos de política para un "CRUD" básico ya incluidos en la clase, puedes especificar la opción `--model` al ejecutar el comando:
 
 ```php
 php artisan make:policy PostPolicy --model=Post
 ```
 
-::: tip
+::: tip TIP
 Todas las políticas son resueltas a través del [contenedor de servicios de Laravel](/container.html), lo que te permite especificar las dependencias necesarias en el constructor de la política y estas serán automaticamente inyectadas.
 :::
 
@@ -266,9 +286,9 @@ class PostPolicy
 }
 ```
 
-Puedes continuar definiendo métodos adicionales en la política como sea necesario para las diferentes acciones que esté autorice. Por ejemplo, puedes definir métodos `view` o `delete` para autorizar varias acciones de `Post`, pero recuerda que eres libre de darle los nombres que quieras a los métodos de la política.
+Puedes continuar definiendo métodos adicionales en la política como sea necesario para las diferentes acciones que este autorice. Por ejemplo, puedes definir métodos `view` o `delete` para autorizar varias acciones de `Post`, pero recuerda que eres libre de darle los nombres que quieras a los métodos de la política.
 
-::: tip
+::: tip TIP
 Si usas la opción `--model` cuando generes tu política con el comando de Artisan, éste contendrá métodos para las acciones `view`, `create`, `update`, `delete`, `restore` y `forceDelete`.
 :::
 
@@ -382,7 +402,7 @@ Route::put('/post/{post}', function (Post $post) {
 })->middleware('can:update,post');
 ```
 
-En este ejemplo, estamos pasando al middleware `can` dos argumentos, el primero es el nombre de la acción que deseamos autorizar y el segundo es el parámetro de la ruta que deseamos pasar al método de la política. En este caso, como estamos usando [implicit model binding](/routing.html#implicit-binding), un modelo `Post` ser pasado al método de la política. Si el usuario no está autorizado a ejecutar la acción dada, el middleware generará una respuesta HTTP con el código de estatus `403`.
+En este ejemplo, estamos pasando al middleware `can` dos argumentos, el primero es el nombre de la acción que deseamos autorizar y el segundo es el parámetro de la ruta que deseamos pasar al método de la política. En este caso, como estamos usando [implicit model binding](/routing.html#implicit-binding), un modelo `Post` será pasado al método de la política. Si el usuario no está autorizado a ejecutar la acción dada, el middleware generará una respuesta HTTP con el código de estatus `403`.
 
 #### Acciones que no requieren modelos
 
@@ -482,8 +502,8 @@ Los siguientes métodos de controlador serán mapeados con su método de políti
 | update                | update             |
 | destroy               | delete             |
 
-::: tip
-Puedes usar el comando `make:policy` con la opción `--model` para rápidamente generar una clase de política para un modelo dado: `php artisan make:policy PostPolicy --model=Post`.
+::: tip TIP
+Puedes usar el comando `make:policy` con la opción `--model` para generar rápidamente una clase de política para un modelo dado: `php artisan make:policy PostPolicy --model=Post`.
 :::
 
 <a name="via-blade-templates"></a>
@@ -515,6 +535,16 @@ Estas directivas son accesos directos convenientes para no tener que escribir se
 @unless (Auth::user()->can('update', $post))
     <!-- The Current User Can't Update The Post -->
 @endunless
+```
+
+También puedes determinar si un usuario tiene habilidad de autorización desde una lista de habilidades dadas. Para lograr esto, usa la directiva `@canary`:
+
+```php
+@canany(['update', 'view', 'delete'], $post)
+    // The current user can update, view, or delete the post
+@elsecanany(['create'], \App\Post::class)
+    // The current user can create a post
+@endcanany
 ```
 
 #### Acciones que no requieren modelos

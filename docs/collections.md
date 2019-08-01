@@ -33,7 +33,7 @@ Como se ha mencionado más arriba, el helper `collect` retorna una nueva instanc
 $collection = collect([1, 2, 3]);
 ```
 
-::: tip
+::: tip TIP
 Las respuestas de [Eloquent](/eloquent.html) siempre retornan una instancia de `Collection`.
 :::
 
@@ -96,6 +96,7 @@ Por el resto de esta documentación, discutiremos cada método disponible en la 
 [diffKeys](#method-diffkeys)
 [dump](#method-dump)
 [duplicates](#method-duplicates)
+[duplicatesStrict](#method-duplicatesstrict)
 [each](#method-each)
 [eachSpread](#method-eachspread)
 [every](#method-every)
@@ -130,6 +131,7 @@ Por el resto de esta documentación, discutiremos cada método disponible en la 
 [max](#method-max)
 [median](#method-median)
 [merge](#method-merge)
+[mergeRecursive](#method-mergerecursive)
 [min](#method-min)
 [mode](#method-mode)
 [nth](#method-nth)
@@ -146,6 +148,8 @@ Por el resto de esta documentación, discutiremos cada método disponible en la 
 [random](#method-random)
 [reduce](#method-reduce)
 [reject](#method-reject)
+[replace](#method-replace)
+[replaceRecursive](#method-replacerecursive)
 [reverse](#method-reverse)
 [search](#method-search)
 [shift](#method-shift)
@@ -558,8 +562,27 @@ El método `duplicates` obtiene y retorna valores duplicados de la colección:
     
     $collection->duplicates();
     
-    // [ 2 => 'a', 4 => 'b' ]
+    // [2 => 'a', 4 => 'b']
 ```
+
+If the collection contains arrays or objects, you can pass the key of the attributes that you wish to check for duplicate values:
+
+```php
+$employees = collect([
+    ['email' => 'abigail@example.com', 'position' => 'Developer'],
+    ['email' => 'james@example.com', 'position' => 'Designer'],
+    ['email' => 'victoria@example.com', 'position' => 'Developer'],
+])
+
+$employees->duplicates('position');
+
+// [2 => 'Developer']
+```
+
+<a name="method-duplicatesstrict"></a>
+#### `duplicatesStrict()`
+
+Este método tiene la misma firma que el método [`duplicates`](#method-duplicates), sin embargo, todos los valores son comparandos usando comparaciones "estrictas".
 
 <a name="method-each"></a>
 #### `each()`
@@ -1368,6 +1391,21 @@ $merged->all();
 // ['Desk', 'Chair', 'Bookcase', 'Door']
 ```
 
+<a name="method-mergerecursive"></a>
+#### `mergeRecursive()`
+
+El método `mergeRecursive` une el arreglo o colección dada de forma recursiva con la colección original. Si una cadena en los elementos dados coincide con una cadena en la colección original, entonces los valores para dichas cadenas son unidos en un arreglo, y esto es hecho de forma recursiva:
+
+```php
+$collection = collect(['product_id' => 1, 'price' => 100]);
+
+$merged = $collection->merge(['product_id' => 2, 'price' => 200, 'discount' => false]);
+
+$merged->all();
+
+// ['product_id' => [1, 2], 'price' => [100, 200], 'discount' => false]
+```
+
 <a name="method-min"></a>
 #### `min()`
 
@@ -1700,6 +1738,34 @@ $filtered->all();
 
 Para el inverso del método `reject`, ve el método [`filter`](#method-filter).
 
+<a name="method-replace"></a>
+#### `replace()`
+
+El método `replace` se comporta de forma similar a `merge`; sin embargo, en adición a sobrescribir los elementos que coinciden con las cadenas, el método `replace` también sobrescribirá los elementos en la colección que tienen claves númericas coincidentes:
+
+```php
+$collection = collect(['Taylor', 'Abigail', 'James']);
+
+$replaced = $collection->replace([1 => 'Victoria', 3 => 'Finn']);
+
+// ['Taylor', 'Victoria', 'James', 'Finn']
+```
+
+<a name="method-replacerecursive"></a>
+#### `replaceRecursive()`
+
+Este método funciona como el método `replace`, pero se reflejerá en arreglos y aplicará el mismo proceso de reemplazo a los valores internos:
+
+```php
+$collection = collect(['Taylor', 'Abigail', ['James', 'Victoria', 'Finn']]);
+
+$replaced = $collection->replaceRecursive(['Charlie', 2 => [1 => 'King']]);
+
+$replaced->all();
+
+// ['Charlie', 'Abigail', ['James', 'King', 'Finn']]
+```
+
 <a name="method-reverse"></a>
 #### `reverse()`
 
@@ -1835,7 +1901,7 @@ $sorted->values()->all();
 
 Si tus necesidades de ordenamiento son más avanzadas, puedes pasar una funión de retorno a `sort` con tu propio algoritmo. Consulta la documentación de PHP en [`uasort`](https://secure.php.net/manual/en/function.uasort.php#refsect1-function.uasort-parameters), que es lo que llama el método `sort` de la colección.
 
-::: tip
+::: tip TIP
 Si necesitas ordenar una colección de matrices u objetos anidados, consulta los métodos [`sortBy`](#method-sortby) y [`sortByDesc`](#method-sortbydesc).
 :::
 

@@ -44,6 +44,16 @@ $this->mock(Service::class, function ($mock) {
 });
 ```
 
+De forma similar, si quieres espiar un objeto, la clase de prueba base de Laravel ofrece un método `spy` como un wrapper conveniente del método `Mockery::spy`:
+
+```php
+use App\Service;
+
+$this->spy(Service::class, function ($mock) {
+    $mock->shouldHaveReceived('process');
+});
+```
+
 <a name="bus-fake"></a>
 ## Fake de trabajos (jobs)
 
@@ -379,7 +389,7 @@ class ExampleTest extends TestCase
 }
 ```
 
-::: tip
+::: tip TIP
 De forma predeterminada, el método `fake` borrará todos los archivos en su directorio temporal. Si prefieres mantener estos archivos, puedes usar en su lugar el método "persistentFake".
 :::
 

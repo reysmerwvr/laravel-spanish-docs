@@ -143,7 +143,7 @@ protected function discoverEventsWithin()
 
 En producción, es probable que no desees que el framework analice todos tus oyentes en cada petición. Por lo tanto, durante tu proceso de despliegue, debes ejecutar el comando Artisan `event:cache` para almacenar en caché un manifiesto de todos los eventos y oyentes de tu aplicación. Este manifiesto será utilizado por el framework para acelerar el proceso de registro de eventos. El comando `event:clear` puede ser usado para destruir la caché.
 
-::: tip
+::: tip TIP TIP
 El comando `event:list` puede ser usado para mostrar una lista de todos los eventos y oyentes registrados por tu aplicación.
 :::
 
@@ -218,7 +218,7 @@ class SendShipmentNotification
 }
 ```
 
-::: tip
+::: tip TIP TIP
 Tus oyentes de eventos también pueden declarar el tipo de cualquier dependencia que necesiten de sus constructores. Todos los oyentes de eventos se resuelven a través [contenedor de servicio](/container.html) de Laravel, por lo que las dependencias se inyectarán automáticamente.
 :::
 
@@ -283,6 +283,44 @@ class SendShipmentNotification implements ShouldQueue
     * @var int
     */
     public $delay = 60;
+}
+```
+
+#### Cola condicional de listeners
+
+Algunas veces, necesitarás determinar si un listener debe ser agregado a una cola en base a datos que sólo están disponibles en tiempo de ejecución. Para lograr esto, un método `shouldQueue` puede ser agregar a un listener para determinar si el listener debe ser agregado a una cola y ejecutado de forma sincronica:
+
+```php
+<?php
+
+namespace App\Listeners;
+
+use App\Events\OrderPlaced;
+use Illuminate\Contracts\Queue\ShouldQueue;
+
+class RewardGiftCard implements ShouldQueue
+{
+    /**
+    * Reward a gift card to the customer.
+    *
+    * @param  \App\Events\OrderPlaced  $event
+    * @return void
+    */
+    public function handle(OrderPlaced $event)
+    {
+        //
+    }
+
+    /**
+    * Determine whether the listener should be queued.
+    *
+    * @param  \App\Events\OrderPlaced  $event
+    * @return bool
+    */
+    public function shouldQueue(OrderPlaced $event)
+    {
+        return $event->order->subtotal >= 5000;
+    }
 }
 ```
 
@@ -395,7 +433,7 @@ class OrderController extends Controller
 }
 ```
 
-::: tip
+::: tip TIP TIP
 Al realizar pruebas, puede ser útil afirmar que ciertos eventos se enviaron sin activar realmente a tus oyentes. Las [funciones de ayuda (helpers) incluidas](/mocking.html#event-fake) en Laravel hace que sea fácil de hacerlo.
 :::
 

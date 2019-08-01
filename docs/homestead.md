@@ -8,10 +8,7 @@
     - [Configurar Homestead](#configuring-homestead)
     - [Iniciar el box de Vagrant](#launching-the-vagrant-box)
     - [Instalación por proyecto](#per-project-installation)
-    - [Instalación de MariaDB](#installing-mariadb)
-    - [Instalación de MongoDB](#installing-mongodb)
-    - [Instalación de Elasticsearch](#installing-elasticsearch)
-    - [Instalación de Neo4j](#installing-neo4j)
+    - [Instalando características opcionales](#installing-optional-features)
     - [Alias](#aliases)
 - [Uso diario](#daily-usage)
     - [Acceder a homestead globalmente](#accessing-homestead-globally)
@@ -31,7 +28,8 @@
     - [Correo electrónico](#mail)
 - [Depuración y perfilado](#debugging-and-profiling)
     - [Depuración de solicitudes web con Xdebug](#debugging-web-requests)
-    - [Depuración de aplicaciones CLI](#debugging-cli-applications)        
+    - [Depuración de aplicaciones CLI](#debugging-cli-applications)    
+    - [Perfilado de aplicaciones con Blackfire](#profiling-applications-with-blackfire)    
 - [Interfaces de red](#network-interfaces)
 - [Extender Homestead](#extending-homestead)
 - [Actualizar Homestead](#updating-homestead)
@@ -45,7 +43,7 @@ Laravel se ha esforzado en hacer que toda la experiencia del desarrollo de PHP s
 
 Laravel Homestead es el box de Vagrant pre-empaquetado oficial que brinda un maravilloso entorno de desarrollo sin la necesidad de que tengas que instalar PHP, un serivor web, ni ningún otro servidor de software en tu máquina local. ¡Basta de preocuparte por estropear tu sistema operativo! Los boxes de Vagrant son completamente desechables. Si algo sale mal, simplemente puedes destruir y volver a crear el box en cuestión de minutos.
 
-Homestead puede ejecutarse en sistemas Windows, Mac y Linux e incluye el servidor Web Nginx, PHP 7.3, PHP 7.2, PHP 7.1, MySQL, PostgreSQL, Redis, Memcached, Node y todas las demás herramientas que necesitas para desarrollar aplicaciones de Laravel sorprendentes.
+Homestead puede ejecutarse en sistemas Windows, Mac y Linux e incluye el Nginx, PHP, MySQL, PostgreSQL, Redis, Memcached, Node y todas las demás herramientas que necesitas para desarrollar aplicaciones de Laravel sorprendentes.
 
 ::: danger Nota
 Si estás utilizando Windows, puede que necesites habilitar la virtualización por hardware (VT-x). Usualmente puede habilitarse en el BIOS. Si estás utilizando Hyper-V en un sistema UEFI puede que requieras también deshabilitar Hyper-V para poder acceder a VT-x.
@@ -59,6 +57,8 @@ Si estás utilizando Windows, puede que necesites habilitar la virtualización p
 - PHP 7.3
 - PHP 7.2
 - PHP 7.1
+- PHP 7.0
+- PHP 5.6
 - Nginx
 - MySQL
 - Sqlite3
@@ -77,15 +77,29 @@ Si estás utilizando Windows, puede que necesites habilitar la virtualización p
 ### Software opcional
 
 - Apache
+- Blackfire
+- Cassandra
+- Chronograf
+- CouchDB
 - Crystal & Lucky Framework
-- Dot Net Core
+- Docker
 - Elasticsearch
+- Gearman
 - Go
+- Grafana
+- InfluxDB
 - MariaDB
+- MinIO
 - MongoDB
+- MySQL 8
 - Neo4j
 - Oh My Zsh
 - Ruby & Rails
+- Open Resty
+- PM2
+- Python
+- RabbitMQ
+- Solr
 - Webdriver & Laravel Dusk Utilities
 - Zend Z-Ray
 
@@ -95,7 +109,7 @@ Si estás utilizando Windows, puede que necesites habilitar la virtualización p
 <a name="first-steps"></a>
 ### Primeros pasos
 
-Antes de iniciar tu entorno de Homestead, debes instalar [VirtualBox](https://www.virtualbox.org/wiki/Downloads), [VMware](https://www.vmware.com), [Parallels](https://www.parallels.com/products/desktop/) o [Hyper-V](https://docs.microsoft.com/en-us/virtualization/hyper-v-on-windows/quick-start/enable-hyper-v) además de [Vagrant](https://www.vagrantup.com/downloads.html). Todos estos paquetes de software cuentan con un instalador fácil de usar para todos los sistemas operativos populares.
+Antes de iniciar tu entorno de Homestead, debes instalar [VirtualBox 6.x](https://www.virtualbox.org/wiki/Downloads), [VMware](https://www.vmware.com), [Parallels](https://www.parallels.com/products/desktop/) o [Hyper-V](https://docs.microsoft.com/en-us/virtualization/hyper-v-on-windows/quick-start/enable-hyper-v) además de [Vagrant](https://www.vagrantup.com/downloads.html). Todos estos paquetes de software cuentan con un instalador fácil de usar para todos los sistemas operativos populares.
 
 Para utilizar el proveedor de VMWare, necesitarás comprar tanto VMWare Fusion / Workstation y el [plugin de Vagrant para VMWare](https://www.vagrantup.com/vmware). A pesar de que esto no es gratuito, VMWare ofrece un mayor desempeño en velocidad al compartir directorios.
 
@@ -121,7 +135,7 @@ Puedes instalar Homestead clonando el repositorio en tu máquina host. Considera
 git clone https://github.com/laravel/homestead.git ~/Homestead
 ```
 
-Debes hacer checkout a alguna versión etiquetada de Homestead ya que la rama `master` no siempre es estable. Puedes encontrar la versión estable más reciente en la [Página de Releases de GitHub](https://github.com/laravel/homestead/releases):
+Debes hacer checkout a alguna versión etiquetada de Homestead ya que la rama `master` no siempre es estable. Puedes encontrar la versión estable más reciente en la [Página de Releases de GitHub](https://github.com/laravel/homestead/releases). De forma alternative puedes revisar el branch `release` el cual siempre es actualizado con la última versión estable.
 
 ```php
 cd ~/Homestead
@@ -157,27 +171,35 @@ La propiedad `folders` del archivo `Homestead.yaml` lista todos los directorios 
 
 ```php
 folders:
-    - map: ~/code
-        to: /home/vagrant/code
+    - map: ~/code/project1
+      to: /home/vagrant/project1
 ```
 
-Si solo estás creando unos cuantos sitios, este mapeo genérico funcionará bien. Sin embargo, mientras el número de sitios continúe creciendo, podrás comenzar a experimentar algunos problemas de desempeño. Estos problemas pueden ser muy evidentes en máquinas con pocos recursos o en proyectos que contengan una cantidad de archivos de gran tamaño. Si experimentas estos problemas, trata de mapear cada proyecto a tu propio directorio de Vagrant:
+::: danger Nota
+Los usuarios de Windows no deben usar la sintaxis de ruta `~/` y en su lugar deberían usar la ruta completa al proyecto como `C:\Users\user\Code\project1`.
+:::
+
+Siempre debes mapear proyectos individuales en su propio directorio en lugar de mapear tu directorio `~/code` entero. Cuando mapeas un directorio la maquina virtual debe mantener un seguimiento de todos los I/O que suceden en *cada* archivo en el directorio incluso si no estás trabajando en ese proyecto. Esto puede llevar a que sucedan problemas de rendimiento si tienes un gran número de archivos en un directorio. Virtualbox es más susceptible a esto que otros proveedores, lo que significa que es muy importante dividir tus directorios en proyectos individuales al usar el proveedor Virtualbox.
 
 ```php
 folders:
     - map: ~/code/project1
-        to: /home/vagrant/code/project1
+        to: /home/vagrant/project1
 
     - map: ~/code/project2
-        to: /home/vagrant/code/project2
+        to: /home/vagrant/project2
 ```
+
+::: danger Nota
+Nunca debes montar `.` (el directorio actual) al usar Homestead. Esto causa que Vagrant no mapeé el directorio actual a `/vagrant` y romperá características adicionales además de causar resultados inesperados al momento del aprovisionamiento.
+:::
 
 Para habilitar [NFS](https://www.vagrantup.com/docs/synced-folders/nfs.html), solo necesitarás agregar un simple flag en la configuración de tu directorio sincronizado:
 
 ```php
 folders:
-    - map: ~/code
-        to: /home/vagrant/code
+    - map: ~/code/project1
+        to: /home/vagrant/project1
         type: "nfs"
 ```
 
@@ -189,8 +211,8 @@ También puedes indicar cualquier opción soportada por los [Directorios Sincron
 
 ```php
 folders:
-    - map: ~/code
-        to: /home/vagrant/code
+    - map: ~/code/project1
+        to: /home/vagrant/project1
         type: "rsync"
         options:
             rsync__args: ["--verbose", "--archive", "--delete", "-zz"]
@@ -204,10 +226,14 @@ folders:
 ```php
 sites:
     - map: homestead.test
-        to: /home/vagrant/code/my-project/public
+        to: /home/vagrant/project1/public
 ```
 
 Si cambias la propiedad `sites` apropiadamente después de haber provisionado el box de Homestead, deberás volver a ejecutar `vagrant reload --provision` para actualizar la configuración de Nginx en la máquina virtual.
+
+::: danger Nota
+Recuerda que aunque los scripts de Homestead son construidos tan idempotente como sea posible, si estas experimentando problemas al momento del aprovisionamiento destruye la maquina usando `vagrant destroy && vagrant up` para reconstruir desde un estado correcto conocido.
+:::
 
 #### El archivo hosts
 
@@ -257,51 +283,60 @@ vendor\\bin\\homestead make
 
 Después, ejecuta el comando `vagrant up` en tu terminal y podrás acceder a tu proyecto desde el navegador en `http://homestead.test`. Recuerda que aún vas a necesitar agregar una entrada para `homestead.test` en tu archivo `/etc/hosts` para el dominio de tu elección.
 
-<a name="installing-mariadb"></a>
-### Instalación de MariaDB
+<a name="installing-optional-features"></a>
+### Instalando características opcionales
 
-Si prefieres usar MariaDB en lugar de MySQL, debes agregar la opción `mariadb` en tu archivo `Homestead.yaml`. Esta opción removerá MySQL e instalará MariaDB. MariaDB funciona como un remplazo directo para MySQL, por lo que aún podrás seguir utilizando el driver `mysql` para configurar la base de datos en tu aplicación:
+Software opcional es instalado usando la opción "features" en tu archivo de configuración de Homestead. La mayoría de características son habilitadas o deshabilitadas con un valor booleano, mientras que algunas características soportan múltiples opciones de configuración:
 
 ```php
-box: laravel/homestead
-ip: "192.168.10.10"
-memory: 2048
-cpus: 4
-provider: virtualbox
-mariadb: true
+features:
+    - blackfire:
+        server_id: "server_id"
+        server_token: "server_value"
+        client_id: "client_id"
+        client_token: "client_value"
+    - cassandra: true
+    - chronograf: true
+    - couchdb: true
+    - crystal: true
+    - docker: true
+    - elasticsearch:
+        version: 7
+    - gearman: true
+    - golang: true
+    - grafana: true
+    - influxdb: true
+    - mariadb: true
+    - minio: true
+    - mongodb: true
+    - mysql8: true
+    - neo4j: true
+    - ohmyzsh: true
+    - openresty: true
+    - pm2: true
+    - python: true
+    - rabbitmq: true
+    - solr: true
+    - webdriver: true
 ```
 
-<a name="installing-mongodb"></a>
-### Instalación de MongoDB
+#### MariaDB
 
-Para instalar MongoDB Community Edition, actualiza tu archivo `Homestead.yaml` con la siguiente opción de configuración:
-	
-```php
-mongodb: true
-```
+Activar MariaDB eliminará MySQL e instalará MariaDB. MariDB funciona como reemplazo de MySQL así que aún serás capaz de usar el driver de base de datos `mysql` en la configuración de la base de datos de tu aplicación.
+
+#### MongoDB
 
 La instalación por defecto establecerá el nombre de usuario de base de datos a `homestead` y su contraseña como `secret`.
 
-<a name="installing-elasticsearch"></a>
-### Instalación de Elasticsearch
+#### Elasticsearch
 
-Para instalar Elasticsearch, añade la opción `elasticsearch` en tu archivo `Homestead.yaml` y especifica una versión soportada, la cual puede ser una versión mayor o un número específico de versión (mayor.menor.parche). La instalación por defecto creará un cluster llamado 'homestead'. Nunca deberías dar a Elasticsearch más de la mitad de la memoria de tu sistema operativo, por lo que deberás asegurarte de que tu máquina tenga al menos el doble de la memoria asignada a Elasticsearch:
+Puedes especificar una versión soportada de Elasticsearch, la cual puede ser una versión principal o un número de versión exacto (major.minor.patch). La instalación por defecto creará un cluster llamado 'homestead'. Nunca debes darle a Elasticsearch más de la mitada de la memoria del sistema operativo, así que asegurate de que tu maquina Homestead al menos tiene el doble de la cantidad asignada a Elasticsearch.
 
-```php
-box: laravel/homestead
-ip: "192.168.10.10"
-memory: 4096
-cpus: 4
-provider: virtualbox
-elasticsearch: 6
-```
-
-::: tip
+::: tip TIP
 Echa un vistazo a la [documentación de Elasticsearch](https://www.elastic.co/guide/en/elasticsearch/reference/current) para aprender a personalizar tu configuración.
 :::
 
-<a name="installing-neo4j"></a>
-### Instalación de Neo4j
+#### Neo4j
 
 [Neo4j](https://neo4j.com/) es un sistema de manejo de bases de datos gráfico. Para instalar Neo4j Community Edition, actualiza tu archivo `Homestead.yaml` con la siguiente opción de configuración:
 
@@ -370,9 +405,7 @@ Pero, dado que probablemente requieras conectarte frecuentemente a tu máquina d
 <a name="connecting-to-databases"></a>
 ### Conectar a base de datos
 
-Una base de datos `homestead` es configurada por defecto tanto para MySQL como para PostgreSQL. Para mayor conveniencia, el archivo de configuración de Laravel `.env` configura el framework para utilizar esta base de datos por defecto.
-
-Para conectarte a tu base de datos de MySQL o de PostgreSQL desde el cliente de base de datos de tu equipo host, deberás conectarte hacia `127.0.0.1` en el puerto `33060` (MySQL) o `54320` (PostgreSQL). El nombre de usuario y contraseña para ambas bases de datos son `homestead` / `secret`.
+Una base de datos `homestead` es configurada por defecto tanto para MySQL como para PostgreSQL. Para conectarte a tu base de datos de MySQL o de PostgreSQL desde el cliente de base de datos de tu equipo host, deberás conectarte hacia `127.0.0.1` en el puerto `33060` (MySQL) o `54320` (PostgreSQL). El nombre de usuario y contraseña para ambas bases de datos son `homestead` / `secret`.
 
 ::: danger Nota
 Solo deberías utilizar estos puertos no estándares para conectarte a tus bases de datos desde tu equipo host. Deberás utilizar los puertos por defecto 3306 y 5432 en tu archivo de configuración para la base de datos de Laravel que se encuentra ejecutándose _dentro_ de la máquina virtual.
@@ -412,9 +445,9 @@ Una vez que tu entorno de Homestead haya sido provisionado y esté en ejecución
 ```php
 sites:
     - map: homestead.test
-        to: /home/vagrant/code/my-project/public
+        to: /home/vagrant/project1/public
     - map: another.test
-        to: /home/vagrant/code/another/public
+        to: /home/vagrant/project2/public
 ```
 
 Si vagrant no está manejando tu archivo "hosts" de manera automática, también deberás agregar los nuevos sitios a este archivo.
@@ -434,7 +467,7 @@ Homestead soporta varios tipos de sitios permitiéndote ejecutar fácilmente pro
 ```php
 sites:
     - map: symfony2.test
-        to: /home/vagrant/code/my-symfony-project/web
+        to: /home/vagrant/my-symfony-project/web
         type: "symfony2"
 ```
 
@@ -448,7 +481,7 @@ También puedes agregar valores adicionales de `fastcgi_param` en Nginx para tus
 ```php
 sites:
     - map: homestead.test
-        to: /home/vagrant/code/my-project/public
+        to: /home/vagrant/project1/public
         params:
             - key: FOO
             value: BAR
@@ -479,7 +512,7 @@ Si deseas que el comando `schedule:run` sea ejecutado en un sitio de Homestead, 
 ```php
 sites:
     - map: homestead.test
-        to: /home/vagrant/code/my-project/public
+        to: /home/vagrant/project1/public
         schedule: true
 ```
 
@@ -599,21 +632,33 @@ Recuerda, Vagrant es inherentemente inseguro y estarás comparitendo tu máquina
 <a name="multiple-php-versions"></a>
 ### Múltiples versiones de PHP
 
-Homestead 6 introduce soporte para múltiples versiones de PHP en una misma máquina virtual. Puedes especificar qué versión de PHP deseas utilizar para un sitio en particular desde tu archivo `Homestead.yaml`. Las versiones disponibles de PHP son "7.1", "7.2" y "7.3" (por defecto):
+Homestead 6 introduce soporte para múltiples versiones de PHP en una misma máquina virtual. Puedes especificar qué versión de PHP deseas utilizar para un sitio en particular desde tu archivo `Homestead.yaml`. Las versiones disponibles de PHP son "5.6", "7.0", "7.1", "7.2" y "7.3" (por defecto):
 
 ```php
 sites:
     - map: homestead.test
-        to: /home/vagrant/code/my-project/public
+        to: /home/vagrant/project1/public
         php: "7.1"
 ```
 
 Además, puedes utilizar cualquiera de las versiones soportadas de PHP desde el CLI:
 
 ```php
+php5.6 artisan list
+php7.0 artisan list
 php7.1 artisan list
 php7.2 artisan list
 php7.3 artisan list
+```
+
+También puedes actualizar la versión por defecto de la línea de comandos ejecutando los siguientes comandos dentro de tu maquina virtual de Homestead:
+
+```php
+php56
+php70
+php71
+php72
+php73
 ```
 
 <a name="web-servers"></a>
@@ -672,6 +717,24 @@ xdebug.remote_host = 192.168.10.1
 xdebug.remote_autostart = 1
 ```
 
+<a name="profiling-applications-with-blackfire"></a>
+### Perfilar aplicaciones con Blackfire
+
+[Blackfire](https://blackfire.io/docs/introduction) es un servicio SaaS para perfilar solicitudes Web, aplicaciones de línea de comandos y escribir aserciones de rendimiento. Ofrece una interfaz de usuario interactiva que muestra datos de perfiles en call-graphs y líneas de tiempo. Está construido para ser usado en desarrollo, staging y producción, sin sobrecarga para usuarios finales. Proporciona comprobaciones de rendimiento, calidad y seguridad del código y opciones de configuración para `php.ini`.
+
+[Blackfire Player](https://blackfire.io/docs/player/index) es una aplicación de Web Crawling, Pruebas Web y Web Scraping que puede funcionar junto con Blackfire para perfilar escenarios.
+
+```php
+features:
+    - blackfire:
+        server_id: "server_id"
+        server_token: "server_value"
+        client_id: "client_id"
+        client_token: "client_value"
+```
+
+Las credenciales de servidor y credenciales de clientes [requieren una cuenta de usuario](https://blackfire.io/signup). Blackfire ofrece varias opciones para perfilar una aplicación, incluyendo una herramienta de línea de comandos y extensión de navegador. Por favor [revisa la documentación de Blackfire para más detalles](https://blackfire.io/docs/cookbooks/index).
+
 ### Perfilando el Rendimiento de PHP usando XHGui
 
 [XHGui](https://www.github.com/perftools/xhgui) es una interfaz de usuario para explorar el rendimiento de sus aplicaciones PHP. Para habilitar XHGui, agregue `xhgui: 'true'` a la configuración de su sitio:
@@ -680,7 +743,7 @@ xdebug.remote_autostart = 1
 sites:
     -
         map: your-site.test
-        to: /home/vagrant/code/web
+        to: /home/vagrant/your-site/public
         type: "apache"
         xhgui: 'true'
 ```
@@ -750,7 +813,7 @@ Al usar Homestead en un ambiente de equipo, puedes querer configurar Homestead p
 <a name="updating-homestead"></a>
 ## Actualizar Homestead
 
-Puedes actualizar Homestead en algunos sencillos pasos. Primero, debes actualizar el box de Homestead utilizando el comando `vagrant box update`:
+Antes de comenzar a actualizar Homestead asegurate de ejecutar `vagrant destroy` para eliminar tu maquina virtual actual. Puedes actualizar Homestead en algunos sencillos pasos. Primero, debes actualizar el box de Homestead utilizando el comando `vagrant box update`:
 
 ```php
 vagrant box update
@@ -766,7 +829,7 @@ git pull origin release
 
 Estos comandos traen el código más reciente de Homestead del repositorio de GitHub, recuperan las últimas etiquetas y luego revisan la última versión etiquetada. Puede encontrar la última versión de lanzamiento estable en la [página de lanzamientos de GitHub](https://github.com/laravel/homestead/releases).
 
-Si realizaste la instalación de Homestead en tu proyecto por medio del archivo `composer.json`, debes asegurarte de que tu archivo `composer.json` contenga la dependencia `"laravel/homestead": "^8"` y después debes actualizar dichas dependencias:
+Si realizaste la instalación de Homestead en tu proyecto por medio del archivo `composer.json`, debes asegurarte de que tu archivo `composer.json` contenga la dependencia `"laravel/homestead": "^9"` y después debes actualizar dichas dependencias:
 
 ```php
 composer update

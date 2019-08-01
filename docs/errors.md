@@ -52,7 +52,7 @@ public function report(Exception $exception)
 }
 ```
 
-::: tip
+::: tip TIP
 En lugar de hacer uso de muchos `instanceof` en tu método `report`, considera usar [excepciones reportables](/errors.html#renderable-exceptions)
 :::
 
@@ -170,7 +170,7 @@ class RenderException extends Exception
 }
 ```
 
-::: tip
+::: tip TIP
 Puedes declarar el tipo de cualquier dependencia requerida en el método `report` y el [contenedor de servicios](/container.html) las inyectará automáticamente en el método.
 :::
 

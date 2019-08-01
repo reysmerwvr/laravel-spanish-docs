@@ -11,7 +11,7 @@
 
 El [facade](/facades.html) `Hash` de Laravel proporciona hashing seguro de Bcrypt y Argon2 para almacenar contraseñas de usuarios. Si estás usando las clases integradas `LoginController` y `RegisterController` que están incluidas con tu aplicación de Laravel usarán Bcrypt para registro y autenticación de forma predeterminada.
 
-::: tip
+::: tip TIP
 Bcrypt es una buena opción para el hashing de contraseñas dado que su "factor de trabajo" es ajustable, lo que quiere decir que el tiempo que toma generar un hash puede ser aumentado a medida que la capacidad de hardware incrementa.
 :::
 
@@ -79,7 +79,7 @@ $hashed = Hash::make('password', [
 ]);
 ```
 
-::: tip
+::: tip TIP
 Para mayor información de estas opciones, revisa la [documentación oficial de PHP](https://secure.php.net/manual/en/function.password-hash.php).
 :::
 

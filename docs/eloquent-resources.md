@@ -43,7 +43,7 @@ php artisan make:resource UserCollection
 <a name="concept-overview"></a>
 ## Descripción general del concepto
 
-::: tip
+::: tip TIP
 Esta es una explicación general de recursos y colecciones de recursos. Te recomendamos que leas las otras secciones de esta documentación para obtener una comprensión más profunda de la personalización y el poder que te ofrecen los recursos.
 :::
 
@@ -208,7 +208,7 @@ class UserCollection extends ResourceCollection
 <a name="writing-resources"></a>
 ## Escritura de recursos
 
-::: tip
+::: tip TIP
 Si no has leído la [descripción general del concepto](#concept-overview), te recomendamos que lo hagas antes de continuar con esta documentación.
 :::
 
@@ -277,7 +277,7 @@ public function toArray($request)
 }
 ```
 
-::: tip
+::: tip TIP
 Si deseas incluir relaciones solo cuando ya se han cargado, consulte la documentación sobre [relaciones condicionales](#conditional-relationships).
 :::
 

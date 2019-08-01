@@ -72,7 +72,7 @@ Al hacer deploy a producción, debes asegurarte de optimizar el autoloader de Co
 composer install --optimize-autoloader --no-dev
 ```
 
-::: tip
+::: tip TIP
 Adicionalmente, para optimizar el autoloader, deberás asegurarte de incluir siempre el archivo `composer.lock` al controlador de versiones de tu proyecto. Las dependencias de tu proyecto se instalarán más rápido cuando exista el archivo `composer.lock`.
 :::
 

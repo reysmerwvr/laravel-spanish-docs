@@ -57,7 +57,7 @@ Todas las dependencias de JavaScript requeridas por tu aplicación pueden ser en
 npm install
 ```
 
-::: tip
+::: tip TIP
 De forma predeterminada, el archivo `package.json` de Laravel incluye unos cuantos paquetes tales como `vue` y `axios` para ayudarte a empezar a construir tu aplicación de JavaScript. Siéntete libre de agregar o eliminar del archivo `package.json` según sea necesario para tu aplicación.
 :::
 
@@ -69,7 +69,7 @@ npm run dev
 
 De forma predeterminada, el archivo de `webpack.mix.js` de Laravel compila tu archivo Sass y él de `resources/js/app.js`. Dentro de el archivo `app.js` puedes registrar tus componentes de Vue o, si prefieres un framework distinto, configurar tu propia aplicación de JavaScript. Tu JavaScript compilado será colocado típicamente en el directorio `public/js`.
 
-::: tip
+::: tip TIP
 El archivo `app.js` cargará el archivo `resources/js/bootstrap.js` el cual estructura y configura Vue, Axios, jQuery, y todas las demás dependencias de javaScript. Si tienes dependencias adicionales de JavaScript que configurar, puedes hacerlo en este archivo.
 :::
 
@@ -95,11 +95,16 @@ Para usar el componente en tu aplicación, puedes colocarlo en una de tus planti
 @endsection
 ```
 
-::: tip
+::: tip TIP
 Recuerda, deberías ejecutar el comando `npm run dev` cada vez que cambies un componente de Vue. O, puedes ejecutar el comando `npm run watch` para monitorear y recompilar automáticamente tus componentes cada vez que sean modificados.
 :::
 
 Si estás interesado en aprender más sobre escribir componentes de Vue, deberías leer la [Documentación de Vue](https://vuejs.org/guide/), la cual proporciona un minucioso resumen fácil de leer del framework Vue.
+
+::: tip TIP
+En [Styde.net](https://styde.net/) contamos con un [completo curso sobre Vue.js](https://styde.net/curso-de-vue-2/) que cubre todo los aspectos del framework.
+:::
+
 
 <a name="using-react"></a>
 ### Usando React

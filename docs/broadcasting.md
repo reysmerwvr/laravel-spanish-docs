@@ -37,7 +37,7 @@ En muchas aplicaciones web modernas, los WebSockets son usados para implementar 
 
 Para asistirte en la construcción de ese tipo de aplicaciones, Laravel hace fácil "emitir" tus [eventos](/events.html) a través de una conexión WebSocket. Emitir tus eventos te permite compartir los mismos nombres de eventos entre tu código del lado del servidor y tu aplicación JavaScript del lado de cliente.
 
-::: tip
+::: tip TIP
 Antes de sumergirnos en la emisión de eventos, asegurate de haber leído toda la documentación de Laravel sobre [eventos y listeners](/events.html).
 :::
 
@@ -428,7 +428,7 @@ Los canales privados y de presencia autentican al usuario actual a través de la
 ```php
 Broadcast::channel('channel', function() {
     // ...
-}, ['guards' => ['web', 'admin']])
+}, ['guards' => ['web', 'admin']]);
 ```
 
 <a name="defining-channel-classes"></a>
@@ -484,7 +484,7 @@ class OrderChannel
 }
 ```
 
-::: tip
+::: tip TIP
 Como muchas otras clases en Laravel, las clases de canales automáticamente serán resueltas por el [contenedor de servicios](/container.html). Así que, puedes declarar el tipo de cualquier dependencia requerida por tu canal en su constructor.
 :::
 
@@ -723,7 +723,7 @@ Echo.join(`chat.${roomId}`)
 <a name="client-events"></a>
 ## Eventos del cliente
 
-::: tip
+::: tip TIP
 Al usar [canales de Pusher](https://pusher.com), debes habilitar la opción "Client Events" en la sección "App Settings" del [dashboard de tu aplicación](https://dashboard.pusher.com/) para enviar eventos del cliente.
 :::
 

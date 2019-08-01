@@ -74,7 +74,7 @@ class ExampleTest extends TestCase
 }
 ```
 
-::: tip
+::: tip TIP
 El middleware CSRF es automáticamente deshabilitado cuando se ejecutan las pruebas.
 :::
 
@@ -180,7 +180,7 @@ class ExampleTest extends TestCase
 }
 ```
 
-::: tip
+::: tip TIP
 El método `assertJson` convierte la respuesta a un arreglo y utiliza `PHPUnit::assertArraySubset` para verificar que el arreglo dado exista dentro de la respuesta JSON devuelta por la aplicación. Así, si hay otras propiedades en la respuesta JSON, esta prueba aún pasará siempre y cuando el fragmento dado esté presente.
 :::
 

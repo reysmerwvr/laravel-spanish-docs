@@ -92,7 +92,7 @@ use App\Notifications\InvoicePaid;
 $user->notify(new InvoicePaid($invoice));
 ```
 
-::: tip
+::: tip TIP
 Recuerda que puedes usar el atributo `Illuminate\Notifications\Notifiable` en cualquiera de tus modelos. No estás limitado a incluirlo solamente en tu modelo `User`.
 :::
 
@@ -110,7 +110,7 @@ Notification::send($users, new InvoicePaid($invoice));
 
 Cada clase de notificación tiene un método `via` que determina mediante cuáles canales será entregada la notificación. Las notificaciones pueden ser enviadas por los canales  `mail`, `database`, `broadcast`, `nexmo`, y `slack`.
 
-::: tip
+::: tip TIP
 Si estás interesado en utilizar otros canales de entrega como Telegram o Pusher, revisa el sitio dirigido por la comunidad [Laravel Notification Channels](http://laravel-notification-channels.com).
 :::
 
@@ -207,7 +207,7 @@ public function toMail($notifiable)
 }
 ```
 
-::: tip
+::: tip TIP
 Nota que se está usando el método `$this->invoice->id` en el método `toMail`. Puedes pasar cualquier dato que la notificación necesite para generar su mensaje dentro del constructor de la notificación.
 :::
 
@@ -215,7 +215,7 @@ En este ejemplo, registramos un saludo, una línea de texto, un llamado a la acc
 
 <img src="https://laravel.com/assets/img/notification-example.png" width="551" height="596">
 
-::: tip
+::: tip TIP
 Al enviar notificaciones por correo, asegúrate de establecer el valor `name` en tu archivo `config/app.php`. Este valor será usado en el encabezado y pie de los mensajes de notificación por correo.
 :::
 
@@ -469,9 +469,27 @@ Este comando publicará los componentes de correo de Markdown al directorio `res
 
 Después de exportar los componentes, el directorio `resources/views/vendor/mail/html/themes` contendrá un archivo `default.css`. Puedes personalizar el CSS en este archivo y los estilos automáticamente se alinearán con las representaciones HTML de las notificaciones Markdown.
 
-::: tip
-Si prefieres construir un tema completamente nuevo para los componentes Markdown, escribe un nuevo archivo CSS dentro del directorio `html/themes` y cambia la opción `theme` del archivo de configuración `mail`.
-:::
+Si te gustaría construir un nuevo tema para los componentes Markdown de Laravel, puedes colocar un archivo CSS dentro del directorio `html/themes`. Luego de nombrar y guardar tus archivos de CSS, actualiza la opción `theme` del archivo de configuración `mail` para que coincida con el nombre de tu nuevo tema.
+
+Para personalizar un tema para una notificación individual, puedes llamar al método `theme` al momento de construir el mensaje de la notificación. El método `theme` acepta el nombre del tema que debería ser usado al momento de enviar la notificación:
+
+```php
+/**
+* Get the mail representation of the notification.
+*
+* @param  mixed  $notifiable
+* @return \Illuminate\Notifications\Messages\MailMessage
+*/
+
+public function toMail($notifiable)
+{
+    return (new MailMessage)
+                ->theme('invoices')
+                ->theme('invoice')
+                ->subject('Invoice Paid')
+                ->markdown('mail.invoice.paid', ['url' => $url]);
+}
+```
 
 <a name="database-notifications"></a>
 ## Notificaciones de base de datos
@@ -537,7 +555,7 @@ foreach ($user->unreadNotifications as $notification) {
 }
 ```
 
-::: tip
+::: tip TIP
 Para acceder a las notificaciones desde el cliente JavaScript, se debe definir un controlador de notificaciones para tu aplicación que devuelva las notificaciones para una entidad notificable, como el usuario actual. puedes entonces elaborar una petición HTTP al URI de ese controlador desde el cliente JavaScript.
 :::
 
@@ -585,7 +603,7 @@ Antes de difundir notificaciones, debes configurar y familiarizarse con los serv
 <a name="formatting-broadcast-notifications"></a>
 ### Formato de notificaciones de difusión
 
-EL canal `broadcast` difunde notificaciones usando los servicios [broadcasting de eventos](/broadcasting.html) de Laravel, permitiéndole al cliente JavaScript capturar notificaciones en tiempo real. Si una notificación posee soporte para difusión, debes definir un método `toBroadcast` en la clase de notificación. Este método recibirá una entidad `$notifiable` y debe devolver una instancia `BroadcastMessage`. Los datos devueltos estarán codificados como JSON y se difundirán al cliente JavaScript. Observemos un ejemplo del método `toBroadcast`:
+EL canal `broadcast` difunde notificaciones usando los servicios [broadcasting de eventos](/broadcasting.html) de Laravel, permitiéndole al cliente JavaScript capturar notificaciones en tiempo real. Si una notificación posee soporte para difusión, debes definir un método `toBroadcast` en la clase de notificación. Este método recibirá una entidad `$notifiable` y debe devolver una instancia `BroadcastMessage`. Si el método `toBroadcast` no existe, el método `toArray` será usado para recopilar los datos que deberían ser transmitidos. Los datos devueltos estarán codificados como JSON y se difundirán al cliente JavaScript. Observemos un ejemplo del método `toBroadcast`:
 
 ```php
 use Illuminate\Notifications\Messages\BroadcastMessage;
@@ -615,7 +633,7 @@ return (new BroadcastMessage($data))
                 ->onQueue('broadcasts');
 ```
 
-::: tip
+::: tip TIP
 Adicional a los datos especificados, las notificaciones de difusión contendrán también un campo `type` que contiene el nombre de clase de la notificación.
 :::
 
@@ -1027,7 +1045,7 @@ protected $listen = [
 ];
 ```
 
-::: tip
+::: tip TIP
 Luego de registrar listeners en tu `EventServiceProvider`, usa el comando Artisan `event:generate` para generar rápidamente clases de listeners.
 :::
 

@@ -1660,7 +1660,7 @@ dump($value1, $value2, $value3, ...);
 
 Si quieres parar de ejecutar el script después de desechar las variables, usa la función [`dd`](#method-dd) en su lugar.
 
-::: tip
+::: tip TIP
 Puedes usar el comando de Artisan `dump-server` para interceptar todas las llamadas `dump` y mostrarlas en la ventana de tu consola en lugar de tu navegador.
 :::
 

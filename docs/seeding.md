@@ -24,7 +24,7 @@ php artisan make:seeder UsersTableSeeder
 
 Una clase seeder contiene solamente un método de forma predeterminada: `run`. Este método es ejecutado cuando el [Comando Artisan](/artisan.html) `db:seed` se ejecuta. Dentro del método `run`, puedes insertar datos en tu base de datos en la forma que desees. Puedes usar el [constructor de consultas](/queries.html) para insertar datos manualmente o puedes usar los [Model Factories de Eloquent](/database-testing.html#writing-factories).
 
-::: tip
+::: tip TIP
 [La protección de asignación en masa](/eloquent.html#mass-assignment) es deshabilitada automáticamente durante el seeding de la base de datos.
 :::
 
@@ -49,13 +49,13 @@ class DatabaseSeeder extends Seeder
         DB::table('users')->insert([
             'name' => Str::random(10),
             'email' => Str::random(10).'@gmail.com',
-            'password' => bcrypt('secret'),
+            'password' => bcrypt('password'),
         ]);
     }
 }
 ```
 
-::: tip
+::: tip TIP
 Puede escribir cualquier dependencia que necesite dentro de la firma del método `run`. Se resolverán automáticamente a través del [contenedor de servicio](/container.html) de Laravel.
 :::
 

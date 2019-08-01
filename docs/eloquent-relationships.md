@@ -20,6 +20,7 @@
     - [Métodos de relación vs. propiedades dinámicas](#relationship-methods-vs-dynamic-properties)
     - [Consultando la existencia de relación](#querying-relationship-existence)
     - [Consultando la ausencia de relación](#querying-relationship-absence)
+    - [Consultando relaciones polimorficas](#querying-polymorphic-relationships)
     - [Contando modelos relacionados](#counting-related-models)
 - [Precarga (eager loading)](#eager-loading)
     - [Restringiendo precargas](#constraining-eager-loads)
@@ -643,7 +644,7 @@ use Illuminate\Database\Eloquent\Model;
 class Image extends Model
 {
     /**
-    * Get all of the owning imageable models.
+    * Get the owning imageable model.
     */
     public function imageable()
     {
@@ -733,7 +734,7 @@ use Illuminate\Database\Eloquent\Model;
 class Comment extends Model
 {
     /**
-    * Get all of the owning commentable models.
+    * Get the owning commentable model.
     */
     public function commentable()
     {
@@ -902,7 +903,9 @@ Relation::morphMap([
 ]);
 ```
 
-Puedes registar el `morphMap` en la función `boot` de tu `AppServiceProvider` o crear un proveedor de servicios separado si lo deseas.   
+::: tip TIP
+Al agregar un "morph map" a tu aplicación existente, cada valor de la columna de morfología `*_type` en tu base de datos que aún contenga una clase completamente calificada necesitará ser convertida a su nombre de "mapa".
+:::
 
 <a name="querying-relations"></a>
 ## Consultando relaciones
@@ -957,8 +960,10 @@ $user->posts()
 En la mayoria de los casos, probablemente pretendes usar [grupos de restricciones](/queries.html#parameter-grouping) para agrupar logicamente las comprobaciones condicionales entre parentisis:
 
 ```php
+use Illuminate\Database\Eloquent\Builder;
+
 $user->posts()
-        ->where(function ($query) {
+        ->where(function (Builder $query) {
             return $query->where('active', 1)
                             ->orWhere('votes', '>=', 100);
         })
@@ -1052,6 +1057,60 @@ $posts = App\Post::whereDoesntHave('comments.author', function (Builder $query) 
 })->get();
 ```
 
+<a name="querying-polymorphic-relationships"></a>
+### Consultando relaciones polimorficas
+
+Para consultar la existencia de relaciones `MorphTo`, puedes usar el método `whereHasMorph` y sus métodos correspondientes:
+
+```php
+use Illuminate\Database\Eloquent\Builder;
+
+// Retrieve comments associated to posts or videos with a title like foo%...
+$comments = App\Comment::whereHasMorph(
+    'commentable', 
+    ['App\Post', 'App\Video'], 
+    function (Builder $query) {
+        $query->where('title', 'like', 'foo%');
+    }
+)->get();
+
+// Retrieve comments associated to posts with a title not like foo%...
+$comments = App\Comment::whereDoesntHaveMorph(
+    'commentable', 
+    'App\Post', 
+    function (Builder $query) {
+        $query->where('title', 'like', 'foo%');
+    }
+)->get();    
+```
+
+Puedes usar el parametro `$type` para agregar diferentes restricciones dependiendo del modelo relacionado:
+
+```php
+use Illuminate\Database\Eloquent\Builder;
+
+$comments = App\Comment::whereHasMorph(
+    'commentable', 
+    ['App\Post', 'App\Video'], 
+    function (Builder $query, $type) {
+        $query->where('title', 'like', 'foo%');
+        if ($type === 'App\Post') {
+            $query->orWhere('content', 'like', 'foo%');
+        }
+    }
+)->get();            
+```
+
+En lugar de pasar un arreglo de posibles modelos polimorficos, puedes proporcionar un `*` como comodín y dejar que Laravel retorne todos los posibles tipos polimorficos desde la base de datos. Laravel ejecutará una solicitud adicional para poder realizar esta operación:
+
+```php
+use Illuminate\Database\Eloquent\Builder;
+
+$comments = App\Comment::whereHasMorph('commentable', '*', function (Builder $query) {
+    $query->where('title', 'like', 'foo%');
+})->get();
+```
+
 <a name="counting-related-models"></a>
 ### Contando modelos relacionados
 
@@ -1079,9 +1138,11 @@ echo $posts[0]->comments_count;
 También puedes poner un alias al resultado de la cuenta de la relación, permitiendo múltiples cuentas en la misma relación:
 
 ```php
+use Illuminate\Database\Eloquent\Builder;
+
 $posts = App/post::withCount([
     'comments',
-    'comments as pending_comments_count' => function ($query) {
+    'comments as pending_comments_count' => function (Builder $query) {
         $query->where('approved', false);
     }
 ])->get();
@@ -1197,8 +1258,10 @@ En este ejemplo, vamos a asumir que los modelos `Èvent`, `Photo` y `Post` podr�
 Usando estas definiciones de modelos y relaciones, podríamos retornar instancias del modelo `ActivityFeed` y hacer eager load de todos los modelos `parentable` y sus respectivas relaciones anidadas:
 
 ```php
+use Illuminate\Database\Eloquent\Relations\MorphTo;
+
 $activities = ActivityFeed::query()
-    ->with(['parentable' => function ($morphTo) {
+    ->with(['parentable' => function (MorphTo $morphTo) {
         $morphTo->morphWith([
             Event::class => ['calendar'],
             Photo::class => ['tags'],
@@ -1271,6 +1334,8 @@ $books = App\Book::without('author')->get();
 Algunas veces puedes desear cargar previamente una relación, pero también especificar condiciones de consulta para la consulta de carga previa. Aquí está un ejemplo:
 
 ```php
+use Illuminate\Database\Eloquent\Builder;
+
 $users = App\User::with(['posts' => function ($query) {
     $query->where('title', 'like', '%first%');
 }])->get();
@@ -1279,6 +1344,8 @@ $users = App\User::with(['posts' => function ($query) {
 En este ejemplo, Eloquent solamente precargará los posts donde la columna `title` del post contenga la palabra `first`. Puedes ejecutar otros métodos del [constructor de consulta](/queries.html) para personalizar más la operación de carga previa:
 
 ```php
+use Illuminate\Database\Eloquent\Builder;
+
 $users = App\User::with(['posts' => function ($query) {
     $query->orderBy('created_at', 'desc');
 }])->get();
@@ -1304,6 +1371,8 @@ if ($someCondition) {
 Si necesitas establecer restricciones de consultas adicionales en la consulta de carga previa, puedes pasar un arreglo clave / valor con las relaciones que deseas cargar. Los valores del arreglo deberían ser instancias de `Closure`, las cuales reciben la instancia de consulta:
 
 ```php
+use Illuminate\Database\Eloquent\Builder;
+
 $books->load(['author' => function ($query) {
     $query->orderBy('published_date', 'asc');
 }]);
@@ -1416,7 +1485,7 @@ $comment = $post->comments()->create([
 ]);
 ```
 
-::: tip
+::: tip TIP
 Antes de usar el método `create`, asegurate de revisar la documentación sobre la [asignación masiva de atributos](/eloquent.html#mass-assignment).
 :::
 

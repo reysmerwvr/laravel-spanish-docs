@@ -39,7 +39,7 @@ Route::get('/', function () {
 });
 ```
 
-::: tip
+::: tip TIP
 ¿Sabías que también puedes devolver [colecciones de Eloquent](/eloquent-collections.html) desde tus rutas o controladores? Estas serán convertidas automáticamente a JSON. ¡Inténtalo!
 :::
 

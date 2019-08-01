@@ -308,6 +308,6 @@ Sin embargo, necesitarás acoplar la API JSON de Passport con tu propio frontend
 
 La API JSON está protegida por los middleware `web` y `auth`; por lo tanto, sólo puede ser llamada desde tu propia aplicación. No se puede llamar desde una fuente externa.
 
-::: tip
+::: tip TIP
 Si no quieres implementar tu mismo el frontend completo para administra
 :::

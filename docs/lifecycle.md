@@ -1,6 +1,6 @@
 ::: v-pre
 
-# Ciclo De Vida De La Solicitud
+# Ciclo de vida de la solicitud
 
 - [Introducción](#introduction)
 - [Resumen del ciclo de vida](#lifecycle-overview)

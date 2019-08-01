@@ -369,7 +369,7 @@ $users = DB::table('users')
             ->get();
 ```
 
-::: tip
+::: tip TIP
 El método `unionAll` también está disponible y tiene la misma forma de uso que `union`.
 :::
 
@@ -576,7 +576,7 @@ Como puedes ver, al pasar una `Closure` dentro del método `orWhere`, instruyes 
 select * from users where name = 'John' and (votes > 100 or title = 'Admin')
 ```
 
-::: tip
+::: tip TIP
 Siempre debes agrupar llamadas `orWhere` para evitar comportamiento inesperado cuando se apliquen alcances globales.
 :::
 
@@ -812,7 +812,7 @@ DB::table('users')
 <a name="updating-json-columns"></a>
 ## Actualizando columnas JSON
 
-Cuando estamos actualizando una columna JSON, deberías usar la sintaxis `->` para acceder a la clave apropiada en el objeto JSON. Esta operación es soportada solamente en bases de datos que soportan columnas JSON:
+Cuando estamos actualizando una columna JSON, deberías usar la sintaxis `->` para acceder a la clave apropiada en el objeto JSON. Esta operación es soportada solamente en MySQL 5.7+ y PostgreSQL 9.5+:
 
 ```php
 DB::table('users')

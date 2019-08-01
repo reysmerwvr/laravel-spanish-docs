@@ -148,7 +148,7 @@ El comando `link` también puede ser utilizado para enlazar sitios de Laravel. E
 
 Para ver un listado de todos los directorios enlazados, ejecuta el comando `valet links`. Para destruir algún enlace simbólico deberás utilizar el comando `valet unlink app-name`.
 
-::: tip
+::: tip TIP
 Puedes utilizar `valet link` para configurar el mismo proyecto para multiples (sub)dominios. Para agregar un subdominio o un dominio diferente para tu proyecto ejecuta `valet link subdomain.app-name`.
 :::
 

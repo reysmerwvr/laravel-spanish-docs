@@ -70,7 +70,7 @@ public function getFullNameAttribute()
 }
 ```
 
-::: tip
+::: tip TIP
 Si deseas que estos valores computados sean agregados a las representaciones de arreglo / JSON de tu modelo, [necesitarás adjuntarlos](https://laravel.com/docs/{{version}}/eloquent-serialization#appending-values-to-json).
 :::
 
@@ -136,7 +136,7 @@ class User extends Model
 }
 ```
 
-::: tip
+::: tip TIP
 Puedes desactivar las marcas de tiempo (timestamps) predeterminadas `created_at` y` updated_at` configurando la propiedad pública `$timestamps` de tu modelo en `false`.
 :::
 

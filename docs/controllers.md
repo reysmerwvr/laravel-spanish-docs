@@ -61,7 +61,7 @@ Route::get('user/{id}', 'UserController@show');
 
 Ahora, cuando una solicitud coincide con la URI de la ruta especificada, se ejecutará el método `show` de la clase `UserController`. Los parámetros de ruta también se pasarán al método.
 
-::: tip
+::: tip TIP
 Los controladores no están **obligados** a extender de la clase base. Sin embargo, no tendrás acceso a características de conveniencia tales como los métodos `middleware`, `validate`, y `dispatch`.
 :::
 
@@ -156,7 +156,7 @@ $this->middleware(function ($request, $next) {
 });
 ```
 
-::: tip
+::: tip TIP
 Puedes asignar los middleware a un subconjunto de acciones de controlador, esto puede indicar que tu controlador está creciendo demasiado. En lugar de esto, considera dividir tu controlador en varios controladores más pequeños.
 :::
 
@@ -323,7 +323,7 @@ Route::get('photos/popular', 'PhotoController@method');
 Route::resource('photos', 'PhotoController');
 ```
 
-::: tip
+::: tip TIP
 Recuerda mantener la lógica de tus controladores enfocada. Si te encuentras a ti mismo necesitando rutinariamente métodos fuera del conjunto típico de acciones de recurso, considera dividir tu controlador en dos controladores más pequeños.
 :::
 

@@ -28,7 +28,7 @@ Tu archivo `.env` deberá omitirse en el sistema de control de versiones de tu a
 
 Si estás desarrollando con un equipo, es posible que desees continuar incluyendo el archivo `.env.example` en tu aplicación. Al poner valores de ejemplo (placeholder) en el archivo de configuración `.env.example`, otros desarrolladores en tu equipo podrán ver claramente cuáles variables de entorno se necesitan para ejecutar tu aplicación. También puedes crear un archivo `.env.testing`. Este archivo sobrescribirá el archivo `.env` al ejecutar pruebas con PHPUnit o al ejecutar comandos de Artisan con la opción `--env=testing`.
 
-::: tip
+::: tip TIP
 Cualquier variable en tu archivo `.env` puede ser anulada por variables de entorno externas tales como variables de entorno de nivel de servidor o de nivel de sistema.
 :::
 
@@ -86,7 +86,7 @@ if (App::environment(['local', 'staging'])) {
 }
 ```
 
-::: tip 
+::: tip TIP 
 La detección del entorno actual de la aplicación puede ser anulada por una variable de entorno `APP_ENV` a nivel del servidor. Esto puede ser útil cuando necesites compartir la misma aplicación para diferentes configuraciones de entorno, para que puedas configurar un host determinado para que coincida con un entorno determinado en las configuraciones de tu servidor.
 :::
 
@@ -175,7 +175,7 @@ Para deshabilitar el modo de mantenimiento, usa el comando `up`:
 php artisan up
 ```
 
-::: tip
+::: tip TIP
 Puedes personalizar la plantilla predeterminada del modo de mantenimiento al definir tu propia plantilla en `resources/views/errors/503.blade.php`.
 :::
 

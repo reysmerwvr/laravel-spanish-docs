@@ -32,6 +32,10 @@
 
 Blade es un motor de plantillas simple y a la vez poderoso proporcionado por Laravel. A diferencia de otros motores de plantillas populares de PHP, Blade no te impide utilizar código PHP plano en sus vistas. De hecho, todas las vistas de Blade son compiladas en código PHP plano y almacenadas en caché hasta que sean modificadas, lo que significa que Blade no añade sobrecarga a tu aplicación. Los archivos de las vistas de Blade tienen la extensión `.blade.php` y son usualmente almacenados en el directorio `resources/views`.
 
+::: tip TIP
+En [Styde.net](https://styde.net/) contamos con una [completa lección sobre Blade](https://styde.net/blade-el-sistema-de-plantillas-de-laravel/) totalmente gratuita.
+:::
+
 <a name="template-inheritance"></a>
 ## Herencia de plantillas
 
@@ -88,7 +92,7 @@ Al definir una vista hija, utiliza la directiva de Blade `@extends` para indicar
 
 En este ejemplo, la sección `sidebar` está utilizando la directiva `@@parent` para adjuntar (en lugar de sobrescribir) contenido al sidebar del layout. La directiva `@@parent` será reemplazada por el contenido del layout cuando la vista sea renderizada.
 
-::: tip
+::: tip TIP
 Contrario al ejemplo anterior, esta sección `sidebar` termina con `@endsection` en lugar de `@show`. La directiva `@endsection` sólo definirá una sección mientras que `@show` definirá y **automáticamente creará un yield** de la sección.
 :::
 
@@ -105,6 +109,10 @@ Route::get('blade', function () {
     return view('child');
 });
 ```
+
+::: tip TIP
+En [Styde.net](https://styde.net/) contamos con una [lección sobre layouts con Blade](https://styde.net/layouts-con-blade/) totalmente gratuita.
+:::
 
 <a name="components-and-slots"></a>
 ## Componentes y slots
@@ -220,13 +228,17 @@ No estás limitado a mostrar sólo el contenido de las variables pasadas a la vi
 The current UNIX timestamp is {{ time() }}.
 ```
 
-::: tip
+::: v-pre
+
+::: tip TIP
 Las declaraciones de Blade `{{  }}` son enviadas automáticamente mediante la función `htmlspecialchars` de PHP para prevenir ataques XSS.
 :::
 
 #### Mostrar datos no escapados
 
+::: v-pre
 De manera predeterminada, las declaraciónes `{{  }}` de Blade son enviadas mediante la función `htmlspecialchars` de PHP para prevenir ataques XSS. Si no deseas que tu información sea escapada, puedes utilizar la siguiente sintáxis:
+:::
 
 ```php
 Hello, {!! $name !!}.
@@ -445,7 +457,7 @@ Además de las sentencias condicionales, Blade proporciona directivas simples pa
 @endwhile
 ```
 
-::: tip
+::: tip TIP
 Cuando estés dentro del bucle, puedes usar la [variable loop](#the-loop-variable) para obtener información valiosa acerca del bucle, como puede ser saber si estás en la primera o última iteración a través del bucle.
 :::
 
@@ -543,7 +555,7 @@ En algunas situaciones, es útil insertar código PHP en sus vistas. Puedes usar
 @endphp
 ```
 
-::: tip
+::: tip TIP
 A pesar que Blade proporciona esta función, usarla con frecuencia puede ser una señal de que tienes demasiada lógica incrustada dentro de tu plantilla.
 :::
 

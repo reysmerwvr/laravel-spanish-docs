@@ -111,7 +111,7 @@ El directorio `app` contiene una variedad de directorios adicionales tales como 
 
 Una variedad de otros directorios serán generados dentro del directorio `app` cuando uses los comandos `make` de Artisan para generar clases. Así que, por ejemplo, el directorio `app/Jobs` no existirá hasta que ejecutes el comando de Artisan `make:job` para generar una clase job.
 
-::: tip
+::: tip TIP
 Muchas de las clases en el directorio `app` pueden ser generadas por Artisan mediante comandos. Para ver los comandos disponibles, ejecuta el comando `php artisan list make` en tu terminal.
 :::
 
