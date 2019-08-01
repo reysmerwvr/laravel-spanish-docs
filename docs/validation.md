@@ -904,7 +904,7 @@ El campo bajo validación debe ser mayor o igual que el _field_ dado. Los dos ca
 <a name="rule-image"></a>
 #### image
 
-El archivo bajo validación debe ser una imagen (jpeg, png, bmp, gif o svg)
+El archivo bajo validación debe ser una imagen (jpeg, png, bmp, gif, svg o webp)
 
 <a name="rule-in"></a>
 #### in:_foo_,_bar_,...
