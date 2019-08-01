@@ -592,9 +592,9 @@ Este comando publicará los componentes de correo Markdown en el directorio `res
 
 Después de exportar los componentes, el directorio `resources/views/vendor/mail/html/themes` contendrá un archivo `default.css`, puedes personalizar el CSS en este archivo y sus estilos se alinearán automáticamente en las representaciones HTML de sus mensajes de correo Markdown.
 
-::: tip TIP
-Si deseas construir un tema completamente nuevo para los componentes Markdown, escribe un nuevo archivo CSS dentro del directorio `html/themes` y cambia la opción `theme` en tu archivo de configuración `mail`.
-:::
+Si te gustaría construir un nuevo tema para los componentes de Markdown de Laravel, puedes colocar un archivo CSS dentro del directorio `html/themes`. Luego de nombrar y guardar tu archivo de CSS, actualiza la opción `theme` del archivo de configuración `mail` con el nuevo nombre de tu tema.
+
+Para personalizar un tema para un mailable individual, debes establecer la propiedad `$theme` de la clase mailable a el nombre del tema que debería ser usado al enviar el mailable.
 
 <a name="sending-mail"></a>
 ## Enviar correo
