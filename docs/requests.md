@@ -346,6 +346,8 @@ $value = $request->cookie('name');
 Alternativamente, puedes usar la clase facade `Cookie` para acceder a los valores de las cookies:
 
 ```php
+use Illuminate\Support\Facades\Cookie;
+
 $value = Cookie::get('name');
 ```
 
