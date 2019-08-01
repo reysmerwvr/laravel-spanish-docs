@@ -108,7 +108,7 @@ Si estás utilizando Windows, puede que necesites habilitar la virtualización p
 <a name="first-steps"></a>
 ### Primeros pasos
 
-Antes de iniciar tu entorno de Homestead, debes instalar [VirtualBox](https://www.virtualbox.org/wiki/Downloads), [VMware](https://www.vmware.com), [Parallels](https://www.parallels.com/products/desktop/) o [Hyper-V](https://docs.microsoft.com/en-us/virtualization/hyper-v-on-windows/quick-start/enable-hyper-v) además de [Vagrant](https://www.vagrantup.com/downloads.html). Todos estos paquetes de software cuentan con un instalador fácil de usar para todos los sistemas operativos populares.
+Antes de iniciar tu entorno de Homestead, debes instalar [VirtualBox 6.x](https://www.virtualbox.org/wiki/Downloads), [VMware](https://www.vmware.com), [Parallels](https://www.parallels.com/products/desktop/) o [Hyper-V](https://docs.microsoft.com/en-us/virtualization/hyper-v-on-windows/quick-start/enable-hyper-v) además de [Vagrant](https://www.vagrantup.com/downloads.html). Todos estos paquetes de software cuentan con un instalador fácil de usar para todos los sistemas operativos populares.
 
 Para utilizar el proveedor de VMWare, necesitarás comprar tanto VMWare Fusion / Workstation y el [plugin de Vagrant para VMWare](https://www.vagrantup.com/vmware). A pesar de que esto no es gratuito, VMWare ofrece un mayor desempeño en velocidad al compartir directorios.
 
@@ -134,7 +134,7 @@ Puedes instalar Homestead clonando el repositorio en tu máquina host. Considera
 git clone https://github.com/laravel/homestead.git ~/Homestead
 ```
 
-Debes hacer checkout a alguna versión etiquetada de Homestead ya que la rama `master` no siempre es estable. Puedes encontrar la versión estable más reciente en la [Página de Releases de GitHub](https://github.com/laravel/homestead/releases):
+Debes hacer checkout a alguna versión etiquetada de Homestead ya que la rama `master` no siempre es estable. Puedes encontrar la versión estable más reciente en la [Página de Releases de GitHub](https://github.com/laravel/homestead/releases). De forma alternative puedes revisar el branch `release` el cual siempre es actualizado con la última versión estable.
 
 ```php
 cd ~/Homestead
@@ -170,11 +170,15 @@ La propiedad `folders` del archivo `Homestead.yaml` lista todos los directorios 
 
 ```php
 folders:
-    - map: ~/code
-        to: /home/vagrant/code
+    - map: ~/code/project1
+      to: /home/vagrant/project1
 ```
 
-Si solo estás creando unos cuantos sitios, este mapeo genérico funcionará bien. Sin embargo, mientras el número de sitios continúe creciendo, podrás comenzar a experimentar algunos problemas de desempeño. Estos problemas pueden ser muy evidentes en máquinas con pocos recursos o en proyectos que contengan una cantidad de archivos de gran tamaño. Si experimentas estos problemas, trata de mapear cada proyecto a tu propio directorio de Vagrant:
+::: danger Nota
+Los usuarios de Windows no deben usar la sintaxis de ruta `~/` y en su lugar deberían usar la ruta completa al proyecto como `C:\Users\user\Code\project1`.
+:::
+
+Siempre debes mapear proyectos individuales en su propio directorio en lugar de mapear tu directorio `~/code` entero. Cuando mapeas un directorio la maquina virtual debe mantener un seguimiento de todos los I/O que suceden en *cada* archivo en el directorio incluso si no estás trabajando en ese proyecto. Esto puede llevar a que sucedan problemas de rendimiento si tienes un gran número de archivos en un directorio. Virtualbox es más susceptible a esto que otros proveedores, lo que significa que es muy importante dividir tus directorios en proyectos individuales al usar el proveedor Virtualbox.
 
 ```php
 folders:
@@ -185,12 +189,16 @@ folders:
         to: /home/vagrant/code/project2
 ```
 
+::: danger Nota
+Nunca debes montar `.` (el directorio actual) al usar Homestead. Esto causa que Vagrant no mapeé el directorio actual a `/vagrant` y romperá características adicionales además de causar resultados inesperados al momento del aprovisionamiento.
+:::
+
 Para habilitar [NFS](https://www.vagrantup.com/docs/synced-folders/nfs.html), solo necesitarás agregar un simple flag en la configuración de tu directorio sincronizado:
 
 ```php
 folders:
-    - map: ~/code
-        to: /home/vagrant/code
+    - map: ~/code/project1
+        to: /home/vagrant/project1
         type: "nfs"
 ```
 
@@ -202,8 +210,8 @@ También puedes indicar cualquier opción soportada por los [Directorios Sincron
 
 ```php
 folders:
-    - map: ~/code
-        to: /home/vagrant/code
+    - map: ~/code/project1
+        to: /home/vagrant/project1
         type: "rsync"
         options:
             rsync__args: ["--verbose", "--archive", "--delete", "-zz"]
@@ -217,10 +225,14 @@ folders:
 ```php
 sites:
     - map: homestead.test
-        to: /home/vagrant/code/my-project/public
+        to: /home/vagrant/project1/public
 ```
 
 Si cambias la propiedad `sites` apropiadamente después de haber provisionado el box de Homestead, deberás volver a ejecutar `vagrant reload --provision` para actualizar la configuración de Nginx en la máquina virtual.
+
+::: danger Nota
+Recuerda que aunque los scripts de Homestead son construidos tan idempotente como sea posible, si estas experimentando problemas al momento del aprovisionamiento destruye la maquina usando `vagrant destroy && vagrant up` para reconstruir desde un estado correcto conocido.
+:::
 
 #### El archivo hosts
 
@@ -434,9 +446,9 @@ Una vez que tu entorno de Homestead haya sido provisionado y esté en ejecución
 ```php
 sites:
     - map: homestead.test
-        to: /home/vagrant/code/my-project/public
+        to: /home/vagrant/project1/public
     - map: another.test
-        to: /home/vagrant/code/another/public
+        to: /home/vagrant/project2/public
 ```
 
 Si vagrant no está manejando tu archivo "hosts" de manera automática, también deberás agregar los nuevos sitios a este archivo.
@@ -456,7 +468,7 @@ Homestead soporta varios tipos de sitios permitiéndote ejecutar fácilmente pro
 ```php
 sites:
     - map: symfony2.test
-        to: /home/vagrant/code/my-symfony-project/web
+        to: /home/vagrant/my-symfony-project/web
         type: "symfony2"
 ```
 
@@ -470,7 +482,7 @@ También puedes agregar valores adicionales de `fastcgi_param` en Nginx para tus
 ```php
 sites:
     - map: homestead.test
-        to: /home/vagrant/code/my-project/public
+        to: /home/vagrant/project1/public
         params:
             - key: FOO
             value: BAR
@@ -501,7 +513,7 @@ Si deseas que el comando `schedule:run` sea ejecutado en un sitio de Homestead, 
 ```php
 sites:
     - map: homestead.test
-        to: /home/vagrant/code/my-project/public
+        to: /home/vagrant/project1/public
         schedule: true
 ```
 
@@ -626,7 +638,7 @@ Homestead 6 introduce soporte para múltiples versiones de PHP en una misma máq
 ```php
 sites:
     - map: homestead.test
-        to: /home/vagrant/code/my-project/public
+        to: /home/vagrant/project1/public
         php: "7.1"
 ```
 
@@ -704,7 +716,7 @@ xdebug.remote_autostart = 1
 sites:
     -
         map: your-site.test
-        to: /home/vagrant/code/web
+        to: /home/vagrant/your-site/public
         type: "apache"
         xhgui: 'true'
 ```
@@ -774,7 +786,7 @@ Al usar Homestead en un ambiente de equipo, puedes querer configurar Homestead p
 <a name="updating-homestead"></a>
 ## Actualizar Homestead
 
-Puedes actualizar Homestead en algunos sencillos pasos. Primero, debes actualizar el box de Homestead utilizando el comando `vagrant box update`:
+Antes de comenzar a actualizar Homestead asegurate de ejecutar `vagrant destroy` para eliminar tu maquina virtual actual. Puedes actualizar Homestead en algunos sencillos pasos. Primero, debes actualizar el box de Homestead utilizando el comando `vagrant box update`:
 
 ```php
 vagrant box update
@@ -790,7 +802,7 @@ git pull origin release
 
 Estos comandos traen el código más reciente de Homestead del repositorio de GitHub, recuperan las últimas etiquetas y luego revisan la última versión etiquetada. Puede encontrar la última versión de lanzamiento estable en la [página de lanzamientos de GitHub](https://github.com/laravel/homestead/releases).
 
-Si realizaste la instalación de Homestead en tu proyecto por medio del archivo `composer.json`, debes asegurarte de que tu archivo `composer.json` contenga la dependencia `"laravel/homestead": "^8"` y después debes actualizar dichas dependencias:
+Si realizaste la instalación de Homestead en tu proyecto por medio del archivo `composer.json`, debes asegurarte de que tu archivo `composer.json` contenga la dependencia `"laravel/homestead": "^9"` y después debes actualizar dichas dependencias:
 
 ```php
 composer update
