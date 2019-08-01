@@ -812,7 +812,7 @@ DB::table('users')
 <a name="updating-json-columns"></a>
 ## Actualizando columnas JSON
 
-Cuando estamos actualizando una columna JSON, deberías usar la sintaxis `->` para acceder a la clave apropiada en el objeto JSON. Esta operación es soportada solamente en bases de datos que soportan columnas JSON:
+Cuando estamos actualizando una columna JSON, deberías usar la sintaxis `->` para acceder a la clave apropiada en el objeto JSON. Esta operación es soportada solamente en MySQL 5.7+ y PostgreSQL 9.5+:
 
 ```php
 DB::table('users')
