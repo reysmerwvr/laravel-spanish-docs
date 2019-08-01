@@ -653,6 +653,16 @@ php7.2 artisan list
 php7.3 artisan list
 ```
 
+También puedes actualizar la versión por defecto de la línea de comandos ejecutando los siguientes comandos dentro de tu maquina virtual de Homestead:
+
+```php
+php56
+php70
+php71
+php72
+php73
+```
+
 <a name="web-servers"></a>
 ### Servidores web
 
