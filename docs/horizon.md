@@ -28,7 +28,7 @@ Toda la configuración de tu worker es almacenada en un solo archivo de configur
 ## Instalación
 
 ::: danger Nota
-Debes asegurarte de que tu driver de cola está establecido a `redis` en tu archivo de configuración `queue`.
+Debes asegurarte de que tu conexión de cola está establecido a `redis` en tu archivo de configuración `queue`.
 :::
 
 Puedes usar Composer para instalar Horizon en tu proyecto de Laravel:
