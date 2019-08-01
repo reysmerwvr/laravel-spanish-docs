@@ -273,17 +273,22 @@ Después, ejecuta el comando `vagrant up` en tu terminal y podrás acceder a tu 
 <a name="installing-optional-features"></a>
 ### Instalando características opcionales
 
-Software opcional es instalado usando la opción "features" en tu archivo de configuración de Homestead. La mayoría de características son habilitadas o deshabilitadas con un valor booleano. A las características con soporte para múltiples versiones les puede ser pasada un número de versión.
+Software opcional es instalado usando la opción "features" en tu archivo de configuración de Homestead. La mayoría de características son habilitadas o deshabilitadas con un valor booleano, mientras que algunas características soportan múltiples opciones de configuración:
 
 ```php
 features:
-    - blackfire: true
+    - blackfire:
+        server_id: "server_id"
+        server_token: "server_value"
+        client_id: "client_id"
+        client_token: "client_value"
     - cassandra: true
     - chronograf: true
     - couchdb: true
     - crystal: true
     - docker: true
-    - elasticsearch: 6
+    - elasticsearch:
+        version: 7
     - gearman: true
     - golang: true
     - grafana: true
