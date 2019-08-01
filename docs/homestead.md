@@ -28,7 +28,8 @@
     - [Correo electrónico](#mail)
 - [Depuración y perfilado](#debugging-and-profiling)
     - [Depuración de solicitudes web con Xdebug](#debugging-web-requests)
-    - [Depuración de aplicaciones CLI](#debugging-cli-applications)        
+    - [Depuración de aplicaciones CLI](#debugging-cli-applications)    
+    - [Perfilado de aplicaciones con Blackfire](#profiling-applications-with-blackfire)    
 - [Interfaces de red](#network-interfaces)
 - [Extender Homestead](#extending-homestead)
 - [Actualizar Homestead](#updating-homestead)
@@ -707,6 +708,24 @@ Al depurar pruebas funcionales que realizan solicitudes al servidor web, es más
 xdebug.remote_host = 192.168.10.1
 xdebug.remote_autostart = 1
 ```
+
+<a name="profiling-applications-with-blackfire"></a>
+### Perfilar aplicaciones con Blackfire
+
+[Blackfire](https://blackfire.io/docs/introduction) es un servicio SaaS para perfilar solicitudes Web, aplicaciones de línea de comandos y escribir aserciones de rendimiento. Ofrece una interfaz de usuario interactiva que muestra datos de perfiles en call-graphs y líneas de tiempo. Está construido para ser usado en desarrollo, staging y producción, sin sobrecarga para usuarios finales. Proporciona comprobaciones de rendimiento, calidad y seguridad del código y opciones de configuración para `php.ini`.
+
+[Blackfire Player](https://blackfire.io/docs/player/index) es una aplicación de Web Crawling, Pruebas Web y Web Scraping que puede funcionar junto con Blackfire para perfilar escenarios.
+
+```php
+features:
+    - blackfire:
+        server_id: "server_id"
+        server_token: "server_value"
+        client_id: "client_id"
+        client_token: "client_value"
+```
+
+Las credenciales de servidor y credenciales de clientes [requieren una cuenta de usuario](https://blackfire.io/signup). Blackfire ofrece varias opciones para perfilar una aplicación, incluyendo una herramienta de línea de comandos y extensión de navegador. Por favor [revisa la documentación de Blackfire para más detalles](https://blackfire.io/docs/cookbooks/index).
 
 ### Perfilando el Rendimiento de PHP usando XHGui
 
