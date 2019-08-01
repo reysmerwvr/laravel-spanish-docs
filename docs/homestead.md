@@ -309,7 +309,7 @@ features:
 
 #### MariaDB
 
-Activar MariaDB elimina MySQL e instala MariaDB. MariDB funciona como reemplazo de MySQL así que aún serás capaz de usar el driver de base de datos `mysql` en la configuración de la base de datos de tu aplicación.
+Activar MariaDB eliminará MySQL e instalará MariaDB. MariDB funciona como reemplazo de MySQL así que aún serás capaz de usar el driver de base de datos `mysql` en la configuración de la base de datos de tu aplicación.
 
 #### MongoDB
 
