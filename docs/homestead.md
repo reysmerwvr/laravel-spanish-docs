@@ -405,9 +405,7 @@ Pero, dado que probablemente requieras conectarte frecuentemente a tu máquina d
 <a name="connecting-to-databases"></a>
 ### Conectar a base de datos
 
-Una base de datos `homestead` es configurada por defecto tanto para MySQL como para PostgreSQL. Para mayor conveniencia, el archivo de configuración de Laravel `.env` configura el framework para utilizar esta base de datos por defecto.
-
-Para conectarte a tu base de datos de MySQL o de PostgreSQL desde el cliente de base de datos de tu equipo host, deberás conectarte hacia `127.0.0.1` en el puerto `33060` (MySQL) o `54320` (PostgreSQL). El nombre de usuario y contraseña para ambas bases de datos son `homestead` / `secret`.
+Una base de datos `homestead` es configurada por defecto tanto para MySQL como para PostgreSQL. Para conectarte a tu base de datos de MySQL o de PostgreSQL desde el cliente de base de datos de tu equipo host, deberás conectarte hacia `127.0.0.1` en el puerto `33060` (MySQL) o `54320` (PostgreSQL). El nombre de usuario y contraseña para ambas bases de datos son `homestead` / `secret`.
 
 ::: danger Nota
 Solo deberías utilizar estos puertos no estándares para conectarte a tus bases de datos desde tu equipo host. Deberás utilizar los puertos por defecto 3306 y 5432 en tu archivo de configuración para la base de datos de Laravel que se encuentra ejecutándose _dentro_ de la máquina virtual.
