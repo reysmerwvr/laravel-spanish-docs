@@ -93,7 +93,7 @@ Todos los archivos de configuración para el framework Laravel están almacenado
 
 #### Permisos para directorios
 
-Después de haber instalado Laravel, necesitarás congigurar algunos permisos. Los directorios dentro de `storage` y `bootstrap/cache` deberán tener permiso de escritura para tu servidor web o Laravel no va a funcionar. Si estás utilizando la máquina virtual [Homestead](/homestead.html), estos permisos ya están establecidos.
+Después de haber instalado Laravel, necesitarás configurar algunos permisos. Los directorios dentro de `storage` y `bootstrap/cache` deberán tener permiso de escritura para tu servidor web o Laravel no va a funcionar. Si estás utilizando la máquina virtual [Homestead](/homestead.html), estos permisos ya están establecidos.
 
 #### Clave de la aplicación
 
