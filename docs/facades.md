@@ -255,7 +255,7 @@ class PodcastTest extends TestCase
 <a name="facade-class-reference"></a>
 ## Referencia de clases de facades
 
-A continuación encontrarás cada facade y su clase subyacente. Esta es una herrameinta útil para explorar rápidamente dentro de la documentación API para cualquier raíz de facade dada. La llave [service container binding](/container.html) también ha sido incluida donde aplica.
+A continuación encontrarás cada facade y su clase subyacente. Esta es una herramienta útil para explorar rápidamente dentro de la documentación API para cualquier raíz de facade dada. La llave [service container binding](/container.html) también ha sido incluida donde aplica.
 
 Facade  |  Class  |  Service Container Binding
 ------------- | ------------- | -------------
