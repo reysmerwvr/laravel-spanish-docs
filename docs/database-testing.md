@@ -12,6 +12,7 @@
     - [Creando modelos](#creating-models)
     - [Persistiendo modelos](#persisting-models)
     - [Relaciones](#relationships)
+- [Usando seeders](#using-seeds)
 - [Aserciones disponibles](#available-assertions)
 
 <a name="introduction"></a>
@@ -285,6 +286,40 @@ $factory->define(App\Post::class, function ($faker) {
         }
     ];
 });
+```
+
+<a name="using-seeds"></a>
+## Usando Seeders
+
+Si te gustaría usar [seeders de bases de datos](seeding.html) para rellenar tu base de datos al momento de realizar una prueba, puedes usar el método `seed`. Por defecto, el método `seed` retornará `DatabaseSeeder`, que debería ejecutar todos tus otros seeders. De forma alternativa, pasas un nombre de clase seeder especifico al método `seed`:
+
+```php
+<?php
+
+namespace Tests\Feature;
+
+use Tests\TestCase;
+use OrderStatusesTableSeeder;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
+
+class ExampleTest extends TestCase
+{
+    use RefreshDatabase;
+    /**
+    * Test creating a new order.
+    *
+    * @return void
+    */
+    public function testCreatingANewOrder()
+    {
+        // Run the DatabaseSeeder...
+        $this->seed();
+        // Run a single seeder...
+        $this->seed(OrderStatusesTableSeeder::class);
+        // ...
+    }
+}
 ```
 
 <a name="available-assertions"></a>
