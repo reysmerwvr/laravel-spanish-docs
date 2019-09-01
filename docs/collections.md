@@ -2516,6 +2516,26 @@ $filtered->all();
 
 El método `where` usa comparaciones "flexibles" (loose) al verificar valores de elementos, lo que significa que una cadena con un valor entero se considerará igual a un entero del mismo valor. Usa el método [`whereStrict`](#method-wherestrict) para hacer comparaciones "estrictas".
 
+Opcionalmente, puedes pasar un operador de comparación como segundo parametro.
+
+```php
+$collection = collect([
+    ['name' => 'Jim', 'deleted_at' => '2019-01-01 00:00:00'],
+    ['name' => 'Sally', 'deleted_at' => '2019-01-02 00:00:00'],
+    ['name' => 'Sue', 'deleted_at' => null],
+]);
+
+$filtered = $collection->where('deleted_at', '!=', null);
+$filtered->all();
+
+/*
+    [
+        ['name' => 'Jim', 'deleted_at' => '2019-01-01 00:00:00'],
+        ['name' => 'Sally', 'deleted_at' => '2019-01-02 00:00:00'],
+    ]
+*/
+```
+
 <a name="method-wherestrict"></a>
 #### `whereStrict()` 
 
