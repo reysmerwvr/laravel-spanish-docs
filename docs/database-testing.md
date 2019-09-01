@@ -246,6 +246,14 @@ $users = factory(App\User::class, 3)
             });
 ```
 
+Puedes usar el método `createMany` para crear múltiples modelos relacionados:
+
+```php
+$user->posts()->createMany(
+    factory(App\Post::class, 3)->make()->toArray()
+);
+```
+
 #### Relaciones y closures de atributos
 
 También puedes adjuntar relaciones a los modelos usando atributos de Closure en tus definiciones del factory. Por ejemplo, si prefieres crear una nueva instancia `User` al momento de crear un `Post`, puedes hacer lo siguiente:
