@@ -33,7 +33,7 @@ El código fuente de Laravel es manejado en GitHub, y allí están los repositor
 - [Laravel Scout](https://github.com/laravel/scout)
 - [Laravel Socialite](https://github.com/laravel/socialite)
 - [Laravel Telescope](https://github.com/laravel/telescope)
-- [Laravel Website](https://github.com/laravel/laravel.com)
+- [Laravel Website](https://github.com/laravel/laravel.com-next)
 
 ::: danger Nota importante sobre la traducción
 Los reportes sobre errores o detalles encontrados en esta traducción deben ser realizados en el repositorio oficial de la traducción.
