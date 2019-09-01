@@ -107,7 +107,7 @@ Dentro del Closure, la cual sirve como la definición del factory, puedes devolv
 
 También puedes crear archivos de factories adicionales para cada modelo para una mejor organización. Por ejemplo, podrías crear archivos `UserFactory.php` y `CommentFactory.php` dentro de tu directorio `database/factories`. Todos los archivos dentro del directorio `factories` serán cargados automáticamente por Laravel.
 
-::: tip TIP TIP
+::: tip TIP
 Puedes establecer la configuración regional de Faker agregando una opción `faker_locale` a tu archivo de configuración` config/app.php`.
 :::
 
@@ -202,6 +202,10 @@ $user = factory(App\User::class)->make([
     'name' => 'Abigail',
 ]);
 ```
+
+::: tip TIP
+La [protección de asignación masiva](/eloquent.html#mass-assignment) está deshabilitada de forma automática al crear modelos usando factories.
+:::
 
 <a name="persisting-models"></a>
 ### Persistiendo modelos
