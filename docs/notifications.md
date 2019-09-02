@@ -213,7 +213,7 @@ Nota que se está usando el método `$this->invoice->id` en el método `toMail`.
 
 En este ejemplo, registramos un saludo, una línea de texto, un llamado a la acción y luego otra línea de texto. Estos elementos proporcionados por el objeto `MailMessage` hacen que sea rápido y sencillo dar formato a pequeños correos transaccionales. El canal de correo entonces traducirá los componentes del mensaje en una plantilla HTML agradable y con capacidad de respuesta, justo con su contraparte de texto simple. He aquí un ejemplo de un correo generado por el canal `mail`:
 
-<img src="https://laravel.com/assets/img/notification-example.png" width="551" height="596">
+<img src="https://laravel.com/img/docs/notification-example.png" width="551" height="596">
 
 ::: tip TIP
 Al enviar notificaciones por correo, asegúrate de establecer el valor `name` en tu archivo `config/app.php`. Este valor será usado en el encabezado y pie de los mensajes de notificación por correo.
@@ -825,7 +825,7 @@ public function toSlack($notifiable)
 
 En este ejemplo estamos solamente enviando una línea de texto a Slack, la cual creará un mensaje que luce como éste:
 
-<img src="https://laravel.com/assets/img/basic-slack-notification.png">
+<img src="https://laravel.com/img/docs/basic-slack-notification.png">
 
 #### Personalizar el remitente y destinatario
 
@@ -893,7 +893,7 @@ public function toSlack($notifiable)
 
 El ejemplo anterior generará un mensaje en Slack como el siguiente:
 
-<img src="https://laravel.com/assets/img/basic-slack-attachment.png">
+<img src="https://laravel.com/img/docs/basic-slack-attachment.png">
 
 Los adjuntos te permitirán especificar un arreglo de datos que deben ser presentados al usuario. Los datos dados serán presentados en forma de tabla para su fácil lectura:
 
@@ -925,7 +925,7 @@ public function toSlack($notifiable)
 
 El ejemplo anterior generará un mensaje en Slack como el siguiente:
 
-<img src="https://laravel.com/assets/img/slack-fields-attachment.png">
+<img src="https://laravel.com/img/docs/slack-fields-attachment.png">
 
 #### Contenido adjunto en markdown
 
