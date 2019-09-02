@@ -314,4 +314,5 @@ Comando               | Descripción
 `valet restart`       | Reiniciar el daemon de Valet.
 `valet start`         | Iniciar el daemon de Valet.
 `valet stop`          | Detener el daemon de Valet.
+`valet trust`         | Agregar archivos sudoers a Brew y Valet para permitir que los comandos de Valet sean ejecutados sin contraseña.
 `valet uninstall`     | Desinstalar el daemon de Valet.
