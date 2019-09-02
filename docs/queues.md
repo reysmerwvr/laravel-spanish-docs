@@ -296,7 +296,7 @@ class PodcastController extends Controller
 <a name="job-chaining"></a>
 ### Encadenamiento de trabajos
 
-El encadenamiento de trabajos te permite especificar una lista de trabajos en cola que deben ser ejecutados en secuencia. Si un trabajo en la secuencia falla, el resto no será ejecutado. Para ejecutar una cadena de trabajos en cola, puedes utilizar el método `withChain` en cualquier trabajo a enviar:
+El encadenamiento de trabajos te permite especificar una lista de trabajos en cola que deben ser ejecutados en secuencia luego de que el trabajo primario haya sido ejecutado de forma exitosa. Si un trabajo en la secuencia falla, el resto no será ejecutado. Para ejecutar una cadena de trabajos en cola, puedes utilizar el método `withChain` en cualquier trabajo a enviar:
 
 ```php
 ProcessPodcast::withChain([
