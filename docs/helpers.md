@@ -1288,7 +1288,7 @@ return (string) Str::uuid();
 <a name="method-str-words"></a>
 #### `Str::words()` {#collection-method}
 
-El método `Str::words` limita el número de palabras en una cadena.
+El método `Str::words` limita el número de palabras en una cadena:
 
 ```php
 use Illuminate\Support\Str;
