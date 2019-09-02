@@ -81,6 +81,23 @@ Horizon permite que elijas entre tres estrategias de balance: `simple`, `auto` y
 
 La estrategia `auto` ajusta el número de procesos trabajadores por cola basado en la carga de trabajo de la cola. Por ejemplo, si tu cola `notifications` tiene 1.000 trabajos esperando mientras tu cola `render` está vacía, Horizon asignará mas trabajadores a tu cola `notifications` hasta que esté vacía. Cuando la opción `balance` esté establecida a `false`, el comportamiento predeterminado de Laravel será usado, el cual procesa las colas en el orden que son listadas en tu configuración.
 
+Al usar la estrategia `auto`, puedes definir las opciones de configuración `minProcesses` y `maxProcesses` para controlar el número mínimo y máximo de procesos al que Horizon deberia escalar:
+
+```php
+'environments' => [
+    'production' => [
+        'supervisor-1' => [
+            'connection' => 'redis',
+            'queue' => ['default'],
+            'balance' => 'auto',
+            'minProcesses' => 1,
+            'maxProcesses' => 10,
+            'tries' => 3,
+        ],
+    ],
+],
+```
+
 #### Recorte de trabajos
 
 El archivo de configuración `horizon` te permite configurar cuánto tiempo los trabajos de recientes y fallidos deben ser persistidos (en minutos). Por defecto, los trabajos recientes son mantenidos por una hora mientras que los trabajos fallidos son mantenidos por una semana:
