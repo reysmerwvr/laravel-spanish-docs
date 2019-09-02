@@ -71,7 +71,6 @@ Si estás utilizando Windows, puede que necesites habilitar la virtualización p
 - Mailhog
 - ngrok
 - wp-cli
-- Minio
 
 <a name="optional-software"></a>
 ### Software opcional
@@ -126,6 +125,10 @@ vagrant box add laravel/homestead
 ```
 
 Si el comando falla, asegúrate de que tu instalación de Vagrant esté actualizada.
+
+::: danger TIP
+Periodicamente Homestead liberará entornos Alpha o Beta para pruebas. Estas versiones *interferirán* con el comando `vagrant box add`. Si estás teniendo problemas al ejecutar este comando puedes saltar esto por ahora y el entorno base correcto será descargado la primera vez que ejecutas `vagrant up`.
+:::
 
 #### Instalar Homestead
 
@@ -683,14 +686,7 @@ Homestead incluye el agente de transferencia de correo Postfix, que está escuch
 
 Homestead incluye soporte para la depuración por pasos usando [Xdebug](https://xdebug.org). Por ejemplo,puede cargar una página web desde un navegador y PHP se conectará nuevamente a su IDE para permitir la inspección y modificación del código en ejecución.
 
-Para habilitar la depuración, ejecute los siguientes comandos dentro de la caja vagrant:
-
-```php
-$ sudo phpenmod xdebug
-
-# Update this command to match your PHP version...
-$ sudo systemctl restart php7.3-fpm
-```
+Por defecto, Xdebug ya se está ejecutando y listo para aceptar conexiones. Si necesitas habilitar Xdebug en el CLI simplemente ejecuta `sud phpenmod xdebug`. Luego, sigue las instrucciones de tu IDE para habilitar la depuración. Finalmente, configura tu navegador para que ejecute Xdebug con una extensión o [bookmarklet](https://www.jetbrains.com/phpstorm/marklets/).
 
 Luego, siga las instrucciones de su IDE para habilitar la depuración. Finalmente, configure su navegador para activar Xdebug con una extensión o [bookmarklet](https://www.jetbrains.com/phpstorm/marklets/).
 
