@@ -155,7 +155,7 @@ $this->actingAs($user, 'api')
 <a name="testing-json-apis"></a>
 ## Probando APIs JSON
 
-Laravel también proporciona varios helpers para probar APIs JSON y sus respuestas. Por ejemplo, los métodos `json`, `get`, `post`, `put`, `patch` y `delete` pueden ser usados para hacer solicitudes con varios verbos HTTP. También puedes pasar datos y encabezados fácilmente a estos métodos. Para empezar, vamos a escribir una prueba para hacer una solicitud `POST` a `/user` y comprobar que los datos esperados fueron devueltos:
+Laravel también proporciona varios helpers para probar APIs JSON y sus respuestas. Por ejemplo, los métodos `json`, `get`, `post`, `put`, `patch`, `delete` y `option` pueden ser usados para hacer solicitudes con varios verbos HTTP. También puedes pasar datos y encabezados fácilmente a estos métodos. Para empezar, vamos a escribir una prueba para hacer una solicitud `POST` a `/user` y comprobar que los datos esperados fueron devueltos:
 
 ```php
 <?php
