@@ -81,7 +81,7 @@ De forma predeterminada, las aplicaciones nuevas de Laravel contienen un compone
 ```php
 Vue.component(
     'example-component',
-    require('./components/ExampleComponent.vue')
+    require('./components/ExampleComponent.vue').default
 );
 ```
 
