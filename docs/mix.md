@@ -239,6 +239,15 @@ mix.js('resources/js/app.js', 'public/js')
     .sourceMaps();
 ```
 
+Webpack ofrece una variedad de [mapeo de estilos](https://webpack.js.org/configuration/devtool/#devtool). Por defecto, el mapeo de estilos de Mix está establecido a `eval-source-map`, que proporciona un tiempo de recompilación rápido. Si quieres cambiar el estilo de mapeo, puedes hacerlo usando el método `sourceMaps`:
+
+```php
+let productionSourceMaps = false;
+
+mix.js('resources/js/app.js', 'public/js')
+   .sourceMaps(productionSourceMaps, 'source-map');
+```
+
 <a name="working-with-scripts"></a>
 ## Trabajando con JavaScript
 
