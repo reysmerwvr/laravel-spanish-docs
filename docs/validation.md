@@ -775,7 +775,7 @@ El campo bajo validación debe ser igual a la fecha dada. Las fechas serán pasa
 <a name="rule-date-format"></a>
 #### date_format:_format_
 
-El campo bajo validación debe coincidir con el _format_ dado. Deberías usar `date` **o** `date_format` al momento de validar un campo, no ambos.
+El campo bajo validación debe coincidir con el _format_ dado. Debes usar `date` **o** `date_format` al momento de validar un campo, no ambos. Esta regla de validación soporta todos los formatos soportados por la clase [DateTime](https://www.php.net/manual/es/class.datetime.php) de PHP.
 
 <a name="rule-different"></a>
 #### different:_field_
