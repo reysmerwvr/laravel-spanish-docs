@@ -24,7 +24,6 @@ deploy:
     local_dir: docs/.vuepress/dist
     github-token: $GITHUB_TOKEN
     repo: stydenet/stydenet.github.io
-    local_dir: 5.8
     keep-history: true
     target-branch: master
     fqdn: documentacion-laravel.com
