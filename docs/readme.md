@@ -4,9 +4,9 @@ meta:
     content: a8baxwNufWgibAyyyVSStbqTm5YZ6y7JwS-kGLhtuDA
 ---
 
-# Documentación de Laravel 5.8 en español
+# Traducción de la documentación de Laravel al español
 
-Bienvenido a la documentación de Laravel 5.8 en español.
+Bienvenido a la traducción de la documentación de Laravel 5.8 al español.
 
 Puedes encontrar la versión en línea de la documentación de Laravel en inglés en [https://laravel.com/docs](https://laravel.com/docs)
 
