@@ -2,7 +2,7 @@
 
 ## Sobre esta traducción
 
-Esta traducción al español de la documentación oficial de Laravel es un esfuerzo hecho posible y llevado a cabo por el equipo de [Styde.net](https://styde.net/) así como de un grupo de colaboradores cuyas contribuciones han ayudado a la culminación de este proyecto:
+Esta traducción no oficial de la documentación de Laravel en inglés es un esfuerzo hecho posible y llevado a cabo por el equipo de [Styde.net](https://styde.net/) así como de un grupo de colaboradores cuyas contribuciones han ayudado a la culminación de este proyecto:
 
 - [Duilio Palacios](https://twitter.com/sileence)
 - [Pastor Ramos](https://twitter.com/IngPastorRamos)
