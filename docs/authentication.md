@@ -30,7 +30,7 @@
 ## Introducción
 
 ::: tip TIP
-**¿Quieres comenzar rápido?** Simplemente ejecuta `php artisan make:auth` y `php artisan migrate` en una nueva aplicación de Laravel. Luego, dirígete en tu navegador a `http://tu-app.test/register` o cualquier otra URL asignada a tu aplicación. ¡Estos dos comandos se encargarán de generar todo el sistema de autenticación!
+**¿Quieres comenzar rápido?** Instala el paquete de Composer `laravel/ui` y ejecuta `php artisan ui vue --auth` en una nueva aplicación de Laravel. Luego, dirígete en tu navegador a `http://tu-app.test/register` o cualquier otra URL asignada a tu aplicación. ¡Estos dos comandos se encargarán de generar todo el sistema de autenticación!
 :::
 
 Laravel hace la implementación de la autenticación algo muy sencillo. De hecho, casi todo se configura para ti por defecto. El archivo de configuración de la autenticación está localizado en `config/auth.php`, el cual contiene varias opciones bien documentadas para ajustar el comportamiento de los servicios de autenticación.
@@ -58,10 +58,11 @@ Laravel viene con varios controladores de autenticación preconstruidos, los cua
 <a name="included-routing"></a>
 ### Enrutamiento
 
-Laravel proporciona una manera rápida de generar todas las rutas y vistas que necesitas para la autenticación con un simple comando:
+El paquete de Laravel `laravel/ui` proporciona una manera rápida de generar todas las rutas y vistas que necesitas para la autenticación con unos simples comando:
 
 ```php
-php artisan make:auth
+composer require laravel/ui
+php artisan ui vue --auth
 ```
 
 Este comando debe ser utilizado en aplicaciones nuevas e instalará vistas de diseño, registro e inicio de sesión, así como todas las rutas necesarias para la autenticación. También será generado un `HomeController` que se encargará de manejar las peticiones posteriores al login, como mostrar el dashboard de la aplicación.
@@ -73,9 +74,9 @@ Si tu aplicación no necesita registro, puedes desactivarlo eliminando el recié
 <a name="included-views"></a>
 ### Vistas
 
-Como se mencionó en la sección anterior, el comando `php artisan make:auth` creará todas las vistas que se necesiten para la autenticación y las colocará en el directorio `resources/views/auth`.
+Como se mencionó en la sección anterior, el comando `php artisan ui vue --auth` del paquete `laravel/ui` creará todas las vistas que se necesiten para la autenticación y las colocará en el directorio `resources/views/auth`.
 
-El comando `make:auth` también creará el directorio `resources/views/layouts`, el cual contendrá la plantilla base para tu aplicación. Todas estas vistas usan el framework de CSS Bootstrap, pero eres libre de modificarlo en base a tus preferencias.
+El comando `ui` también creará el directorio `resources/views/layouts`, el cual contendrá la plantilla base para tu aplicación. Todas estas vistas usan el framework de CSS Bootstrap, pero eres libre de modificarlo en base a tus preferencias.
 
 <a name="included-authenticating"></a>
 ### Autenticación
@@ -102,7 +103,7 @@ protected function redirectTo()
 ```
 
 ::: tip TIP
-El método `redirectTo` toma precedencia sobre el atributo `redirectTo`.
+El método `redirectTo` toma precedencia sobre la propiedad `redirectTo`.
 :::
 
 #### Personalizar usuario
