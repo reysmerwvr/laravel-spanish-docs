@@ -73,7 +73,7 @@ class Repository
     */
     public function find($id)
     {
-        if ($this->cache->has($id))    {
+        if ($this->cache->has($id)) {
             //
         }
     }
