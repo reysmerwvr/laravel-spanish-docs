@@ -25,7 +25,7 @@ public function testDatabase()
     // Make call to application...
 
     $this->assertDatabaseHas('users', [
-        'email' => 'sally@example.com'
+        'email' => 'sally@example.com',
     ]);
 }
 ```
