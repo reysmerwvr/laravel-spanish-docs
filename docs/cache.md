@@ -74,7 +74,7 @@ También puedes establecer la opción `host` a la ruta de un socket de UNIX. Si 
 
 #### Redis
 
-Antes de comenzar a utilizar el caché con Redis en Laravel, deberás instalar el paquete `predis/predis` (~1.0) por medio de Composer o instalar la extensión de PHP PhpRedis por medio de PECL.
+Antes de comenzar a utilizar el caché con Redis en Laravel, deberás instalar ya sea la extensión de PHP PhpRedis mediante PECL o instalar el paquete `predis/predis` (~1.0) mediante Composer.
 
 Para más información sobre cómo configurar Redis, consulta la [página de la documentación de Laravel](/redis.html#configuration).
 
