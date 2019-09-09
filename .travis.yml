@@ -23,9 +23,8 @@ deploy:
     skip-cleanup: true
     local_dir: docs/.vuepress/dist
     github-token: $GITHUB_TOKEN
-    repo: 
+    repo: dvalpx/dvalpx.github.io
     keep-history: true
     target-branch: master
-    fqdn: documentacion-laravel.com
     on:
-        branch: 5.8_press
+        branch: 6.0_press
