@@ -1,6 +1,6 @@
-# Documentación de Laravel 5.9 en español
+# Documentación de Laravel 6.0 en español
 
-Bienvenido a la documentación de Laravel 5.9 en español.
+Bienvenido a la traducción de la documentación de Laravel 6.0 al español.
 
 Puedes encontrar la versión en línea de la documentación de Laravel en inglés en [https://laravel.com/docs](https://laravel.com/docs)
 
@@ -10,7 +10,7 @@ Actualmente esta traducción de la documentación de Laravel se encuentra en per
 
 ## Guía para contribuir
 
-Si está enviando documentación para la **versión estable actual**, envíala a la rama correspondiente. Por ejemplo, la documentación para Laravel 5.9 se enviaría a la rama `5.9_press`. La documentación destinada a la próxima versión de Laravel debe enviarse a la rama `master`.
+Si está enviando documentación para la **versión estable actual**, envíala a la rama correspondiente. Por ejemplo, la documentación para Laravel 6.0 se enviaría a la rama `6.0_press`. La documentación destinada a la próxima versión de Laravel debe enviarse a la rama `master`.
 
 ## Sobre esta traducción
 
