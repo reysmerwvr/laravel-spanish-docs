@@ -1,3 +1,9 @@
+---
+meta:
+  - name: "google-site-verification"
+    content: a8baxwNufWgibAyyyVSStbqTm5YZ6y7JwS-kGLhtuDA
+---
+
 # Traducción de la documentación de Laravel al español
 
 Bienvenido a la traducción de la documentación de Laravel 6.0 al español.
