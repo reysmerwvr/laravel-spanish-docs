@@ -12,6 +12,7 @@ module.exports = {
 			{ text: 'Glosario', link: '/glossary'},			
 			{ text: 'Créditos', link: '/credits' },
 			{ text: 'Descargar documentación', link: '/descargar-documentacion' },
+			{ text: 'Documentación de Laravel 6.0', link: 'https://documentacion-laravel.com/' },
 			{ text: 'Styde', link: 'https://styde.net/'},
        	],
 		search: true,
