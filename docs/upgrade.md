@@ -30,7 +30,9 @@
 
 #### Tiempo de actualización estimado: una hora
 
->  **Nota:** Intentamos documentar cada posible cambio de ruptura (breaking change). Dado que algunos de estos cambios de ruptura se encuentran en las partes oscuras del framework, solo una parte de estos cambios puede afectar tu aplicación.
+::: danger NOTA
+Intentamos documentar cada posible cambio de ruptura (breaking change). Dado que algunos de estos cambios de ruptura se encuentran en las partes oscuras del framework, solo una parte de estos cambios puede afectar tu aplicación.
+:::
 
 ### PHP 7.2 Obligatorio
 
@@ -112,7 +114,9 @@ El cliente por defecto de Redis ha cambiado de `predis` a `phpredis`. Para segui
 
 **Probabilidad de impacto: Medio**
 
-> **Nota:** Este cambio solo aplica para aplicaciones no Laravel que están usando a `illuminate/database` como una dependencia.
+::: danger NOTA
+Este cambio solo aplica para aplicaciones no Laravel que están usando a `illuminate/database` como una dependencia.
+:::
 
 La firma del método `table` de la clase `Illuminate\Database\Capsule\Manager` se ha actualizado para aceptar un alias de tabla como segundo argumento. Si estás usando  `illuminate/database` fuera de una aplicacion de Laravel, debes actualizar cualquier llamado a este método de acuerdo con:
 
@@ -246,7 +250,9 @@ Además, si estás manualmente implementando la interfaz  `Illuminate\Contracts\
 
 Los métodos `Lang::get` y `Lang::getFromJson` se han consolidado. Las llamadas al método `Lang::getFromJson` debe ser actualizado para llamar a `Lang::get`.
 
-> **Nota:** Debes ejecutar el comando Artisan `php artisan view:clear` para evitar errores de Blade relacionados a la eliminación de `Lang::transChoice`, `Lang::trans`, y `Lang::getFromJson`.
+::: danger NOTA
+Debes ejecutar el comando Artisan `php artisan view:clear` para evitar errores de Blade relacionados a la eliminación de `Lang::transChoice`, `Lang::trans`, y `Lang::getFromJson`.
+:::
 
 ### Correo Electrónico
 
@@ -329,16 +335,17 @@ Se ha eliminado el controlador de almacenamiento `rackspace`. Si deseas continua
 
 En versiones previas de Laravel, pasar parámetros de arreglos asociativos al helper `route` o al método `URL::route` podía ocasionar el uso de estos parámetros como valores de URI cuando generabas URLs para rutas con parámetros opcionales, incluso si el valor del parámetro no tenía una llave que coincidiera con las llaves esperadas. A partir de Laravel 6.0, estos valores se usará como parte del "query string". Por ejemplo, considera la siguiente ruta:
 
-    Route::get('/profile/{location?}', function ($location = null) {
-        //
-    })->name('profile');
+```php
+ Route::get('/profile/{location?}', function ($location = null) {
+     //
+ })->name('profile');
 
-    // Laravel 5.8: http://example.com/profile/active
-    echo route('profile', ['status' => 'active']);
+ // Laravel 5.8: http://example.com/profile/active
+ echo route('profile', ['status' => 'active']);
 
-    // Laravel 6.0: http://example.com/profile?status=active
-    echo route('profile', ['status' => 'active']);    
-
+ // Laravel 6.0: http://example.com/profile?status=active
+ echo route('profile', ['status' => 'active']);    
+```
 
 <a name="miscellaneous"></a>
 ### Misceláneos
