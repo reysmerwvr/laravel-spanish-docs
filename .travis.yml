@@ -26,5 +26,6 @@ deploy:
     repo: dvalpx/dvalpx.github.io
     keep-history: true
     target-branch: master
+    fqdn: documentacion-laravel.com
     on:
         branch: 6.0_press
