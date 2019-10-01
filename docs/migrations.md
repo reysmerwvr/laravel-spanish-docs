@@ -6,7 +6,7 @@
 - [Generando migraciones](#generating-migrations)
 - [Estructura de migración](#migration-structure)
 - [Ejecutando migraciones](#running-migrations)
-  - [Reversando migraciones](#rolling-back-migrations)
+  - [Revertir migraciones](#rolling-back-migrations)
 - [Tablas](#tables)
   - [Creando tablas](#creating-tables)
   - [Renombrando / Eliminando tablas](#renaming-and-dropping-tables)
@@ -52,7 +52,7 @@ Si prefieres especificar una ruta de directorio de salida personalizada para la 
 <a name="migration-structure"></a>
 ## Estructura de migración
 
-Una clase de migración contiene dos métodos: `up` y `down`. El método `up` es usado para agregar nuevas tablas, columnas, o índices para tu base de datos, mientras el método `down` debería reversar las operaciones ejecutadas por el método `up`.
+Una clase de migración contiene dos métodos: `up` y `down`. El método `up` es usado para agregar nuevas tablas, columnas, o índices para tu base de datos, mientras el método `down` debería revertir las operaciones ejecutadas por el método `up`.
 
 Dentro de ambos métodos puedes usar el constructor de esquema de Laravel para crear y modificar expresivamente las tablas. Para aprender sobre todos los métodos disponibles en el constructor `Schema`, [inspecciona su documentación](#creating-tables). Por ejemplo, este ejemplo de migración crea una tabla `flights`:
 
@@ -114,15 +114,15 @@ php artisan migrate --force
 ```
 
 <a name="rolling-back-migrations"></a>
-### Reversando migraciones
+### Revertir migraciones
 
-Para reversar la operación de migración más reciente, puedes usar el comando `rollback`. Este comando reversa el último "lote" de migraciones, los cuales pueden incluir archivos de migración múltiples.
+Para revertir la operación de migración más reciente, puedes usar el comando `rollback`. Este comando reversa el último "lote" de migraciones, los cuales pueden incluir archivos de migración múltiples.
 
 ```php
 php artisan migrate:rollback
 ```
 
-Puedes reversar un número limitado de migraciones proporcionando la opción `step` al comando `rollback`. Por ejemplo, el siguiente comando revertirá los cinco "lotes" de migraciones más recientes:
+Puedes revertir un número limitado de migraciones proporcionando la opción `step` al comando `rollback`. Por ejemplo, el siguiente comando revertirá los cinco "lotes" de migraciones más recientes:
 
 ```php
 php artisan migrate:rollback --step=5
@@ -136,7 +136,7 @@ php artisan migrate:reset
 
 #### rollback & migrate en un único comando
 
-El comando `migrate:refresh` reversará todas tus migraciones y después ejecutará el comando `migrate`. Este comando vuelve a crear efectivamente tu base de datos entera:
+El comando `migrate:refresh` revertirá todas tus migraciones y después ejecutará el comando `migrate`. Este comando vuelve a crear efectivamente tu base de datos entera:
 
 ```php
 php artisan migrate:refresh
@@ -145,7 +145,7 @@ php artisan migrate:refresh
 php artisan migrate:refresh --seed
 ```
 
-Puedes reversar y volver a migrar un número limitado de migraciones proporcionando la opción `step` al comando `refresh`. Por ejemplo, el siguiente comando revertirá y volverá a migrar las cinco migraciones más recientes:
+Puedes revertir y volver a migrar un número limitado de migraciones proporcionando la opción `step` al comando `refresh`. Por ejemplo, el siguiente comando revertirá y volverá a migrar las cinco migraciones más recientes:
 
 ```php
 php artisan migrate:refresh --step=5
