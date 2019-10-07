@@ -46,8 +46,8 @@ Si eliges usar un nombre de columna diferente, asegurate de actualizar la opció
 Una vez que la columna `api_token` ha sido agregada a tu tabla `users`, estás listo para asignar tokens de API aleatorios a cada usuario que se registra en tu aplicación. Debes asignar dichos tokens cuando un modelo `User` es creado para el usuario durante el registro. Al usar el [scaffolding de autenticación](/authentication.html#authentication-quickstart) proporcionado por el paquete de composer `laravel/ui`, esto puede ser hecho en el método `create` de `RegisterController`:
 
 ```php
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 /**
 * Create a new user instance after a valid registration.
@@ -90,8 +90,8 @@ Por ejemplo, un método de controlador que inicializa / refresca el token para u
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class ApiTokenController extends Controller
 {
