@@ -100,8 +100,8 @@ Echemos un vistazo a un comando de ejemplo. Observa que podemos inyectar cualqui
 
 namespace App\Console\Commands;
 
-use App\User;
 use App\DripEmailer;
+use App\User;
 use Illuminate\Console\Command;
 
 class SendEmails extends Command
@@ -175,8 +175,8 @@ El Closure está vinculado a la instancia del comando subyacente, así tienes ac
 Además de recibir los argumentos y opciones de tu comando, en los Closures de comandos puedes también determinar los tipos de las dependencias adicionales que te gustaría resolver del [contenedor de servicios](/container.html):
 
 ```php
-use App\User;
 use App\DripEmailer;
+use App\User;
 
 Artisan::command('email:send {user}', function (DripEmailer $drip, $user) {
     $drip->send(User::find($user));
