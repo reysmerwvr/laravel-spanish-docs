@@ -4,7 +4,7 @@
 
 - [Introducción](#introduction)
     - [Consideraciones de la base de datos](#introduction-database-considerations)
-- [Inicio rápido de dutenticación](#authentication-quickstart)
+- [Inicio rápido de autenticación](#authentication-quickstart)
     - [Enrutamiento](#included-routing)
     - [Vistas](#included-views)
     - [Autenticando](#included-authenticating)
@@ -30,7 +30,7 @@
 ## Introducción
 
 ::: tip TIP
-**¿Quieres comenzar rápido?** Instala el paquete de Composer `laravel/ui` y ejecuta `php artisan ui vue --auth` en una nueva aplicación de Laravel. Luego, dirígete en tu navegador a `http://tu-app.test/register` o cualquier otra URL asignada a tu aplicación. ¡Estos dos comandos se encargarán de generar todo el sistema de autenticación!
+**¿Quieres comenzar rápido?** Instala el paquete de Composer `laravel/ui` y ejecuta `php artisan ui vue --auth` en una nueva aplicación de Laravel. Luego de migrar tu base de datos, dirígete en tu navegador a `http://tu-app.test/register` o cualquier otra URL asignada a tu aplicación. ¡Estos dos comandos se encargarán de generar todo el sistema de autenticación!
 :::
 
 Laravel hace la implementación de la autenticación algo muy sencillo. De hecho, casi todo se configura para ti por defecto. El archivo de configuración de la autenticación está localizado en `config/auth.php`, el cual contiene varias opciones bien documentadas para ajustar el comportamiento de los servicios de autenticación.
@@ -61,7 +61,7 @@ Laravel viene con varios controladores de autenticación preconstruidos, los cua
 El paquete de Laravel `laravel/ui` proporciona una manera rápida de generar todas las rutas y vistas que necesitas para la autenticación con unos simples comando:
 
 ```php
-composer require laravel/ui
+composer require laravel/ui --dev
 php artisan ui vue --auth
 ```
 
@@ -490,8 +490,8 @@ Puedes definir tu propio guard de autenticación utilizando el método `extend` 
 namespace App\Providers;
 
 use App\Services\Auth\JwtGuard;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Auth;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -571,9 +571,9 @@ Si no estás utilizando una base de datos relacional tradicional para almacenar 
 
 namespace App\Providers;
 
-use Illuminate\Support\Facades\Auth;
 use App\Extensions\RiakUserProvider;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Auth;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -628,14 +628,13 @@ Echemos un vistaso a la interfaz `Illuminate\Contracts\Auth\UserProvider`:
 
 namespace Illuminate\Contracts\Auth;
 
-interface UserProvider {
-
+interface UserProvider 
+{
     public function retrieveById($identifier);
     public function retrieveByToken($identifier, $token);
     public function updateRememberToken(Authenticatable $user, $token);
     public function retrieveByCredentials(array $credentials);
     public function validateCredentials(Authenticatable $user, array $credentials);
-
 }
 ```
 
@@ -659,15 +658,14 @@ Ahora que hemos explorado cada uno de los métodos en `UserProvider`, vamos a ec
 
 namespace Illuminate\Contracts\Auth;
 
-interface Authenticatable {
-
+interface Authenticatable 
+{
     public function getAuthIdentifierName();
     public function getAuthIdentifier();
     public function getAuthPassword();
     public function getRememberToken();
     public function setRememberToken($value);
     public function getRememberTokenName();
-
 }
 ```
 
