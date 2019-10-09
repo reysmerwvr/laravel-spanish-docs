@@ -6,12 +6,14 @@
 - [Gates](#gates)
     - [Escribiendo gates](#writing-gates)
     - [Autorizando acciones](#authorizing-actions-via-gates)
+    - [Respuestas de gates](#gate-responses)
     - [Interceptando comprobaciones de gates](#intercepting-gate-checks)
 - [Creando políticas](#creating-policies)
     - [Generando políticas](#generating-policies)
     - [Registrando políticas](#registering-policies)
 - [Escribiendo políticas](#writing-policies)
     - [Métodos de política](#policy-methods)
+    - [Respuestas de políticas](#policy-responses)
     - [Métodos sin modelos](#methods-without-models)
     - [Usuarios invitados](#guest-users)
     - [Filtros de política](#policy-filters)
@@ -20,8 +22,10 @@
     - [Vía middleware](#via-middleware)
     - [Vía helpers del controlador](#via-controller-helpers)
     - [Vía plantillas de blade](#via-blade-templates)
+    - [Proporcionando contexto adicional](#supplying-additional-context)
 
 <a name="introduction"></a>
+
 ## Introducción
 
 Además de proveer servicios de [autenticación](/authentication.html) por defecto, Laravel además provee una forma simple de autorizar acciones del usuario contra un recurso dado. Como con la autenticación, el enfoque de Laravel para la autorización es simple, y hay dos maneras principales de autorizar acciones: **gates** y **policies** (puertas y políticas).
@@ -53,7 +57,7 @@ public function boot()
     });
 
     Gate::define('update-post', function ($user, $post) {
-        return $user->id == $post->user_id;
+        return $user->id === $post->user_id;
     });
 }
 ```
@@ -143,8 +147,74 @@ if (Gate::none(['update-post', 'delete-post'], $post)) {
 }
 ```
 
+#### Autorizando o mostrando excepciones
+
+Si te gustaría intentar autorizar una acción y automáticamente mostrar un `Illuminate\Auth\Access\AuthorizationException` si el usuario no está habilitado para realizar la acción dada, puedes usar el método `Gate::authorize`. Las instancias de `AuthorizationException` son convertidas automáticamente a una respuesta HTTP `403`:
+
+```php
+Gate::authorize('update-post', $post);
+
+// The action is authorized...
+```
+
+#### Proporcionando contexto adicional
+
+Los métodos gate para autorizar habilidades (`allows`, `denies`, `check`, `any`, `none`, `authorize`, `can`, `cannot`) y las [directivas de Blade](#via-blade-templates) para autorización (`@can`, `@cannot`, `@canany`) pueden recibir un arreglo como segundo argumento. Dichos elementos del arreglo son pasados como parametros al gate, y pueden ser usados como contexto adicional al tomar decisiones de autorización:
+
+```php
+Gate::define('create-post', function ($user, $category, $extraFlag) {
+    return $category->group > 3 && $extraFlag === true;
+});
+
+if (Gate::check('create-post', [$category, $extraFlag])) {
+    // The user can create the post...
+}
+```
+
+<a name="gate-responses"></a>
+
+### Respuestas de gates
+
+Hasta el momento, sólo hemos examinado gates que retornan simples valores booleanos. Sin embargo, algunas veces podrías querer retornar una respuesta más detallada, incluyendo un mensaje de error. Para hacer eso, puedes retornar un `Illuminate\Auth\Access\Response` desde tu gate:
+
+```php    
+use Illuminate\Auth\Access\Response;
+use Illuminate\Support\Facades\Gate;
+
+Gate::define('edit-settings', function ($user) {
+    return $user->isAdmin
+                ? Response::allow()
+                : Response::deny('You must be a super administrator.');
+});
+```
+
+Al retornar una respuesta de autorización desde tu gate, el método `Gate::allows` aún retornará un
+valor booleano simple; sin embargo, puedes usar el método `Gate::inspect` para obtener la respuesta
+de autorización completa retornada por el gate:
+
+```php
+$response = Gate::inspect('edit-settings', $post);
+
+if ($response->allowed()) {
+    // The action is authorized...
+} else {
+    echo $response->message();
+}
+```
+
+Por supuesto, al usar el método `Gate::authorize` para mostrar una `AuthorizationException` si
+la acción no está autorizada, el mensaje de error proporcionado por la respuesta de autorización
+será propagada a la respuesta HTTP:
+
+```php
+Gate::authorize('edit-settings', $post);
+
+// The action is authorized...
+```
+
 <a name="intercepting-gate-checks"></a>
-#### Interceptando comprobaciones de gates
+
+### Interceptando comprobaciones de gates
 
 Algunas veces, puedes querer otorgar todas las habilidades a un usuario en especifico. Puedes usar el método `before` para definir un callback que es ejecutado antes de todas las demás comprobaciones de autorización:
 
@@ -204,10 +274,10 @@ Una vez que la política exista, ésta necesita ser registrada. La clase `AuthSe
 
 namespace App\Providers;
 
-use App\Post;
 use App\Policies\PostPolicy;
-use Illuminate\Support\Facades\Gate;
+use App\Post;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Gate;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -267,8 +337,8 @@ El método `update` recibirá una instancia de `User` y de `Post` como sus argum
 
 namespace App\Policies;
 
-use App\User;
 use App\Post;
+use App\User;
 
 class PostPolicy
 {
@@ -292,7 +362,53 @@ Puedes continuar definiendo métodos adicionales en la política como sea necesa
 Si usas la opción `--model` cuando generes tu política con el comando de Artisan, éste contendrá métodos para las acciones `view`, `create`, `update`, `delete`, `restore` y `forceDelete`.
 :::
 
+<a name="policy-responses"></a>
+
+### Respuestas de políticas
+
+Hasta el momento, sólo hemos examinado métodos de políticias que retornan simples valores booleanos. Sin embargo, algunas veces puedes querer retornar una respuesta más detallada, incluyendo un mensaje de error. Para hacer eso, puedes retornar un `Illuminate\Auth\Access\Response` desde el método de tu política:
+
+```php
+use Illuminate\Auth\Access\Response;
+
+/**
+* Determine if the given post can be updated by the user.
+*
+* @param  \App\User  $user
+* @param  \App\Post  $post
+* @return bool
+*/
+public function update(User $user, Post $post)
+{
+    return $user->id === $post->user_id
+                ? Response::allow()
+                : Response::deny('You do not own this post.');
+}
+```
+
+Al retornar una respuesta de autorización desde tu política, el método `Gate::alows` aún retornará
+un booleano simple; sin embargo, puedesde usar el método `Gate::inspect` para obtener la respuesta de autorización completa retornada por el gate:
+
+```php
+$response = Gate::inspect('update', $post);
+
+if ($response->allowed()) {
+    // The action is authorized...
+} else {
+    echo $response->message();
+}
+```
+
+Por supuesto, al usar el método `Gate::authorize` para mostrar un `AuthorizationException` si la acción no está autorizada, el mensaje de error proporcionado por la respuesta de autorización será propagado a la respuesta HTTP:
+
+```php
+Gate::authorize('update', $post);
+
+// The action is authorized...
+```
+
 <a name="methods-without-models"></a>
+
 ### Métodos sin modelos
 
 Algunos métodos de políticas solo reciben el usuario autenticado y no una instancia del modelo que autorizan. Esta situación es común cuando autorizamos acciones `create`. Por ejemplo, si estás creando un blog, puedes querer revisar si un usuario está autorizado para crear nuevos posts o no.
@@ -322,8 +438,8 @@ Por defecto, todos los gates y políticas automáticamente retornan `false` si l
 
 namespace App\Policies;
 
-use App\User;
 use App\Post;
+use App\User;
 
 class PostPolicy
 {
@@ -424,9 +540,9 @@ Además de proveer métodos útiles en el modelo `User`, Laravel también provee
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use App\Post;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 
 class PostController extends Controller
 {
@@ -478,9 +594,9 @@ El método `authorizeResource` acepta el nombre de clase del modelo como primer 
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use App\Post;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 
 class PostController extends Controller
 {
@@ -494,7 +610,8 @@ class PostController extends Controller
 Los siguientes métodos de controlador serán mapeados con su método de política respectivo:
 
 | Método de controlador | Método de política |
-| --------------------- | ------------------ | 
+| --------------------- | ------------------ |
+| index                 | viewAny            |
 | show                  | view               |
 | create                | create             |
 | store                 | create             |
@@ -560,3 +677,48 @@ Así como otros métodos de autorización, puedes pasar el nombre de una clase a
     <!-- The Current User Can't Create Posts -->
 @endcannot
 ```
+
+<a name="supplying-additional-context"></a>
+
+### Proporcionando contexto adicional
+
+Al autorizar acciones usando políticas, puedes pasar un arreglo como segundo argumento a las
+diferentes funciones y helpers de autorización. El primer elemento en el arreglo será usado para
+determinar que política debe ser invocada, mientras que el resto de los elementos del arreglo son
+pasados como parametros al método de la política y puede ser usado como contexto adicional al tomar decisiones de autorización. Por ejemplo, considera la siguiente definición de método `PostPolicy` que contiene un parametro adicional `$category`:
+
+```php
+/**
+* Determine if the given post can be updated by the user.
+*
+* @param  \App\User  $user
+* @param  \App\Post  $post
+* @param  int  $category
+* @return bool
+*/
+public function update(User $user, Post $post, int $category)
+{
+    return $user->id === $post->user_id && 
+           $category > 3;
+}
+```
+
+Al intentar determinar si el usuario autenticado puede actualizar un post dado, podemos invocar este método de política de la siguiente manera:
+
+```php
+/**
+* Update the given blog post.
+*
+* @param  Request  $request
+* @param  Post  $post
+* @return Response
+* @throws \Illuminate\Auth\Access\AuthorizationException
+*/
+public function update(Request $request, Post $post)
+{
+    $this->authorize('update', [$post, $request->input('category')]);
+
+    // The current user can update the blog post...
+}
+```
+
