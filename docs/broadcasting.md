@@ -158,11 +158,11 @@ Cuando un usuario está viendo una de sus ordenes, no que queremos que tengan qu
 namespace App\Events;
 
 use Illuminate\Broadcasting\Channel;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Broadcasting\PresenceChannel;
+use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Queue\SerializesModels;
 
 class ShippingStatusUpdated implements ShouldBroadcast
 {
@@ -228,11 +228,11 @@ namespace App\Events;
 
 use App\User;
 use Illuminate\Broadcasting\Channel;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Broadcasting\PresenceChannel;
+use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Queue\SerializesModels;
 
 class ServerCreated implements ShouldBroadcast
 {
@@ -455,8 +455,8 @@ Finalmente, puedes colocar la lógica de autorización para tu canal en el méto
 
 namespace App\Broadcasting;
 
-use App\User;
 use App\Order;
+use App\User;
 
 class OrderChannel
 {
