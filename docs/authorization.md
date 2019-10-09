@@ -366,7 +366,7 @@ Si usas la opción `--model` cuando generes tu política con el comando de Artis
 
 ### Respuestas de políticas
 
-Hasta el momento, sólo hemos examinado métodos de políticias que retornan simples valores booleanos. Sin embargo, algunas veces puedes querer retornar una respuesta más detallada, incluyendo un mensaje de error. Para hacer eso, puedes retornar un `Illuminate\Auth\Access\Response` desde el método de tu política:
+Hasta el momento, sólo hemos examinado métodos de políticas que retornan simples valores booleanos. Sin embargo, algunas veces puedes querer retornar una respuesta más detallada, incluyendo un mensaje de error. Para hacer eso, puedes retornar un `Illuminate\Auth\Access\Response` desde el método de tu política:
 
 ```php
 use Illuminate\Auth\Access\Response;
