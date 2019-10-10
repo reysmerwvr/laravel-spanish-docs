@@ -27,7 +27,7 @@ El [middleware](/middleware.html) `VerifyCsrfToken`, el cual es incluido en el g
 
 #### Tokens CSRF & JavaScript
 
-Cuando se crean aplicaciones controladas por JavaScript, es conveniente hacer que tu biblioteca HTTP de JavaScript agregue el token CSRF a cada petición saliente. Por defecto, el archivo `resources/js/bootstrap.js` registra el valor de la meta etiqueta `csrf-token` con la biblioteca HTTP Axios. Si no estás usando esta biblioteca, necesitarás configurar este comportamiento de forma manual para tu aplicación.
+Cuando se crean aplicaciones controladas por JavaScript, es conveniente hacer que tu biblioteca HTTP de JavaScript agregue el token CSRF a cada petición saliente. Por defecto, la librería HTTP Axios proporcionada en el archivo `resources/js/bootstrap.js` automáticamente envia un header `X-XSRF-TOKEN` usando el valor de la cookie encriptada `XSRF-TOKEN`. Si no estás usando esta librería, necesitarás configurar de forma manual este comportamiento en tus aplicaciones.
 
 <a name="csrf-excluding-uris"></a>
 ## Excluyendo las URIs de la protección CSRF
@@ -81,13 +81,13 @@ $.ajaxSetup({
 });
 ```
 
-::: tip TIP
-Por defecto, el archivo `resources/js/bootstrap.js` registra el valor de la etiqueta meta `csrf-token` con la biblioteca HTTP Axios. Si no estás usando esta biblioteca, necesitarás configurar este comportamiento de forma manual para tu aplicación.
-:::
-
 <a name="csrf-x-xsrf-token"></a>
 ## X-XSRF-TOKEN
 
-Laravel almacena el token CSRF actual en una cookie `XSRF-TOKEN` que es incluida con cada respuesta generada por el framework. Puedes usar el valor del cookie para establecer el encabezado de la solicitud `X-XSRF-TOKEN`.
+Laravel almacena el token CSRF actual en una cookie `XSRF-TOKEN` encriptada que es incluida con cada respuesta generada por el framework. Puedes usar el valor del cookie para establecer el encabezado de la solicitud `X-XSRF-TOKEN`.
 
-Esta cookie primeramente es enviada por conveniencia ya que algunos frameworks JavaScript y librerías, como Angular y Axios colocan automáticamente su valor en el encabezado `X-XSRF-TOKEN`.
+Esta cookie primeramente es enviada por conveniencia ya que algunos frameworks JavaScript y librerías, como Angular y Axios colocan automáticamente su valor en el encabezado `X-XSRF-TOKEN` en las solicitudes de mismo origen.
+
+::: tip TIP
+Por defecto, el archivo `resources/js/bootstrap.js` incluye la librería HTTP Axios que enviará automáticamente esto por ti.
+:::
