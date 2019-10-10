@@ -36,7 +36,7 @@ Puedes probar este comando con la siguiente prueba que utiliza los métodos `exp
 *
 * @return void
 */
-public function test_console_command()
+public function testConsoleCommand()
 {
     $this->artisan('question')
             ->expectsQuestion('What is your name?', 'Taylor Otwell')
