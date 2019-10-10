@@ -220,9 +220,9 @@ Para empezar, vamos a escribir una prueba que verifica que podemos entrar a nues
 namespace Tests\Browser;
 
 use App\User;
-use Tests\DuskTestCase;
-use Laravel\Dusk\Chrome;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Laravel\Dusk\Chrome;
+use Tests\DuskTestCase;
 
 class ExampleTest extends DuskTestCase
 {
@@ -251,10 +251,6 @@ class ExampleTest extends DuskTestCase
 ```
 
 Como puedes ver en el ejemplo anterior, el método `browse` acepta una función callback. Una instancia de navegador será pasada automáticamente a esta función de retorno por Dusk y es el objeto principal utilizado para interactuar y hacer aserciones en la aplicación.
-
-::: tip TIP TIP
-Esta prueba puede ser usada para probar la pantalla login generada por el comando Artisan `make:auth`.
-:::
 
 #### Creando múltiples navegadores
 
@@ -301,8 +297,8 @@ Si desea definir un método de navegador personalizado que puedas reutilizar en 
 
 namespace App\Providers;
 
-use Laravel\Dusk\Browser;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Dusk\Browser;
 
 class DuskServiceProvider extends ServiceProvider
 {
@@ -359,9 +355,9 @@ Cuando tu prueba requiere migraciones, como el ejemplo de autenticación visto a
 namespace Tests\Browser;
 
 use App\User;
-use Tests\DuskTestCase;
-use Laravel\Dusk\Chrome;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Laravel\Dusk\Chrome;
+use Tests\DuskTestCase;
 
 class ExampleTest extends DuskTestCase
 {
@@ -1596,10 +1592,10 @@ Una vez que el componente ha sido definido, fácilmente podemos seleccionar una 
 
 namespace Tests\Browser;
 
-use Tests\DuskTestCase;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
 use Tests\Browser\Components\DatePicker;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Tests\DuskTestCase;
 
 class ExampleTest extends DuskTestCase
 {
@@ -1654,6 +1650,9 @@ jobs:
             - run:
                 name: Run Laravel Dusk Tests
                 command: php artisan dusk
+                    
+            - store_artifacts:
+                path: tests/Browser/screenshots
 ```
 
 <a name="running-tests-on-codeship"></a>
@@ -1718,6 +1717,44 @@ before_script:
 
 script:
     - php artisan dusk
+```
+
+En tu archivo `.env.testing`, ajusta el valor de `APP_URL`:
+
+```php
+APP_URL=http://127.0.0.1:8000
+```
+
+<a name="running-tests-on-github-actions"></a>
+### GitHub Actions
+
+Si estás usando [acciónes de GitHub](https://github.com/features/actions) para ejecutar tus pruebas de Dusk, puedes usar este archivo de configuración como punto de partida. Igual que TravisCI, usaremos el comando `php artisan serve` para ejecutar el servidor integrado de PHP:
+
+```php
+name: CI
+on: [push]
+jobs:
+
+dusk-php:
+  runs-on: ubuntu-latest
+  steps:
+    - uses: actions/checkout@v1
+    - name: Prepare The Environment
+      run: cp .env.example .env
+    - name: Create Database
+      run: mysql --user="root" --password="root" -e "CREATE DATABASE my-database character set UTF8mb4 collate utf8mb4_bin;"
+    - name: Install Composer Dependencies
+      run: composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+    - name: Generate Application Key
+      run: php artisan key:generate
+    - name: Upgrade Chrome Driver
+      run: php artisan dusk:chrome-driver
+    - name: Start Chrome Driver
+      run: ./vendor/laravel/dusk/bin/chromedriver-linux > /dev/null 2>&1 &
+    - name: Run Laravel Server
+      run: php artisan serve > /dev/null 2>&1 &
+    - name: Run Dusk Tests
+      run: php artisan dusk
 ```
 
 En tu archivo `.env.testing`, ajusta el valor de `APP_URL`:
