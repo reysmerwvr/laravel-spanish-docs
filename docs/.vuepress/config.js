@@ -2,7 +2,8 @@ module.exports = {
 	title: 'Documentación de Laravel',
   	head: [
 		['link', {rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Catamaran:300,700|Miriam+Libre'}],
-		['link', { rel: 'icon', href: '/favicon.png' }]
+		['link', { rel: 'icon', href: '/favicon.png' }],
+		['meta', { property: 'og:image', content: 'https://documentacion-laravel.com/social-preview.jpeg' }]
   	],
   	description: 'Documentación de Laravel en Español',
   	themeConfig: {
