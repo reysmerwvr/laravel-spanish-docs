@@ -35,8 +35,8 @@ A continuación se muestra un ejemplo de una clase de controlador básica. Nota 
 
 namespace App\Http\Controllers;
 
-use App\User;
 use App\Http\Controllers\Controller;
+use App\User;
 
 class UserController extends Controller
 {
@@ -86,8 +86,8 @@ Si prefieres definir un controlador que maneja solamente una acción única, deb
 
 namespace App\Http\Controllers;
 
-use App\User;
 use App\Http\Controllers\Controller;
+use App\User;
 
 class ShowProfile extends Controller
 {
