@@ -15,10 +15,10 @@
 
 Laravel hace que la interacción con las bases de datos sea extremadamente fácil a través de una variedad de backends de bases de datos usando SQL nativo, el constructor de consultas [query builder](/queries.html) y el [ORM Eloquent](/eloquent.html). Actualmente, Laravel soporta cuatro bases de datos.
 
-- MySQL
-- PostgreSQL
-- SQLite
-- SQL Server
+- MySQL 5.6+ ([Política de la versión](https://en.wikipedia.org/wiki/MySQL#Release_history))
+- PostgreSQL 9.4+ ([Política de la versión](https://www.postgresql.org/support/versioning/))
+- SQLite 3.8.8+
+- SQL Server 2017+ ([Política de la versión](https://support.microsoft.com/en-us/lifecycle/search))
 
 <a name="configuration"></a>
 ### Configuración
@@ -131,8 +131,8 @@ Para ejecutar una consulta básica, puedes usar el método `select` en el facade
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
