@@ -7,8 +7,13 @@
     - [Extendiendo colecciones](#extending-collections)
 - [Métodos disponibles](#available-methods)
 - [Mensajes de orden superior](#higher-order-messages)
+- [Colecciones lazy](#lazy-collections)
+    - [Introducción](#lazy-collection-introduction)
+    - [El contrato Enumerable](#the-enumerable-contract)
+    - [Métodos de colección lazy](#lazy-collection-methods)
 
 <a name="introduction"></a>
+
 ## Introducción
 
 La clase `Illuminate\Support\Collection` provee una interfaz fluida y conveniente para trabajar con arreglos de datos. Por ejemplo, mira el siguiente código. Usaremos la función helper `collect` para crear una nueva instancia de `Collection` pasando un arreglo como parámetro, se ejecuta la función `strtoupper` en cada elemento y luego elimina todos los elementos vacíos:
@@ -77,12 +82,12 @@ Por el resto de esta documentación, discutiremos cada método disponible en la 
 </style>
 
 <div id="collection-method-list" markdown="1">
-
 [all](#method-all)
 [average](#method-average)
 [avg](#method-avg)
 [chunk](#method-chunk)
 [collapse](#method-collapse)
+[collect](#method-collect)
 [combine](#method-combine)
 [concat](#method-concat)
 [contains](#method-contains)
@@ -154,6 +159,7 @@ Por el resto de esta documentación, discutiremos cada método disponible en la 
 [search](#method-search)
 [shift](#method-shift)
 [shuffle](#method-shuffle)
+[skip](#method-skip)
 [slice](#method-slice)
 [some](#method-some)
 [sort](#method-sort)
@@ -192,10 +198,10 @@ Por el resto de esta documentación, discutiremos cada método disponible en la 
 [whereNotInStrict](#method-wherenotinstrict)
 [wrap](#method-wrap)
 [zip](#method-zip)
-
 </div>
 
 <a name="method-listing"></a>
+
 ## Lista de métodos
 
 <style>
@@ -296,7 +302,47 @@ $combined->all();
 // ['name' => 'George', 'age' => 29]
 ```
 
+<a name="method-collect"></a>
+#### `collect()` {#collection-method}
+
+El método `collect` retorna una nueva instancia `Collection` con los elementos actualmente en la colección:
+
+```php
+$collectionA = collect([1, 2, 3]);
+
+$collectionB = $collectionA->collect();
+
+$collectionB->all();
+
+// [1, 2, 3]
+```
+
+El método `collect` es principalmente útil para convertir [colecciones lazy](#lazy-collections) a instancias `Collection` estándares: 
+
+```php
+$lazyCollection = LazyCollection::make(function () {
+    yield 1;
+    yield 2;
+    yield 3;
+});
+
+$collection = $lazyCollection->collect();
+
+get_class($collection);
+
+// 'Illuminate\Support\Collection'
+
+$collection->all();
+
+// [1, 2, 3]
+```
+
+::: tip TIP
+El método `collect` es especialmente útil cuando tienes una instancia `Enumerable` y necesitas una instancia de colección "no lazy". Dado que `collect()` es parte del contrato `Enumerable`, puedes usarlo para obtener una instancia `Collection`.
+:::
+
 <a name="method-concat"></a>
+
 #### `concat()`
 
 El método `concat` concatena un arreglo dado o valores de una colección al final de la colección:
@@ -496,7 +542,7 @@ $diff = $collection->diffAssoc([
     'color' => 'yellow',
     'type' => 'fruit',
     'remain' => 3,
-    'used' => 6
+    'used' => 6,
 ]);
 
 $diff->all();
@@ -1852,7 +1898,24 @@ $shuffled->all();
 // [3, 2, 5, 1, 4] - (generated randomly)
 ```
 
+<a name="method-skip"></a>
+
+#### `skip()` {#collection-method}
+
+El método `skip` retorna una nueva colección, sin los primeros números de elementos dados:
+
+```php
+$collection = collect([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+
+$collection = $collection->skip(4);
+
+$collection->all();
+
+// [5, 6, 7, 8, 9, 10]
+```
+
 <a name="method-slice"></a>
+
 #### `slice()`
 
 El método `slice` devuelve una porción de la colección que comienza en el índice pasado como parámetro:
@@ -2712,4 +2775,220 @@ Del mismo modo, podemos usar el mensaje de orden superior `sum` para reunir el n
 $users = User::where('group', 'Development')->get();
 
 return $users->sum->votes;
+```
+
+<a name="lazy-collections"></a>
+
+## Colecciones lazy
+
+<a name="lazy-collection-introduction"></a>
+### Introducción
+
+::: danger NOTA
+Antes de aprender más sobre las colecciones Lazy de Laravel, toma algo de tiempo para familiarizarte con los [generadores de PHP](https://www.php.net/manual/en/language.generators.overview.php).
+:::
+
+Para suplementar la ya poderosa clase `Colecction`, la clase `LazyColecction` aprovecha los
+[generadores](https://www.php.net/manual/en/language.generators.overview.php) de PHP para permitirte trabajar con datasets muy largos manteniendo un uso de memoria bajo.
+
+Por ejemplo, imagina que tu aplicación necesita procesar un archivo log de múltiples gigabytes tomando ventaja de los métodos de colección de Laravel para parsear los registros. En lugar de leer el archivo completo en memoria una sola vez, las colecciones lazy pueden ser usadas para mantener sólo una pequeña parte del archivo en memoria en un momento dado:
+
+```php
+use App\LogEntry;
+use Illuminate\Support\LazyCollection;
+
+LazyCollection::make(function () {
+    $handle = fopen('log.txt', 'r');
+
+    while (($line = fgets($handle)) !== false) {
+         yield $line;
+    }
+})->chunk(4)->map(function ($lines) {
+    return LogEntry::fromLines($lines);
+})->each(function (LogEntry $logEntry) {
+    // Process the log entry...
+});
+```
+
+Imagina que necesitas iterar 10000 modelos de Eloquent. Al usar colecciones tradicionales de Laravel, los 10000 modelos deben ser cargados en memoria al mismo tiempo:
+
+```php
+$users = App\User::all()->filter(function ($user) {
+    return $user->id > 500;
+});
+```
+
+Sin embargo, el método `cursor` del query builder retorna una instancia `LazyCollection`. Esto te permite ejecutar un sólo query en la base de datos así como también mantener sólo un modelo de Eloquent cargado en memoria a la vez. En este ejemplo, el callback `filter` no es ejecutado hasta que realmente interamos sobre cada usuario de forma individual, permitiendo una reducción drastica en el uso de memoria:
+
+```php
+$users = App\User::cursor()->filter(function ($user) {
+    return $user->id > 500;
+});
+
+foreach ($users as $user) {
+    echo $user->id;
+}
+```
+
+<a name="creating-lazy-collections"></a>
+### Creando colecciones lazy
+
+Para crear una instancia de colección lazy, debes pasar una función generadora de PHP al método `make` de la colección:
+
+```php
+use Illuminate\Support\LazyCollection;
+
+LazyCollection::make(function () {
+    $handle = fopen('log.txt', 'r');
+
+    while (($line = fgets($handle)) !== false) {
+         yield $line;
+    }
+});
+```
+
+<a name="the-enumerable-contract"></a>
+
+### El contrato Enumerable
+
+Casi todos los métodos disponibles en la clase `Collection` también están disponibles en la clase `LazyCollection`. Ambas clases implementan el contrato `Illuminate\Support\Enumerable`, el cual define los siguientes métodos:
+
+<div id="collection-method-list" markdown="1">
+
+[all](#method-all)
+[average](#method-average)
+[avg](#method-avg)
+[chunk](#method-chunk)
+[collapse](#method-collapse)
+[collect](#method-collect)
+[combine](#method-combine)
+[concat](#method-concat)
+[contains](#method-contains)
+[containsStrict](#method-containsstrict)
+[count](#method-count)
+[countBy](#method-countBy)
+[crossJoin](#method-crossjoin)
+[dd](#method-dd)
+[diff](#method-diff)
+[diffAssoc](#method-diffassoc)
+[diffKeys](#method-diffkeys)
+[dump](#method-dump)
+[duplicates](#method-duplicates)
+[duplicatesStrict](#method-duplicatesstrict)
+[each](#method-each)
+[eachSpread](#method-eachspread)
+[every](#method-every)
+[except](#method-except)
+[filter](#method-filter)
+[first](#method-first)
+[firstWhere](#method-first-where)
+[flatMap](#method-flatmap)
+[flatten](#method-flatten)
+[flip](#method-flip)
+[forPage](#method-forpage)
+[get](#method-get)
+[groupBy](#method-groupby)
+[has](#method-has)
+[implode](#method-implode)
+[intersect](#method-intersect)
+[intersectByKeys](#method-intersectbykeys)
+[isEmpty](#method-isempty)
+[isNotEmpty](#method-isnotempty)
+[join](#method-join)
+[keyBy](#method-keyby)
+[keys](#method-keys)
+[last](#method-last)
+[macro](#method-macro)
+[make](#method-make)
+[map](#method-map)
+[mapInto](#method-mapinto)
+[mapSpread](#method-mapspread)
+[mapToGroups](#method-maptogroups)
+[mapWithKeys](#method-mapwithkeys)
+[max](#method-max)
+[median](#method-median)
+[merge](#method-merge)
+[mergeRecursive](#method-mergerecursive)
+[min](#method-min)
+[mode](#method-mode)
+[nth](#method-nth)
+[only](#method-only)
+[pad](#method-pad)
+[partition](#method-partition)
+[pipe](#method-pipe)
+[pluck](#method-pluck)
+[random](#method-random)
+[reduce](#method-reduce)
+[reject](#method-reject)
+[replace](#method-replace)
+[replaceRecursive](#method-replacerecursive)
+[reverse](#method-reverse)
+[search](#method-search)
+[shuffle](#method-shuffle)
+[skip](#method-skip)
+[slice](#method-slice)
+[some](#method-some)
+[sort](#method-sort)
+[sortBy](#method-sortby)
+[sortByDesc](#method-sortbydesc)
+[sortKeys](#method-sortkeys)
+[sortKeysDesc](#method-sortkeysdesc)
+[split](#method-split)
+[sum](#method-sum)
+[take](#method-take)
+[tap](#method-tap)
+[times](#method-times)
+[toArray](#method-toarray)
+[toJson](#method-tojson)
+[union](#method-union)
+[unique](#method-unique)
+[uniqueStrict](#method-uniquestrict)
+[unless](#method-unless)
+[unlessEmpty](#method-unlessempty)
+[unlessNotEmpty](#method-unlessnotempty)
+[unwrap](#method-unwrap)
+[values](#method-values)
+[when](#method-when)
+[whenEmpty](#method-whenempty)
+[whenNotEmpty](#method-whennotempty)
+[where](#method-where)
+[whereStrict](#method-wherestrict)
+[whereBetween](#method-wherebetween)
+[whereIn](#method-wherein)
+[whereInStrict](#method-whereinstrict)
+[whereInstanceOf](#method-whereinstanceof)
+[whereNotBetween](#method-wherenotbetween)
+[whereNotIn](#method-wherenotin)
+[whereNotInStrict](#method-wherenotinstrict)
+[wrap](#method-wrap)
+[zip](#method-zip)
+
+</div>
+
+::: danger NOTA
+Los métodos que mutan la colección (como `shift`, `pop`, `prepend` etc.) _no_ están disponibles en la clase `LazyCollection`.
+:::
+
+<a name="lazy-collection-methods"></a>
+### Métodos de colección lazy
+
+Además de los métodos definidos en el contrato `Enumerable`, la clase `LazyCollection` contiene los siguientes métodos:
+
+<a name="method-tapEach"></a>
+#### `tapEach()` {#collection-method}
+
+Mientras que el método `each` llama directamente al callback dado por cada elemento en la colección, el método `tapEach` sólo llama al callback dado cuando los elementos están siendo sacados de la lista uno por uno:
+
+```php
+$lazyCollection = LazyCollection::times(INF)->tapEach(function ($value) {
+    dump($value);
+});
+
+// Nothing has been dumped so far...
+
+$array = $lazyCollection->take(3)->all();
+
+// 1
+// 2
+// 3
 ```
