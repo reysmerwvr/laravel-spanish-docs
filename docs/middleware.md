@@ -206,6 +206,10 @@ Route::get('/', function () {
 Route::group(['middleware' => ['web']], function () {
     //
 });
+
+Route::middleware(['web', 'subscribed'])->group(function () { 
+    //
+});
 ```
 
 ::: tip TIP
