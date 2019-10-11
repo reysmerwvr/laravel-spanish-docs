@@ -448,7 +448,7 @@ class Role extends Model
                         ->using('App\RoleUser')
                         ->withPivot([
                             'created_by',
-                            'updated_by'
+                            'updated_by',
                         ]);
     }
 }
@@ -953,7 +953,7 @@ $user->posts()
         ->orWhere('votes', '>=', 100)
         ->get();
 
-// select * from posts 
+// select * from posts
 // where user_id = ? and active = 1 or votes >= 100
 ```
 
@@ -969,7 +969,7 @@ $user->posts()
         })
         ->get();
 
-// select * from posts 
+// select * from posts
 // where user_id = ? and (active = 1 or votes >= 100)
 ```
 
@@ -1067,8 +1067,8 @@ use Illuminate\Database\Eloquent\Builder;
 
 // Retrieve comments associated to posts or videos with a title like foo%...
 $comments = App\Comment::whereHasMorph(
-    'commentable', 
-    ['App\Post', 'App\Video'], 
+    'commentable',
+    ['App\Post', 'App\Video'],
     function (Builder $query) {
         $query->where('title', 'like', 'foo%');
     }
@@ -1076,12 +1076,12 @@ $comments = App\Comment::whereHasMorph(
 
 // Retrieve comments associated to posts with a title not like foo%...
 $comments = App\Comment::whereDoesntHaveMorph(
-    'commentable', 
-    'App\Post', 
+    'commentable',
+    'App\Post',
     function (Builder $query) {
         $query->where('title', 'like', 'foo%');
     }
-)->get();    
+)->get();
 ```
 
 Puedes usar el parametro `$type` para agregar diferentes restricciones dependiendo del modelo relacionado:
@@ -1091,14 +1091,15 @@ use Illuminate\Database\Eloquent\Builder;
 
 $comments = App\Comment::whereHasMorph(
     'commentable', 
-    ['App\Post', 'App\Video'], 
+    ['App\Post', 'App\Video'],
     function (Builder $query, $type) {
         $query->where('title', 'like', 'foo%');
+
         if ($type === 'App\Post') {
             $query->orWhere('content', 'like', 'foo%');
         }
     }
-)->get();            
+)->get();
 ```
 
 En lugar de pasar un arreglo de posibles modelos polimorficos, puedes proporcionar un `*` como comodín y dejar que Laravel retorne todos los posibles tipos polimorficos desde la base de datos. Laravel ejecutará una solicitud adicional para poder realizar esta operación:
@@ -1144,7 +1145,7 @@ $posts = App/post::withCount([
     'comments',
     'comments as pending_comments_count' => function (Builder $query) {
         $query->where('approved', false);
-    }
+    },
 ])->get();
 
 echo $posts[0]->comments_count;
@@ -1160,6 +1161,21 @@ $posts = App\Post::select(['title', 'body'])->withCount('comments')->get();
 echo $posts[0]->title;
 echo $posts[0]->body;
 echo $posts[0]->comments_count;
+```
+
+Además, utilizando el método `loadCount`, puede cargar previamente una cuenta de la relación después que el modelo padre haya sido obtenido:
+
+```php
+$book = App\Book::first();
+$book->loadCount('genres');
+```
+
+Si necesita establecer restricciones adicionales de consulta en la consulta de carga previa, puede pasar un arreglo clave por las relaciones que desea cargar. Los valores del arreglo deben ser instancias de `Closure` que reciben la instancia del generador de consulta:
+
+```php
+$book->loadCount(['reviews' => function ($query) {
+    $query->where('rating', 5);
+}])
 ```
 
 <a name="eager-loading"></a>
@@ -1311,7 +1327,7 @@ class Book extends Model
     * @var array
     */
     protected $with = ['author'];
-    
+
     /**
     * Get the author that wrote the book.
     */
@@ -1320,7 +1336,7 @@ class Book extends Model
         return $this->belongsTo('App\Author');
     }
 }
-```   
+```
 
 Si te gustaria remover un elemento de la propiedad `$with` para una sola petición, puedes usar el método `without`:
 
@@ -1387,14 +1403,14 @@ public function format(Book $book)
 
     return [
         'name' => $book->name,
-        'author' => $book->author->name
+        'author' => $book->author->name,
     ];
 }
 ```
 
 #### Carga previa diferida anidada y `morphTo`
 
-Si deseas cargar previamente una relación `morphTo`, así como relaciones anidadas en las diversas entidades que pueden ser devueltas por esa relación, puedes usar el método` loadMorph`.
+Si deseas cargar previamente una relación `morphTo`, así como relaciones anidadas en las diversas entidades que pueden ser devueltas por esa relación, puedes usar el método `loadMorph`.
 
 Este método acepta el nombre de la relación `morphTo` como su primer argumento, y un arreglo de pares modelo / relación como su segundo argumento. Para ayudar a ilustrar este método, consideremos el siguiente modelo:
 
@@ -1604,7 +1620,7 @@ $user->roles()->detach([1, 2, 3]);
 
 $user->roles()->attach([
     1 => ['expires' => $expires],
-    2 => ['expires' => $expires]
+    2 => ['expires' => $expires],
 ]);
 ```
 
