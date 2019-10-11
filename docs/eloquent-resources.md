@@ -80,8 +80,8 @@ class User extends JsonResource
 Cada clase de recurso define un método `toArray` que devuelve el arreglo de atributos que deben convertirse a JSON al enviar la respuesta. Observa que podemos acceder a las propiedades del modelo directamente desde la variable `$this`. Esto es porque la clase del recurso va a redirigir de manera automática el acceso de propiedades y métodos al modelo asignado. Una vez que se define el recurso, se puede devolver desde una ruta o controlador:
 
 ```php
-use App\User;
 use App\Http\Resources\User as UserResource;
+use App\User;
 
 Route::get('/user', function () {
     return new UserResource(User::find(1));
@@ -94,8 +94,8 @@ Route::get('/user', function () {
 Si estás devolviendo una colección de recursos o una respuesta paginada, puedes usar el método `collection` al crear la instancia de recursos en tu ruta o controlador:
 
 ```php
-use App\User;
 use App\Http\Resources\User as UserResource;
+use App\User;
 
 Route::get('/user', function () {
     return UserResource::collection(User::all());
@@ -140,8 +140,8 @@ class UserCollection extends ResourceCollection
 Después de definir tu colección de recursos, ésta la puedes devolver desde una ruta o controlador:
 
 ```php
-use App\User;
 use App\Http\Resources\UserCollection;
+use App\User;
 
 Route::get('/users', function () {
     return new UserCollection(User::all());
@@ -173,8 +173,8 @@ class User extends JsonResource
 Cuando la propiedad `preserveKeys` es colocada en `true`, la colección de llaves será preservada:
 
 ```php
-use App\User;
 use App\Http\Resources\User as UserResource;
+use App\User;
 
 Route::get('/user', function () {
     return UserResource::collection(User::all()->keyBy->id);
@@ -245,8 +245,8 @@ class User extends JsonResource
 Una vez que has definido un recurso, lo puedes devolver directamente desde una ruta o controlador:
 
 ```php
-use App\User;
 use App\Http\Resources\User as UserResource;
+use App\User;
 
 Route::get('/user', function () {
     return new UserResource(User::find(1));
@@ -286,8 +286,8 @@ Si deseas incluir relaciones solo cuando ya se han cargado, consulte la document
 Si bien los recursos traducen un modelo único en un arreglo, las colecciones de recursos traducen una colección de modelos en un arreglo. No es absolutamente necesario definir una clase de colección de recursos para cada uno de los tipos de modelo ya que todos los recursos proporcionan un método `collection` para generar una colección de recursos "ad-hoc" sobre la marcha:
 
 ```php
-use App\User;
 use App\Http\Resources\User as UserResource;
+use App\User;
 
 Route::get('/user', function () {
     return UserResource::collection(User::all());
@@ -326,8 +326,8 @@ class UserCollection extends ResourceCollection
 Al igual que los recursos singulares, las colecciones de recursos se pueden devolver directamente desde las rutas o los controladores:
 
 ```php
-use App\User;
 use App\Http\Resources\UserCollection;
+use App\User;
 
 Route::get('/users', function () {
     return new UserCollection(User::all());
@@ -464,8 +464,8 @@ Al devolver colecciones paginadas en una respuesta de recursos, Laravel ajustar�
 Siempre puedes pasar una instancia del paginador al método `collection` de un recurso o a una colección de recursos personalizada:
 
 ```php
-use App\User;
 use App\Http\Resources\UserCollection;
+use App\User;
 
 Route::get('/users', function () {
     return new UserCollection(User::paginate());
@@ -730,8 +730,8 @@ return (new UserCollection(User::all()->load('roles')))
 Como ya has leído, los recursos pueden devolverse directamente desde las rutas y los controladores:
 
 ```php
-use App\User;
 use App\Http\Resources\User as UserResource;
+use App\User;
 
 Route::get('/user', function () {
     return new UserResource(User::find(1));
@@ -741,8 +741,8 @@ Route::get('/user', function () {
 Sin embargo, a veces es posible que necesites personalizar la respuesta HTTP saliente antes de enviarla al cliente. Hay dos maneras de lograr esto. Primero, puedes encadenar el método `response` en el recurso. Este método devolverá una instancia de `Illuminate\Http\Response`, que te permite un control total de los encabezados de la respuesta:
 
 ```php
-use App\User;
 use App\Http\Resources\User as UserResource;
+use App\User;
 
 Route::get('/user', function () {
     return (new UserResource(User::find(1)))
