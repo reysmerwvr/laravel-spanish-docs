@@ -7,7 +7,7 @@
 - [Registrando un Middleware](#registering-middleware)
     - [Middleware Globales](#global-middleware)
     - [Asignando un Middleware a una Ruta](#assigning-middleware-to-routes)
-    - [Middleware Grupales](#middleware-groups)
+    - [Grupos de middleware](#middleware-groups)
     - [Clasificación de Middleware](#sorting-middleware)
 - [Parámetros en los Middleware](#middleware-parameters)
 - [Middleware Terminable](#terminable-middleware)
@@ -284,7 +284,7 @@ Route::put('post/{id}', function ($id) {
 ```
 
 <a name="terminable-middleware"></a>
-## Middleware terminable
+## Middleware Terminable
 
 Algunas veces un middleware puede necesitar hacer algún trabajo después de que la respuesta HTTP ha sido preparada. Por ejemplo, el middleware "session" incluído con Laravel escribe los datos de la sesión para almacenarlos después de que la respuesta ha sido totalmente preparada. Si defines un método `terminate` en tu middleware, este automáticamente será llamado despúes de que la respuesta esté lista para ser enviada al navegador.
 
