@@ -61,9 +61,9 @@ Con frecuencia es útil reinicializar tu base de datos después de cada prueba d
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
+use Tests\TestCase;
 
 class ExampleTest extends TestCase
 {
@@ -89,8 +89,8 @@ class ExampleTest extends TestCase
 Al momento de probar, puedes necesitar insertar unos pocos registros dentro de tu base de datos antes de ejecutar tu prueba. En lugar de especificar manualmente el valor de cada columna cuando crees estos datos de prueba, Laravel permite que definas un conjunto de atributos predeterminados para cada uno de tus [modelos de Eloquent](/eloquent.html) usando factories de modelos. Para empezar, echemos un vistazo al archivo `database/factories/UserFactory.php` en tu aplicación. De forma predeterminada, este archivo contiene una definición de factory:
 
 ```php
-use Illuminate\Support\Str;
 use Faker\Generator as Faker;
+use Illuminate\Support\Str;
 
 $factory->define(App\User::class, function (Faker $faker) {
     return [
@@ -253,7 +253,7 @@ $factory->define(App\Post::class, function ($faker) {
         'content' => $faker->paragraph,
         'user_id' => function () {
             return factory(App\User::class)->create()->id;
-        }
+        },
     ];
 });
 ```
@@ -270,9 +270,46 @@ $factory->define(App\Post::class, function ($faker) {
         },
         'user_type' => function (array $post) {
             return App\User::find($post['user_id'])->type;
-        }
+        },
     ];
 });
+```
+
+<a name="using-seeds"></a>
+## Usando Seeders
+
+Si te gustaría usar [seeders de bases de datos](seeding.html) para rellenar tu base de datos al momento de realizar una prueba, puedes usar el método `seed`. Por defecto, el método `seed` retornará `DatabaseSeeder`, que debería ejecutar todos tus otros seeders. De forma alternativa, pasas un nombre de clase seeder especifico al método `seed`:
+
+```php
+<?php
+
+namespace Tests\Feature;
+
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
+use OrderStatusesTableSeeder;
+use Tests\TestCase;
+
+class ExampleTest extends TestCase
+{
+    use RefreshDatabase;
+
+    /**
+     * Test creating a new order.
+     *
+     * @return void
+     */
+    public function testCreatingANewOrder()
+    {
+        // Run the DatabaseSeeder...
+        $this->seed();
+
+        // Run a single seeder...
+        $this->seed(OrderStatusesTableSeeder::class);
+
+        // ...
+    }
+}
 ```
 
 <a name="available-assertions"></a>
