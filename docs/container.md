@@ -27,9 +27,9 @@ Echemos un vistazo a un ejemplo sencillo:
 
 namespace App\Http\Controllers;
 
-use App\User;
-use App\Repositories\UserRepository;
 use App\Http\Controllers\Controller;
+use App\Repositories\UserRepository;
+use App\User;
 
 class UserController extends Controller
 {
@@ -159,10 +159,11 @@ public function __construct(EventPusher $pusher)
 Algunas veces tendrás dos clases que usan la misma interfaz, pero quieres inyectar diferentes implementaciones en cada clase. Por ejemplo, dos controladores pueden depender de diferentes implementaciones del [contrato](/contracts.html) `Illuminate\Contracts\Filesystem\Filesystem`. Laravel proporciona una simple y fluida interfaz para definir este comportamiento:
 
 ```php
-use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\PhotoController;
+use App\Http\Controllers\UploadController;
 use App\Http\Controllers\VideoController;
 use Illuminate\Contracts\Filesystem\Filesystem;
+use Illuminate\Support\Facades\Storage;
 
 $this->app->when(PhotoController::class)
           ->needs(Filesystem::class)
