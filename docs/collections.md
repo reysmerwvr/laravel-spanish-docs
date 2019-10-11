@@ -2788,7 +2788,7 @@ return $users->sum->votes;
 Antes de aprender más sobre las colecciones Lazy de Laravel, toma algo de tiempo para familiarizarte con los [generadores de PHP](https://www.php.net/manual/en/language.generators.overview.php).
 :::
 
-Para suplementar la ya poderosa clase `Colecction`, la clase `LazyColecction` aprovecha los
+Para suplementar la ya poderosa clase `Collection`, la clase `LazyCollection` aprovecha los
 [generadores](https://www.php.net/manual/en/language.generators.overview.php) de PHP para permitirte trabajar con datasets muy largos manteniendo un uso de memoria bajo.
 
 Por ejemplo, imagina que tu aplicación necesita procesar un archivo log de múltiples gigabytes tomando ventaja de los métodos de colección de Laravel para parsear los registros. En lugar de leer el archivo completo en memoria una sola vez, las colecciones lazy pueden ser usadas para mantener sólo una pequeña parte del archivo en memoria en un momento dado:
@@ -2818,7 +2818,7 @@ $users = App\User::all()->filter(function ($user) {
 });
 ```
 
-Sin embargo, el método `cursor` del query builder retorna una instancia `LazyCollection`. Esto te permite ejecutar un sólo query en la base de datos así como también mantener sólo un modelo de Eloquent cargado en memoria a la vez. En este ejemplo, el callback `filter` no es ejecutado hasta que realmente interamos sobre cada usuario de forma individual, permitiendo una reducción drastica en el uso de memoria:
+Sin embargo, el método `cursor` del query builder retorna una instancia `LazyCollection`. Esto te permite ejecutar un sólo query en la base de datos así como también mantener sólo un modelo de Eloquent cargado en memoria a la vez. En este ejemplo, el callback `filter` no es ejecutado hasta que realmente iteramos sobre cada usuario de forma individual, permitiendo una reducción drastica en el uso de memoria:
 
 ```php
 $users = App\User::cursor()->filter(function ($user) {
