@@ -724,7 +724,7 @@ public function toNexmo($notifiable)
 
 <a name="formatting-shortcode-notifications"></a>
 ### Formato de Notificaciones de Shortcode
-Laravel también admite el envío de notificaciones de código corto que son plantillas predefinidas en tu cuenta de Nexmo. Puedes indicar el tipo de notificación - `alert`, `2fa`, or `marketing` así como los valores personalizados que llenarán la plantilla. Tal como [Enrutar notificaciones por SMS](#routing-sms-notifications) debes implementar `routeNotificationForShortcode` en tu modelo notificable.
+Laravel también admite el envío de notificaciones de código corto que son plantillas predefinidas en tu cuenta de Nexmo. Puedes indicar el tipo de notificación (`alert`, `2fa`, or `marketing`), así como los valores personalizados que llenarán la plantilla: 
     /**
      * Get the Nexmo / Shortcode representation of the notification.
      *
@@ -740,6 +740,8 @@ Laravel también admite el envío de notificaciones de código corto que son pla
             ];
         ];
     }
+
+> {tip} Como [Enrutar notificaciones por SMS](#routing-sms-notifications), deberías implementar el método `routeNotificationForShortcode` en tu modelo notificable.
 
 #### Contenido unicode
 
