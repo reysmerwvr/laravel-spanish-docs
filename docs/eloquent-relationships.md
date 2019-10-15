@@ -1163,14 +1163,14 @@ echo $posts[0]->body;
 echo $posts[0]->comments_count;
 ```
 
-Además, utilizando el método `loadCount`, puede cargar previamente una cuenta de la relación después que el modelo padre haya sido obtenido:
+Además, utilizando el método `loadCount`, puedes cargar un conteo de la relación después de que el modelo padre haya sido obtenido:
 
 ```php
 $book = App\Book::first();
 $book->loadCount('genres');
 ```
 
-Si necesita establecer restricciones adicionales de consulta en la consulta de carga previa, puede pasar un arreglo clave por las relaciones que desea cargar. Los valores del arreglo deben ser instancias de `Closure` que reciben la instancia del generador de consulta:
+Si necesitas establecer restricciones adicionales de consulta en la consulta de carga previa, puedes pasar un arreglo clave por las relaciones que deseas cargar. Los valores del arreglo deben ser instancias de `Closure` que reciben la instancia del generador de consulta:
 
 ```php
 $book->loadCount(['reviews' => function ($query) {
