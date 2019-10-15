@@ -277,6 +277,14 @@ if ($request->has(['name', 'email'])) {
 }
 ```
 
+El método `hasAny` retorna verdadero is alguno de los valores especificados estan presente:
+
+```php
+if ($request->hasAny(['name', 'email'])) {
+    //
+}
+```
+
 Si prefieres determinar si un valor está presente en la solicitud y no esté vacío, puedes usar el método `filled`:
 
 ```php
