@@ -47,8 +47,8 @@ Puedes usar el método `table` de la clase facade `DB` para empezar una consulta
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -236,7 +236,7 @@ En lugar de usar `DB::raw`, también puedes usar los siguientes métodos para in
 
 #### `selectRaw`
 
-El método `selectRaw` puede ser usado en lugar de `select(DB::raw(...))`. Este método acepta un arreglo opcional de enlaces como su segundo argumento:
+El método `selectRaw` puede ser usado en lugar de `addSelect(DB::raw(...))`. Este método acepta un arreglo opcional de enlaces como su segundo argumento:
 
 ```php
 $orders = DB::table('orders')
