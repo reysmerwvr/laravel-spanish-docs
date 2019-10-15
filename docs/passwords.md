@@ -38,16 +38,26 @@ php artisan migrate
 <a name="resetting-routing"></a>
 ## Enrutamiento
 
-Laravel incluye las clases `Auth\ForgotPasswordController` y `Auth\ResetPasswordController` que contienen la lógica necesaria para enviar enlaces de restablecimiento de contraseña y restablece contraseñas de usuarios mediante correo electrónico. Todas las rutas necesarias para realizar restablecimiento de contraseñas pueden ser generadas usando el comando de Artisan `make:auth`:
+Laravel incluye las clases `Auth\ForgotPasswordController` y `Auth\ResetPasswordController` que contienen la lógica necesaria para enviar enlaces de restablecimiento de contraseña y restablece contraseñas de usuarios mediante correo electrónico. Todas las rutas necesarias para realizar restablecimiento de contraseñas pueden ser generadas usando el paquete de Composer: `laravel/ui`
 
 ```php
-php artisan make:auth
+composer require laravel/ui --dev
+
+php artisan ui vue --auth
 ```
 
 <a name="resetting-views"></a>
 ## Vistas
 
-De nuevo, Laravel generará todas las vistas necesarias para el restablecimiento de contraseña cuando el comando `make:auth` es ejecutado. Estas vistas están ubicadas en `resources/views/auth/passwords`. Eres libre de personalizarlas según sea necesario para tu aplicación.
+Para generar todas las vistas necesarias para el restablecimiento de contraseñas, puede usar el paquete de Composer: `laravel/ui`
+
+```php
+composer require laravel/ui --dev
+
+php artisan ui vue --auth
+```
+
+Estas vistas están ubicadas en `resources/views/auth/passwords`. Eres libre de personalizarlas según sea necesario para tu aplicación.
 
 <a name="after-resetting-passwords"></a>
 ## Luego de resetear contraseñas
