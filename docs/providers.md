@@ -43,8 +43,8 @@ Vamos a echar un vistazo a un proveedor de servicio básico. Dentro de cualquier
 
 namespace App\Providers;
 
-use Riak\Connection;
 use Illuminate\Support\ServiceProvider;
+use Riak\Connection;
 
 class RiakServiceProvider extends ServiceProvider
 {
@@ -73,12 +73,12 @@ Si tu proveedor de servicios registra muchos bindings simples, puedes querer usa
 
 namespace App\Providers;
 
-use App\Contracts\ServerProvider;
 use App\Contracts\DowntimeNotifier;
+use App\Contracts\ServerProvider;
+use App\Services\DigitalOceanServerProvider;
+use App\Services\PingdomDowntimeNotifier;
 use App\Services\ServerToolsProvider;
 use Illuminate\Support\ServiceProvider;
-use App\Services\PingdomDowntimeNotifier;
-use App\Services\DigitalOceanServerProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -175,9 +175,9 @@ Para diferir la carga de un proveedor, Implementa la interfaz `\Illuminate\Contr
 
 namespace App\Providers;
 
-use Riak\Connection;
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Contracts\Support\DeferrableProvider;
+use Illuminate\Support\ServiceProvider;
+use Riak\Connection;
 
 class RiakServiceProvider extends ServiceProvider implements DeferrableProvider
 {
