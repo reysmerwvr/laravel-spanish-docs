@@ -32,8 +32,8 @@ En este ejemplo, el único argumento pasado al método `paginate` es el número 
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -242,3 +242,5 @@ Método  |  Descripción
 `$results->previousPageUrl()`  |  Obtiene la URL de la página anterior.
 `$results->total()`  |  Determine el número total de elementos coincidentes en el almacén de datos. (No disponible cuando se utiliza `simplePaginate`).
 `$results->url($page)`  |  Obtiene la URL para un número de página dado.
+`$results->getPageName()`  |  Obtiene la variable string usada para almacenar la página.
+`$results->setPageName($name)`  |  Determina la variable string usada para almacenar la página.
