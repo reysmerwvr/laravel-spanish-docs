@@ -17,12 +17,14 @@
 
 Antes de utilizar Redis con Laravel, te recomendamos que instales y uses la extension de PHP [PhpRedis](https://github.com/phpredis/phpredis) mediante PECL. La extension es mas dificil de instalar pero contribuira a un mejor rendimiento en aplicaciones que hacen un uso intensivo de Redis.
 
+::: danger NOTA
+El mantenimiento de Predis se ha abandonado por su autor original y puede que sea eliminado de Laravel en futuras versiones.
+Alternativamente, puedes instalar el paquete `predis/predis` mediante Composer:
+:::
+
 ```php
 composer require predis/predis
 ```
-
-> El mantenimiento de Predis se ha abandonado por su autor original y puede que sea eliminado de Laravel en futuras versiones.
-Alternativamente, puedes instalar el paquete `predis/predis` mediante Composer:
 
 <a name="configuration"></a>
 ### Configuración
@@ -86,6 +88,9 @@ Si tu aplicación está utilizando un cluster de servidores Redis, debes definir
 
 Por defecto, los clusters realizarán la división del lado del cliente en sus nodos, permitiéndote agrupar nodos y crear una gran cantidad de RAM disponible. Sin embargo, ten en cuenta que la división del lado del cliente no gestiona el failover; por lo tanto, es principalmente adecuado para datos en caché que estén disponibles desde otro almacenamiento de datos primario. Su deseas utilizar el agrupamiento nativo de Redis, debes especificarlo en la clave `options` de tu configuración de Redis:
 
+```php
+'redis' => [
+
     'client' => env('REDIS_CLIENT', 'phpredis'),
 
     'options' => [
@@ -108,12 +113,14 @@ Por defecto, los clusters realizarán la división del lado del cliente en sus n
 
 Para utilizar la extension Predis, debes de cambiar la variable de entorno `REDIS_CLIENT` de `phpredis` a `predis`:
 
-    'redis' => [
+```php
+'redis' => [
 
-        'client' => env('REDIS_CLIENT', 'predis'),
+    'client' => env('REDIS_CLIENT', 'predis'),
 
-        // Resto de la configuracion de redis...
-    ],
+    // Resto de la configuracion de redis...
+],
+```
 
 Además de las opciones predeterminadas de la configuración del servidor `host`, `port`, `database` y `password`, Predis admite [parámetros de conexión](https://github.com/nrk/predis/wiki/Connection-Parameters) adicionales que pueden ser definidos para cada uno de tus servidores de Redis. Para utilizar estas opciones de configuración adicionales, agrégalos a la configuración del servidor de Redis en el archivo de configuración `config/database.php`:
 
@@ -142,7 +149,9 @@ La extensión PhpRedis esta configurada por defecto en el fichero env como `REDI
 ```
 Si planeas usar la extension junto con el llamado `Redis` Facade, deberias renombrarlo como `RedisManager` para evitar el conflicto con la clase Redis. Puedes hacerlo en la seccion de alias de tu archivo de configuracion `app.php`.
 
-    'RedisManager' => Illuminate\Support\Facades\Redis::class,
+```php
+'RedisManager' => Illuminate\Support\Facades\Redis::class,
+```
 
 Además de las opciones predeterminadas de configuración del servidor `host`, `port`, `database` y `password`, PhpRedis admite los siguientes parámetros de conexión adicionales: `persistent`, `prefix`, `read_timeout` y `timeout`. Puedes agregar cualquiera de estas opciones a la configuración del servidor de Redis en el archivo de configuración `config/database.php`:
 
