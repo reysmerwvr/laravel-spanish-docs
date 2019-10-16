@@ -72,9 +72,9 @@ Después de ejecutar este comando, agrega el trait `Laravel\Passport\HasApiToken
 
 namespace App;
 
-use Laravel\Passport\HasApiTokens;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
 {
@@ -89,9 +89,9 @@ Lo próximo, deberías ejecutar el método `Passport::routes` dentro del método
 
 namespace App\Providers;
 
-use Laravel\Passport\Passport;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Gate;
+use Laravel\Passport\Passport;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -247,10 +247,10 @@ public function boot()
 Eres en libre de extender los modelos usados internamente por Passport. A continuación, puedes indicarle a Passport que utilice tus modelos personalizados a través de la clase `Passport`:
 
 ```php
-use App\Models\Passport\Client;
-use App\Models\Passport\Token;
 use App\Models\Passport\AuthCode;
+use App\Models\Passport\Client;
 use App\Models\Passport\PersonalAccessClient;
+use App\Models\Passport\Token;
 
 /**
 * Register any authentication / authorization services.
