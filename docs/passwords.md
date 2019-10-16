@@ -49,7 +49,7 @@ php artisan ui vue --auth
 <a name="resetting-views"></a>
 ## Vistas
 
-Para generar todas las vistas necesarias para el restablecimiento de contraseñas, puede usar el paquete de Composer: `laravel/ui`
+Para generar todas las vistas necesarias para el restablecimiento de contraseñas, puedes usar el paquete de Composer: `laravel/ui`
 
 ```php
 composer require laravel/ui --dev
