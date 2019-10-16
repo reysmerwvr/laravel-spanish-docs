@@ -14,13 +14,13 @@
 
 Mientras Laravel no dicta la pauta sobre que pre-procesadores de JavaScript o CSS usar, si proporciona un punto de inicio básico usando [Bootstrap](https://getbootstrap.com/), [React](https://reactjs.org/) y / o [Vue](https://vuejs.org/) que será de utilidad para muchas aplicaciones. De forma predeterminada, Laravel usa [NPM](https://www.npmjs.org) para instalar ambos paquetes de frontend.
 
-La estructura de Boostrap y Vue proporcinado por Laravel se encuentra en el paquete de Composer `laravel/ui`, que se puede instalar usando Composer:
+La estructura de Boostrap y Vue proporcinada por Laravel se encuentra en el paquete de Composer `laravel/ui`, que se puede instalar usando Composer:
 
 ```terminal
 composer require laravel/ui --dev
 ```
 
-Una vez que se haya instalado el paquete `laravel/ui`, puede instalar la estructura del frontend usando el comando `ui` de artisan:
+Una vez que se haya instalado el paquete `laravel/ui`, puedes instalar la estructura del frontend usando el comando `ui` de artisan:
 
 ```terminal
 // Generando estructura básica...
@@ -52,7 +52,7 @@ php artisan preset none
 ## Escribiendo CSS
 
 Después de instalar el paquete de Composer `laravel/ui` y [generada la estructura del frontend](#introduction),
-El archivo `package.json` de Laravel incluye el paquete `bootstrap` que te ayuda a empezar a hacer un prototipo del frontend de tu aplicación usando Bootstrap. Sin embargo, siéntete libre de agregar o eliminar los paquetes del archivo `package.json` como sea necesario para tu aplicación. No es obligatorio que uses el framework Bootstrap para construir tu aplicación de Laravel - se proporciona un buen punto de inicio para aquellos que elijan usarlo.
+el archivo `package.json` de Laravel incluye el paquete `bootstrap` que te ayuda a empezar a hacer un prototipo del frontend de tu aplicación usando Bootstrap. Sin embargo, siéntete libre de agregar o eliminar los paquetes del archivo `package.json` como sea necesario para tu aplicación. No es obligatorio que uses el framework Bootstrap para construir tu aplicación de Laravel - se proporciona un buen punto de inicio para aquellos que elijan usarlo.
 
 Antes de compilar tu CSS, instala las dependencias de frontend de tu proyecto usando el [gestor de paquetes para Node (NPM)](https://www.npmjs.org):
 
@@ -129,7 +129,7 @@ En [Styde.net](https://styde.net/) contamos con un [completo curso sobre Vue.js]
 <a name="using-react"></a>
 ### Usando React
 
-Si prefieres usar React para construir tu aplicación de JavaScript, Laravel hace que sea una tarea fácil la de intercambiar la estructuración de Vue con la de React:
+Si prefieres usar React para construir tu aplicación de JavaScript, Laravel hace que sea una tarea fácil la de intercambiar la estructura de Vue con la de React:
 
 ```terminal
 composer require laravel/ui --dev
