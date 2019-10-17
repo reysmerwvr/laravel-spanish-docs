@@ -277,7 +277,7 @@ if ($request->has(['name', 'email'])) {
 }
 ```
 
-El método `hasAny` retorna verdadero is alguno de los valores especificados estan presente:
+El método `hasAny` retorna verdadero si alguno de los valores especificados estan presentes:
 
 ```php
 if ($request->hasAny(['name', 'email'])) {

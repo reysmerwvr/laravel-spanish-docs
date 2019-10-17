@@ -7,11 +7,30 @@
 - [Escribiendo JavaScript](#writing-javascript)
     - [Escribiendo componentes de Vue](#writing-vue-components)
     - [Usando React](#using-react)
+- [Agregando Presets](#adding-presets)
 
 <a name="introduction"></a>
 ## Introducción
 
-Mientras Laravel no dicta la pauta sobre que pre-procesadores de JavaScript o CSS usar, si proporciona un punto de inicio básico usando [Bootstrap](https://getbootstrap.com/) y [Vue](https://vuejs.org) que será de utilidad para muchas aplicaciones. De forma predeterminada, Laravel usa [NPM](https://www.npmjs.org) para instalar ambos paquetes de frontend.
+Mientras Laravel no dicta la pauta sobre que pre-procesadores de JavaScript o CSS usar, si proporciona un punto de inicio básico usando [Bootstrap](https://getbootstrap.com/), [React](https://reactjs.org/) y / o [Vue](https://vuejs.org/) que será de utilidad para muchas aplicaciones. De forma predeterminada, Laravel usa [NPM](https://www.npmjs.org) para instalar ambos paquetes de frontend.
+
+La estructura de Boostrap y Vue proporcinada por Laravel se encuentra en el paquete de Composer `laravel/ui`, que se puede instalar usando Composer:
+
+```terminal
+composer require laravel/ui --dev
+```
+
+Una vez que se haya instalado el paquete `laravel/ui`, puedes instalar la estructura del frontend usando el comando `ui` de artisan:
+
+```terminal
+// Generando estructura básica...
+php artisan ui vue
+php artisan ui react
+
+// Generando estructura del login y registro...
+php artisan ui vue --auth
+php artisan ui react --auth
+```
 
 #### CSS
 
@@ -25,24 +44,25 @@ Laravel no requiere que uses un framework o biblioteca de JavaScript específica
 
 Si prefieres remover la estructura del frontend de tu aplicación, puedes usar el comando Artisan `preset`. Este comando, cuando se combina con la opción `none`, eliminará la maquetación de Bootstrap y Vue de tu aplicación, dejando solamente un archivo Sass en blanco y unas cuántas bibliotecas de utilidades de JavaScript comunes.
 
-```php
+```terminal
 php artisan preset none
 ```
 
 <a name="writing-css"></a>
 ## Escribiendo CSS
 
-El archivo `package.json` de Laravel incluye el paquete `bootstrap` que te ayuda a empezar a hacer un prototipo del frontend de tu aplicación usando Bootstrap. Sin embargo, siéntete libre de agregar o eliminar los paquetes del archivo `package.json` como sea necesario para tu aplicación. No es obligatorio que uses el framework Bootstrap para construir tu aplicación de Laravel - se proporciona un buen punto de inicio para aquellos que elijan usarlo.
+Después de instalar el paquete de Composer `laravel/ui` y [generada la estructura del frontend](#introduction),
+el archivo `package.json` de Laravel incluye el paquete `bootstrap` que te ayuda a empezar a hacer un prototipo del frontend de tu aplicación usando Bootstrap. Sin embargo, siéntete libre de agregar o eliminar los paquetes del archivo `package.json` como sea necesario para tu aplicación. No es obligatorio que uses el framework Bootstrap para construir tu aplicación de Laravel - se proporciona un buen punto de inicio para aquellos que elijan usarlo.
 
 Antes de compilar tu CSS, instala las dependencias de frontend de tu proyecto usando el [gestor de paquetes para Node (NPM)](https://www.npmjs.org):
 
-```php
+```terminal
 npm install
 ```
 
 Una vez que las dependencias hayan sido instaladas usando `npm install`, puedes compilar tus archivos Sass a CSS plano usando [Laravel Mix](/mix.html#working-with-stylesheets). El comando `npm run dev` procesará las instrucciones en tu archivo `webpack.mix.js`. Típicamente, tu CSS compilado estará ubicado en el directorio `public/css`:
 
-```php
+```terminal
 npm run dev
 ```
 
@@ -53,7 +73,7 @@ El archivo `webpack.mix.js` incluido de forma predeterminada con Laravel compila
 
 Todas las dependencias de JavaScript requeridas por tu aplicación pueden ser encontradas en el archivo `package.json` en el directorio principal del proyecto. Este archivo es similar a un archivo `composer.json` excepto que éste específica las dependencias de JavaScript en lugar de las dependencias de PHP. Puedes instalar estas dependencias usando el [gestor de paquetes de Node (NPM)](https://www.npmjs.org): 
 
-```php
+```terminal
 npm install
 ```
 
@@ -63,7 +83,7 @@ De forma predeterminada, el archivo `package.json` de Laravel incluye unos cuant
 
 Una vez que los paquetes sean instalados, puedes usar el comando `npm run dev` para [compilar tus recursos](/mix.html). Webpack es un empaquetador de módulos para aplicaciones modernas en JavaScript. Cuando ejecutes el comando `npm run dev`, Webpack ejecutará las instrucciones en tu archivo `webpack.mix.js`:
 
-```php
+```terminal
 npm run dev
 ```
 
@@ -76,16 +96,16 @@ El archivo `app.js` cargará el archivo `resources/js/bootstrap.js` el cual estr
 <a name="writing-vue-components"></a>
 ### Escribiendo componentes de Vue
 
-De forma predeterminada, las aplicaciones nuevas de Laravel contienen un componente de Vue `ExampleComponent.vue` ubicado en el directorio `resources/js/components`. El archivo `ExampleComponent.vue` es un ejemplo de un [componente Vue de archivo único](https://vuejs.org/guide/single-file-components) el cual define su plantilla HTML y JavaScript en el mismo archivo. Los componentes de archivo único proporcionan un enfoque muy conveniente para construir aplicaciones manejadas por JavaScript. El componente de ejemplo es registrado en tu archivo `app.js`:
+Al usar el paquete `laravel/ui` para la estructura de tu frontend, se colocará un componente de Vue `ExampleComponent.vue` ubicado en el directorio `resources/js/components`. El archivo `ExampleComponent.vue` es un ejemplo de un [componente Vue de archivo único](https://vuejs.org/guide/single-file-components) el cual define su plantilla HTML y JavaScript en el mismo archivo. Los componentes de archivo único proporcionan un enfoque muy conveniente para construir aplicaciones manejadas por JavaScript. El componente de ejemplo es registrado en tu archivo `app.js`:
 
-```php
+```javascript
 Vue.component(
     'example-component',
-    require('./components/ExampleComponent.vue')
+    require('./components/ExampleComponent.vue').default
 );
 ```
 
-Para usar el componente en tu aplicación, puedes colocarlo en una de tus plantillas HTML. Por ejemplo, después de ejecutar el comando Artisan `make:auth` para maquetar las pantallas de registro y autenticación de tu aplicación, podrías colocar el componente en la plantilla de Blade `home.blade.php`:
+Para usar el componente en tu aplicación, puedes colocarlo en una de tus plantillas HTML. Por ejemplo, después de ejecutar el comando Artisan `php artisan ui vue --auth` para maquetar las pantallas de registro y autenticación de tu aplicación, podrías colocar el componente en la plantilla de Blade `home.blade.php`:
 
 ```php
 @extends('layouts.app')
@@ -109,10 +129,15 @@ En [Styde.net](https://styde.net/) contamos con un [completo curso sobre Vue.js]
 <a name="using-react"></a>
 ### Usando React
 
-Si prefieres usar React para construir tu aplicación de JavaScript, Laravel hace que sea una tarea fácil la de intercambiar la estructuración de Vue con la de React. En una aplicación nueva de Laravel, puedes usar el comando `preset` con la opción `react`:
+Si prefieres usar React para construir tu aplicación de JavaScript, Laravel hace que sea una tarea fácil la de intercambiar la estructura de Vue con la de React:
 
-```php
-php artisan preset react
+```terminal
+composer require laravel/ui --dev
+
+php artisan ui react
+
+// Generando la estructura de login y registro
+php artisan ui react --auth
 ```
 
 Este único comando removerá la estructuración de Vue y la reemplazará con la de React, incluyendo un componente de ejemplo.
